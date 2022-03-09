@@ -1,0 +1,35 @@
+This mod allows the use of several presets that may change all the settings, or only some...
+You may have some preset that influences the galaxy size, shape and quality, while some other influences the races and their relations, then combines these presets.
+ 
+Sequence:
+- The Standard configuration file (Remnant.cfg) is loaded.
+- The Extended presets file (Presets.cfg) is loaded and activated if ENABLE is either "Load" or "Both".
+- The User may change the parameters with the standard interface
+- When the "Start" button is activated, the presets file is updated if ENABLE is either "Save" or "Both"
+
+The first setting is global to the file:
+
+¦ SETTING	: ENABLE
+# OPTIONS	: [No, Save, Load, Both]
+# DEFAULT	: Both
+# LAST	: 
+ENABLE	: Both
+
+No:	The mod is disabled
+Save:	Only update the contents of the preset file, the preset are not loaded
+Load:	Only load the presets, the file is not updated
+Both:	Load the presets then update the file
+
+Then the User's presets designation are listed with their actions. You just have to add a line to add a preset. All is case insensitive. The load order is given by this list.
+
+¦ SETTING	: CONFIG ACTION
+# OPTIONS	: [-, Load, Save, Update, Load and save, Load and update, Save default, Update to default]
+
+Load	 : To Load these following presets (if not empty nor invalid)... The last one win!
+Save	 : The following presets will be set to the last configuration.
+Update	 : If not empty, the following presets will be set to the last configuration.
+Default : The following presets will be set to the default configuration (the one before the presets file was loaded).
+
+Then all the useful settings are listed.
+
+The last one is not yet implemented... Be patient!
