@@ -35,3 +35,7 @@ About the same things as Preset.cfg, but applied when loading a game.
 ## Some more extended Settings
 more options to configure galaxy.
 
+---
+
+Additional features / changelog<br>
+- 0.83.1 New start on GitHub, extension of Xilmi Fusion MOD v1.03.6
