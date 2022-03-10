@@ -21,8 +21,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import rotp.model.game.MOO1GameOptions;
 
-
-
 public class Presets extends Cfg {
 
 	// protected static LinkedHashMap<String, Sections> settingsMap;
@@ -76,7 +74,6 @@ public class Presets extends Cfg {
 	@Override
 	protected void loadGameOptions(boolean u) {
 		initDV(u, ENABLE_KEY, selectedEnable, ENABLE_OPTIONS);
-//		settingsMap.get(ENABLE_KEY).cfgOptions(List.of(ENABLE_KEY));
 		initDV(u, ACTION_KEY, selectedConfigAction, ACTION_OPTIONS);
 //		initDV(u, "TRANSPORT POPULATION",     "10",   List.of("1", "100"));
 //		initDV(u, "TRANSPORT MAX PERCENT",    "10",   List.of("1", "50"));
@@ -142,7 +139,7 @@ public class Presets extends Cfg {
 	}
 
 	protected void setGameOptions () {
-		// Update user config key list
+		// Update user presets key list
 		if (settingsMap.containsKey(ACTION_KEY)) {
 			selectedUserOptionsSet = settingsMap.get(ACTION_KEY).getGroupKeySet();
 		}

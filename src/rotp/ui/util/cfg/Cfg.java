@@ -34,6 +34,23 @@ import java.util.Set;
 import rotp.Rotp;
 
 abstract class Cfg {
+	// Comments constants
+	public    static final String COMMENT_KEY        = "#";
+	protected static final String COMMENT_SPACER     = " ";
+	protected static final String COMMENT_KEY_SPACER = COMMENT_KEY + COMMENT_SPACER;
+	// Key-Values Constants
+	protected static final String BASE_KEY_FORMAT     = "%-20s";
+	protected static final String KEY_VALUE_SEPARATOR = ":";	
+	protected static final String VALUE_SPACER        = " ";
+	protected static final String KEY_VALUE_SEPARATOR_KEY_SPACER = KEY_VALUE_SEPARATOR + VALUE_SPACER;
+	protected static final String KEY_FORMAT = BASE_KEY_FORMAT + KEY_VALUE_SEPARATOR_KEY_SPACER;
+	// Sections Constant
+	protected static final String HEAD_OF_OPTIONS = "# OPTIONS";
+	protected static final String HEAD_OF_DEFAULT = "# DEFAULT";
+	protected static final String HEAD_OF_LAST    = "# LAST";
+	protected static final String LABEL_OF_SECTION_KEY = "¦ SETTING";
+	protected static final String LABEL_OF_ENABLE_SECTION_KEY = "¦ ENABLE";
+
 	protected static final List<String> EMPIRE_COLORS =
 		List.of("red", "green", "yellow", "blue", "orange", "purple", "aqua", "fuchsia",
 				"brown", "white", "lime", "grey", "plum", "light blue", "mint", "olive");
@@ -44,9 +61,9 @@ abstract class Cfg {
 	protected static final List<String> NO_LIST        = List.of("NO", "FALSE");
 	protected static final List<String> ENABLE_OPTIONS = List.of("NO", "SAVE", "LOAD", "BOTH");
 	protected static List<String> ACTION_OPTIONS; 
-	protected static List<String> ENABLE_LOAD   = List.of("LOAD", "BOTH");
-	protected static List<String> ENABLE_SAVE   = List.of("SAVE", "BOTH");
-	protected static String currentSetting = "";
+	protected static List<String> ENABLE_LOAD = List.of("LOAD", "BOTH");
+	protected static List<String> ENABLE_SAVE = List.of("SAVE", "BOTH");
+	protected static String currentSetting    = "";
 
 	protected static LinkedHashMap<String, Sections> settingsMap;
 	protected static LinkedHashSet<String> multipleUserOptionsSet;
@@ -238,41 +255,37 @@ abstract class Cfg {
  //
     static class Sections {
     	
-    	protected static final String LABEL_OF_SECTION_KEY = KeyValuePair.LABEL_OF_SECTION_KEY;
-    	protected static final String HEAD_OF_OPTIONS      = "# OPTIONS";
-    	protected static final String HEAD_OF_DEFAULT      = "# DEFAULT";
-    	protected static final String HEAD_OF_LAST         = "# LAST";
-
-    	protected Comments     headComments;
-    	protected KeyValuePair settingKey   = new KeyValuePair(LABEL_OF_SECTION_KEY, null);
-    	protected KeyValuePair optionsList  = new KeyValuePair(HEAD_OF_OPTIONS, null);
-    	protected KeyValuePair defaultValue = new KeyValuePair(HEAD_OF_DEFAULT, null);
-    	protected KeyValuePair lastValue    = new KeyValuePair(HEAD_OF_LAST, null);
-    	protected Comments     settingComments;
-    	protected List<String> settingOptions;
-    	protected Comments     optionsComments;
-    	protected LinkedHashMap<String, KeyValuePair> settingMap;
-    	protected Comments     bottomComments;
-    	protected LinkedHashMap<String, String> labelOptionsMap;
-    	protected Integer      minValue;
-    	protected Integer      maxValue;
-    	protected boolean      isInteger = false;
-    	protected boolean      isBoolean = false;
-    	protected KeyValuePair currentSetting;
+    	private Comments     headComments;
+    	private KeyValuePair settingKey    = new KeyValuePair(LABEL_OF_SECTION_KEY, null);
+    	private KeyValuePair optionsList   = new KeyValuePair(HEAD_OF_OPTIONS, null);
+    	private KeyValuePair defaultValue  = new KeyValuePair(HEAD_OF_DEFAULT, null);
+    	private KeyValuePair lastValue     = new KeyValuePair(HEAD_OF_LAST, null);
+    	// private KeyValuePair enableSection = new KeyValuePair(LABEL_OF_ENABLE_SECTION_KEY, null);
+    	private Comments     settingComments;
+    	private List<String> settingOptions;
+    	private Comments     optionsComments;
+    	private LinkedHashMap<String, KeyValuePair> settingMap;
+    	private Comments     bottomComments;
+    	private LinkedHashMap<String, String> labelOptionsMap;
+    	private Integer      minValue;
+    	private Integer      maxValue;
+    	private boolean      isInteger = false;
+    	private boolean      isBoolean = false;
+    	private KeyValuePair currentSetting;
     	
     	// ------------------------------------------------------------------------
     	// Constructors
     	//
-    	protected Sections(String key, String defaultValue, List<String> settingOptions) { // String Value
+    	private Sections(String key, String defaultValue, List<String> settingOptions) { // String Value
     		initSection(key, defaultValue, settingOptions);
     		settingMap = new LinkedHashMap<String, KeyValuePair>();
     	}
-    	protected Sections(String key, boolean defaultValue) { // Boolean Value
+    	private Sections(String key, boolean defaultValue) { // Boolean Value
     		initSection(key, defaultValue);
     		settingMap = new LinkedHashMap<String, KeyValuePair>();
     		isBoolean  = true;
     	}
-    	protected Sections(String key, Integer defaultValue, Integer min, Integer max) { // Integer Value
+    	private Sections(String key, Integer defaultValue, Integer min, Integer max) { // Integer Value
     		initSection(key, defaultValue, min, max);
     		settingMap = new LinkedHashMap<String, KeyValuePair>();
     		isInteger  = true;
@@ -281,23 +294,23 @@ abstract class Cfg {
     	// ------------------------------------------------------------------------
     	// Initializers
     	//
-    	protected void initSection(String key, String value, List<String> settingOptions) { // String Value
+    	private void initSection(String key, String value, List<String> settingOptions) { // String Value
     		settingKey.setValue(key); // YES key! because the key is LABEL_OF_MAIN_KEY!
     		defaultValue.setValue(settingNameToLabel(value));
     		setSettingOptions(settingOptions);
     	}
-    	protected void initSection(String key, boolean value) { // Boolean Value
+    	private void initSection(String key, boolean value) { // Boolean Value
     		settingKey.setValue(key); // YES key! because the key is LABEL_OF_MAIN_KEY!
     		defaultValue.setValue(yesOrNo(value));
     		setSettingOptions(BOOLEAN_LIST);
     	}
-    	protected void initSection(String key, Integer value, Integer min, Integer max) { // Integer Value
+    	private void initSection(String key, Integer value, Integer min, Integer max) { // Integer Value
     		settingKey.setValue(key); // YES key! because the key is LABEL_OF_MAIN_KEY!
     		defaultValue.setValue(value.toString());
     		setSettingOptions(min, max);
     	}
     	
-    	protected boolean hasValidSetting (String key) {
+    	boolean hasValidSetting (String key) {
     		if (key != null) {
     			String Key = key.toUpperCase();
     			if (settingMap.containsKey(Key)) {
@@ -314,22 +327,22 @@ abstract class Cfg {
     	// ------------------------------------------------------------------------
     	// Getters and Setters
     	//
-    	protected String getDefaultValue() {
+    	String getDefaultValue() {
     		return defaultValue.getValue();
     	}
-    	protected String getLastValue() {
+    	String getLastValue() {
     		return lastValue.getValue();
     	}
-    	protected LinkedHashSet<String> getGroupKeySet () {
+    	LinkedHashSet<String> getGroupKeySet () {
     		return new LinkedHashSet<String>(settingMap.keySet());
     	}
-    	protected String getPairValue(String key) {
+    	String getPairValue(String key) {
     		if (key != null && settingMap.containsKey(key)) {
     			return settingMap.get(key).getValue();
     		}
     		return defaultValue.getValue();
     	}
-    	protected boolean getBooleanSetting(String key) {
+    	boolean getBooleanSetting(String key) {
     		boolean preset = defaultValue.getBooleanValue();
     		if (key != null && isBoolean) {
     			String Key = key.toUpperCase();
@@ -337,7 +350,7 @@ abstract class Cfg {
     		}
     		return preset;
     	}
-    	protected Integer getIntegerSetting(String key) {
+    	Integer getIntegerSetting(String key) {
     		Integer preset = defaultValue.getIntegerValue();
     		if (key != null && isInteger) {
     			String Key = key.toUpperCase();
@@ -345,7 +358,7 @@ abstract class Cfg {
     		}
     		return preset;
     	}
-    	protected String getValidSetting(String key) {
+    	String getValidSetting(String key) {
     		if (key != null) {
     			String value = getValidValue(key);
     			if (!value.isBlank()) {
@@ -354,14 +367,14 @@ abstract class Cfg {
     		}
     		return ""; 
     	}
-    	protected String getValidNonBlankSetting(String key) {
+    	String getValidNonBlankSetting(String key) {
     		String value = defaultValue.getValue();
     		if (key != null) {
     			value = getValidNonBlankValue(key);
     		}
     		return labelOptionsMap.get(value.toUpperCase()); 
     	}
-    	protected String getValidNonBlankValue(String key) {
+    	private String getValidNonBlankValue(String key) {
     		if (key != null) {
     			String Key = key.toUpperCase();
     			if (settingMap.containsKey(Key)) {
@@ -373,7 +386,7 @@ abstract class Cfg {
     		}
     		return defaultValue.getValue(); 
     	}
-    	protected String getValidValue(String key) {
+    	private String getValidValue(String key) {
     		if (key != null) {
     			String Key = key.toUpperCase();
     			if (settingMap.containsKey(Key)) {
@@ -385,8 +398,8 @@ abstract class Cfg {
     		}
     		return defaultValue.getValue(); 
     	}
-    	protected void setKeyValuePair (KeyValuePair pair) { setKeyValuePair (pair.getKey(), pair.getValue()); }
-    	protected void setKeyValuePair (String key, String value) {
+    	private void setKeyValuePair (KeyValuePair pair) { setKeyValuePair (pair.getKey(), pair.getValue()); }
+    	private void setKeyValuePair (String key, String value) {
     		if (key != null && value != null) {
     			if (value.isBlank() || labelOptionsMap.keySet().contains(value.toUpperCase())) {
     				settingMap.put(key.toUpperCase(), new KeyValuePair(key, settingNameToLabel(value)) );
@@ -396,15 +409,15 @@ abstract class Cfg {
     				}			
     		}
     	}
-    	protected void setLastValue(String value) { lastValue.setValue(settingNameToLabel(value)); }
-    	protected void setLastValue(boolean value) { lastValue.setValue(yesOrNo(value)); }
-    	protected void setLastValue(Integer value) { lastValue.setValue(value.toString()); }
-    	protected void setSettingOptions(Integer min, Integer max) {
+    	void setLastValue(String value) { lastValue.setValue(settingNameToLabel(value)); }
+    	private void setLastValue(boolean value) { lastValue.setValue(yesOrNo(value)); }
+    	private void setLastValue(Integer value) { lastValue.setValue(value.toString()); }
+    	private void setSettingOptions(Integer min, Integer max) {
     		minValue = min;
     		maxValue = max;
     		setSettingOptions(List.of(min.toString(), max.toString()));
     	}
-    	protected void setSettingOptions(List<String> options) {
+    	private void setSettingOptions(List<String> options) {
     		settingOptions  = new ArrayList<String>();
     		labelOptionsMap = new LinkedHashMap<String, String>();
     		for (String option : options) {
@@ -417,7 +430,7 @@ abstract class Cfg {
     	// ------------------------------------------------------------------------
     	// Other Methods
     	//
-    	protected String toString(LinkedHashSet<String> groupOptions) {
+    	String toString(LinkedHashSet<String> groupOptions) {
     		String out = "";
         	if (headComments != null    && !headComments.isEmpty())          { out += (headComments.toString()    + System.lineSeparator()); }
         	if (settingKey   != null    && !settingKey.getKey().isEmpty())   { out += (settingKey.toString()      + System.lineSeparator()); }
@@ -435,8 +448,8 @@ abstract class Cfg {
         	if (bottomComments != null && !bottomComments.isEmpty()) { out += (bottomComments.toString() + System.lineSeparator()); }
         	return out;
     	}
-    	protected void actionSave(String key) { setKeyValuePair(key, getLastValue()); }
-    	protected void actionUpdate(String key) {
+    	void actionSave(String key) { setKeyValuePair(key, getLastValue()); }
+    	void actionUpdate(String key) {
     		if (!settingMap.containsKey(key)) {
     			setKeyValuePair(key, getLastValue());
     			return;
@@ -445,7 +458,7 @@ abstract class Cfg {
     			settingMap.get(key).setValue(getLastValue());
     		}
     	}
-    	protected void actionDefault(String key) {
+    	void actionDefault(String key) {
     		if (!settingMap.containsKey(key)) {
     			setKeyValuePair(key, getDefaultValue());
     			return;
@@ -454,21 +467,21 @@ abstract class Cfg {
     			settingMap.get(key).setValue(getDefaultValue());
     		}
     	}
-    	protected void headComments(Comments comments)    { headComments = comments; }
-    	protected void settingComments(Comments comments) { settingComments = comments; }
-    	protected void optionsComments(Comments comments) { optionsComments = comments; }
-    	protected void bottomComments(Comments comments)  { bottomComments = comments; }
-    	protected static String settingNameToLabel (String option) {
+    	void headComments(Comments comments)    { headComments = comments; }
+    	void settingComments(Comments comments) { settingComments = comments; }
+    	void optionsComments(Comments comments) { optionsComments = comments; }
+    	void bottomComments(Comments comments)  { bottomComments = comments; }
+    	private static String settingNameToLabel (String option) {
     		return capitalize(option.substring(option.lastIndexOf("_") + 1));
     	}
-    	protected static List<String> settingNameToLabel (List<String> options) {
+    	private static List<String> settingNameToLabel (List<String> options) {
     		List<String> labels = new ArrayList<>();
     		for (String option : options) {
     			labels.add(settingNameToLabel (option));
     		}
     		return labels;
     	}
-    	protected static String capitalize(String s) {
+    	private static String capitalize(String s) {
         	if ( s.isEmpty() ) { return s; }
         	if ( s.length() == 1 ) { return s.toUpperCase(); }
     		return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
@@ -479,25 +492,19 @@ abstract class Cfg {
  //
     static class KeyValuePair {
 
-    	protected static final String KEY_VALUE_SEPARATOR = ":";	
-    	protected static final String VALUE_SPACER = " ";
-    	protected static final String KEY_VALUE_SEPARATOR_KEY_SPACER = KEY_VALUE_SEPARATOR + VALUE_SPACER;
-    	protected static final String BASE_KEY_FORMAT = "%-20s";
-    	protected static final String KEY_FORMAT = BASE_KEY_FORMAT + KEY_VALUE_SEPARATOR_KEY_SPACER;
-    	protected static final String LABEL_OF_SECTION_KEY = "¦ SETTING";
-    	protected static final Integer DEFAULT_VALUE = 0;
-    	protected String key = "";
-    	protected String value = "";
+    	private static final Integer DEFAULT_VALUE = 0;
+    	private String key = "";
+    	private String value = "";
     	
-    	protected KeyValuePair() {}
-    	protected KeyValuePair(String key, String value) {
+    	private KeyValuePair() {}
+    	private KeyValuePair(String key, String value) {
     		if (key == null) { key = "Error! key is null"; } 
     		if (value == null) { value = ""; } 
     		this.key = key;
     		this.value = value;
     	}
     	// Constructor for text line entry
-    	protected KeyValuePair(String line) {
+    	private KeyValuePair(String line) {
     		key = "";
     		value = "";
     		if (line == null || line.isBlank()) {return;}
@@ -507,22 +514,22 @@ abstract class Cfg {
     			value = String.join(KEY_VALUE_SEPARATOR, list.subList(1, list.size())).trim();              
     		}
     	}
-    	protected void setValue(String value) { this.value = value; }
+    	private void setValue(String value) { this.value = value; }
 
-    	protected boolean isBlank()         { return value.isBlank();}
-    	protected boolean isValid(Integer min, Integer max) {
+    	private boolean isBlank()         { return value.isBlank();}
+    	private boolean isValid(Integer min, Integer max) {
     		Integer val = getInteger(value, min - 1);
     		return (val >= min && val <= max);
     	}
-    	protected boolean isValid(List<String> list) { return list.contains(value.toUpperCase()); }
-    	protected boolean isValid(Set<String> set)   { return set.contains(value.toUpperCase()); }
-    	protected boolean isSectionKey()             { return key.equals(LABEL_OF_SECTION_KEY); }
-    	protected boolean getBooleanValue()          { return yesOrNo(value); }
-    	protected Integer getIntegerValue()          { return getInteger(value, DEFAULT_VALUE); }
-    	protected Integer getValue(Integer onWrong)  { return getInteger(value, onWrong); }
-    	protected boolean getValue(boolean onWrong)  { return yesOrNo(value, onWrong); }
-    	protected String  getValue() { return value; }
-    	protected String  getKey()   { return key; }
+    	private boolean isValid(List<String> list) { return list.contains(value.toUpperCase()); }
+    	private boolean isValid(Set<String> set)   { return set.contains(value.toUpperCase()); }
+    	private boolean isSectionKey()             { return key.equals(LABEL_OF_SECTION_KEY); }
+    	private boolean getBooleanValue()          { return yesOrNo(value); }
+    	private Integer getIntegerValue()          { return getInteger(value, DEFAULT_VALUE); }
+    	private Integer getValue(Integer onWrong)  { return getInteger(value, onWrong); }
+    	private boolean getValue(boolean onWrong)  { return yesOrNo(value, onWrong); }
+    	private String  getValue() { return value; }
+    	private String  getKey()   { return key; }
     	public  String  toString() { return String.format(KEY_FORMAT, key) + value; }
     }
 
@@ -531,11 +538,7 @@ abstract class Cfg {
  //
     static class Comments {
     	
-    	public  static final String COMMENT_KEY = "#";
-    	protected static final String COMMENT_SPACER = " ";
-    	protected static final String COMMENT_KEY_SPACER = COMMENT_KEY + COMMENT_SPACER;
-
-    	protected List<String> comments;
+    	private List<String> comments;
 
     	// ------------------------------------------------------------------------
     	// Constructors
@@ -585,7 +588,7 @@ abstract class Cfg {
     	// Other protected Methods
     	//
     	
-    	protected void addLine(String comments) {
+    	private void addLine(String comments) {
     		this.comments.add(comments);
     	}
 
