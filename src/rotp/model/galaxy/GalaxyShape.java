@@ -22,8 +22,7 @@ import java.util.List;
 import rotp.model.game.IGameOptions;
 import rotp.util.Base;
 import rotp.ui.UserPreferences; // modnar: add option to start game with additional colonies
-import rotp.ui.util.cfg.Presets; // BR:
-import rotp.ui.util.cfg.Presets.Spacing;
+import rotp.ui.util.cfg.Presets.Spacing; // BR:
 
 public abstract class GalaxyShape implements Base, Serializable {
     private static final long serialVersionUID = 1L;
@@ -157,28 +156,21 @@ public abstract class GalaxyShape implements Base, Serializable {
         genAttempt = 0;
         empSystems.clear();
         
-        // // BR: User control on opponent spacing
-        // int minStarsPerEmpire = Presets.minStarsPerEmpire();
-        // if (Presets.maximiseEmpireSpacing()) minStarsPerEmpire = maxStars/numOpps;
-        // float maxMinEmpireFactor = 15f;
-        // float minEmpireFactor = (minStarsPerEmpire+1)/3; // 8 spe -> 3; 12 spe -> 4;
-        // if (minEmpireFactor >= (maxMinEmpireFactor-2)) minEmpireFactor = maxMinEmpireFactor -2;
-    	// float minOrionFactor = minEmpireFactor + 1;      // 8 spe -> 4; 12 spe -> 5;
-
         // systemBuffer() is minimum distance between any 2 stars
         float sysBuffer = systemBuffer();
-        // float minEmpireBuffer    = sysBuffer * minEmpireFactor;
-        // float maxMinEmpireBuffer = sysBuffer * maxMinEmpireFactor;
-        // float minOrionBuffer     = sysBuffer * minOrionFactor;
-        // float minEmpireBuffer = 4*sysBuffer; // modnar: increase spacing between empires
-        // float maxMinEmpireBuffer = 15*sysBuffer;
-        // float minOrionBuffer = 5*sysBuffer; // modnar: increase spacing between empires and orion
+        float minEmpireBuffer = 4*sysBuffer; // modnar: increase spacing between empires
+        float maxMinEmpireBuffer = 15*sysBuffer;
+        float minOrionBuffer = 5*sysBuffer; // modnar: increase spacing between empires and orion
         
+        // BR:
+        if (Spacing.isEnabled()) {
+            Spacing.init(maxStars, numOpps, sysBuffer);
+            minEmpireBuffer    = Spacing.getMinEmpireBuffer();
+            maxMinEmpireBuffer = Spacing.getMaxMinEmpireBuffer();
+            minOrionBuffer     = Spacing.getMinOrionBuffer();
+        }
         // \BR:
-        Spacing.init(maxStars, numOpps, sysBuffer);
-        float minEmpireBuffer    = Spacing.getMinEmpireBuffer();
-        float maxMinEmpireBuffer = Spacing.getMaxMinEmpireBuffer();
-        float minOrionBuffer     = Spacing.getMinOrionBuffer();
+
         // the stars/empires ratio for the most "densely" populated galaxy is about 8:1
         // we want to set the minimum distance between empires to half that in ly, with a minimum 
         // of 6 ly... this means that it will not increase until there is at least a 12:1

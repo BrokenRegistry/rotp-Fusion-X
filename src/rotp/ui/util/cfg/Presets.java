@@ -46,7 +46,7 @@ public class Presets extends Cfg {
 			List.of("-", "LOAD", "SAVE", "UPDATE", "LOAD AND SAVE",
 			"LOAD AND UPDATE", "SAVE DEFAULT", "UPDATE TO DEFAULT");
 		selectedEnable       = "Both";
-		selectedConfigAction = "LOAD AND SAVE";
+		selectedConfigAction = "SAVE";
 		settingsMap = new LinkedHashMap<String, Sections>();
 		loadSettingsMap();
 		// Override with config file values
@@ -332,6 +332,7 @@ public class Presets extends Cfg {
 		public static float getMinEmpireBuffer()    {return minEmpireBuffer;}
 		public static float getMaxMinEmpireBuffer() {return maxMinEmpireBuffer;}
 		public static float getMinOrionBuffer()     {return minOrionBuffer;}
+		public static boolean isEnabled()           {return true;} 
 
 		public static void init(int maxStars, int numOpps, float sysBuffer) {
 			int minStarsPerEmpire = Presets.minStarsPerEmpire();
