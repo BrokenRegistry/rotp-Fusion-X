@@ -38,4 +38,5 @@ more options to configure galaxy.
 ---
 
 Additional features / changelog<br>
+- 0.84.1 Added Local Enable for each sections
 - 0.83.1 New start on GitHub, extension of Xilmi Fusion MOD v1.03.6
