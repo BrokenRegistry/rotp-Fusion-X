@@ -23,16 +23,10 @@ import rotp.model.game.MOO1GameOptions;
 
 public class Presets extends Cfg {
 
-	// protected static LinkedHashMap<String, Sections> settingsMap;
-	// protected static LinkedHashSet<String> multipleUserOptionsSet;
-	// protected static LinkedHashSet<String> singleUserOptionsSet  = 
-	// 		new LinkedHashSet<String>(List.of(ENABLE_KEY));
-	// protected static LinkedHashSet<String> selectedUserOptionsSet = 
-	// 		new LinkedHashSet<String>(List.of("User", "Last", "Default", "Cryslonoid"));
 	private static boolean selectedMaximizeEmpiresSpacing = true;
-	private static Integer selectedNoPlanetPctMult        = 100;
-	private static Integer selectedMinStarsPerEmpire      = 8;
-	private static Integer selectedPrefStarsPerEmpire     = 16;
+	private static Integer selectedMinStarsPerEmpire  = 8;
+	private static Integer selectedPrefStarsPerEmpire = 16;
+	private static Integer selectedNoPlanetPctMult    = 100;
 	private static MOO1GameOptions gameOptions;
 	private static Presets presets;
 
@@ -62,17 +56,17 @@ public class Presets extends Cfg {
 		gameOptions = moo1GameOptions;
 		presets.init();
 	}
-	public static void updateAndSavePresets()   {presets.updateAndSave();}
-	public static int  minStarsPerEmpire()      {return selectedMinStarsPerEmpire;}
-	public static int  preferedStarsPerEmpire() {return selectedPrefStarsPerEmpire;}
-	public static int  noPlanetPctMult()        {return selectedNoPlanetPctMult;}
-	public static boolean maximiseEmpireSpacing() {return selectedMaximizeEmpiresSpacing;}
+	public static void    updateAndSavePresets()   {presets.updateAndSave();}
+	public static int     minStarsPerEmpire()      {return selectedMinStarsPerEmpire;}
+	public static int     preferedStarsPerEmpire() {return selectedPrefStarsPerEmpire;}
+	public static int     noPlanetPctMult()        {return selectedNoPlanetPctMult;}
+	public static boolean maximiseEmpireSpacing()  {return selectedMaximizeEmpiresSpacing;}
 
 	// ========================================================================
 	// protected Methods
 	//
 	@Override
-	protected void loadGameOptions(boolean u) {
+	void loadGameOptions(boolean u) {
 		initDV(u, ENABLE_KEY, selectedEnableGlobal, ENABLE_OPTIONS);
 		settingsMap.get(ENABLE_KEY).removeLocalEnable();
 		initDV(u, ACTION_KEY, selectedConfigAction, ACTION_OPTIONS);
@@ -127,7 +121,7 @@ public class Presets extends Cfg {
 		}
 	}
 
-	protected void initComments() {	
+	void initComments() {	
 		settingsMap.get(ENABLE_KEY).headComments(new Comments("---- MOD activation"));
 		settingsMap.get(ACTION_KEY).headComments(new Comments(
 				List.of("---- This is where you add your configuration list ",
@@ -139,8 +133,7 @@ public class Presets extends Cfg {
 		settingsMap.get("PREF STARS PER EMPIRE").optionsComments(new Comments("Determine default opponents number"));
 		settingsMap.get("GALAXY SIZE").headComments(new Comments(List.of("------------ Standard Options", " ")));
 	}
-
-	protected void setGameOptions () {
+	void setGameOptions () {
 		// Update user presets key list
 		if (settingsMap.containsKey(ACTION_KEY)) {
 			selectedUserOptionsSet = settingsMap.get(ACTION_KEY).getGroupKeySet();
@@ -155,97 +148,97 @@ public class Presets extends Cfg {
 					setting = "PLAYER RACE";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
-						if (section.hasValidSetting(userOption))
+						if (section.isSectionReadable(userOption))
 							gameOptions.selectedPlayerRace(section.getValidSetting(userOption)); 
 					}
 					setting = "PLAYER COLOR";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
-						if (section.hasValidSetting(userOption))
+						if (section.isSectionReadable(userOption))
 							gameOptions.selectedPlayerColor(EMPIRE_COLORS.indexOf(section.getValidSetting(userOption)));
 					}
 					setting = "GALAXY SIZE";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
-						if (section.hasValidSetting(userOption))
+						if (section.isSectionReadable(userOption))
 							gameOptions.selectedGalaxySize(section.getValidSetting(userOption));
 					}
 					setting = "GALAXY SHAPE";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
-						if (section.hasValidSetting(userOption))
+						if (section.isSectionReadable(userOption))
 							gameOptions.selectedGalaxyShape(section.getValidSetting(userOption));
 					}
 					setting = "GALAXY AGE";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
-						if (section.hasValidSetting(userOption))
+						if (section.isSectionReadable(userOption))
 							gameOptions.selectedGalaxyAge(section.getValidSetting(userOption));
 					}
 					setting = "DIFFICULTY";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
-						if (section.hasValidSetting(userOption))
+						if (section.isSectionReadable(userOption))
 							gameOptions.selectedGameDifficulty(section.getValidSetting(userOption));
 					}
 					setting = "RESEARCH";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
-						if (section.hasValidSetting(userOption))
+						if (section.isSectionReadable(userOption))
 							gameOptions.selectedResearchRate(section.getValidSetting(userOption));
 					}
 					setting = "TECH TRADING";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
-						if (section.hasValidSetting(userOption))
+						if (section.isSectionReadable(userOption))
 							gameOptions.selectedTechTradeOption(section.getValidSetting(userOption));
 					}
 					setting = "RANDOM EVENTS";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
-						if (section.hasValidSetting(userOption))
+						if (section.isSectionReadable(userOption))
 							gameOptions.selectedRandomEventOption(section.getValidSetting(userOption));
 					}
 					setting = "WARP SPEED";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
-						if (section.hasValidSetting(userOption))
+						if (section.isSectionReadable(userOption))
 							gameOptions.selectedWarpSpeedOption(section.getValidSetting(userOption));
 					}
 					setting = "NEBULAE";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
-						if (section.hasValidSetting(userOption))
+						if (section.isSectionReadable(userOption))
 							gameOptions.selectedNebulaeOption(section.getValidSetting(userOption));
 					}
 					setting = "COUNCIL";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
-						if (section.hasValidSetting(userOption))
+						if (section.isSectionReadable(userOption))
 							gameOptions.selectedCouncilWinOption(section.getValidSetting(userOption));
 					}
 					setting = "STAR DENSITY";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
-						if (section.hasValidSetting(userOption))
+						if (section.isSectionReadable(userOption))
 							gameOptions.selectedStarDensityOption(section.getValidSetting(userOption));
 					}
 					setting = "PLANET QUALITY";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
-						if (section.hasValidSetting(userOption))
+						if (section.isSectionReadable(userOption))
 							gameOptions.selectedPlanetQualityOption(section.getValidSetting(userOption));
 					}
 					setting = "TERRAFORMING";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
-						if (section.hasValidSetting(userOption))
+						if (section.isSectionReadable(userOption))
 							gameOptions.selectedTerraformingOption(section.getValidSetting(userOption));
 					}
 					setting = "COLONIZING";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
-						if (section.hasValidSetting(userOption))
+						if (section.isSectionReadable(userOption))
 							gameOptions.selectedColonizingOption(section.getValidSetting(userOption));
 					}
 					if (settingsMap.containsKey(setting)) {
@@ -255,61 +248,61 @@ public class Presets extends Cfg {
 					setting = "FUEL RANGE";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
-						if (section.hasValidSetting(userOption))
+						if (section.isSectionReadable(userOption))
 							gameOptions.selectedFuelRangeOption(section.getValidSetting(userOption));
 					}
 					setting = "RANDOMIZE AI";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
-						if (section.hasValidSetting(userOption))
+						if (section.isSectionReadable(userOption))
 							gameOptions.selectedRandomizeAIOption(section.getValidSetting(userOption));
 					}
 					setting = "AI HOSTILITY";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
-						if (section.hasValidSetting(userOption))
+						if (section.isSectionReadable(userOption))
 							gameOptions.selectedAIHostilityOption(section.getValidSetting(userOption));
 					}
 					setting = "OPPONENT AI";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
-						if (section.hasValidSetting(userOption))
+						if (section.isSectionReadable(userOption))
 							gameOptions.selectedOpponentAIOption(section.getValidSetting(userOption));
 					}
 					setting = "AUTOPLAY";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
-						if (section.hasValidSetting(userOption))
+						if (section.isSectionReadable(userOption))
 							gameOptions.selectedAutoplayOption(section.getValidSetting(userOption));
 					}
 					setting = "NB OPPONENTS";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
-						if (section.hasValidSetting(userOption))
+						if (section.isSectionReadable(userOption))
 							gameOptions.selectedNumberOpponents(section.getIntegerSetting(userOption));
 					}
 					setting = "MAXIMIZE EMPIRES SPACING";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
-						if (section.hasValidSetting(userOption))
+						if (section.isSectionReadable(userOption))
 							selectedMaximizeEmpiresSpacing = section.getBooleanSetting(userOption);
 					}
 					setting = "NO PLANET PCTS MULT";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
-						if (section.hasValidSetting(userOption))
+						if (section.isSectionReadable(userOption))
 							selectedNoPlanetPctMult = section.getIntegerSetting(userOption);
 					}
 					setting = "MIN STARS PER EMPIRE";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
-						if (section.hasValidSetting(userOption))
+						if (section.isSectionReadable(userOption))
 							selectedMinStarsPerEmpire = section.getIntegerSetting(userOption);
 					}
 					setting = "PREF STARS PER EMPIRE";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
-						if (section.hasValidSetting(userOption))
+						if (section.isSectionReadable(userOption))
 							selectedPrefStarsPerEmpire = section.getIntegerSetting(userOption);
 					}
 				} // \ if ACTION LOAD
@@ -327,20 +320,21 @@ public class Presets extends Cfg {
 	// Spacing
 	// 
 	public static class Spacing {
+		// Parameters
 		private static float minEmpireBuffer;
 		private static float maxMinEmpireBuffer;
 		private static float minOrionBuffer;
-
+		// Getters and Setters
 		public static float getMinEmpireBuffer()    {return minEmpireBuffer;}
 		public static float getMaxMinEmpireBuffer() {return maxMinEmpireBuffer;}
 		public static float getMinOrionBuffer()     {return minOrionBuffer;}
 		public static boolean isEnabled()           {return true;} 
-
+		// Other Methods
 		public static void init(int maxStars, int numOpps, float sysBuffer) {
 			int minStarsPerEmpire = Presets.minStarsPerEmpire();
 			if (Presets.maximiseEmpireSpacing()) minStarsPerEmpire = maxStars/numOpps;
 			float maxMinEmpireFactor = 15f; // To avoid problems with strange galaxy shapes
-			                                // To Do Make this a new setting
+			                                // Maybe To-Do Make this a new setting
 			float minEmpireFactor = (minStarsPerEmpire + 1) / 3; // 8 spe -> 3; 12 spe -> 4;
 			if (minEmpireFactor >= (maxMinEmpireFactor - 2)) 
 				minEmpireFactor = maxMinEmpireFactor - 2;
