@@ -42,36 +42,40 @@ abstract class Cfg {
 	protected static final String BASE_KEY_FORMAT     = "%-20s";
 	protected static final String KEY_VALUE_SEPARATOR = ":";	
 	protected static final String VALUE_SPACER        = " ";
+	protected static final List<String> DISABLE_ID    = List.of("-" ,"X" ,"DISABLE", "DISABLED");
 	protected static final String KEY_VALUE_SEPARATOR_KEY_SPACER = KEY_VALUE_SEPARATOR + VALUE_SPACER;
 	protected static final String KEY_FORMAT = BASE_KEY_FORMAT + KEY_VALUE_SEPARATOR_KEY_SPACER;
 	// Sections Constant
 	protected static final String HEAD_OF_OPTIONS = "# OPTIONS";
 	protected static final String HEAD_OF_DEFAULT = "# DEFAULT";
 	protected static final String HEAD_OF_LAST    = "# LAST";
+	protected static final String HEAD_OF_INFO    = "# DEFAULT / LAST";
 	protected static final String LABEL_OF_SECTION_KEY = "¦ SETTING";
-	protected static final String LABEL_OF_ENABLE_SECTION_KEY = "¦ ENABLE";
+	protected static final String LABEL_OF_ENABLE_SECTION_KEY = "¦ LOCAL ENABLE";
 
 	protected static final List<String> EMPIRE_COLORS =
 		List.of("red", "green", "yellow", "blue", "orange", "purple", "aqua", "fuchsia",
 				"brown", "white", "lime", "grey", "plum", "light blue", "mint", "olive");
-	protected static final String ENABLE_KEY = "ENABLE";
+	protected static final String ENABLE_KEY = "GLOBAL ENABLE";
 	protected static final String ACTION_KEY = "CONFIG ACTION";
 	protected static final List<String> BOOLEAN_LIST   = List.of("YES", "NO", "TRUE", "FALSE");
 	protected static final List<String> YES_LIST       = List.of("YES", "TRUE");
 	protected static final List<String> NO_LIST        = List.of("NO", "FALSE");
 	protected static final List<String> ENABLE_OPTIONS = List.of("NO", "SAVE", "LOAD", "BOTH");
 	protected static List<String> ACTION_OPTIONS; 
-	protected static List<String> ENABLE_LOAD = List.of("LOAD", "BOTH");
-	protected static List<String> ENABLE_SAVE = List.of("SAVE", "BOTH");
-	protected static String currentSetting    = "";
+	protected static List<String> ENABLE_LOAD  = List.of("LOAD", "BOTH");
+	protected static List<String> ENABLE_WRITE = List.of("SAVE", "BOTH");
+	protected static String currentSetting = "";
 
 	protected static LinkedHashMap<String, Sections> settingsMap;
 	protected static LinkedHashSet<String> multipleUserOptionsSet;
 	protected static LinkedHashSet<String> singleUserOptionsSet = 
 			new LinkedHashSet<String>(List.of(ENABLE_KEY));
+	// protected static LinkedHashSet<String> noLocalEnableOptionsSet = 
+	// 		new LinkedHashSet<String>(List.of(ENABLE_KEY, ACTION_KEY));
 	protected static LinkedHashSet<String> selectedUserOptionsSet = 
 			new LinkedHashSet<String>(List.of("User", "Last", "Cryslonoid"));
-	protected static String selectedEnable;
+	protected static String selectedEnableGlobal;
 	protected static String selectedConfigAction;
 
 	protected static String filePath = Rotp.jarPath();
@@ -87,7 +91,7 @@ abstract class Cfg {
 	// protected Methods
 	//
 	protected void loadGameOptions(boolean u) {
-		initDV(u, ENABLE_KEY, selectedEnable, ENABLE_OPTIONS);
+		initDV(u, ENABLE_KEY, selectedEnableGlobal, ENABLE_OPTIONS);
 		initDV(u, ACTION_KEY, selectedConfigAction, ACTION_OPTIONS);
 		// Build setting list excluding single config list
 		multipleUserOptionsSet = new LinkedHashSet<String>();
@@ -100,8 +104,9 @@ abstract class Cfg {
 	abstract void initComments();
 	abstract void setGameOptions();
 	protected void updateAndSave() {
-		selectedEnable = settingsMap.get(ENABLE_KEY).getValidNonBlankSetting(ENABLE_KEY);
-		if (ENABLE_SAVE.contains(selectedEnable)) {
+		// Validate if save is allowed
+		selectedEnableGlobal = settingsMap.get(ENABLE_KEY).getValidNonBlankSetting(ENABLE_KEY);
+		if (ENABLE_WRITE.contains(selectedEnableGlobal)) {
 			loadGameOptions(true); // To update config Last value
 			for (String userOption : selectedUserOptionsSet) {
 				userOption = userOption.toUpperCase();
@@ -229,7 +234,11 @@ abstract class Cfg {
 		}
 		settingsMap.put(key, new Sections(key, value, min, max));
 	}
-	
+	private static String capitalize(String s) {
+		if ( s.isEmpty() ) { return s; }
+		if ( s.length() == 1 ) { return s.toUpperCase(); }
+		return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
+	}	
 	protected static String yesOrNo(boolean b) { return b ? "YES" : "NO"; }
     protected static boolean yesOrNo(String s) { return YES_LIST.contains(s.toUpperCase()); }
     protected static boolean yesOrNo(String s, boolean onWrong) {
@@ -254,13 +263,12 @@ abstract class Cfg {
  // Sections
  //
     static class Sections {
-    	
     	private Comments     headComments;
-    	private KeyValuePair settingKey    = new KeyValuePair(LABEL_OF_SECTION_KEY, null);
-    	private KeyValuePair optionsList   = new KeyValuePair(HEAD_OF_OPTIONS, null);
-    	private KeyValuePair defaultValue  = new KeyValuePair(HEAD_OF_DEFAULT, null);
-    	private KeyValuePair lastValue     = new KeyValuePair(HEAD_OF_LAST, null);
-    	// private KeyValuePair enableSection = new KeyValuePair(LABEL_OF_ENABLE_SECTION_KEY, null);
+    	private KeyValuePair settingKey   = new KeyValuePair(LABEL_OF_SECTION_KEY, null);
+		private KeyValuePair localEnable  = new KeyValuePair(LABEL_OF_ENABLE_SECTION_KEY, "Both");
+    	private KeyValuePair optionsList  = new KeyValuePair(HEAD_OF_OPTIONS, null);
+    	private KeyValuePair defaultValue = new KeyValuePair(HEAD_OF_DEFAULT, null);
+    	private KeyValuePair lastValue    = new KeyValuePair(HEAD_OF_LAST, null);
     	private Comments     settingComments;
     	private List<String> settingOptions;
     	private Comments     optionsComments;
@@ -310,20 +318,6 @@ abstract class Cfg {
     		setSettingOptions(min, max);
     	}
     	
-    	boolean hasValidSetting (String key) {
-    		if (key != null) {
-    			String Key = key.toUpperCase();
-    			if (settingMap.containsKey(Key)) {
-    				currentSetting = settingMap.get(Key);
-    				if (currentSetting.isBlank()) return false;
-    				if (isBoolean) return currentSetting.isValid(BOOLEAN_LIST);
-    				if (isInteger) return currentSetting.isValid(minValue, maxValue);
-    				return currentSetting.isValid(labelOptionsMap.keySet());
-
-    			}
-    		}
-    		return false; 
-    	}
     	// ------------------------------------------------------------------------
     	// Getters and Setters
     	//
@@ -336,7 +330,7 @@ abstract class Cfg {
     	LinkedHashSet<String> getGroupKeySet () {
     		return new LinkedHashSet<String>(settingMap.keySet());
     	}
-    	String getPairValue(String key) {
+    	String  getPairValue(String key) {
     		if (key != null && settingMap.containsKey(key)) {
     			return settingMap.get(key).getValue();
     		}
@@ -358,7 +352,7 @@ abstract class Cfg {
     		}
     		return preset;
     	}
-    	String getValidSetting(String key) {
+    	String  getValidSetting(String key) {
     		if (key != null) {
     			String value = getValidValue(key);
     			if (!value.isBlank()) {
@@ -367,7 +361,7 @@ abstract class Cfg {
     		}
     		return ""; 
     	}
-    	String getValidNonBlankSetting(String key) {
+    	String  getValidNonBlankSetting(String key) {
     		String value = defaultValue.getValue();
     		if (key != null) {
     			value = getValidNonBlankValue(key);
@@ -409,7 +403,8 @@ abstract class Cfg {
     				}			
     		}
     	}
-    	void setLastValue(String value) { lastValue.setValue(settingNameToLabel(value)); }
+    	void    setLastValue(String value) { lastValue.setValue(settingNameToLabel(value)); }
+		void    removeLocalEnable() { localEnable = null; }
     	private void setLastValue(boolean value) { lastValue.setValue(yesOrNo(value)); }
     	private void setLastValue(Integer value) { lastValue.setValue(value.toString()); }
     	private void setSettingOptions(Integer min, Integer max) {
@@ -426,19 +421,39 @@ abstract class Cfg {
     		}
     		optionsList.setValue(settingNameToLabel(settingOptions).toString());
     	}
-
+		private boolean isSectionEnabled() { return localEnable.getBooleanValue(); } 
+		private boolean isSectionWritable() { return localEnable.isWritable();}
+		boolean hasValidSetting (String key) {
+    		if (key != null) {
+    			String Key = key.toUpperCase();
+    			if (settingMap.containsKey(Key)) {
+    				currentSetting = settingMap.get(Key);
+    				if (currentSetting.isBlank()) return false;
+    				if (isBoolean) return currentSetting.isValid(BOOLEAN_LIST);
+    				if (isInteger) return currentSetting.isValid(minValue, maxValue);
+    				return currentSetting.isValid(labelOptionsMap.keySet());
+    			}
+    		}
+    		return false; 
+    	}
     	// ------------------------------------------------------------------------
     	// Other Methods
     	//
     	String toString(LinkedHashSet<String> groupOptions) {
     		String out = "";
-        	if (headComments != null    && !headComments.isEmpty())          { out += (headComments.toString()    + System.lineSeparator()); }
-        	if (settingKey   != null    && !settingKey.getKey().isEmpty())   { out += (settingKey.toString()      + System.lineSeparator()); }
-        	if (settingComments != null && !settingComments.isEmpty())       { out += (settingComments.toString() + System.lineSeparator()); }
-        	if (optionsList  != null    && !optionsList.getKey().isEmpty())  { out += (optionsList.toString()     + System.lineSeparator()); }    	
-        	if (defaultValue != null    && !defaultValue.getKey().isEmpty()) { out += (defaultValue.toString()    + System.lineSeparator()); }
-        	if (lastValue    != null    && !lastValue.getKey().isEmpty())    { out += (lastValue.toString()       + System.lineSeparator()); }
-        	if (optionsComments != null && !optionsComments.isEmpty())       { out += (optionsComments.toString() + System.lineSeparator()); }
+        	if (headComments != null    && !headComments.isEmpty())    out += (headComments.toString()    + System.lineSeparator());
+        	if (settingKey   != null    && settingKey.hasKey())        out += (settingKey.toString()      + System.lineSeparator());
+        	if (localEnable  != null    && localEnable.hasKey())       out += (localEnable.toString()     + System.lineSeparator());
+        	if (settingComments != null && !settingComments.isEmpty()) out += (settingComments.toString() + System.lineSeparator());
+        	if (optionsList  != null    && optionsList.hasKey())       out += (optionsList.toString()     + System.lineSeparator());    	
+        	// if (defaultValue != null    && defaultValue.hasKey())      out += (defaultValue.toString()    + System.lineSeparator());
+        	// if (lastValue    != null    && lastValue.hasKey())         out += (lastValue.toString()       + System.lineSeparator());
+			if (defaultValue != null && defaultValue.hasKey() && lastValue != null && lastValue.hasKey())
+				out += (String.format(KEY_FORMAT, HEAD_OF_INFO) + 
+						defaultValue.getValue().toString() + " / " + 
+						lastValue.getValue().toString() +
+						System.lineSeparator());
+			if (optionsComments != null && !optionsComments.isEmpty()) out += (optionsComments.toString() + System.lineSeparator());
         	for (String option : groupOptions) {
         		if (!settingMap.containsKey(option.toUpperCase())) {
         			settingMap.put(option.toUpperCase(), new KeyValuePair(option, getDefaultValue()));
@@ -448,24 +463,29 @@ abstract class Cfg {
         	if (bottomComments != null && !bottomComments.isEmpty()) { out += (bottomComments.toString() + System.lineSeparator()); }
         	return out;
     	}
-    	void actionSave(String key) { setKeyValuePair(key, getLastValue()); }
+    	void actionSave(String key) {
+			// Section should be writable to overwrite with last value
+			if (isSectionWritable()) setKeyValuePair(key, getLastValue());
+		}
     	void actionUpdate(String key) {
+			// if the key is absent, add it with last value
     		if (!settingMap.containsKey(key)) {
     			setKeyValuePair(key, getLastValue());
     			return;
     		}
-    		if (!settingMap.get(key).getValue().isBlank()) {
+			// Section should be writable and value not blank 
+    		if (isSectionWritable() && !settingMap.get(key).isBlank())
     			settingMap.get(key).setValue(getLastValue());
-    		}
     	}
     	void actionDefault(String key) {
+			// if the key is absent, add it with default value
     		if (!settingMap.containsKey(key)) {
     			setKeyValuePair(key, getDefaultValue());
     			return;
     		}
-    		if (!settingMap.get(key).getValue().isBlank()) {
-    			settingMap.get(key).setValue(getDefaultValue());
-    		}
+			// Section should be writable and value not blank 
+			if (isSectionWritable() && !settingMap.get(key).isBlank())
+					settingMap.get(key).setValue(getDefaultValue());
     	}
     	void headComments(Comments comments)    { headComments = comments; }
     	void settingComments(Comments comments) { settingComments = comments; }
@@ -481,11 +501,7 @@ abstract class Cfg {
     		}
     		return labels;
     	}
-    	private static String capitalize(String s) {
-        	if ( s.isEmpty() ) { return s; }
-        	if ( s.length() == 1 ) { return s.toUpperCase(); }
-    		return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
-        }
+
     }
  // ============================================================================
  // KeyValuePair
@@ -493,43 +509,45 @@ abstract class Cfg {
     static class KeyValuePair {
 
     	private static final Integer DEFAULT_VALUE = 0;
-    	private String key = "";
-    	private String value = "";
-    	
+    	private String  key   = "";
+    	private String  value = "";
+		
     	private KeyValuePair() {}
     	private KeyValuePair(String key, String value) {
     		if (key == null) { key = "Error! key is null"; } 
     		if (value == null) { value = ""; } 
-    		this.key = key;
-    		this.value = value;
+    		setKey(key);
+    		setValue(value);
     	}
     	// Constructor for text line entry
     	private KeyValuePair(String line) {
-    		key = "";
-    		value = "";
-    		if (line == null || line.isBlank()) {return;}
+     		if (line == null || line.isBlank()) {return;}
     		List<String> list = Arrays.asList(line.split(KEY_VALUE_SEPARATOR));
-    		key = list.get(0).trim();
+    		setKey(list.get(0).trim());
     		if (list.size() > 1) {
-    			value = String.join(KEY_VALUE_SEPARATOR, list.subList(1, list.size())).trim();              
+				// in the case the value contains KEY_VALUE_SEPARATOR
+    			setValue(String.join(KEY_VALUE_SEPARATOR, list.subList(1, list.size())).trim());
     		}
     	}
+    	private void setKey(String key)     { this.key = key; }
     	private void setValue(String value) { this.value = value; }
-
-    	private boolean isBlank()         { return value.isBlank();}
+    	private boolean isBlank()           { return value.isBlank();}
     	private boolean isValid(Integer min, Integer max) {
     		Integer val = getInteger(value, min - 1);
     		return (val >= min && val <= max);
     	}
     	private boolean isValid(List<String> list) { return list.contains(value.toUpperCase()); }
     	private boolean isValid(Set<String> set)   { return set.contains(value.toUpperCase()); }
-    	private boolean isSectionKey()             { return key.equals(LABEL_OF_SECTION_KEY); }
-    	private boolean getBooleanValue()          { return yesOrNo(value); }
-    	private Integer getIntegerValue()          { return getInteger(value, DEFAULT_VALUE); }
+    	private boolean isSectionKey()    { return key.equalsIgnoreCase(LABEL_OF_SECTION_KEY); }
+    	private boolean isDisabled()      { return DISABLE_ID.contains(value.toUpperCase()); }
+    	private boolean isWritable()      { return ENABLE_WRITE.contains(value.toUpperCase()); }
+    	private boolean getBooleanValue() { return yesOrNo(value); }
+    	private Integer getIntegerValue() { return getInteger(value, DEFAULT_VALUE); }
     	private Integer getValue(Integer onWrong)  { return getInteger(value, onWrong); }
     	private boolean getValue(boolean onWrong)  { return yesOrNo(value, onWrong); }
     	private String  getValue() { return value; }
     	private String  getKey()   { return key; }
+    	private boolean hasKey()   { return !key.isBlank(); }
     	public  String  toString() { return String.format(KEY_FORMAT, key) + value; }
     }
 

@@ -45,7 +45,7 @@ public class Presets extends Cfg {
 		ACTION_OPTIONS = 
 			List.of("-", "LOAD", "SAVE", "UPDATE", "LOAD AND SAVE",
 			"LOAD AND UPDATE", "SAVE DEFAULT", "UPDATE TO DEFAULT");
-		selectedEnable       = "Both";
+		selectedEnableGlobal       = "Both";
 		selectedConfigAction = "SAVE";
 		settingsMap = new LinkedHashMap<String, Sections>();
 		loadSettingsMap();
@@ -73,8 +73,10 @@ public class Presets extends Cfg {
 	//
 	@Override
 	protected void loadGameOptions(boolean u) {
-		initDV(u, ENABLE_KEY, selectedEnable, ENABLE_OPTIONS);
+		initDV(u, ENABLE_KEY, selectedEnableGlobal, ENABLE_OPTIONS);
+		settingsMap.get(ENABLE_KEY).removeLocalEnable();
 		initDV(u, ACTION_KEY, selectedConfigAction, ACTION_OPTIONS);
+		settingsMap.get(ACTION_KEY).removeLocalEnable();
 //		initDV(u, "TRANSPORT POPULATION",     "10",   List.of("1", "100"));
 //		initDV(u, "TRANSPORT MAX PERCENT",    "10",   List.of("1", "50"));
 //		initDV(u, "TRANSPORT MAX TURNS",      "5",    List.of("1", "1000000"));
@@ -146,8 +148,8 @@ public class Presets extends Cfg {
 		// Update Enable Setting
 		String setting;
 		Sections section;
-		selectedEnable = settingsMap.get(ENABLE_KEY).getValidNonBlankSetting(ENABLE_KEY);
-		if (ENABLE_LOAD.contains(selectedEnable)) {
+		selectedEnableGlobal = settingsMap.get(ENABLE_KEY).getValidNonBlankSetting(ENABLE_KEY);
+		if (ENABLE_LOAD.contains(selectedEnableGlobal)) {
 			for (String userOption : selectedUserOptionsSet) {
 				if (settingsMap.get(ACTION_KEY).getPairValue(userOption).toUpperCase().contains("LOAD")) {
 					setting = "PLAYER RACE";
