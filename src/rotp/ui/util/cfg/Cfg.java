@@ -85,22 +85,23 @@ abstract class Cfg {
 	//
 	abstract void initComments();
 	abstract void setGameOptions();
+	abstract void loadGameOptions(boolean u);
 	// ========================================================================
 	// Other Methods
 	//
-	void loadGameOptions(boolean u) {
-		initDV(u, ENABLE_KEY, selectedEnableGlobal, ENABLE_OPTIONS);
-		settingsMap.get(ENABLE_KEY).removeLocalEnable();
-		initDV(u, ACTION_KEY, selectedConfigAction, ACTION_OPTIONS);
-		settingsMap.get(ACTION_KEY).removeLocalEnable();
-		// Build setting list excluding single config list
-		multipleUserOptionsSet = new LinkedHashSet<String>();
-		for (String setting : settingsMap.keySet()) {
-			if ( !singleUserOptionsSet.contains(setting) ) {
-				multipleUserOptionsSet.add(setting);
-			}
-		}
-	}
+	// void loadGameOptions(boolean u) {
+	// 	initDV(u, ENABLE_KEY, selectedEnableGlobal, ENABLE_OPTIONS);
+	// 	settingsMap.get(ENABLE_KEY).removeLocalEnable();
+	// 	initDV(u, ACTION_KEY, selectedConfigAction, ACTION_OPTIONS);
+	// 	settingsMap.get(ACTION_KEY).removeLocalEnable();
+	// 	// Build setting list excluding single config list
+	// 	multipleUserOptionsSet = new LinkedHashSet<String>();
+	// 	for (String setting : settingsMap.keySet()) {
+	// 		if ( !singleUserOptionsSet.contains(setting) ) {
+	// 			multipleUserOptionsSet.add(setting);
+	// 		}
+	// 	}
+	// }
 	void updateAndSave() {
 		// Validate if save is allowed
 		selectedEnableGlobal = settingsMap.get(ENABLE_KEY).getValidNonBlankSetting(ENABLE_KEY);

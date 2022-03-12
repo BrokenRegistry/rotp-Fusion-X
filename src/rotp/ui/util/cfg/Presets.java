@@ -19,6 +19,8 @@ package rotp.ui.util.cfg;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+
+import rotp.model.game.IGameOptions;
 import rotp.model.game.MOO1GameOptions;
 
 public class Presets extends Cfg {
@@ -27,8 +29,13 @@ public class Presets extends Cfg {
 	private static Integer selectedMinStarsPerEmpire  = 8;
 	private static Integer selectedPrefStarsPerEmpire = 16;
 	private static Integer selectedNoPlanetPctMult    = 100;
-	private static MOO1GameOptions gameOptions;
+	private static IGameOptions gameOptions;
 	private static Presets presets;
+
+	// ------------------------------------------------------------------------
+    // Constructors
+    //
+	public Presets() {}
 
 	private void init() {
 		fileName = "Presets.cfg";
@@ -39,33 +46,37 @@ public class Presets extends Cfg {
 		ACTION_OPTIONS = 
 			List.of("-", "LOAD", "SAVE", "UPDATE", "LOAD AND SAVE",
 			"LOAD AND UPDATE", "SAVE DEFAULT", "UPDATE TO DEFAULT");
-		selectedEnableGlobal       = "Both";
+		selectedEnableGlobal = "Both";
 		selectedConfigAction = "SAVE";
 		settingsMap = new LinkedHashMap<String, Sections>();
 		loadSettingsMap();
-		// Override with config file values
-		setGameOptions();
 	}
 	// ========================================================================
-	// Public Methods
-	//
-	public Presets() {}
-	
+	// Public static Methods
+	//	
 	public static void load(MOO1GameOptions moo1GameOptions) {
 		presets = new Presets();
 		gameOptions = moo1GameOptions;
 		presets.init();
+		// Override with config file values
+		presets.setGameOptions();
 	}
-	public static void    updateAndSavePresets()   {presets.updateAndSave();}
-	public static int     minStarsPerEmpire()      {return selectedMinStarsPerEmpire;}
-	public static int     preferedStarsPerEmpire() {return selectedPrefStarsPerEmpire;}
-	public static int     noPlanetPctMult()        {return selectedNoPlanetPctMult;}
-	public static boolean maximiseEmpireSpacing()  {return selectedMaximizeEmpiresSpacing;}
-
+	// public static void load2(IGameOptions gameOptions) {
+	// 	iGameOptions = gameOptions;
+	// }
+	// public static void updateAndSavePresets() {
+	// 	presets.updateAndSave();
+	// }
+	public static void savePresets(IGameOptions options) {
+		presets = new Presets();
+		gameOptions = options;
+		presets.init();
+		presets.updateAndSave();
+	}
 	// ========================================================================
-	// protected Methods
+	// Overrrided abstract Methods
 	//
-	@Override
+	// @Override
 	void loadGameOptions(boolean u) {
 		initDV(u, ENABLE_KEY, selectedEnableGlobal, ENABLE_OPTIONS);
 		settingsMap.get(ENABLE_KEY).removeLocalEnable();
@@ -317,9 +328,13 @@ public class Presets extends Cfg {
 		} // \if ENABLE_LOAD
 	} // \setGameOptions
 	// ------------------------------------------------------------------------
-	// Remote Static Methods
+	// Other Static Methods
 	// 
-	
+	static int minStarsPerEmpire()      {return selectedMinStarsPerEmpire;}
+	static int preferedStarsPerEmpire() {return selectedPrefStarsPerEmpire;}
+	static int noPlanetPctMult()        {return selectedNoPlanetPctMult;}
+	static boolean maximiseEmpireSpacing() {return selectedMaximizeEmpiresSpacing;}
+
 	// ------------------------------------------------------------------------
 	// Nested Classes
 	// 
