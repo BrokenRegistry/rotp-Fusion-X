@@ -30,8 +30,10 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import rotp.Rotp;
+import java.util.concurrent.ThreadLocalRandom;
 
 abstract class Cfg {
 	// Comments constants
@@ -219,16 +221,17 @@ abstract class Cfg {
 		}
 		settingsMap.put(key, new Sections(key, value));
 	}
-	protected void initDV(boolean update, String key, Integer value, Integer min, Integer max) {
+	protected void initDV(boolean update, String key, Integer value,
+	                     Integer min, Integer max, Integer minR, Integer maxR) {
 		if ( settingsMap.containsKey(key) ) {
 			if (update) {
 				settingsMap.get(key).setLastValue(value);
 				return;
 			}
-			settingsMap.get(key).initSection(key, value, min, max);
+			settingsMap.get(key).initSection(key, value, min, max, minR, maxR);
 			return;
 		}
-		settingsMap.put(key, new Sections(key, value, min, max));
+		settingsMap.put(key, new Sections(key, value, min, max, minR, maxR));
 	}
 	private static String capitalize(String s) {
 		if ( s.isEmpty() ) { return s; }
@@ -252,6 +255,13 @@ abstract class Cfg {
 		if (isNumeric(str)) return Integer.valueOf(str);
         return onWrong;
     }
+	private static boolean getBooleanRandom() {return ThreadLocalRandom.current().nextBoolean();}
+	private static Integer getIntegerRandom(Integer min, Integer max) {
+		return ThreadLocalRandom.current().nextInt(max - min) + min;
+	}
+	private static String getStringRandom(List<String> options) {
+		return options.get(ThreadLocalRandom.current().nextInt(options.size()-1));
+	}
  // ============================================================================
  // Nested Classes
  // 
@@ -273,6 +283,8 @@ abstract class Cfg {
     	private LinkedHashMap<String, String> labelOptionsMap;
     	private Integer      minValue;
     	private Integer      maxValue;
+    	private Integer      minRandom;
+    	private Integer      maxRandom;
     	private boolean      isInteger = false;
     	private boolean      isBoolean = false;
     	private KeyValuePair currentSetting;
@@ -289,8 +301,9 @@ abstract class Cfg {
     		settingMap = new LinkedHashMap<String, KeyValuePair>();
     		isBoolean  = true;
     	}
-    	private Sections(String key, Integer defaultValue, Integer min, Integer max) { // Integer Value
-    		initSection(key, defaultValue, min, max);
+    	private Sections(String key, Integer defaultValue,
+						 Integer min, Integer max, Integer minR, Integer maxR) { // Integer Value
+    		initSection(key, defaultValue, min, max, minR, maxR);
     		settingMap = new LinkedHashMap<String, KeyValuePair>();
     		isInteger  = true;
     	}	
@@ -307,10 +320,11 @@ abstract class Cfg {
     		defaultValue.setValue(yesOrNo(value));
     		setSettingOptions(BOOLEAN_LIST);
     	}
-    	private void initSection(String key, Integer value, Integer min, Integer max) { // Integer Value
+    	private void initSection(String key, Integer value, 
+		                         Integer min, Integer max, Integer minR, Integer maxR) { // Integer Value
     		settingKey.setValue(key); // YES key! because the key is LABEL_OF_MAIN_KEY!
     		defaultValue.setValue(value.toString());
-    		setSettingOptions(min, max);
+    		setSettingOptions(min, max, minR, maxR);
     	}
     	// ------------------------------------------------------------------------
     	// Getters and Setters
@@ -334,7 +348,11 @@ abstract class Cfg {
     		boolean preset = defaultValue.getBooleanValue();
     		if (key != null && isBoolean) {
     			String Key = key.toUpperCase();
-    			if (settingMap.containsKey(Key)) return settingMap.get(Key).getValue(preset);
+    			if (settingMap.containsKey(Key)) {
+					KeyValuePair setting = settingMap.get(Key);
+					if (setting.isRandom()) return getBooleanRandom();
+					return setting.getValue(preset);	
+				}
     		}
     		return preset;
     	}
@@ -342,9 +360,27 @@ abstract class Cfg {
     		Integer preset = defaultValue.getIntegerValue();
     		if (key != null && isInteger) {
     			String Key = key.toUpperCase();
-    			if (settingMap.containsKey(Key)) return settingMap.get(Key).getValue(preset);
+    			if (settingMap.containsKey(Key)) {
+					KeyValuePair setting = settingMap.get(Key);
+					if (setting.isRandom()) return getIntegerRandom(minRandom, maxRandom);
+					return setting.getValue(preset);	
+				}
     		}
     		return preset;
+    	}
+		private String getValidValue(String key) {
+    		if (key != null) {
+    			String Key = key.toUpperCase();
+    			if (settingMap.containsKey(Key)) {
+					KeyValuePair setting = settingMap.get(Key);
+					if (setting.isRandom()) return getStringRandom(settingOptions);
+    				String value = setting.getValue();
+    				if (value.isBlank() || labelOptionsMap.keySet().contains(value.toUpperCase())) {
+    					return value;
+    				}
+    			}
+    		}
+    		return defaultValue.getValue(); 
     	}
     	String  getValidSetting(String key) {
     		if (key != null) {
@@ -374,18 +410,6 @@ abstract class Cfg {
     		}
     		return defaultValue.getValue(); 
     	}
-    	private String getValidValue(String key) {
-    		if (key != null) {
-    			String Key = key.toUpperCase();
-    			if (settingMap.containsKey(Key)) {
-    				String value = settingMap.get(Key).getValue();
-    				if (value.isBlank() || labelOptionsMap.keySet().contains(value.toUpperCase())) {
-    					return value;
-    				}
-    			}
-    		}
-    		return defaultValue.getValue(); 
-    	}
     	private void setKeyValuePair (KeyValuePair pair) { setKeyValuePair (pair.getKey(), pair.getValue()); }
     	private void setKeyValuePair (String key, String value) {
     		if (key != null && value != null) {
@@ -401,10 +425,18 @@ abstract class Cfg {
 		void    removeLocalEnable() { localEnable = null; }
     	private void setLastValue(boolean value) { lastValue.setValue(yesOrNo(value)); }
     	private void setLastValue(Integer value) { lastValue.setValue(value.toString()); }
-    	private void setSettingOptions(Integer min, Integer max) {
-    		minValue = min;
-    		maxValue = max;
-    		setSettingOptions(List.of(min.toString(), max.toString()));
+    	void setSettingOptions(Integer min, Integer max, Integer minR, Integer maxR) {
+    		minValue  = min;
+    		maxValue  = max;
+			minRandom = minR;
+    		maxRandom = maxR;
+    		//setSettingOptions(List.of(min.toString(), max.toString()));
+    		setSettingOptions( List.of(
+				"Rmin = " + minR.toString(),
+				"Rmax = " + maxR.toString(),
+				"Lmin = " + min.toString(),
+				"Lmax = " + max.toString()
+				) );
     	}
     	private void setSettingOptions(List<String> options) {
     		settingOptions  = new ArrayList<String>();
@@ -486,7 +518,8 @@ abstract class Cfg {
     			String Key = key.toUpperCase();
     			if (settingMap.containsKey(Key)) {
     				currentSetting = settingMap.get(Key);
-    				if (currentSetting.isBlank()) return false;
+					if (currentSetting.isBlank())  return false;
+    				if (currentSetting.isRandom()) return true;
     				if (isBoolean) return currentSetting.isValid(BOOLEAN_LIST);
     				if (isInteger) return currentSetting.isValid(minValue, maxValue);
     				return currentSetting.isValid(labelOptionsMap.keySet());

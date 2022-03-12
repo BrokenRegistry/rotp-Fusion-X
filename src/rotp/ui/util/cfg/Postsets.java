@@ -121,13 +121,14 @@ public class Postsets extends Cfg {
 		initDV(u, "AI HOSTILITY",   gameOptions.selectedAIHostilityOption(),   gameOptions.aiHostilityOptions());
 		initDV(u, "OPPONENT AI",    gameOptions.selectedOpponentAIOption(),    gameOptions.opponentAIOptions());
 		initDV(u, "AUTOPLAY",       gameOptions.selectedAutoplayOption(),      gameOptions.autoplayOptions());
-		initDV(u, "NB OPPONENTS",   gameOptions.selectedNumberOpponents(),  0, gameOptions.maximumOpponentsOptions());
+		initDV(u, "NB OPPONENTS",   gameOptions.selectedNumberOpponents(),  0, gameOptions.maximumOpponentsOptions(),
+		                                                                    1, gameOptions.maximumOpponentsOptions());
 		initDV(u, "PLAYER RACE",    gameOptions.selectedPlayerRace(),          gameOptions.startingRaceOptions());
 		initDV(u, "PLAYER COLOR",   EMPIRE_COLORS.get(gameOptions.selectedPlayerColor()), EMPIRE_COLORS);
 		initDV(u, "MAXIMIZE EMPIRES SPACING", selectedMaximizeEmpiresSpacing);
-		initDV(u, "MIN STARS PER EMPIRE",     selectedMinStarsPerEmpire,    0, 1000000);
-		initDV(u, "PREF STARS PER EMPIRE",    selectedPrefStarsPerEmpire,   0, 1000000);
-		initDV(u, "NO PLANET PCTS MULT",      selectedNoPlanetPctMult,      0, 1000000);
+		initDV(u, "MIN STARS PER EMPIRE",     selectedMinStarsPerEmpire,    0, 1000000, 4, 16);
+		initDV(u, "PREF STARS PER EMPIRE",    selectedPrefStarsPerEmpire,   0, 1000000, 16, 24);
+		initDV(u, "NO PLANET PCTS MULT",      selectedNoPlanetPctMult,      0, 1000000, 0, 200);
 		// Build setting list excluding single config list
 		multipleUserOptionsSet = new LinkedHashSet<String>();
 		for (String setting : settingsMap.keySet()) {

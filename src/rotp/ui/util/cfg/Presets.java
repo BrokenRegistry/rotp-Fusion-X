@@ -105,13 +105,14 @@ public class Presets extends Cfg {
 		initDV(u, "AI HOSTILITY",   gameOptions.selectedAIHostilityOption(),   gameOptions.aiHostilityOptions());
 		initDV(u, "OPPONENT AI",    gameOptions.selectedOpponentAIOption(),    gameOptions.opponentAIOptions());
 		initDV(u, "AUTOPLAY",       gameOptions.selectedAutoplayOption(),      gameOptions.autoplayOptions());
-		initDV(u, "NB OPPONENTS",   gameOptions.selectedNumberOpponents(),  0, gameOptions.maximumOpponentsOptions());
+		initDV(u, "NB OPPONENTS",   gameOptions.selectedNumberOpponents(),  0, gameOptions.maximumOpponentsOptions(),
+		                                                                    1, gameOptions.maximumOpponentsOptions());
 		initDV(u, "PLAYER RACE",    gameOptions.selectedPlayerRace(),          gameOptions.startingRaceOptions());
 		initDV(u, "PLAYER COLOR",   EMPIRE_COLORS.get(gameOptions.selectedPlayerColor()), EMPIRE_COLORS);
 		initDV(u, "MAXIMIZE EMPIRES SPACING", selectedMaximizeEmpiresSpacing);
-		initDV(u, "MIN STARS PER EMPIRE",     selectedMinStarsPerEmpire,    0, 1000000);
-		initDV(u, "PREF STARS PER EMPIRE",    selectedPrefStarsPerEmpire,   0, 1000000);
-		initDV(u, "NO PLANET PCTS MULT",      selectedNoPlanetPctMult,      0, 1000000);
+		initDV(u, "MIN STARS PER EMPIRE",     selectedMinStarsPerEmpire,    0, 1000000, 4, 16);
+		initDV(u, "PREF STARS PER EMPIRE",    selectedPrefStarsPerEmpire,   0, 1000000, 16, 24);
+		initDV(u, "NO PLANET PCTS MULT",      selectedNoPlanetPctMult,      0, 1000000, 0, 200);
 		// Build setting list excluding single config list
 		multipleUserOptionsSet = new LinkedHashSet<String>();
 		for (String setting : settingsMap.keySet()) {
@@ -120,7 +121,6 @@ public class Presets extends Cfg {
 			}
 		}
 	}
-
 	void initComments() {	
 		settingsMap.get(ENABLE_KEY).headComments(new Comments("---- MOD activation"));
 		settingsMap.get(ACTION_KEY).headComments(new Comments(
@@ -275,23 +275,11 @@ public class Presets extends Cfg {
 						if (section.isSectionReadable(userOption))
 							gameOptions.selectedAutoplayOption(section.getValidSetting(userOption));
 					}
-					setting = "NB OPPONENTS";
-					if (settingsMap.containsKey(setting)) {
-						section = settingsMap.get(setting);
-						if (section.isSectionReadable(userOption))
-							gameOptions.selectedNumberOpponents(section.getIntegerSetting(userOption));
-					}
 					setting = "MAXIMIZE EMPIRES SPACING";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
 						if (section.isSectionReadable(userOption))
 							selectedMaximizeEmpiresSpacing = section.getBooleanSetting(userOption);
-					}
-					setting = "NO PLANET PCTS MULT";
-					if (settingsMap.containsKey(setting)) {
-						section = settingsMap.get(setting);
-						if (section.isSectionReadable(userOption))
-							selectedNoPlanetPctMult = section.getIntegerSetting(userOption);
 					}
 					setting = "MIN STARS PER EMPIRE";
 					if (settingsMap.containsKey(setting)) {
@@ -305,6 +293,25 @@ public class Presets extends Cfg {
 						if (section.isSectionReadable(userOption))
 							selectedPrefStarsPerEmpire = section.getIntegerSetting(userOption);
 					}
+					setting = "NB OPPONENTS";
+					if (settingsMap.containsKey(setting)) {
+						section = settingsMap.get(setting);
+						if (section.isSectionReadable(userOption)) {
+							// the limits may have changed from previous settings
+							int min = 0;
+							int max = gameOptions.maximumOpponentsOptions();
+							section.setSettingOptions(min, max, 1, max);
+							gameOptions.selectedNumberOpponents(
+								Math.min(max, section.getIntegerSetting(userOption)));
+						}
+					}
+					setting = "NO PLANET PCTS MULT";
+					if (settingsMap.containsKey(setting)) {
+						section = settingsMap.get(setting);
+						if (section.isSectionReadable(userOption))
+							selectedNoPlanetPctMult = section.getIntegerSetting(userOption);
+					}
+
 				} // \ if ACTION LOAD
 			} // \options loop
 		} // \if ENABLE_LOAD
