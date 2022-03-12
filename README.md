@@ -35,6 +35,8 @@ Then all the useful settings are listed with their presets.
 ---
 ---
 ### Additional features / changelog<br>
+- 0.86.1 (2022-03-)
+  - <br>
 - 0.85.1 (2022-03-12)
   - Added Load "Local Enable" Management<br>
   - Added option to randomise settings<br>  
