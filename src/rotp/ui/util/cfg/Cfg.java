@@ -260,8 +260,10 @@ abstract class Cfg {
 		return ThreadLocalRandom.current().nextInt(max - min) + min;
 	}
 	private static String getStringRandom(List<String> options) {
+		if (options.size() == 1) return options.get(0);
 		return options.get(ThreadLocalRandom.current().nextInt(options.size()-1));
 	}
+	private static boolean isRandom(String value) {return RANDOM_ID.contains(value.toUpperCase());}
  // ============================================================================
  // Nested Classes
  // 
@@ -373,7 +375,8 @@ abstract class Cfg {
     			String Key = key.toUpperCase();
     			if (settingMap.containsKey(Key)) {
 					KeyValuePair setting = settingMap.get(Key);
-					if (setting.isRandom()) return getStringRandom(settingOptions);
+					if (setting.isRandom()) {
+						return settingNameToLabel(getStringRandom(settingOptions));}
     				String value = setting.getValue();
     				if (value.isBlank() || labelOptionsMap.keySet().contains(value.toUpperCase())) {
     					return value;
@@ -413,7 +416,7 @@ abstract class Cfg {
     	private void setKeyValuePair (KeyValuePair pair) { setKeyValuePair (pair.getKey(), pair.getValue()); }
     	private void setKeyValuePair (String key, String value) {
     		if (key != null && value != null) {
-    			if (value.isBlank() || labelOptionsMap.keySet().contains(value.toUpperCase())) {
+    			if (value.isBlank() || isRandom(value) || labelOptionsMap.keySet().contains(value.toUpperCase())) {
     				settingMap.put(key.toUpperCase(), new KeyValuePair(key, settingNameToLabel(value)) );
     				}
     				else {

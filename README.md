@@ -35,11 +35,11 @@ Then all the useful settings are listed with their presets.
 ---
 ---
 ### Additional features / changelog<br>
-- 0.85.1 (2022-03-)
-  - Added Load Local Enable Management<br>
+- 0.85.1 (2022-03-12)
+  - Added Load "Local Enable" Management<br>
   - Added option to randomise settings<br>  
 - 0.84.1 (2022-03-11)
-  - Added Local Enable for each sections
+  - Added Save "Local Enable" for each sections
 - 0.83.1 (2022-03-09)
   - New start on GitHub, extension of Xilmi Fusion MOD v1.03.6
 
