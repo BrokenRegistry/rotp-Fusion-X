@@ -30,7 +30,6 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import rotp.Rotp;
 import java.util.concurrent.ThreadLocalRandom;
@@ -45,7 +44,8 @@ abstract class Cfg {
 	static final String KEY_VALUE_SEPARATOR = ":";	
 	static final String VALUE_SPACER        = " ";
 	static final List<String> DISABLE_ID    = List.of("-" ,"X" ,"DISABLE", "DISABLED");
-	static final List<String> RANDOM_ID     = List.of("RANDOM");
+//	static final List<String> RANDOM_ID     = List.of("RANDOM");
+	static final String RANDOM_ID           = "RANDOM";
 	static final String KEY_VALUE_SEPARATOR_KEY_SPACER = KEY_VALUE_SEPARATOR + VALUE_SPACER;
 	static final String KEY_FORMAT = BASE_KEY_FORMAT + KEY_VALUE_SEPARATOR_KEY_SPACER;
 	// Sections Constant
@@ -257,14 +257,18 @@ abstract class Cfg {
         return onWrong;
     }
 	private static boolean getBooleanRandom() {return ThreadLocalRandom.current().nextBoolean();}
-	private static Integer getIntegerRandom(Integer min, Integer max) {
-		return ThreadLocalRandom.current().nextInt(max - min) + min;
+	private static Integer getIntegerRandom(int min, int max) {
+		int diff = max - min;
+		if (diff == 0) return min;
+		if (diff < 0)  return getIntegerRandom(max, min);
+		return ThreadLocalRandom.current().nextInt(diff) + min;
 	}
-	private static String getStringRandom(List<String> options) {
-		if (options.size() == 1) return options.get(0);
-		return options.get(ThreadLocalRandom.current().nextInt(options.size()-1));
-	}
-	private static boolean isRandom(String value) {return RANDOM_ID.contains(value.toUpperCase());}
+	private static Integer getIntegerRandom(int[] lim) {return getIntegerRandom(lim[0], lim[1]);}
+	// private static String  getStringRandom(List<String> options) {
+	// 	if (options.size() == 1) return options.get(0);
+	// 	return options.get(ThreadLocalRandom.current().nextInt(options.size()-1));
+	// }
+	private static boolean isRandomValue(String value) {return value.toUpperCase().contains(RANDOM_ID);}
  // ============================================================================
  // Nested Classes
  // 
@@ -365,7 +369,8 @@ abstract class Cfg {
     			String Key = key.toUpperCase();
     			if (settingMap.containsKey(Key)) {
 					KeyValuePair setting = settingMap.get(Key);
-					if (setting.isRandom()) return getIntegerRandom(minRandom, maxRandom);
+					if (setting.isRandom()) 
+						return getIntegerRandom(setting.getRandomParameters(minRandom, maxRandom));
 					return setting.getValue(preset);	
 				}
     		}
@@ -376,8 +381,14 @@ abstract class Cfg {
     			String Key = key.toUpperCase();
     			if (settingMap.containsKey(Key)) {
 					KeyValuePair setting = settingMap.get(Key);
-					if (setting.isRandom()) {
-						return settingNameToLabel(getStringRandom(settingOptions));}
+					if (setting.isRandom()){
+						int[] rndParam = setting.getRandomParameters(0, settingOptions.size()-1); // (defaultMin, defaultMax)
+						int rnd = getIntegerRandom(rndParam);
+						String result = settingOptions.get(rnd);
+						return settingNameToLabel(result);
+						// return settingOptions.get(getIntegerRandom(setting
+						// 	.getRandomParameters(0, settingOptions.size()-1)));
+					}
     				String value = setting.getValue();
     				if (value.isBlank() || labelOptionsMap.keySet().contains(value.toUpperCase())) {
     					return value;
@@ -417,7 +428,7 @@ abstract class Cfg {
     	private void setKeyValuePair (KeyValuePair pair) { setKeyValuePair (pair.getKey(), pair.getValue()); }
     	private void setKeyValuePair (String key, String value) {
     		if (key != null && value != null) {
-    			if (value.isBlank() || isRandom(value) || labelOptionsMap.keySet().contains(value.toUpperCase())) {
+    			if (value.isBlank() || isRandomValue(value) || labelOptionsMap.keySet().contains(value.toUpperCase())) {
     				settingMap.put(key.toUpperCase(), new KeyValuePair(key, settingNameToLabel(value)) );
     				}
     				else {
@@ -549,7 +560,6 @@ abstract class Cfg {
     		setKey(key);
     		setValue(value);
     	}
-    	// Constructor for text line entry
     	private KeyValuePair(String line) {
      		if (line == null || line.isBlank()) {return;}
     		List<String> list = Arrays.asList(line.split(KEY_VALUE_SEPARATOR));
@@ -574,6 +584,20 @@ abstract class Cfg {
 		// ------------------------------------------------------------------------
     	// Other Methods
     	//
+		private int[] getRandomParameters(int min, int max) {
+			int userMin = min;
+			int userMax = max;
+			if (isRandom()) { 
+				String randomParameters = value.toUpperCase().replace(RANDOM_ID, "").trim();
+				if (!randomParameters.isBlank()) {
+					List<String> list = Arrays.asList(randomParameters.split(" "));
+					userMin = getInteger(list.get(0), min);
+					if (list.size() > 1) userMax = getInteger(list.get(0), max);
+				}
+			}
+			int result[] = {userMin, userMax};
+			return result;
+		}
 		private boolean isValid(Integer min, Integer max) {
     		Integer val = getInteger(value, min - 1);
     		return (val >= min && val <= max);
@@ -583,7 +607,7 @@ abstract class Cfg {
 		private boolean isBlank()      { return value.isBlank();}
     	private boolean isSectionKey() { return key.equalsIgnoreCase(LABEL_OF_SECTION_KEY); }
     	private boolean isDisabled()   { return DISABLE_ID.contains(value.toUpperCase()); }
-    	private boolean isRandom()     { return RANDOM_ID.contains(value.toUpperCase()); }
+    	private boolean isRandom()     { return isRandomValue(value); }
     	private boolean isWritable()   { return ENABLE_WRITE.contains(value.toUpperCase()); }
     	private boolean isReadable()   { return ENABLE_LOAD.contains(value.toUpperCase()); }
     	public  String  toString()     { return String.format(KEY_FORMAT, key) + value; }

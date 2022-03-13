@@ -549,8 +549,9 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
     }
     public void startGame() {
         starting = true;
-        //rotp.ui.util.cfg.Presets.updateAndSavePresets();  // BR: Save user presets
-        rotp.ui.util.cfg.Presets.savePresets(this.options());
+         // BR: Save user presets
+        rotp.ui.util.cfg.Presets.savePresets(options());
+
         Race r = Race.keyed(newGameOptions().selectedPlayerRace());
         GameUI.gameName = r.setupName()+ " - "+text(newGameOptions().selectedGalaxySize())+ " - "+text(newGameOptions().selectedGameDifficulty());
         // modnar: add custom difficulty level option, set in Remnants.cfg

@@ -22,6 +22,7 @@ import java.util.List;
 
 import rotp.model.game.IGameOptions;
 import rotp.model.game.MOO1GameOptions;
+import rotp.ui.UserPreferences;
 
 public class Presets extends Cfg {
 
@@ -61,16 +62,8 @@ public class Presets extends Cfg {
 		// Override with config file values
 		presets.setGameOptions();
 	}
-	// public static void load2(IGameOptions gameOptions) {
-	// 	iGameOptions = gameOptions;
-	// }
-	// public static void updateAndSavePresets() {
-	// 	presets.updateAndSave();
-	// }
 	public static void savePresets(IGameOptions options) {
-		presets = new Presets();
 		gameOptions = options;
-		presets.init();
 		presets.updateAndSave();
 	}
 	// ========================================================================
@@ -82,21 +75,9 @@ public class Presets extends Cfg {
 		settingsMap.get(ENABLE_KEY).removeLocalEnable();
 		initDV(u, ACTION_KEY, selectedConfigAction, ACTION_OPTIONS);
 		settingsMap.get(ACTION_KEY).removeLocalEnable();
-//		initDV(u, "TRANSPORT POPULATION",     "10",   List.of("1", "100"));
-//		initDV(u, "TRANSPORT MAX PERCENT",    "10",   List.of("1", "50"));
-//		initDV(u, "TRANSPORT MAX TURNS",      "5",    List.of("1", "1000000"));
-//		initDV(u, "TRANSPORT RICH DISABLED",  "YES",  BOOLEAN_LIST);
-//		initDV(u, "TRANSPORT POOR DOUBLE",    "YES",  BOOLEAN_LIST);
-//		initDV(u, "MINIMUM MISSILE BASES",    "0",    List.of("0", "1000000"));
-//		initDV(u, "AUTOSPEND",                "YES",  BOOLEAN_LIST);
-//		initDV(u, "RESERVE",                  "1000", List.of("0", "1000000"));
-//		initDV(u, "SHIP BUILDING",            "YES",  BOOLEAN_LIST);
-//		initDV(u, "AUTO SHIPS BY DEFAULT",    "YES",  BOOLEAN_LIST);
-//		initDV(u, "AUTO SCOUT",               "YES",  BOOLEAN_LIST);
-//		initDV(u, "AUTO ATTACK",              "NO",   BOOLEAN_LIST);
-//		initDV(u, "AUTO SCOUT SHIP COUNT",    "1",    List.of("0", "1000000"));
-//		initDV(u, "AUTO COLONY SHIP COUNT",   "1",    List.of("0", "1000000"));
-//		initDV(u, "AUTO ATTACK SHIP COUNT",   "1",    List.of("0", "1000000"));
+		// --------------------------------------------------------------------
+		// Base Parameters
+		//
 		initDV(u, "GALAXY SIZE",    gameOptions.selectedGalaxySize(),          gameOptions.galaxySizeOptions());
 		initDV(u, "GALAXY SHAPE",   gameOptions.selectedGalaxyShape(),	       gameOptions.galaxyShapeOptions());
 		initDV(u, "GALAXY AGE",     gameOptions.selectedGalaxyAge(),           gameOptions.galaxyAgeOptions());
@@ -120,6 +101,27 @@ public class Presets extends Cfg {
 		                                                                    1, gameOptions.maximumOpponentsOptions());
 		initDV(u, "PLAYER RACE",    gameOptions.selectedPlayerRace(),          gameOptions.startingRaceOptions());
 		initDV(u, "PLAYER COLOR",   EMPIRE_COLORS.get(gameOptions.selectedPlayerColor()), EMPIRE_COLORS);
+		// --------------------------------------------------------------------
+		// Governor Parameters
+		//
+		initDV(u, "DEFAULT MAX BASES",         UserPreferences.defaultMaxBases(), 0, 100000, 0, 100);
+		initDV(u, "GOVERNOR ON BY DEFAULT",    UserPreferences.governorOnByDefault());
+		initDV(u, "AUTOSPEND ON BY DEFAULT",   UserPreferences.governorAutoSpendByDefault());
+		initDV(u, "DIVERT EXCESS TO RESEARCH", UserPreferences.divertColonyExcessToResearch());
+		// --------------------------------------------------------------------
+		// Modnar Parameters
+		//
+		initDV(u, "CUSTOM DIFFICULTY",  UserPreferences.customDifficulty(), 20, 500, 20, 500);
+		initDV(u, "DYNAMIC DIFFICULTY", UserPreferences.dynamicDifficulty());
+		initDV(u, "ALWAYS STAR GATES",  UserPreferences.alwaysStarGates());
+		initDV(u, "ALWAYS THORIUM",     UserPreferences.alwaysThorium());
+		initDV(u, "CHALLENGE MODE",     UserPreferences.challengeMode());
+		initDV(u, "RANDOM TECH START",  UserPreferences.randomTechStart());
+		initDV(u, "BATTLE SCOUT",       UserPreferences.battleScout());
+		initDV(u, "COMPANION WORLDS",   UserPreferences.companionWorlds(), 0, 4, 0, 4);
+		// --------------------------------------------------------------------
+		// BrokenRegistry Parameters
+		//
 		initDV(u, "MAXIMIZE EMPIRES SPACING", selectedMaximizeEmpiresSpacing);
 		initDV(u, "MIN STARS PER EMPIRE",     selectedMinStarsPerEmpire,    0, 1000000, 4, 16);
 		initDV(u, "PREF STARS PER EMPIRE",    selectedPrefStarsPerEmpire,   0, 1000000, 16, 24);
