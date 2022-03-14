@@ -34,17 +34,15 @@ import java.util.Set;
 import rotp.Rotp;
 import java.util.concurrent.ThreadLocalRandom;
 
-abstract class Cfg {
+abstract class Configs {
 	// Comments constants
-	public    static final String COMMENT_KEY        = "#";
+	public static final String COMMENT_KEY = "#";
 	static final String COMMENT_SPACER     = " ";
 	static final String COMMENT_KEY_SPACER = COMMENT_KEY + COMMENT_SPACER;
 	// Key-Values Constants
 	static final String BASE_KEY_FORMAT     = "%-20s";
 	static final String KEY_VALUE_SEPARATOR = ":";
 	static final String VALUE_SPACER        = " ";
-	static final List<String> DISABLE_ID    = List.of("-" ,"X" ,"DISABLE", "DISABLED");
-//	static final List<String> RANDOM_ID     = List.of("RANDOM");
 	static final String RANDOM_ID           = "RANDOM";
 	static final String KEY_VALUE_SEPARATOR_KEY_SPACER = KEY_VALUE_SEPARATOR + VALUE_SPACER;
 	static final String KEY_FORMAT = BASE_KEY_FORMAT + KEY_VALUE_SEPARATOR_KEY_SPACER;
@@ -56,9 +54,6 @@ abstract class Cfg {
 	static final String LABEL_OF_SECTION_KEY = "¦ SETTING";
 	static final String LABEL_OF_ENABLE_SECTION_KEY = "¦ LOCAL ENABLE";
 	// Other Constants
-	static final List<String> EMPIRE_COLORS =
-		List.of("red", "green", "yellow", "blue", "orange", "purple", "aqua", "fuchsia",
-				"brown", "white", "lime", "grey", "plum", "light blue", "mint", "olive");
 	static final String ENABLE_KEY = "GLOBAL ENABLE";
 	static final String ACTION_KEY = "CONFIG ACTION";
 	static final List<String> BOOLEAN_LIST   = List.of("YES", "NO", "TRUE", "FALSE");
@@ -67,24 +62,27 @@ abstract class Cfg {
 	static final List<String> ENABLE_OPTIONS = List.of("NO", "SAVE", "LOAD", "BOTH");
 	static final List<String> ENABLE_LOAD    = List.of("LOAD", "BOTH");
 	static final List<String> ENABLE_WRITE   = List.of("SAVE", "BOTH");
+	static final List<String> EMPIRE_COLORS  =
+	List.of("red", "green", "yellow", "blue", "orange", "purple", "aqua", "fuchsia",
+			"brown", "white", "lime", "grey", "plum", "light blue", "mint", "olive");
 	// Variables
-	static List<String> ACTION_OPTIONS;
-	static String currentSetting = "";
-	static LinkedHashMap<String, Sections> settingsMap;
-	static LinkedHashSet<String> multipleUserOptionsSet;
-	static LinkedHashSet<String> singleUserOptionsSet = new LinkedHashSet<String>(List.of(ENABLE_KEY));
-	static LinkedHashSet<String> selectedUserOptionsSet = new LinkedHashSet<String>(List.of("User", "Last", "Cryslonoid"));
-	static String selectedEnableGlobal;
-	static String selectedConfigAction;
-	static String filePath = Rotp.jarPath();
-	static String fileName;
-	static Comments HEADER_COMMENT;
-	static Comments FOOTER_COMMENT;
+	List<String> ACTION_OPTIONS;
+	String currentSetting = "";
+	LinkedHashMap<String, Sections> settingsMap;
+	LinkedHashSet<String> multipleUserOptionsSet;
+	LinkedHashSet<String> singleUserOptionsSet = new LinkedHashSet<String>(List.of(ENABLE_KEY));
+	LinkedHashSet<String> selectedUserOptionsSet = new LinkedHashSet<String>(List.of("User", "Last", "Cryslonoid"));
+	String selectedEnableGlobal;
+	String selectedConfigAction;
+	String filePath = Rotp.jarPath();
+	String fileName;
+	Comments HEADER_COMMENT;
+	Comments FOOTER_COMMENT;
 	// ========================================================================
 	// Abstract Methods
 	//
 	abstract void initComments();
-	abstract void setGameOptions();
+	abstract void overrideGameOptions();
 	abstract void loadGameOptions(boolean u);
 	// ========================================================================
 	// Other Methods
@@ -185,7 +183,7 @@ abstract class Cfg {
 		// test for emptiness
 		if ( line.isEmpty() ) return;
 		// test for comment
-		if ( Comments.isComment(line) ) return;
+		if ( new Comments().isComment(line) ) return;
 		// test for setting
 		KeyValuePair configLine = new KeyValuePair(line);
 		if ( configLine.getKey().isBlank() ) return;
@@ -234,14 +232,16 @@ abstract class Cfg {
 		}
 		settingsMap.put(key, new Sections(key, value, min, max, minR, maxR));
 	}
+	// ------------------------------------------------------------------------
+	// private static classes
 	private static String capitalize(String s) {
 		if ( s.isEmpty() ) { return s; }
 		if ( s.length() == 1 ) { return s.toUpperCase(); }
 		return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
 	}
-	protected static String yesOrNo(boolean b) { return b ? "YES" : "NO"; }
-    protected static boolean yesOrNo(String s) { return YES_LIST.contains(s.toUpperCase()); }
-    protected static boolean yesOrNo(String s, boolean onWrong) {
+	protected static String toYesNoString(boolean b) { return b ? "YES" : "NO"; }
+    protected static boolean toBoolean(String s) { return YES_LIST.contains(s.toUpperCase()); }
+    protected static boolean toBoolean(String s, boolean onWrong) {
     	if (s != null) {
     		String S = s.toUpperCase();
         	if ( YES_LIST.contains(S) ) return true;
@@ -275,7 +275,7 @@ abstract class Cfg {
  // ============================================================================
  // Sections
  //
-    static class Sections {
+    class Sections {
     	private Comments     headComments;
     	private KeyValuePair settingKey   = new KeyValuePair(LABEL_OF_SECTION_KEY, null);
 		private KeyValuePair localEnable  = new KeyValuePair(LABEL_OF_ENABLE_SECTION_KEY, "Both");
@@ -324,7 +324,7 @@ abstract class Cfg {
     	}
     	private void initSection(String key, boolean value) { // Boolean Value
     		settingKey.setValue(key); // YES key! because the key is LABEL_OF_MAIN_KEY!
-    		defaultValue.setValue(yesOrNo(value));
+    		defaultValue.setValue(toYesNoString(value));
     		setSettingOptions(BOOLEAN_LIST);
     	}
     	private void initSection(String key, Integer value,
@@ -438,7 +438,7 @@ abstract class Cfg {
     	}
     	void    setLastValue(String value) { lastValue.setValue(settingNameToLabel(value)); }
 		void    removeLocalEnable() { localEnable = null; }
-    	private void setLastValue(boolean value) { lastValue.setValue(yesOrNo(value)); }
+    	private void setLastValue(boolean value) { lastValue.setValue(toYesNoString(value)); }
     	private void setLastValue(Integer value) { lastValue.setValue(value.toString()); }
     	void setSettingOptions(Integer min, Integer max, Integer minR, Integer maxR) {
     		minValue  = min;
@@ -516,10 +516,10 @@ abstract class Cfg {
     	void optionsComments(Comments comments) { optionsComments = comments; }
     	void bottomComments(Comments comments)  { bottomComments = comments; }
  		boolean isSectionReadable(String key) { return (isSectionEnabled() & hasValidSetting (key)); }
-   		private static String settingNameToLabel (String option) {
+   		private String settingNameToLabel (String option) {
     		return capitalize(option.substring(option.lastIndexOf("_") + 1));
     	}
-    	private static List<String> settingNameToLabel (List<String> options) {
+    	private List<String> settingNameToLabel (List<String> options) {
     		List<String> labels = new ArrayList<>();
     		for (String option : options) {
     			labels.add(settingNameToLabel (option));
@@ -546,8 +546,8 @@ abstract class Cfg {
 // ============================================================================
 // KeyValuePair
 //
-    static class KeyValuePair {
-    	private static final Integer DEFAULT_VALUE = 0;
+    class KeyValuePair {
+    	private final Integer DEFAULT_VALUE = 0;
     	private String  key   = "";
     	private String  value = "";
    	// ------------------------------------------------------------------------
@@ -574,10 +574,10 @@ abstract class Cfg {
     	//
 		private void setKey(String key)     { this.key = key; }
     	private void setValue(String value) { this.value = value; }
-    	private boolean getBooleanValue()   { return yesOrNo(value); }
+    	private boolean getBooleanValue()   { return toBoolean(value); }
     	private Integer getIntegerValue()   { return getInteger(value, DEFAULT_VALUE); }
     	private Integer getValue(Integer onWrong) { return getInteger(value, onWrong); }
-    	private boolean getValue(boolean onWrong) { return yesOrNo(value, onWrong); }
+    	private boolean getValue(boolean onWrong) { return toBoolean(value, onWrong); }
     	private String  getValue() { return value; }
     	private String  getKey()   { return key; }
     	private boolean hasKey()   { return !key.isBlank(); }
@@ -606,7 +606,6 @@ abstract class Cfg {
     	private boolean isValid(Set<String> set)   { return set.contains(value.toUpperCase()); }
 		private boolean isBlank()      { return value.isBlank();}
     	private boolean isSectionKey() { return key.equalsIgnoreCase(LABEL_OF_SECTION_KEY); }
-    	// private boolean isDisabled()   { return DISABLE_ID.contains(value.toUpperCase()); }
     	private boolean isRandom()     { return isRandomValue(value); }
     	private boolean isWritable()   { return ENABLE_WRITE.contains(value.toUpperCase()); }
     	private boolean isReadable()   { return ENABLE_LOAD.contains(value.toUpperCase()); }
@@ -615,7 +614,7 @@ abstract class Cfg {
 // ============================================================================
 // Comments
 //
-    static class Comments {
+    class Comments {
     	private List<String> comments;
     	// ------------------------------------------------------------------------
     	// Constructors
@@ -627,7 +626,9 @@ abstract class Cfg {
     	public Comments(List<String> comments) {
     		this.comments = comments;
     	}
-    	// ------------------------------------------------------------------------
+    	public Comments() {
+		}
+		// ------------------------------------------------------------------------
     	// Getters and Setters
     	//
     	public void set(String comment) {
@@ -651,7 +652,7 @@ abstract class Cfg {
     		}
     		return String.join(System.lineSeparator(), list);
     	}
-    	public static boolean isComment(String s) {
+    	public boolean isComment(String s) {
     		if (s == null || s.isEmpty()) { return false; }
     		boolean result = s.trim().startsWith(COMMENT_KEY);
     		return result;

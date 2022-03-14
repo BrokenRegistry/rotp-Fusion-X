@@ -104,9 +104,9 @@ public class Presets extends Cfg {
 		// --------------------------------------------------------------------
 		// Governor Parameters
 		//
-		initDV(u, "DEFAULT MAX BASES",         UserPreferences.defaultMaxBases(), 0, 100000, 0, 100);
 		initDV(u, "GOVERNOR ON BY DEFAULT",    UserPreferences.governorOnByDefault());
 		initDV(u, "AUTOSPEND ON BY DEFAULT",   UserPreferences.governorAutoSpendByDefault());
+		initDV(u, "DEFAULT MAX BASES",         UserPreferences.defaultMaxBases(), 0, 100000, 0, 100);
 		initDV(u, "DIVERT EXCESS TO RESEARCH", UserPreferences.divertColonyExcessToResearch());
 		// --------------------------------------------------------------------
 		// Modnar Parameters
@@ -139,12 +139,20 @@ public class Presets extends Cfg {
 		settingsMap.get(ACTION_KEY).headComments(new Comments(
 				List.of("---- This is where you add your configuration list ",
 						"---- Multiple LOAD will follow this sequence")));
-		settingsMap.get(ACTION_KEY).bottomComments(new Comments("(---- The last loaded Win)"));
-//		settingsMap.get("TRANSPORT POPULATION").headComments(new Comments("------------- Governor Options"));
-		settingsMap.get("MAXIMIZE EMPIRES SPACING").headComments(new Comments("------------ Galaxy Options"));
-		settingsMap.get("MAXIMIZE EMPIRES SPACING").optionsComments(new Comments("Empires may want space to breath"));
-		settingsMap.get("PREF STARS PER EMPIRE").optionsComments(new Comments("Determine default opponents number"));
-		settingsMap.get("GALAXY SIZE").headComments(new Comments(List.of("------------ Standard Options", " ")));
+		settingsMap.get(ACTION_KEY).bottomComments(
+			new Comments("(---- The last loaded Win)"));
+		settingsMap.get("MAXIMIZE EMPIRES SPACING").optionsComments(
+			new Comments("Empires may want space to breath"));
+		settingsMap.get("PREF STARS PER EMPIRE").optionsComments(
+			new Comments("Determine default opponents number"));
+		settingsMap.get("GALAXY SIZE").headComments(
+			new Comments(List.of("------------- Standard Options -------------", " ")));
+		settingsMap.get("GOVERNOR ON BY DEFAULT").headComments(
+			new Comments(List.of("------------ Governor's Options ------------", "")));
+		settingsMap.get("CUSTOM DIFFICULTY").headComments(
+			new Comments(List.of("------------- Modnar's Options -------------", " ")));
+		settingsMap.get("MAXIMIZE EMPIRES SPACING").headComments(
+			new Comments(List.of("--------- BrokenRegistry's Options ---------", " ")));
 	}
 	void setGameOptions () {
 		// Update user presets key list
@@ -288,6 +296,13 @@ public class Presets extends Cfg {
 						if (section.isSectionReadable(userOption))
 							gameOptions.selectedAutoplayOption(section.getValidSetting(userOption));
 					}
+					// setting = "GOVERNOR ON BY DEFAULT";
+					// if (settingsMap.containsKey(setting)) {
+					// 	section = settingsMap.get(setting);
+					// 	if (section.isSectionReadable(userOption))
+					// 	UserPreferences.setGovernorOn(section.getBooleanSetting(userOption));
+					// }
+
 					setting = "MAXIMIZE EMPIRES SPACING";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);

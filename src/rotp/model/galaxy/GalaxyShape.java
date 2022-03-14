@@ -1,12 +1,12 @@
 /*
  * Copyright 2015-2020 Ray Fowler
- * 
+ *
  * Licensed under the GNU General Public License, Version 3 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     https://www.gnu.org/licenses/gpl-3.0.html
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -53,7 +53,7 @@ public abstract class GalaxyShape implements Base, Serializable {
     public abstract void setRandom(Point.Float p);
     public abstract boolean valid(float x, float y);
     protected abstract float sizeFactor(String size);
-    
+
     // modnar: add possibility for specific placement of homeworld/orion locations
     // indexWorld variable will be used by setSpecific in each Map Shape for locations
     public abstract void setSpecific(Point.Float p);
@@ -90,7 +90,7 @@ public abstract class GalaxyShape implements Base, Serializable {
     public List<EmpireSystem> empireSystems() { return empSystems; }
     public int empireSystemStars()            { return homeStars; }
     public float adjustedSizeFactor()        { return sizeFactor(opts.selectedGalaxySize()) + (genAttempt/3); }
-    
+
     public List<String> options1()            { return new ArrayList<>(); }
     public List<String> options2()            { return new ArrayList<>(); }
     public int numOptions1()                  { return options1().size(); }
@@ -155,26 +155,26 @@ public abstract class GalaxyShape implements Base, Serializable {
         long tm0 = System.currentTimeMillis();
         genAttempt = 0;
         empSystems.clear();
-        
+
         // systemBuffer() is minimum distance between any 2 stars
         float sysBuffer = systemBuffer();
         float minEmpireBuffer = 4*sysBuffer; // modnar: increase spacing between empires
         float maxMinEmpireBuffer = 15*sysBuffer;
         float minOrionBuffer = 5*sysBuffer; // modnar: increase spacing between empires and orion
-        
+
         // BR:
-        if (Spacing.isEnabled()) {
-            Spacing.init(maxStars, numOpps, sysBuffer);
-            minEmpireBuffer    = Spacing.getMinEmpireBuffer();
-            maxMinEmpireBuffer = Spacing.getMaxMinEmpireBuffer();
-            minOrionBuffer     = Spacing.getMinOrionBuffer();
-        }
+        // if (Spacing.isEnabled()) {
+        //     Spacing.init(maxStars, numOpps, sysBuffer);
+        //     minEmpireBuffer    = Spacing.getMinEmpireBuffer();
+        //     maxMinEmpireBuffer = Spacing.getMaxMinEmpireBuffer();
+        //     minOrionBuffer     = Spacing.getMinOrionBuffer();
+        // }
         // \BR:
 
         // the stars/empires ratio for the most "densely" populated galaxy is about 8:1
-        // we want to set the minimum distance between empires to half that in ly, with a minimum 
+        // we want to set the minimum distance between empires to half that in ly, with a minimum
         // of 6 ly... this means that it will not increase until there is at least a 12:1
-        // ratio. However, the minimum buffer will never exceed the "MAX_MIN", to ensure that 
+        // ratio. However, the minimum buffer will never exceed the "MAX_MIN", to ensure that
         // massive maps don't always GUARANTEE hundreds of light-years of space to expand uncontested
         empireBuffer = min(maxMinEmpireBuffer, max(minEmpireBuffer, (maxStars/(numOpps*2))));
         // Orion buffer is 50% greater with minimum of 8 ly.
@@ -240,7 +240,7 @@ public abstract class GalaxyShape implements Base, Serializable {
     }
     protected int addUncolonizedSystems() {
         int maxAttempts = maxStars * 10;
-        
+
         // we've already generated 3 stars for every empire so reduce their
         // total from the count of remaining stars to create ("too many stars" bug)
         int nonEmpireStars = maxStars - (empSystems.size() *3);
@@ -255,9 +255,9 @@ public abstract class GalaxyShape implements Base, Serializable {
     }
     public Point.Float findAnyValidLocation(Point.Float p) {
         setRandom(p);
-        while (!valid(p)) 
+        while (!valid(p))
             setRandom(p);
-        
+
         return p;
     }
     // modnar: add specific placement of orion/homeworld locations
