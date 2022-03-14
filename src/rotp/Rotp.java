@@ -225,9 +225,9 @@ public class Rotp {
             return false;
         }
         long memorySize = ((com.sun.management.OperatingSystemMXBean) ManagementFactory
-                        .getOperatingSystemMXBean()).getTotalMemorySize();
+                        .getOperatingSystemMXBean()).getTotalPhysicalMemorySize();
         long freeMemory = ((com.sun.management.OperatingSystemMXBean) ManagementFactory
-                        .getOperatingSystemMXBean()).getTotalMemorySize();
+                        .getOperatingSystemMXBean()).getFreePhysicalMemorySize();
         int maxMb = (int) (memorySize / MB);
         long allocMb = Runtime.getRuntime().maxMemory() / MB;
         int freeMb = (int) (freeMemory / MB);
