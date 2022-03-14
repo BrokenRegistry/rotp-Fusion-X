@@ -1,12 +1,12 @@
 /*
  * Copyright 2015-2020 Ray Fowler
- * 
+ *
  * Licensed under the GNU General Public License, Version 3 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     https://www.gnu.org/licenses/gpl-3.0.html
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,23 +31,24 @@ import java.io.File;
 import java.util.List;
 import javax.swing.JFileChooser;
 import rotp.ui.BasePanel;
-import static rotp.ui.BasePanel.s100;
-import static rotp.ui.BasePanel.s20;
-import static rotp.ui.BasePanel.s90;
+// import static rotp.ui.BasePanel.s100;
+// import static rotp.ui.BasePanel.s20;
+// import static rotp.ui.BasePanel.s90;
 import rotp.ui.BaseText;
 import rotp.ui.UserPreferences;
 import rotp.ui.main.SystemPanel;
 import rotp.util.sound.SoundManager;
+import rotp.ui.util.cfg.Presets; // BR:
 
 public class GameSettingsUI extends BasePanel implements MouseListener, MouseMotionListener, MouseWheelListener {
     private static final long serialVersionUID = 1L;
     private static final Color backgroundHaze = new Color(0,0,0,160);
-    
+
     public static final Color lightBrown = new Color(178,124,87);
     public static final Color brown = new Color(141,101,76);
     public static final Color darkBrown = new Color(112,85,68);
     public static final Color darkerBrown = new Color(75,55,39);
-    
+
     Rectangle hoverBox;
     Rectangle okBox = new Rectangle();
     Rectangle defaultBox = new Rectangle();
@@ -63,7 +64,7 @@ public class GameSettingsUI extends BasePanel implements MouseListener, MouseMot
     BaseText autoBombardText;
     BaseText backupTurnsText;
     BaseText saveDirText;
-    
+
     public GameSettingsUI() {
         init0();
     }
@@ -114,16 +115,16 @@ public class GameSettingsUI extends BasePanel implements MouseListener, MouseMot
     @Override
     public void paintComponent(Graphics g0) {
         super.paintComponent(g0);
-        
+
         int w = getWidth();
         int h = getHeight();
         Graphics2D g = (Graphics2D) g0;
-        
-        
+
+
         // draw background "haze"
         g.setColor(backgroundHaze);
         g.fillRect(0, 0, w, h);
-        
+
         int numColumns = 3;
         int columnPad = s20;
         int lineH = s17;
@@ -141,12 +142,12 @@ public class GameSettingsUI extends BasePanel implements MouseListener, MouseMot
         int x1 = leftM+((w1-sw)/numColumns);
         int y1 = topM+s40;
         drawBorderedString(g, title, 1, x1, y1, Color.black, Color.white);
-        
+
         g.setFont(narrowFont(18));
         String expl = text("GAME_SETTINGS_DESCRIPTION");
         g.setColor(SystemPanel.blackText);
         drawString(g,expl, leftM+s10, y1+s30);
-        
+
         Stroke prev = g.getStroke();
         g.setStroke(stroke3);
 
@@ -170,7 +171,7 @@ public class GameSettingsUI extends BasePanel implements MouseListener, MouseMot
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
         }
-        
+
         y2 += (h2+s20);
         g.setColor(SystemPanel.blackText);
         g.drawRect(x2, y2, w2, h2);
@@ -186,8 +187,8 @@ public class GameSettingsUI extends BasePanel implements MouseListener, MouseMot
         for (String line: lines) {
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
-        }       
-       
+        }
+
         y2 += (h2+s20);
         g.setColor(SystemPanel.blackText);
         g.drawRect(x2, y2, w2, h2);
@@ -204,7 +205,7 @@ public class GameSettingsUI extends BasePanel implements MouseListener, MouseMot
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
         }
-        
+
         y2 += (h2+s20);
         g.setColor(SystemPanel.blackText);
         g.drawRect(x2, y2, w2, h2);
@@ -221,7 +222,7 @@ public class GameSettingsUI extends BasePanel implements MouseListener, MouseMot
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
         }
-        
+
         // middle column
         y2 = scaled(200);
         x2 = x2+w2+s20;
@@ -241,7 +242,7 @@ public class GameSettingsUI extends BasePanel implements MouseListener, MouseMot
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
         }
-        
+
         y2 += (h2+s20);
         g.setColor(SystemPanel.blackText);
         g.drawRect(x2, y2, w2, h2);
@@ -258,7 +259,7 @@ public class GameSettingsUI extends BasePanel implements MouseListener, MouseMot
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
         }
-        
+
         y2 += (h2+s20);
         g.setColor(SystemPanel.blackText);
         g.drawRect(x2, y2, w2, h2);
@@ -275,7 +276,7 @@ public class GameSettingsUI extends BasePanel implements MouseListener, MouseMot
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
         }
-          
+
         // right side
         y2 = scaled(200);
         h2 = s90;
@@ -296,7 +297,7 @@ public class GameSettingsUI extends BasePanel implements MouseListener, MouseMot
             drawString(g,line, x2+s20, y3);
         }
 
-        
+
         y2 += (h2+s20);
         g.setColor(SystemPanel.blackText);
         g.drawRect(x2, y2, w2, h2);
@@ -313,7 +314,7 @@ public class GameSettingsUI extends BasePanel implements MouseListener, MouseMot
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
         }
-        
+
         y2 += (h2+s20);
         g.setColor(SystemPanel.blackText);
         g.drawRect(x2, y2, w2, h2);
@@ -330,7 +331,7 @@ public class GameSettingsUI extends BasePanel implements MouseListener, MouseMot
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
         }
-        
+
         y2 += (h2+s20);
         g.setColor(SystemPanel.blackText);
         g.drawRect(x2, y2, w2, h2);
@@ -348,7 +349,7 @@ public class GameSettingsUI extends BasePanel implements MouseListener, MouseMot
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
         }
-        
+
         g.setStroke(prev);
 
         // draw settings button
@@ -406,7 +407,7 @@ public class GameSettingsUI extends BasePanel implements MouseListener, MouseMot
             val = text("GAME_SETTINGS_SOUNDS_ON", str(SoundManager.soundLevel()));
         else
             val = text("GAME_SETTINGS_SOUNDS_OFF");
-        
+
         return text("GAME_SETTINGS_SOUNDS", val+"   ");
     }
     private String musicStr() {
@@ -415,7 +416,7 @@ public class GameSettingsUI extends BasePanel implements MouseListener, MouseMot
             val = text("GAME_SETTINGS_MUSIC_ON", str(SoundManager.musicLevel()));
         else
             val = text("GAME_SETTINGS_MUSIC_OFF");
-        
+
         return text("GAME_SETTINGS_MUSIC", val+"   ");
     }
     private String memoryStr() {
@@ -424,7 +425,7 @@ public class GameSettingsUI extends BasePanel implements MouseListener, MouseMot
             val = text("GAME_SETTINGS_MEMORY_YES");
         else
             val = text("GAME_SETTINGS_MEMORY_NO");
-        
+
         return text("GAME_SETTINGS_MEMORY", val+"   ");
     }
     private String displayModeStr() {
@@ -444,14 +445,14 @@ public class GameSettingsUI extends BasePanel implements MouseListener, MouseMot
         String val;
         if (turns == 0)
             val = text("GAME_SETTINGS_BACKUP_OFF");
-        else 
+        else
             val = text("GAME_SETTINGS_BACKUP_ON", str(turns));
-        
+
         return text("GAME_SETTINGS_BACKUP", val+"   ");
     }
     private String saveDirStr() {
         String saveDir = UserPreferences.saveDirStr();
-        
+
         return text("GAME_SETTINGS_SAVEDIR", text(saveDir));
     }
     private void toggleDisplayMode() {
@@ -551,6 +552,16 @@ public class GameSettingsUI extends BasePanel implements MouseListener, MouseMot
             case KeyEvent.VK_ENTER:
                 parent.advanceHelp();
                 break;
+            case 82: // BR: "R" = Reload User Presets
+                new Presets().loadUserConfig(options());
+                init();
+                repaint();
+                break;
+            case 85: // BR: "U" = Update User Presets
+                new Presets().saveToUserConfig(options());
+                init();
+                repaint();
+                break;
         }
     }
     @Override
@@ -587,7 +598,7 @@ public class GameSettingsUI extends BasePanel implements MouseListener, MouseMot
             hoverBox = okBox;
         else if (defaultBox.contains(x,y))
             hoverBox = defaultBox;
-		
+
         if (hoverBox != prevHover) {
             if (prevHover == texturesText.bounds())
                 texturesText.mouseExit();
@@ -649,8 +660,8 @@ public class GameSettingsUI extends BasePanel implements MouseListener, MouseMot
             return;
         if (hoverBox == null)
             return;
-        int x = e.getX();
-        int y = e.getY();
+        // int x = e.getX();
+        // int y = e.getY();
         if (hoverBox == texturesText.bounds())
             toggleTextures();
         else if (hoverBox == mouseText.bounds())

@@ -948,8 +948,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
         for (int i=0;i<specificOpponentAIOption.length;i++)
             specificOpponentAIOption[i] = OPPONENT_AI_CRUEL;
         setToDefault();
-        // rotp.ui.util.cfg.Presets.load(this); // BR: User Presets
-        new rotp.ui.util.cfg.Postsets().loadUserConfig(this); // BR: User Presets
+        new rotp.ui.util.cfg.Presets().loadUserConfig(this); // BR: User Presets
         generateGalaxy();
     }
     @Override

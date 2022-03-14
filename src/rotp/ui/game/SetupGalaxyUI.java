@@ -46,6 +46,7 @@ import rotp.ui.NoticeMessage;
 import rotp.ui.RotPUI;
 import rotp.ui.UserPreferences;
 import rotp.ui.main.SystemPanel;
+import rotp.ui.util.cfg.Presets; // BR:
 
 public final class SetupGalaxyUI  extends BasePanel implements MouseListener, MouseMotionListener, MouseWheelListener {
     private static final long serialVersionUID = 1L;
@@ -550,8 +551,7 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
     public void startGame() {
         starting = true;
          // BR: Save user presets
-        // rotp.ui.util.cfg.Presets.savePresets(options());
-        new rotp.ui.util.cfg.Postsets().saveToUserConfig(options());
+        new Presets().saveToUserConfig(options());
 
         Race r = Race.keyed(newGameOptions().selectedPlayerRace());
         GameUI.gameName = r.setupName()+ " - "+text(newGameOptions().selectedGalaxySize())+ " - "+text(newGameOptions().selectedGameDifficulty());
@@ -867,8 +867,16 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
             case KeyEvent.VK_ENTER:
                 startGame();
                 return;
-            case 82:
-            new rotp.ui.util.cfg.Postsets().loadUserConfig(options()); // BR: User Presets
+            case 82: // BR: "R" = Reload User Presets
+                new Presets().loadUserConfig(options());
+                newGameOptions().galaxyShape().quickGenerate();
+                repaint();
+                return;
+            case 85: // BR: "U" = Update User Presets
+                new Presets().saveToUserConfig(options());
+                newGameOptions().galaxyShape().quickGenerate();
+                repaint();
+                return;
         }
     }
     @Override
