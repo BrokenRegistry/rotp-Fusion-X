@@ -35,7 +35,7 @@ Then all the useful settings are listed with their presets.
 ---
 ---
 ### Additional features / changelog<br>
-- 0.86.1 (2022-03-13)
+- 0.86.1 (2022-03-14)
   - Added user range option to randomised settings (min max)<br>
   - Added key actions to UI "R" to Reload "U" to Update
 - 0.85.1 (2022-03-12)
