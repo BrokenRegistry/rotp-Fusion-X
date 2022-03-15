@@ -861,22 +861,34 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
     public void keyPressed(KeyEvent e) {
         int k = e.getKeyCode();
         switch(k) {
-           case KeyEvent.VK_ESCAPE:
+            case KeyEvent.VK_ESCAPE:
                 goToRaceSetup();
                 return;
-          case KeyEvent.VK_ENTER:
+            case KeyEvent.VK_ENTER:
                 startGame();
                 return;
             case 82: // BR: "R" = Reload User Presets
                 new Presets().loadUserConfig(options());
-                newGameOptions().galaxyShape().quickGenerate();
+                newGameOptions().selectedGameDifficulty(options().selectedGameDifficulty());
                 repaint();
-                return;
+                newGameOptions().selectedOpponentAIOption(options().selectedOpponentAIOption());
+                repaint();
+                newGameOptions().selectedOpponentAIOption(options().selectedOpponentAIOption());
+                repaint();
+                newGameOptions().selectedGalaxySize(options().selectedGalaxySize());
+                repaint();
+                newGameOptions().selectedGalaxyShape(options().selectedGalaxyShape());
+                repaint();
+                newGameOptions().galaxyShape().quickGenerate();
+                backImg = null;
+                repaint();
+                newGameOptions().selectedNumberOpponents(
+                    min(newGameOptions().maximumOpponentsOptions(), options().selectedNumberOpponents()));
+                repaint();
+                break;
             case 85: // BR: "U" = Update User Presets
                 new Presets().saveToUserConfig(options());
-                newGameOptions().galaxyShape().quickGenerate();
-                repaint();
-                return;
+                break;
         }
     }
     @Override

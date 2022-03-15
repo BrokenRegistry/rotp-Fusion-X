@@ -38,7 +38,6 @@ import rotp.ui.BaseText;
 import rotp.ui.UserPreferences;
 import rotp.ui.main.SystemPanel;
 import rotp.util.sound.SoundManager;
-import rotp.ui.util.cfg.Presets; // BR:
 
 public class GameSettingsUI extends BasePanel implements MouseListener, MouseMotionListener, MouseWheelListener {
     private static final long serialVersionUID = 1L;
@@ -551,16 +550,6 @@ public class GameSettingsUI extends BasePanel implements MouseListener, MouseMot
             case KeyEvent.VK_SPACE:
             case KeyEvent.VK_ENTER:
                 parent.advanceHelp();
-                break;
-            case 82: // BR: "R" = Reload User Presets
-                new Presets().loadUserConfig(options());
-                init();
-                repaint();
-                break;
-            case 85: // BR: "U" = Update User Presets
-                new Presets().saveToUserConfig(options());
-                init();
-                repaint();
                 break;
         }
     }
