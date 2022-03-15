@@ -22,7 +22,7 @@ import java.util.List;
 import rotp.model.game.IGameOptions;
 import rotp.util.Base;
 import rotp.ui.UserPreferences; // modnar: add option to start game with additional colonies
-import rotp.ui.util.cfg.Presets.Spacing; // BR:
+import rotp.ui.util.cfg.ExtCfg.Spacing; // BR:
 
 public abstract class GalaxyShape implements Base, Serializable {
     private static final long serialVersionUID = 1L;
@@ -163,12 +163,12 @@ public abstract class GalaxyShape implements Base, Serializable {
         float minOrionBuffer = 5*sysBuffer; // modnar: increase spacing between empires and orion
 
         // BR:
-        // if (Spacing.isEnabled()) {
-        //     Spacing.init(maxStars, numOpps, sysBuffer);
-        //     minEmpireBuffer    = Spacing.getMinEmpireBuffer();
-        //     maxMinEmpireBuffer = Spacing.getMaxMinEmpireBuffer();
-        //     minOrionBuffer     = Spacing.getMinOrionBuffer();
-        // }
+        if (Spacing.isEnabled()) {
+            Spacing.init(maxStars, numOpps, sysBuffer);
+            minEmpireBuffer    = Spacing.getMinEmpireBuffer();
+            maxMinEmpireBuffer = Spacing.getMaxMinEmpireBuffer();
+            minOrionBuffer     = Spacing.getMinOrionBuffer();
+        }
         // \BR:
 
         // the stars/empires ratio for the most "densely" populated galaxy is about 8:1

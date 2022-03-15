@@ -550,7 +550,7 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
     }
     public void startGame() {
         starting = true;
-         // BR: Save user presets
+        // BR: Save user presets
         new Presets().saveToUserConfig(options());
 
         Race r = Race.keyed(newGameOptions().selectedPlayerRace());
@@ -861,10 +861,10 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
     public void keyPressed(KeyEvent e) {
         int k = e.getKeyCode();
         switch(k) {
-            case KeyEvent.VK_ESCAPE:
+           case KeyEvent.VK_ESCAPE:
                 goToRaceSetup();
                 return;
-            case KeyEvent.VK_ENTER:
+          case KeyEvent.VK_ENTER:
                 startGame();
                 return;
             case 82: // BR: "R" = Reload User Presets

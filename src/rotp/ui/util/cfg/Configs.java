@@ -62,9 +62,7 @@ abstract class Configs {
 	static final List<String> ENABLE_OPTIONS = List.of("NO", "SAVE", "LOAD", "BOTH");
 	static final List<String> ENABLE_LOAD    = List.of("LOAD", "BOTH");
 	static final List<String> ENABLE_WRITE   = List.of("SAVE", "BOTH");
-	static final List<String> EMPIRE_COLORS  =
-	List.of("red", "green", "yellow", "blue", "orange", "purple", "aqua", "fuchsia",
-			"brown", "white", "lime", "grey", "plum", "light blue", "mint", "olive");
+
 	// Variables
 	List<String> ACTION_OPTIONS;
 	String currentSetting = "";
@@ -614,7 +612,7 @@ abstract class Configs {
 // ============================================================================
 // Comments
 //
-    class Comments {
+    public class Comments {
     	private List<String> comments;
     	// ------------------------------------------------------------------------
     	// Constructors

@@ -32,7 +32,7 @@ import java.util.Properties;
 public class RotpGovernor {
     static String expectedROTPVersion = "1.03";
     public static boolean GRAALVM_NATIVE = System.getProperty("org.graalvm.nativeimage.imagecode") != null;
-    protected static String governorVersion = null;
+    private static String governorVersion = null;
 
     public static String governorVersion() {
         if (governorVersion == null) {
@@ -47,7 +47,7 @@ public class RotpGovernor {
     }
 
     // minified versions will use WebP images and Ogg sounds.
-    protected static Boolean mini = null;
+    private static Boolean mini = null;
 
     public static String miniSuffix() {
         if (mini == null) {
@@ -122,7 +122,7 @@ public class RotpGovernor {
         Rotp.main(args);
     }
 
-    protected static String readVersion() throws IOException {
+    private static String readVersion() throws IOException {
         try (InputStream is = RotpGovernor.class.getResourceAsStream("/rotp-version.properties")) {
             if (is == null) {
                 throw new FileNotFoundException("Unable to find rotp-version.properties");
@@ -133,7 +133,7 @@ public class RotpGovernor {
         }
     }
 
-    protected static boolean readMini() throws IOException {
+    private static boolean readMini() throws IOException {
         try (InputStream is = RotpGovernor.class.getResourceAsStream("/rotp-mini.properties")) {
             if (is == null) {
                 return false;

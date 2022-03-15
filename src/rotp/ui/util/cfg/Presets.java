@@ -19,17 +19,11 @@ package rotp.ui.util.cfg;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-
 import rotp.model.game.IGameOptions;
-import rotp.ui.UserPreferences;
 
 public class Presets extends Configs {
 
-	private static boolean selectedMaximizeEmpiresSpacing = true;
-	private static Integer selectedMinStarsPerEmpire  = 8;
-	private Integer selectedPrefStarsPerEmpire = 16;
-	private Integer selectedNoPlanetPctMult    = 100;
-	private IGameOptions gameOptions;
+	IGameOptions gameOptions;
 	private Presets presets;
 
 	// ------------------------------------------------------------------------
@@ -53,7 +47,7 @@ public class Presets extends Configs {
 	// Public static Methods
 	//
 	public void loadUserConfig(IGameOptions moo1GameOptions) {
-			presets = new Presets();
+		presets = new Presets();
 		presets.gameOptions = moo1GameOptions;
 		presets.init();
 		// Load configuration file
@@ -70,6 +64,7 @@ public class Presets extends Configs {
 		// Update and save to User config file
 		presets.updateAndSave();
 	}
+
 	// ========================================================================
 	// Overrrided abstract Methods
 	//
@@ -83,7 +78,6 @@ public class Presets extends Configs {
 		// Base Parameters
 		//
 		initDV(u, "GALAXY SIZE",    gameOptions.selectedGalaxySize(),          gameOptions.galaxySizeOptions());
-		initDV(u, "GALAXY SHAPE",   gameOptions.selectedGalaxyShape(),	       gameOptions.galaxyShapeOptions());
 		initDV(u, "GALAXY AGE",     gameOptions.selectedGalaxyAge(),           gameOptions.galaxyAgeOptions());
 		initDV(u, "DIFFICULTY",     gameOptions.selectedGameDifficulty(),      gameOptions.gameDifficultyOptions());
 		initDV(u, "RESEARCH",       gameOptions.selectedResearchRate(),        gameOptions.researchRateOptions());
@@ -101,35 +95,16 @@ public class Presets extends Configs {
 		initDV(u, "AI HOSTILITY",   gameOptions.selectedAIHostilityOption(),   gameOptions.aiHostilityOptions());
 		initDV(u, "OPPONENT AI",    gameOptions.selectedOpponentAIOption(),    gameOptions.opponentAIOptions());
 		initDV(u, "AUTOPLAY",       gameOptions.selectedAutoplayOption(),      gameOptions.autoplayOptions());
-		initDV(u, "NB OPPONENTS",   gameOptions.selectedNumberOpponents(),  0, gameOptions.maximumOpponentsOptions(),
-		                                                                    1, gameOptions.maximumOpponentsOptions());
-		initDV(u, "PLAYER RACE",    gameOptions.selectedPlayerRace(),          gameOptions.startingRaceOptions());
-		initDV(u, "PLAYER COLOR",   EMPIRE_COLORS.get(gameOptions.selectedPlayerColor()), EMPIRE_COLORS);
-		// --------------------------------------------------------------------
-		// Governor Parameters
 		//
-		initDV(u, "GOVERNOR ON BY DEFAULT",    UserPreferences.governorOnByDefault());
-		initDV(u, "AUTOSPEND ON BY DEFAULT",   UserPreferences.governorAutoSpendByDefault());
-		initDV(u, "DEFAULT MAX BASES",         UserPreferences.defaultMaxBases(), 0, 100000, 0, 100);
-		initDV(u, "DIVERT EXCESS TO RESEARCH", UserPreferences.divertColonyExcessToResearch());
-		// --------------------------------------------------------------------
-		// Modnar Parameters
+		// Other Parameters
 		//
-		initDV(u, "CUSTOM DIFFICULTY",  UserPreferences.customDifficulty(), 20, 500, 20, 500);
-		initDV(u, "DYNAMIC DIFFICULTY", UserPreferences.dynamicDifficulty());
-		initDV(u, "ALWAYS STAR GATES",  UserPreferences.alwaysStarGates());
-		initDV(u, "ALWAYS THORIUM",     UserPreferences.alwaysThorium());
-		initDV(u, "CHALLENGE MODE",     UserPreferences.challengeMode());
-		initDV(u, "RANDOM TECH START",  UserPreferences.randomTechStart());
-		initDV(u, "BATTLE SCOUT",       UserPreferences.battleScout());
-		initDV(u, "COMPANION WORLDS",   UserPreferences.companionWorlds(), 0, 4, 0, 4);
-		// --------------------------------------------------------------------
-		// BrokenRegistry Parameters
-		//
-		initDV(u, "MAXIMIZE EMPIRES SPACING", selectedMaximizeEmpiresSpacing);
-		initDV(u, "MIN STARS PER EMPIRE",     selectedMinStarsPerEmpire,    0, 1000000, 4, 16);
-		initDV(u, "PREF STARS PER EMPIRE",    selectedPrefStarsPerEmpire,   0, 1000000, 16, 24);
-		initDV(u, "NO PLANET PCTS MULT",      selectedNoPlanetPctMult,      0, 1000000, 0, 200);
+		RaceCfg.loadGameOptions(this, u);
+		GalaxyCfg.loadGameOptions(this, u);
+		AdvancedCfg.loadGameOptions(this, u);
+		GovernorCfg.loadGameOptions(this, u);
+		ModnarCfg.loadGameOptions(this, u);
+		ExtCfg.loadGameOptions(this, u);
+
 		// Build setting list excluding single config list
 		multipleUserOptionsSet = new LinkedHashSet<String>();
 		for (String setting : settingsMap.keySet()) {
@@ -145,19 +120,14 @@ public class Presets extends Configs {
 						"---- Multiple LOAD will follow this sequence")));
 		settingsMap.get(ACTION_KEY).bottomComments(
 			new Comments("(---- The last loaded Win)"));
-		settingsMap.get("MAXIMIZE EMPIRES SPACING").optionsComments(
-			new Comments("Empires may want space to breath"));
-		settingsMap.get("PREF STARS PER EMPIRE").optionsComments(
-			new Comments("Determine default opponents number"));
-		settingsMap.get("GALAXY SIZE").headComments(
-			new Comments(List.of("------------- Standard Options -------------", " ")));
-		settingsMap.get("GOVERNOR ON BY DEFAULT").headComments(
-			new Comments(List.of("------------ Governor's Options ------------", "")));
-		settingsMap.get("CUSTOM DIFFICULTY").headComments(
-			new Comments(List.of("------------- Modnar's Options -------------", " ")));
-		settingsMap.get("MAXIMIZE EMPIRES SPACING").headComments(
-			new Comments(List.of("--------- BrokenRegistry's Options ---------", " ")));
-	}
+
+		RaceCfg.initComments(this);
+		GalaxyCfg.initComments(this);
+		AdvancedCfg.initComments(this);
+		GovernorCfg.initComments(this);
+		ModnarCfg.initComments(this);
+		ExtCfg.initComments(this);
+		}
 	void overrideGameOptions () {
 		// Update user presets key list
 		if (settingsMap.containsKey(ACTION_KEY)) {
@@ -170,30 +140,15 @@ public class Presets extends Configs {
 		if (ENABLE_LOAD.contains(selectedEnableGlobal)) {
 			for (String userOption : selectedUserOptionsSet) {
 				if (settingsMap.get(ACTION_KEY).getPairValue(userOption).toUpperCase().contains("LOAD")) {
-					setting = "PLAYER RACE";
-					if (settingsMap.containsKey(setting)) {
-						section = settingsMap.get(setting);
-						if (section.isSectionReadable(userOption))
-							gameOptions.selectedPlayerRace(section.getValidSetting(userOption));
-					}
-					setting = "PLAYER COLOR";
-					if (settingsMap.containsKey(setting)) {
-						section = settingsMap.get(setting);
-						if (section.isSectionReadable(userOption))
-							gameOptions.selectedPlayerColor(EMPIRE_COLORS.indexOf(section.getValidSetting(userOption)));
-					}
+
+
 					setting = "GALAXY SIZE";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
 						if (section.isSectionReadable(userOption))
 							gameOptions.selectedGalaxySize(section.getValidSetting(userOption));
 					}
-					setting = "GALAXY SHAPE";
-					if (settingsMap.containsKey(setting)) {
-						section = settingsMap.get(setting);
-						if (section.isSectionReadable(userOption))
-							gameOptions.selectedGalaxyShape(section.getValidSetting(userOption));
-					}
+
 					setting = "GALAXY AGE";
 					if (settingsMap.containsKey(setting)) {
 						section = settingsMap.get(setting);
@@ -300,91 +255,17 @@ public class Presets extends Configs {
 						if (section.isSectionReadable(userOption))
 							gameOptions.selectedAutoplayOption(section.getValidSetting(userOption));
 					}
-					// setting = "GOVERNOR ON BY DEFAULT";
-					// if (settingsMap.containsKey(setting)) {
-					// 	section = settingsMap.get(setting);
-					// 	if (section.isSectionReadable(userOption))
-					// 	UserPreferences.setGovernorOn(section.getBooleanSetting(userOption));
-					// }
 
-					setting = "MAXIMIZE EMPIRES SPACING";
-					if (settingsMap.containsKey(setting)) {
-						section = settingsMap.get(setting);
-						if (section.isSectionReadable(userOption))
-							selectedMaximizeEmpiresSpacing = section.getBooleanSetting(userOption);
-					}
-					setting = "MIN STARS PER EMPIRE";
-					if (settingsMap.containsKey(setting)) {
-						section = settingsMap.get(setting);
-						if (section.isSectionReadable(userOption))
-							selectedMinStarsPerEmpire = section.getIntegerSetting(userOption);
-					}
-					setting = "PREF STARS PER EMPIRE";
-					if (settingsMap.containsKey(setting)) {
-						section = settingsMap.get(setting);
-						if (section.isSectionReadable(userOption))
-							selectedPrefStarsPerEmpire = section.getIntegerSetting(userOption);
-					}
-					setting = "NB OPPONENTS";
-					if (settingsMap.containsKey(setting)) {
-						section = settingsMap.get(setting);
-						if (section.isSectionReadable(userOption)) {
-							// the limits may have changed from previous settings
-							int min = 0;
-							int max = gameOptions.maximumOpponentsOptions();
-							section.setSettingOptions(min, max, 1, max);
-							gameOptions.selectedNumberOpponents(
-								Math.min(max, section.getIntegerSetting(userOption)));
-						}
-					}
-					setting = "NO PLANET PCTS MULT";
-					if (settingsMap.containsKey(setting)) {
-						section = settingsMap.get(setting);
-						if (section.isSectionReadable(userOption))
-							selectedNoPlanetPctMult = section.getIntegerSetting(userOption);
-					}
+					RaceCfg.overrideGameOptions(this, userOption);
+					AdvancedCfg.overrideGameOptions(this, userOption);
+					GovernorCfg.overrideGameOptions(this, userOption);
+					ModnarCfg.overrideGameOptions(this, userOption);
+					ExtCfg.overrideGameOptions(this, userOption);
+					// to the end: NB Empire is depedent of MIN STARS PER EMPIRE
+					GalaxyCfg.overrideGameOptions(this, userOption);
 
 				} // \ if ACTION LOAD
 			} // \options loop
 		} // \if ENABLE_LOAD
 	} // \overrideGameOptions
-	// ------------------------------------------------------------------------
-	// Other Methods
-	//
-	static boolean maximiseEmpireSpacing() {return selectedMaximizeEmpiresSpacing;}
-	static int     minStarsPerEmpire()     {return selectedMinStarsPerEmpire;}
-	int preferedStarsPerEmpire() {return selectedPrefStarsPerEmpire;}
-	int noPlanetPctMult()        {return selectedNoPlanetPctMult;}
-
-	// ------------------------------------------------------------------------
-	// Nested Classes
-	//
-	// ------------------------------------------------------------------------
-	// Spacing
-	//
-	public class Spacing {
-		// Parameters
-		private float minEmpireBuffer;
-		private float maxMinEmpireBuffer;
-		private float minOrionBuffer;
-		// Getters and Setters
-		public float getMinEmpireBuffer()    {return minEmpireBuffer;}
-		public float getMaxMinEmpireBuffer() {return maxMinEmpireBuffer;}
-		public float getMinOrionBuffer()     {return minOrionBuffer;}
-		public boolean isEnabled()           {return true;}
-		// Other Methods
-		public void init(int maxStars, int numOpps, float sysBuffer) {
-			int minStarsPerEmpire = Presets.minStarsPerEmpire();
-			if (Presets.maximiseEmpireSpacing()) minStarsPerEmpire = maxStars/numOpps;
-			float maxMinEmpireFactor = 15f; // To avoid problems with strange galaxy shapes
-			                                // Maybe To-Do Make this a new setting
-			float minEmpireFactor = (minStarsPerEmpire + 1) / 3; // 8 spe -> 3; 12 spe -> 4;
-			if (minEmpireFactor >= (maxMinEmpireFactor - 2))
-				minEmpireFactor = maxMinEmpireFactor - 2;
-			minEmpireBuffer    = sysBuffer * minEmpireFactor;
-			maxMinEmpireBuffer = sysBuffer * maxMinEmpireFactor;
-			minOrionBuffer     = sysBuffer * minEmpireFactor + 1;
-		}
-	}
-
 }
