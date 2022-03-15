@@ -18,8 +18,8 @@ public class RaceCfg {
 		p.initDV(u, "PLAYER COLOR", EMPIRE_COLORS.get(p.gameOptions.selectedPlayerColor()), EMPIRE_COLORS);
     }
     static void initComments(Presets p) {
-        p.settingsMap.get("MAXIMIZE EMPIRES SPACING").headComments(p
-            .new Comments(List.of("--------- BrokenRegistry's Options ---------", " ")));
+        p.settingsMap.get("PLAYER RACE").headComments(p
+            .new Comments(List.of("", "--------- Races Game Options ---------", " ")));
     }
     static void overrideGameOptions (Presets p, String userOption) {
         String setting;
