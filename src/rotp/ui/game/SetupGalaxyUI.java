@@ -46,12 +46,14 @@ import rotp.ui.NoticeMessage;
 import rotp.ui.RotPUI;
 import rotp.ui.UserPreferences;
 import rotp.ui.main.SystemPanel;
+import rotp.ui.util.cfg.GalaxyCfg;
 import rotp.ui.util.cfg.Presets; // BR:
 
 public final class SetupGalaxyUI  extends BasePanel implements MouseListener, MouseMotionListener, MouseWheelListener {
     private static final long serialVersionUID = 1L;
     public static int MAX_DISPLAY_OPPS = 49;
-    BufferedImage backImg, playerRaceImg;
+    BufferedImage backImg;
+	BufferedImage playerRaceImg;
     BufferedImage smBackImg;
     Rectangle backBox = new Rectangle();
     Rectangle startBox = new Rectangle();
@@ -545,8 +547,31 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
     }
     public void goToRaceSetup() {
         buttonClick();
-        RotPUI.instance().selectSetupRacePanel();
         release();
+        RotPUI.instance().selectSetupRacePanel();
+    }
+    public void goToThisMenu() {
+        buttonClick();
+        newGameOptions().selectedPlayerRace(options().selectedPlayerRace());
+        playerRaceImg = null;
+        playerRaceImg = playerRaceImg();
+        // repaint();
+        newGameOptions().selectedGameDifficulty(options().selectedGameDifficulty());
+        // repaint();
+        newGameOptions().selectedOpponentAIOption(options().selectedOpponentAIOption());
+        // repaint();
+        newGameOptions().selectedOpponentAIOption(options().selectedOpponentAIOption());
+        // repaint();
+        newGameOptions().selectedGalaxySize(options().selectedGalaxySize());
+        // repaint();
+        newGameOptions().selectedGalaxyShape(options().selectedGalaxyShape());
+        // repaint();
+        newGameOptions().galaxyShape().quickGenerate();
+        backImg = null;
+        repaint();
+        newGameOptions().selectedNumberOpponents(
+            min(newGameOptions().maximumOpponentsOptions(), options().selectedNumberOpponents()));
+        repaint();
     }
     public void startGame() {
         starting = true;
@@ -867,27 +892,20 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
             case KeyEvent.VK_ENTER:
                 startGame();
                 return;
-            case 82: // BR: "R" = Reload User Presets
-                new Presets().loadUserConfig(options());
-                newGameOptions().selectedGameDifficulty(options().selectedGameDifficulty());
-                repaint();
-                newGameOptions().selectedOpponentAIOption(options().selectedOpponentAIOption());
-                repaint();
-                newGameOptions().selectedOpponentAIOption(options().selectedOpponentAIOption());
-                repaint();
-                newGameOptions().selectedGalaxySize(options().selectedGalaxySize());
-                repaint();
-                newGameOptions().selectedGalaxyShape(options().selectedGalaxyShape());
-                repaint();
-                newGameOptions().galaxyShape().quickGenerate();
-                backImg = null;
-                repaint();
-                newGameOptions().selectedNumberOpponents(
-                    min(newGameOptions().maximumOpponentsOptions(), options().selectedNumberOpponents()));
-                repaint();
+            case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
+                new Presets().reloadDefaultConfig(options());
+                goToThisMenu();
                 break;
-            case 85: // BR: "U" = Update User Presets
+            case KeyEvent.VK_G: // BR: "G" = Reload Global User Presets
+                GalaxyCfg.reloadGlobalUserPresets(this);
+                break;
+            case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
+                GalaxyCfg.reloadLocalUserPresets(this);
+                goToThisMenu();
+                break;
+            case KeyEvent.VK_U: // BR: "U" = Update User Presets
                 new Presets().saveToUserConfig(options());
+                goToThisMenu();
                 break;
         }
     }

@@ -7,6 +7,7 @@ import rotp.ui.UserPreferences;
 import rotp.ui.util.cfg.Configs.Sections;
 
 public class GovernorCfg {
+    // Assocated GUI: .java
 
     // Other Methods
     static void loadGameOptions(Presets p, boolean u) {
@@ -19,11 +20,16 @@ public class GovernorCfg {
         p.settingsMap.get("GOVERNOR ON BY DEFAULT").headComments(p
 			.new Comments(List.of("------------ Governor's Options ------------", "")));
     }
-    static void overrideGameOptions (Presets p, String userOption) {
+    static void overrideGameOptions (Presets p, boolean resetToDefault) {
         String setting;
         Sections section;
         LinkedHashMap<String, Sections> settingsMap = p.settingsMap;
         // IGameOptions gameOptions = p.gameOptions;
+        for (String userOption : p.selectedUserOptionsSet) {
+            if (resetToDefault || settingsMap.get(Configs.ACTION_KEY).getPairValue(userOption).toUpperCase().contains("LOAD")) {
+
+            } // \ if ACTION LOAD
+        }
 
     }
 }

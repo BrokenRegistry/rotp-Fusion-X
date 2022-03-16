@@ -7,6 +7,7 @@ import rotp.model.game.IGameOptions;
 import rotp.ui.util.cfg.Configs.Sections;
 
 public class AdvancedCfg {
+    // Assocated GUI: StartOptionsUI.java
 
     // Other Methods
     static void loadGameOptions(Presets p, boolean u) {
@@ -32,100 +33,135 @@ public class AdvancedCfg {
         p.settingsMap.get("GALAXY AGE").headComments(p
             .new Comments(List.of(" ", "----------- Advanced Game Options -----------", " ")));
     }
-    static void overrideGameOptions (Presets p, String userOption) {
+    static void overrideGameOptions (Presets p, boolean resetToDefault) {
         String setting;
         Sections section;
         LinkedHashMap<String, Sections> settingsMap = p.settingsMap;
         IGameOptions gameOptions = p.gameOptions;
-        setting = "GALAXY AGE";
-        if (settingsMap.containsKey(setting)) {
-            section = settingsMap.get(setting);
-            if (section.isSectionReadable(userOption))
-                gameOptions.selectedGalaxyAge(section.getValidSetting(userOption));
-        }
-        setting = "STAR DENSITY";
-        if (settingsMap.containsKey(setting)) {
-            section = settingsMap.get(setting);
-            if (section.isSectionReadable(userOption))
-                gameOptions.selectedStarDensityOption(section.getValidSetting(userOption));
-        }
-        setting = "NEBULAE";
-        if (settingsMap.containsKey(setting)) {
-            section = settingsMap.get(setting);
-            if (section.isSectionReadable(userOption))
-                gameOptions.selectedNebulaeOption(section.getValidSetting(userOption));
-        }
-        setting = "PLANET QUALITY";
-        if (settingsMap.containsKey(setting)) {
-            section = settingsMap.get(setting);
-            if (section.isSectionReadable(userOption))
-                gameOptions.selectedPlanetQualityOption(section.getValidSetting(userOption));
-        }
-        setting = "TERRAFORMING";
-        if (settingsMap.containsKey(setting)) {
-            section = settingsMap.get(setting);
-            if (section.isSectionReadable(userOption))
-                gameOptions.selectedTerraformingOption(section.getValidSetting(userOption));
-        }
-        setting = "RANDOM EVENTS";
-        if (settingsMap.containsKey(setting)) {
-            section = settingsMap.get(setting);
-            if (section.isSectionReadable(userOption))
-                gameOptions.selectedRandomEventOption(section.getValidSetting(userOption));
-        }
-        setting = "AI HOSTILITY";
-        if (settingsMap.containsKey(setting)) {
-            section = settingsMap.get(setting);
-            if (section.isSectionReadable(userOption))
-                gameOptions.selectedAIHostilityOption(section.getValidSetting(userOption));
-        }
-        setting = "COUNCIL";
-        if (settingsMap.containsKey(setting)) {
-            section = settingsMap.get(setting);
-            if (section.isSectionReadable(userOption))
-                gameOptions.selectedCouncilWinOption(section.getValidSetting(userOption));
-        }
-        setting = "RANDOMIZE AI";
-        if (settingsMap.containsKey(setting)) {
-            section = settingsMap.get(setting);
-            if (section.isSectionReadable(userOption))
-                gameOptions.selectedRandomizeAIOption(section.getValidSetting(userOption));
-        }
-        setting = "AUTOPLAY";
-        if (settingsMap.containsKey(setting)) {
-            section = settingsMap.get(setting);
-            if (section.isSectionReadable(userOption))
-                gameOptions.selectedAutoplayOption(section.getValidSetting(userOption));
-        }
-        setting = "RESEARCH";
-        if (settingsMap.containsKey(setting)) {
-            section = settingsMap.get(setting);
-            if (section.isSectionReadable(userOption))
-                gameOptions.selectedResearchRate(section.getValidSetting(userOption));
-        }
-        setting = "WARP SPEED";
-        if (settingsMap.containsKey(setting)) {
-            section = settingsMap.get(setting);
-            if (section.isSectionReadable(userOption))
-                gameOptions.selectedWarpSpeedOption(section.getValidSetting(userOption));
-        }
-        setting = "FUEL RANGE";
-        if (settingsMap.containsKey(setting)) {
-            section = settingsMap.get(setting);
-            if (section.isSectionReadable(userOption))
-                gameOptions.selectedFuelRangeOption(section.getValidSetting(userOption));
-        }
-        setting = "TECH TRADING";
-        if (settingsMap.containsKey(setting)) {
-            section = settingsMap.get(setting);
-            if (section.isSectionReadable(userOption))
-                gameOptions.selectedTechTradeOption(section.getValidSetting(userOption));
-        }
-        setting = "COLONIZING";
-        if (settingsMap.containsKey(setting)) {
-            section = settingsMap.get(setting);
-            if (section.isSectionReadable(userOption))
-                gameOptions.selectedColonizingOption(section.getValidSetting(userOption));
+
+        for (String userOption : p.selectedUserOptionsSet) {
+            if (resetToDefault || settingsMap.get(Configs.ACTION_KEY).getPairValue(userOption).toUpperCase().contains("LOAD")) {
+                setting = "GALAXY AGE";
+                if (settingsMap.containsKey(setting)) {
+                    section = settingsMap.get(setting);
+                    if (resetToDefault)
+                        gameOptions.selectedGalaxyAge(section.getDefaultValue());
+                    else if (section.isSectionReadable(userOption))
+                        gameOptions.selectedGalaxyAge(section.getValidSetting(userOption));
+                }
+                setting = "STAR DENSITY";
+                if (settingsMap.containsKey(setting)) {
+                    section = settingsMap.get(setting);
+                    if (resetToDefault)
+                        gameOptions.selectedStarDensityOption(section.getDefaultValue());
+                    else if (section.isSectionReadable(userOption))
+                        gameOptions.selectedStarDensityOption(section.getValidSetting(userOption));
+                }
+                setting = "NEBULAE";
+                if (settingsMap.containsKey(setting)) {
+                    section = settingsMap.get(setting);
+                    if (resetToDefault)
+                        gameOptions.selectedNebulaeOption(section.getDefaultValue());
+                    else if (section.isSectionReadable(userOption))
+                        gameOptions.selectedNebulaeOption(section.getValidSetting(userOption));
+                }
+                setting = "PLANET QUALITY";
+                if (settingsMap.containsKey(setting)) {
+                    section = settingsMap.get(setting);
+                    if (resetToDefault)
+                        gameOptions.selectedPlanetQualityOption(section.getDefaultValue());
+                    else if (section.isSectionReadable(userOption))
+                        gameOptions.selectedPlanetQualityOption(section.getValidSetting(userOption));
+                }
+                setting = "TERRAFORMING";
+                if (settingsMap.containsKey(setting)) {
+                    section = settingsMap.get(setting);
+                    if (resetToDefault)
+                        gameOptions.selectedTerraformingOption(section.getDefaultValue());
+                    else if (section.isSectionReadable(userOption))
+                        gameOptions.selectedTerraformingOption(section.getValidSetting(userOption));
+                }
+                setting = "RANDOM EVENTS";
+                if (settingsMap.containsKey(setting)) {
+                    section = settingsMap.get(setting);
+                    if (resetToDefault)
+                        gameOptions.selectedRandomEventOption(section.getDefaultValue());
+                    else if (section.isSectionReadable(userOption))
+                        gameOptions.selectedRandomEventOption(section.getValidSetting(userOption));
+                }
+                setting = "AI HOSTILITY";
+                if (settingsMap.containsKey(setting)) {
+                    section = settingsMap.get(setting);
+                    if (resetToDefault)
+                        gameOptions.selectedAIHostilityOption(section.getDefaultValue());
+                    else if (section.isSectionReadable(userOption))
+                        gameOptions.selectedAIHostilityOption(section.getValidSetting(userOption));
+                }
+                setting = "COUNCIL";
+                if (settingsMap.containsKey(setting)) {
+                    section = settingsMap.get(setting);
+                    if (resetToDefault)
+                        gameOptions.selectedCouncilWinOption(section.getDefaultValue());
+                    else if (section.isSectionReadable(userOption))
+                        gameOptions.selectedCouncilWinOption(section.getValidSetting(userOption));
+                }
+                setting = "RANDOMIZE AI";
+                if (settingsMap.containsKey(setting)) {
+                    section = settingsMap.get(setting);
+                    if (resetToDefault)
+                        gameOptions.selectedRandomizeAIOption(section.getDefaultValue());
+                    else if (section.isSectionReadable(userOption))
+                        gameOptions.selectedRandomizeAIOption(section.getValidSetting(userOption));
+                }
+                setting = "AUTOPLAY";
+                if (settingsMap.containsKey(setting)) {
+                    section = settingsMap.get(setting);
+                    if (resetToDefault)
+                        gameOptions.selectedAutoplayOption(section.getDefaultValue());
+                    else if (section.isSectionReadable(userOption))
+                        gameOptions.selectedAutoplayOption(section.getValidSetting(userOption));
+                }
+                setting = "RESEARCH";
+                if (settingsMap.containsKey(setting)) {
+                    section = settingsMap.get(setting);
+                    if (resetToDefault)
+                        gameOptions.selectedResearchRate(section.getDefaultValue());
+                    else if (section.isSectionReadable(userOption))
+                        gameOptions.selectedResearchRate(section.getValidSetting(userOption));
+                }
+                setting = "WARP SPEED";
+                if (settingsMap.containsKey(setting)) {
+                    section = settingsMap.get(setting);
+                    if (resetToDefault)
+                        gameOptions.selectedWarpSpeedOption(section.getDefaultValue());
+                    else if (section.isSectionReadable(userOption))
+                        gameOptions.selectedWarpSpeedOption(section.getValidSetting(userOption));
+                }
+                setting = "FUEL RANGE";
+                if (settingsMap.containsKey(setting)) {
+                    section = settingsMap.get(setting);
+                    if (resetToDefault)
+                        gameOptions.selectedFuelRangeOption(section.getDefaultValue());
+                    else if (section.isSectionReadable(userOption))
+                        gameOptions.selectedFuelRangeOption(section.getValidSetting(userOption));
+                }
+                setting = "TECH TRADING";
+                if (settingsMap.containsKey(setting)) {
+                    section = settingsMap.get(setting);
+                    if (resetToDefault)
+                        gameOptions.selectedTechTradeOption(section.getDefaultValue());
+                    else if (section.isSectionReadable(userOption))
+                        gameOptions.selectedTechTradeOption(section.getValidSetting(userOption));
+                }
+                setting = "COLONIZING";
+                if (settingsMap.containsKey(setting)) {
+                    section = settingsMap.get(setting);
+                    if (resetToDefault)
+                        gameOptions.selectedColonizingOption(section.getDefaultValue());
+                    else if (section.isSectionReadable(userOption))
+                        gameOptions.selectedColonizingOption(section.getValidSetting(userOption));
+                }
+            } // \ if ACTION LOAD
         }
     }
 }

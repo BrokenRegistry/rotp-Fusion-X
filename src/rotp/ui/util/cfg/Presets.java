@@ -20,17 +20,20 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import rotp.model.game.IGameOptions;
+import rotp.model.game.MOO1GameOptions;
 
 public class Presets extends Configs {
 
 	IGameOptions gameOptions;
-	private Presets presets;
 
 	// ------------------------------------------------------------------------
     // Constructors
     //
 	public Presets() {}
-	private void init() {
+	// ========================================================================
+	// Initializations Methods
+	//
+	Presets readUserConfig(IGameOptions options) {
 		fileName = "Presets.cfg";
 		HEADER_COMMENT = new Comments(List.of(
 			"        EXTENDED PLAYER'S POSTSETS",
@@ -39,36 +42,39 @@ public class Presets extends Configs {
 		ACTION_OPTIONS =
 			List.of("-", "LOAD", "SAVE", "UPDATE", "LOAD AND SAVE",
 			"LOAD AND UPDATE", "SAVE DEFAULT", "UPDATE TO DEFAULT");
-		selectedEnableGlobal = "Both";
+		selectedEnableGlobal = "SAVE";
 		selectedConfigAction = "SAVE";
+
+		gameOptions = options;
 		settingsMap = new LinkedHashMap<String, Sections>();
+		// Load configuration file
+		loadSettingsMap();
+		// Update user presets key list
+		if (settingsMap.containsKey(ACTION_KEY))
+			selectedUserOptionsSet = settingsMap.get(ACTION_KEY).getGroupKeySet();
+		// Update Enable Setting
+		selectedEnableGlobal = settingsMap.get(ENABLE_KEY).getValidNonBlankSetting(ENABLE_KEY);
+		return this;
 	}
 	// ========================================================================
-	// Public static Methods
+	// Public Methods
 	//
-	public void loadUserConfig(IGameOptions moo1GameOptions) {
-		presets = new Presets();
-		presets.gameOptions = moo1GameOptions;
-		presets.init();
-		// Load configuration file
-		presets.loadSettingsMap();
-		// Override with current config values
-		presets.overrideGameOptions();
+	public void loadUserConfig(IGameOptions gameOptions) {
+		readUserConfig(gameOptions);
+		if (ENABLE_LOAD.contains(selectedEnableGlobal)) overrideGameOptions(false);
+	}
+	public void reloadDefaultConfig(IGameOptions gameOptions) {
+		readUserConfig(gameOptions);
+		overrideGameOptions(true); // resetToDefault = true
 	}
 	public void saveToUserConfig(IGameOptions options) {
-		presets = new Presets();
-		presets.gameOptions = options;
-		presets.init();
-		// Load configuration file
-		presets.loadSettingsMap();
-		// Update and save to User config file
-		presets.updateAndSave();
+		readUserConfig(gameOptions);
+		updateAndSave();
 	}
-
 	// ========================================================================
 	// Overrrided abstract Methods
 	//
-	// @Override
+	@Override
 	void loadGameOptions(boolean u) {
 		initDV(u, ENABLE_KEY, selectedEnableGlobal, ENABLE_OPTIONS);
 		settingsMap.get(ENABLE_KEY).removeLocalEnable();
@@ -90,6 +96,7 @@ public class Presets extends Configs {
 			}
 		}
 	}
+	@Override
 	void initComments() {
 		settingsMap.get(ENABLE_KEY).headComments(new Comments("---- MOD activation"));
 		settingsMap.get(ACTION_KEY).headComments(new Comments(
@@ -105,25 +112,18 @@ public class Presets extends Configs {
 		ModnarCfg.initComments(this);
 		ExtCfg.initComments(this);
 	}
-	void overrideGameOptions () {
-		// Update user presets key list
-		if (settingsMap.containsKey(ACTION_KEY)) {
-			selectedUserOptionsSet = settingsMap.get(ACTION_KEY).getGroupKeySet();
-		}
-		// Update Enable Setting
-		selectedEnableGlobal = settingsMap.get(ENABLE_KEY).getValidNonBlankSetting(ENABLE_KEY);
-		if (ENABLE_LOAD.contains(selectedEnableGlobal)) {
-			for (String userOption : selectedUserOptionsSet) {
-				if (settingsMap.get(ACTION_KEY).getPairValue(userOption).toUpperCase().contains("LOAD")) {
-					RaceCfg.overrideGameOptions(this, userOption);
-					AdvancedCfg.overrideGameOptions(this, userOption);
-					GovernorCfg.overrideGameOptions(this, userOption);
-					ModnarCfg.overrideGameOptions(this, userOption);
-					ExtCfg.overrideGameOptions(this, userOption);
-					// to the end: NB Empire is depedent of MIN STARS PER EMPIRE
-					GalaxyCfg.overrideGameOptions(this, userOption);
-				} // \ if ACTION LOAD
-			} // \options loop
-		} // \if ENABLE_LOAD
-	} // \overrideGameOptions
+	@Override
+	void overrideGameOptions (boolean resetToDefault) {
+		RaceCfg.overrideGameOptions(this, resetToDefault);     // Associated GUI: SetupRaceUI.java
+		AdvancedCfg.overrideGameOptions(this, resetToDefault); // Associated GUI: StartOptionsUI.java
+		GovernorCfg.overrideGameOptions(this, resetToDefault); // Associated GUI: .java
+		ModnarCfg.overrideGameOptions(this, resetToDefault);   // Associated GUI: StartModOptionsUI.java
+		ExtCfg.overrideGameOptions(this, resetToDefault);      // Associated GUI: NONE
+		// to the end: NB Empire is depedent of MIN STARS PER EMPIRE
+		GalaxyCfg.overrideGameOptions(this, resetToDefault);   // Associated GUI: SetupGalaxyUI.java
+		// RemnantCfg                                          // Associated GUI: GameSettingsUI.java
+		// LaunchCfg                                           // Associated GUI: GameUI.java
+		// LoadFileCfg                                         // Associated GUI: LoadGameUI.java
+	}
+
 }

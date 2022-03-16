@@ -1,12 +1,12 @@
 /*
  * Copyright 2015-2020 Ray Fowler
- * 
+ *
  * Licensed under the GNU General Public License, Version 3 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     https://www.gnu.org/licenses/gpl-3.0.html
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -38,6 +38,7 @@ import rotp.model.empires.Race;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
 import rotp.ui.util.cfg.Presets; // BR:
+import rotp.ui.util.cfg.RaceCfg;
 
 public final class SetupRaceUI extends BasePanel implements MouseListener, MouseMotionListener {
     private static final long serialVersionUID = 1L;
@@ -186,7 +187,7 @@ public final class SetupRaceUI extends BasePanel implements MouseListener, Mouse
                 y0 += s18;
             }
         }
-        
+
         // draw race desc #3
         y0 += s12;
         String desc3 = race.description3.replace("[race]", race.setupName());
@@ -298,6 +299,14 @@ public final class SetupRaceUI extends BasePanel implements MouseListener, Mouse
         RotPUI.instance().selectSetupGalaxyPanel();
         backImg = null;
         raceImg = null;
+    }
+    public void goToThisMenu() {
+        buttonClick();
+        newGameOptions().selectedPlayerRace(options().selectedPlayerRace());
+        raceChanged();
+        repaint();
+        newGameOptions().selectedPlayerColor(options().selectedPlayerColor());
+        repaint();
     }
     public void selectRace(int i) {
         String selRace = newGameOptions().selectedPlayerRace();
@@ -484,7 +493,7 @@ public final class SetupRaceUI extends BasePanel implements MouseListener, Mouse
         g.setComposite(prevC);
     }
     @Override
-    public String ambienceSoundKey() { 
+    public String ambienceSoundKey() {
         return GameUI.AMBIENCE_KEY;
     }
     @Override
@@ -497,15 +506,27 @@ public final class SetupRaceUI extends BasePanel implements MouseListener, Mouse
             case KeyEvent.VK_ENTER:
                 goToGalaxySetup();
                 return;
-            case 82: // BR: "R" = Reload User Presets
-                new Presets().loadUserConfig(options());
-                init();
-                repaint();
+            case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
+                // new Presets().reloadDefaultConfig(options());
+                RaceCfg.reloadDefaultConfig(this);
+                goToThisMenu();
+                break;
+            case KeyEvent.VK_R: // BR: "G" = Reload User Presets
+                RaceCfg.reloadGlobalUserPresets(this);
+                // new Presets().loadUserConfig(options());
+                goToThisMenu();
+                // init();
+                // repaint();
                 return;
-            case 85: // BR: "U" = Update User Presets
+            case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
+                RaceCfg.reloadLocalUserPresets(this);
+                goToThisMenu();
+                break;
+            case KeyEvent.VK_U: // BR: "U" = Update User Presets
                 new Presets().saveToUserConfig(options());
-                init();
-                repaint();
+                goToThisMenu();
+                // init();
+                // repaint();
                 return;
         }
     }

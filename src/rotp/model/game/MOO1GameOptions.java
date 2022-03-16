@@ -126,10 +126,20 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
             selectedNumberOpponents(defaultOpponentsOptions());
         generateGalaxy();
     }
+    @Override // BR:
+    public void softSelectGalaxySize(String s)   {
+        // int prevNumOpp = defaultOpponentsOptions();
+        selectedGalaxySize = s;
+        // if (selectedNumberOpponents() == prevNumOpp)
+        softSelectNumberOpponents(defaultOpponentsOptions());
+        // generateGalaxy();
+    } // \BR:
     @Override
     public String selectedGalaxyShape()          { return selectedGalaxyShape; }
     @Override
     public void selectedGalaxyShape(String s)    { selectedGalaxyShape = s; setGalaxyShape(); generateGalaxy(); }
+    @Override // BR:
+    public void softSelectGalaxyShape(String s)  { selectedGalaxyShape = s; setGalaxyShape(); }
     @Override
     public String selectedGalaxyShapeOption1()       { return selectedGalaxyShapeOption1; }
     @Override
@@ -222,6 +232,8 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     public int selectedNumberOpponents()         { return selectedNumberOpponents; }
     @Override
     public void selectedNumberOpponents(int i)   { selectedNumberOpponents = i; generateGalaxy(); }
+    @Override // BR:
+    public void softSelectNumberOpponents(int i) { selectedNumberOpponents = i; }
     @Override
     public String selectedPlayerRace()           { return selectedPlayer().race; }
     @Override
@@ -948,7 +960,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
         for (int i=0;i<specificOpponentAIOption.length;i++)
             specificOpponentAIOption[i] = OPPONENT_AI_CRUEL;
         setToDefault();
-        new rotp.ui.util.cfg.Presets().loadUserConfig(this); // BR: User Presets
+        // new rotp.ui.util.cfg.Presets().loadUserConfig(this); // BR: User Presets
         generateGalaxy();
     }
     @Override

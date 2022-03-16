@@ -80,24 +80,11 @@ abstract class Configs {
 	// Abstract Methods
 	//
 	abstract void initComments();
-	abstract void overrideGameOptions();
+	abstract void overrideGameOptions(boolean resetToDefault);
 	abstract void loadGameOptions(boolean u);
 	// ========================================================================
 	// Other Methods
 	//
-	// void loadGameOptions(boolean u) {
-	// 	initDV(u, ENABLE_KEY, selectedEnableGlobal, ENABLE_OPTIONS);
-	// 	settingsMap.get(ENABLE_KEY).removeLocalEnable();
-	// 	initDV(u, ACTION_KEY, selectedConfigAction, ACTION_OPTIONS);
-	// 	settingsMap.get(ACTION_KEY).removeLocalEnable();
-	// 	// Build setting list excluding single config list
-	// 	multipleUserOptionsSet = new LinkedHashSet<String>();
-	// 	for (String setting : settingsMap.keySet()) {
-	// 		if ( !singleUserOptionsSet.contains(setting) ) {
-	// 			multipleUserOptionsSet.add(setting);
-	// 		}
-	// 	}
-	// }
 	void updateAndSave() {
 		// Validate if save is allowed
 		selectedEnableGlobal = settingsMap.get(ENABLE_KEY).getValidNonBlankSetting(ENABLE_KEY);
@@ -148,14 +135,14 @@ abstract class Configs {
 	        return -1;
 	    }
 	}
-	protected void loadSettingsMap() {
+	void loadSettingsMap() {
 		// Init local default value
 		loadGameOptions(false); // To set default value
 		// Load the config file
 		loadConfigFile();
 		initComments();
 	}
-	protected void loadConfigFile () {
+	void loadConfigFile () {
         File configFile = new File(filePath, fileName);
         if ( configFile.exists() ) {
         	try ( BufferedReader in = new BufferedReader(
@@ -177,7 +164,7 @@ abstract class Configs {
         	saveConfigFile();
         }
     }
-	protected void loadLine(String line) {
+	void loadLine(String line) {
 		// test for emptiness
 		if ( line.isEmpty() ) return;
 		// test for comment
@@ -187,7 +174,7 @@ abstract class Configs {
 		if ( configLine.getKey().isBlank() ) return;
 		add(configLine);
 	  }
-	protected void add(KeyValuePair configLine) {
+	void add(KeyValuePair configLine) {
 		if ( configLine.isSectionKey() ) {
 			currentSetting = configLine.getValue();
 			return;
@@ -196,7 +183,7 @@ abstract class Configs {
 			settingsMap.get(currentSetting).setKeyValuePair(configLine);
 		}
 	}
-	protected void initDV(boolean update, String key, String value, List<String> options) {
+	void initDV(boolean update, String key, String value, List<String> options) {
 		if ( settingsMap.containsKey(key) ) {
 			if (update) {
 				settingsMap.get(key).setLastValue(value);
@@ -207,7 +194,7 @@ abstract class Configs {
 		}
 		settingsMap.put(key, new Sections(key, value, options));
 	}
-	protected void initDV(boolean update, String key, boolean value) {
+	void initDV(boolean update, String key, boolean value) {
 		if ( settingsMap.containsKey(key) ) {
 			if (update) {
 				settingsMap.get(key).setLastValue(value);
@@ -218,7 +205,7 @@ abstract class Configs {
 		}
 		settingsMap.put(key, new Sections(key, value));
 	}
-	protected void initDV(boolean update, String key, Integer value,
+	void initDV(boolean update, String key, Integer value,
 	                     Integer min, Integer max, Integer minR, Integer maxR) {
 		if ( settingsMap.containsKey(key) ) {
 			if (update) {
@@ -237,9 +224,9 @@ abstract class Configs {
 		if ( s.length() == 1 ) { return s.toUpperCase(); }
 		return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
 	}
-	protected static String toYesNoString(boolean b) { return b ? "YES" : "NO"; }
-    protected static boolean toBoolean(String s) { return YES_LIST.contains(s.toUpperCase()); }
-    protected static boolean toBoolean(String s, boolean onWrong) {
+	static String toYesNoString(boolean b) { return b ? "YES" : "NO"; }
+    static boolean toBoolean(String s) { return YES_LIST.contains(s.toUpperCase()); }
+    static boolean toBoolean(String s, boolean onWrong) {
     	if (s != null) {
     		String S = s.toUpperCase();
         	if ( YES_LIST.contains(S) ) return true;
@@ -247,10 +234,10 @@ abstract class Configs {
     	}
     	return onWrong;
     }
-	protected static boolean isNumeric(String str){
+	static boolean isNumeric(String str){
         return str != null && str.matches("[0-9.]+");
     }
-	protected static Integer getInteger(String str, Integer onWrong){
+	static Integer getInteger(String str, Integer onWrong){
 		if (isNumeric(str)) return Integer.valueOf(str);
         return onWrong;
     }
@@ -590,7 +577,7 @@ abstract class Configs {
 				if (!randomParameters.isBlank()) {
 					List<String> list = Arrays.asList(randomParameters.split(" "));
 					userMin = getInteger(list.get(0), min);
-					if (list.size() > 1) userMax = getInteger(list.get(0), max);
+					if (list.size() > 1) userMax = getInteger(list.get(1), max);
 				}
 			}
 			int result[] = {userMin, userMax};

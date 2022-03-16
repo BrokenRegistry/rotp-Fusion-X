@@ -1,12 +1,12 @@
 /*
  * Copyright 2015-2020 Ray Fowler
- * 
+ *
  * Licensed under the GNU General Public License, Version 3 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     https://www.gnu.org/licenses/gpl-3.0.html
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -73,18 +73,18 @@ public interface IGameOptions {
     public static final String DIFFICULTY_HARDEST = "SETUP_DIFFICULTY_HARDEST";
     // mondar: add custom difficulty level option, set in Remnants.cfg
     public static final String DIFFICULTY_CUSTOM  = "SETUP_DIFFICULTY_CUSTOM";
-    
+
     public static final String RESEARCH_NORMAL  = "SETUP_RESEARCH_RATE_NORMAL";
     // mondar: add fast research option
     public static final String RESEARCH_FAST    = "SETUP_RESEARCH_RATE_FAST";
     public static final String RESEARCH_SLOW    = "SETUP_RESEARCH_RATE_SLOW";
     public static final String RESEARCH_SLOWER  = "SETUP_RESEARCH_RATE_SLOWER";
     public static final String RESEARCH_SLOWEST = "SETUP_RESEARCH_RATE_SLOWEST";
-    
+
     public static final String TECH_TRADING_YES     = "SETUP_TECH_TRADING_YES";
     public static final String TECH_TRADING_ALLIES  = "SETUP_TECH_TRADING_ALLIES";
     public static final String TECH_TRADING_NO      = "SETUP_TECH_TRADING_NO";
-    
+
     public static final String GALAXY_AGE_NORMAL = "SETUP_GALAXY_AGE_NORMAL";
     public static final String GALAXY_AGE_YOUNG  = "SETUP_GALAXY_AGE_YOUNG";
     public static final String GALAXY_AGE_OLD    = "SETUP_GALAXY_AGE_OLD";
@@ -92,21 +92,21 @@ public interface IGameOptions {
     public static final String RANDOM_EVENTS_ON  = "SETUP_RANDOM_EVENTS_ON";
     public static final String RANDOM_EVENTS_OFF = "SETUP_RANDOM_EVENTS_OFF";
     public static final String RANDOM_EVENTS_NO_MONSTERS = "SETUP_RANDOM_EVENTS_NO_MONSTERS";
-    
+
     public static final String WARP_SPEED_NORMAL = "SETUP_WARP_SPEED_NORMAL";
     public static final String WARP_SPEED_FAST   = "SETUP_WARP_SPEED_FAST";
-    
+
     public static final String NEBULAE_NONE      = "SETUP_NEBULA_NONE";
     public static final String NEBULAE_RARE      = "SETUP_NEBULA_RARE";
     public static final String NEBULAE_UNCOMMON  = "SETUP_NEBULA_UNCOMMON";
     public static final String NEBULAE_NORMAL    = "SETUP_NEBULA_NORMAL";
     public static final String NEBULAE_COMMON    = "SETUP_NEBULA_COMMON";
     public static final String NEBULAE_FREQUENT  = "SETUP_NEBULA_FREQUENT";
-    
+
     public static final String COUNCIL_IMMEDIATE = "SETUP_COUNCIL_IMMEDIATE";
     public static final String COUNCIL_REBELS    = "SETUP_COUNCIL_REBELS";
     public static final String COUNCIL_NONE      = "SETUP_COUNCIL_NONE";
-    
+
     public static final String STAR_DENSITY_LOWEST   = "SETUP_STAR_DENSITY_LOWEST";
     public static final String STAR_DENSITY_LOWER    = "SETUP_STAR_DENSITY_LOWER";
     public static final String STAR_DENSITY_LOW      = "SETUP_STAR_DENSITY_LOW";
@@ -114,7 +114,7 @@ public interface IGameOptions {
     public static final String STAR_DENSITY_HIGH     = "SETUP_STAR_DENSITY_HIGH";
     public static final String STAR_DENSITY_HIGHER   = "SETUP_STAR_DENSITY_HIGHER";
     public static final String STAR_DENSITY_HIGHEST  = "SETUP_STAR_DENSITY_HIGHEST";
-    
+
     // modnar: change PLANET_QUALITY settings, add larger and richer
     public static final String PLANET_QUALITY_LARGER = "SETUP_PLANET_QUALITY_LARGER";
     public static final String PLANET_QUALITY_RICHER = "SETUP_PLANET_QUALITY_RICHER";
@@ -123,11 +123,11 @@ public interface IGameOptions {
     public static final String PLANET_QUALITY_NORMAL = "SETUP_PLANET_QUALITY_NORMAL";
     public static final String PLANET_QUALITY_GOOD   = "SETUP_PLANET_QUALITY_GOOD";
     public static final String PLANET_QUALITY_GREAT  = "SETUP_PLANET_QUALITY_GREAT";
-        
+
     public static final String TERRAFORMING_NORMAL   = "SETUP_TERRAFORMING_NORMAL";
     public static final String TERRAFORMING_REDUCED  = "SETUP_TERRAFORMING_REDUCED";
     public static final String TERRAFORMING_NONE     = "SETUP_TERRAFORMING_NONE";
-        
+
     public static final String COLONIZING_NORMAL      = "SETUP_COLONIZING_NORMAL";
     public static final String COLONIZING_RESTRICTED  = "SETUP_COLONIZING_RESTRICTED";
 
@@ -135,7 +135,7 @@ public interface IGameOptions {
     public static final String FUEL_RANGE_HIGH     = "SETUP_FUEL_RANGE_HIGH";
     public static final String FUEL_RANGE_HIGHER   = "SETUP_FUEL_RANGE_HIGHER";
     public static final String FUEL_RANGE_HIGHEST  = "SETUP_FUEL_RANGE_HIGHEST";
-    
+
     public static final String RANDOMIZE_AI_NONE        = "SETUP_RANDOMIZE_AI_NONE";
     public static final String RANDOMIZE_AI_PERSONALITY = "SETUP_RANDOMIZE_AI_PERSONALITY";
     public static final String RANDOMIZE_AI_ABILITY     = "SETUP_RANDOMIZE_AI_ABILITY";
@@ -148,7 +148,7 @@ public interface IGameOptions {
     public static final String AI_HOSTILITY_HIGH     = "SETUP_AI_HOSTILITY_HIGH";
     public static final String AI_HOSTILITY_HIGHER   = "SETUP_AI_HOSTILITY_HIGHER";
     public static final String AI_HOSTILITY_HIGHEST  = "SETUP_AI_HOSTILITY_HIGHEST";
-    
+
     public static final String OPPONENT_AI_BASE       = "SETUP_OPPONENT_AI_BASE";
     public static final String OPPONENT_AI_XILMI      = "SETUP_OPPONENT_AI_XILMI";
     public static final String OPPONENT_AI_CRUEL      = "SETUP_OPPONENT_AI_CRUEL";
@@ -156,13 +156,13 @@ public interface IGameOptions {
     public static final String OPPONENT_AI_RANDOM     = "SETUP_OPPONENT_AI_RANDOM";
     public static final String OPPONENT_AI_ALLRANDOM  = "SETUP_OPPONENT_AI_ALLRANDOM";
     public static final String OPPONENT_AI_SELECTABLE = "SETUP_OPPONENT_AI_SELECT";
-    
+
     public static final String AUTOPLAY_OFF           = "SETUP_AUTOPLAY_OFF";
     public static final String AUTOPLAY_AI_BASE       = "SETUP_AUTOPLAY_AI_BASE";
     public static final String AUTOPLAY_AI_XILMI      = "SETUP_AUTOPLAY_AI_XILMI";
     public static final String AUTOPLAY_AI_CRUEL      = "SETUP_AUTOPLAY_AI_CRUEL";
     public static final String AUTOPLAY_AI_RANDOM     = "SETUP_AUTOPLAY_AI_RANDOM";
-    
+
     public default boolean isAutoPlay()          { return !selectedAutoplayOption().equals(AUTOPLAY_OFF); }
     public default boolean communityAI()         { return false; }
     public default boolean selectableAI()        { return selectedOpponentAIOption().equals(OPPONENT_AI_SELECTABLE); }
@@ -173,7 +173,7 @@ public interface IGameOptions {
     public default boolean restrictedColonization() { return selectedColonizingOption().equals(COLONIZING_RESTRICTED); }
     public default int baseAIRelationsAdj()       { return 0; }
     public default int selectedAI(Empire e)       { return AI.CRUEL; }
-    public default boolean randomizeAIPersonality()  { 
+    public default boolean randomizeAIPersonality()  {
         switch (selectedRandomizeAIOption()) {
             case RANDOMIZE_AI_PERSONALITY:
             case RANDOMIZE_AI_BOTH:
@@ -182,7 +182,7 @@ public interface IGameOptions {
                 return false;
         }
     }
-    public default boolean randomizeAIAbility()  { 
+    public default boolean randomizeAIAbility()  {
         switch (selectedRandomizeAIOption()) {
             case RANDOMIZE_AI_ABILITY:
             case RANDOMIZE_AI_BOTH:
@@ -211,7 +211,7 @@ public interface IGameOptions {
     public Planet orionPlanet(StarSystem s);
     public void randomizeColors();
     public GalaxyShape galaxyShape();
-   
+
     public int numColors();
     public Color color(int i);
     public boolean disableRandomEvents();
@@ -239,7 +239,7 @@ public interface IGameOptions {
     public List<String> autoplayOptions();
     public List<String> opponentAIOptions();
     public List<String> specificOpponentAIOptions();
-	
+
     public List<String> gameDifficultyOptions();
     public int maximumOpponentsOptions();
     public int defaultOpponentsOptions();
@@ -247,8 +247,10 @@ public interface IGameOptions {
 
     public String selectedGalaxySize();
     public void selectedGalaxySize(String s);
+    public void softSelectGalaxySize(String s); // BR:
     public String selectedGalaxyShape();
     public void selectedGalaxyShape(String s);
+    public void softSelectGalaxyShape(String s); // BR:
     public String selectedGalaxyAge();
     public void selectedGalaxyAge(String s);
     public String selectedResearchRate();
@@ -283,7 +285,7 @@ public interface IGameOptions {
     public void specificOpponentAIOption(String s, int empId);
     public String selectedAutoplayOption();
     public void selectedAutoplayOption(String s);
-	
+
     public String selectedGalaxyShapeOption1();
     public void selectedGalaxyShapeOption1(String s);
     public String selectedGalaxyShapeOption2();
@@ -291,11 +293,12 @@ public interface IGameOptions {
 
     public int numGalaxyShapeOption1();
     public int numGalaxyShapeOption2();
-    
+
     public String selectedGameDifficulty();
     public void selectedGameDifficulty(String s);
     public int selectedNumberOpponents();
     public void selectedNumberOpponents(int i);
+    public void softSelectNumberOpponents(int i); // BR:
 
     public int numPlayers();
     public NewPlayer selectedPlayer();
@@ -476,22 +479,22 @@ public interface IGameOptions {
     default void nextSpecificOpponentAI(int i) {
         List<String> allAIs = specificOpponentAIOptions();
         String currAI = specificOpponentAIOption(i);
-        
+
         int nextIndex = currAI == null ? 0 : allAIs.indexOf(currAI)+1;
         if (nextIndex >= allAIs.size())
             nextIndex = 0;
-        
+
         String nextAI = allAIs.get(nextIndex);
         specificOpponentAIOption(nextAI, i);
     }
     default void prevSpecificOpponentAI(int i) {
         List<String> allAIs = specificOpponentAIOptions();
         String currAI = specificOpponentAIOption(i);
-        
+
         int nextIndex = currAI == null ? 0 : allAIs.indexOf(currAI)-1;
         if (nextIndex < 0)
             nextIndex = allAIs.size()-1;
-        
+
         String nextAI = allAIs.get(nextIndex);
         specificOpponentAIOption(nextAI, i);
     }
