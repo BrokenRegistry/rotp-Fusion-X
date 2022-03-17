@@ -20,7 +20,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import rotp.model.game.IGameOptions;
-import rotp.model.game.MOO1GameOptions;
 
 public class Presets extends Configs {
 
@@ -81,7 +80,7 @@ public class Presets extends Configs {
 		initDV(u, ACTION_KEY, selectedConfigAction, ACTION_OPTIONS);
 		settingsMap.get(ACTION_KEY).removeLocalEnable();
 
-		RaceCfg.loadGameOptions(this, u);
+		new RaceCfg().loadGameOptions(this, u);
 		GalaxyCfg.loadGameOptions(this, u);
 		AdvancedCfg.loadGameOptions(this, u);
 		GovernorCfg.loadGameOptions(this, u);
@@ -105,7 +104,7 @@ public class Presets extends Configs {
 		settingsMap.get(ACTION_KEY).bottomComments(
 			new Comments("(---- The last loaded Win)"));
 
-		RaceCfg.initComments(this);
+		new RaceCfg().initComments(this);
 		GalaxyCfg.initComments(this);
 		AdvancedCfg.initComments(this);
 		GovernorCfg.initComments(this);
@@ -114,7 +113,7 @@ public class Presets extends Configs {
 	}
 	@Override
 	void overrideGameOptions (boolean resetToDefault) {
-		RaceCfg.overrideGameOptions(this, resetToDefault);     // Associated GUI: SetupRaceUI.java
+		new RaceCfg().overrideGameOptions(this, resetToDefault);     // Associated GUI: SetupRaceUI.java
 		AdvancedCfg.overrideGameOptions(this, resetToDefault); // Associated GUI: StartOptionsUI.java
 		GovernorCfg.overrideGameOptions(this, resetToDefault); // Associated GUI: .java
 		ModnarCfg.overrideGameOptions(this, resetToDefault);   // Associated GUI: StartModOptionsUI.java

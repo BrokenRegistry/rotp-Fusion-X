@@ -300,7 +300,7 @@ public final class SetupRaceUI extends BasePanel implements MouseListener, Mouse
         backImg = null;
         raceImg = null;
     }
-    public void goToThisMenu() {
+    public void refreshThisMenu() {
         buttonClick();
         newGameOptions().selectedPlayerRace(options().selectedPlayerRace());
         raceChanged();
@@ -508,23 +508,23 @@ public final class SetupRaceUI extends BasePanel implements MouseListener, Mouse
                 return;
             case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
                 // new Presets().reloadDefaultConfig(options());
-                RaceCfg.reloadDefaultConfig(this);
-                goToThisMenu();
+                new RaceCfg().reloadDefaultConfig(options());
+                refreshThisMenu();
                 break;
             case KeyEvent.VK_R: // BR: "G" = Reload User Presets
-                RaceCfg.reloadGlobalUserPresets(this);
+            new RaceCfg().reloadGlobalUserPresets(options());
                 // new Presets().loadUserConfig(options());
-                goToThisMenu();
+                refreshThisMenu();
                 // init();
                 // repaint();
                 return;
             case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
-                RaceCfg.reloadLocalUserPresets(this);
-                goToThisMenu();
+            new RaceCfg().reloadLocalUserPresets(options());
+                refreshThisMenu();
                 break;
             case KeyEvent.VK_U: // BR: "U" = Update User Presets
                 new Presets().saveToUserConfig(options());
-                goToThisMenu();
+                refreshThisMenu();
                 // init();
                 // repaint();
                 return;

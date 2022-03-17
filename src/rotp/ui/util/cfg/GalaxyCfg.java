@@ -4,7 +4,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import rotp.model.game.IGameOptions;
-import rotp.ui.game.SetupGalaxyUI;
 import rotp.ui.util.cfg.Configs.Sections;
 import rotp.util.Base;
 
@@ -14,40 +13,19 @@ public class GalaxyCfg implements Base {
     // ========================================================================
 	// Public Methods
 	//
-    private static void refreshUserPresets(SetupGalaxyUI p) {
-        p.newGameOptions().selectedGameDifficulty(p.options().selectedGameDifficulty());
-        p.repaint();
-        p.newGameOptions().selectedOpponentAIOption(p.options().selectedOpponentAIOption());
-        p.repaint();
-        p.newGameOptions().selectedOpponentAIOption(p.options().selectedOpponentAIOption());
-        p.repaint();
-        p.newGameOptions().selectedGalaxySize(p.options().selectedGalaxySize());
-        p.repaint();
-        p.newGameOptions().selectedGalaxyShape(p.options().selectedGalaxyShape());
-        p.repaint();
-        p.newGameOptions().galaxyShape().quickGenerate();
-        //p.backImg = null;
-        p.repaint();
-        p.newGameOptions().selectedNumberOpponents(
-            Math.min(p.newGameOptions().maximumOpponentsOptions(), p.options().selectedNumberOpponents()));
-        p.repaint();
-    }
-    public static void reloadLocalUserPresets(SetupGalaxyUI setupGalaxyUI) {
-        Presets presets = new Presets().readUserConfig(setupGalaxyUI.options());
+    public static void reloadLocalUserPresets(IGameOptions gameOptions) {
+        Presets presets = new Presets().readUserConfig(gameOptions);
         // User asked for this then it overload GLOBAL ENABLE
         overrideGameOptions(presets, false); // resetToDefault = false
-        // refreshUserPresets(setupGalaxyUI);
     }
-    public static void reloadGlobalUserPresets(SetupGalaxyUI setupGalaxyUI) {
-        Presets presets = new Presets().readUserConfig(setupGalaxyUI.options());
+    public static void reloadGlobalUserPresets(IGameOptions gameOptions) {
+        Presets presets = new Presets().readUserConfig(gameOptions);
         // User asked for this then it overload GLOBAL ENABLE
         presets.overrideGameOptions(false); // resetToDefault = false
-        // refreshUserPresets(setupGalaxyUI);
-    }
-    public static void reloadDefaultConfig(SetupGalaxyUI setupGalaxyUI) {
-        Presets presets = new Presets().readUserConfig(setupGalaxyUI.options());
+   }
+    public static void reloadDefaultConfig(IGameOptions gameOptions) {
+        Presets presets = new Presets().readUserConfig(gameOptions);
 		overrideGameOptions(presets, true); // resetToDefault = true
-        // refreshUserPresets(setupGalaxyUI);
 	}
     // ========================================================================
 	// Initialization Methods

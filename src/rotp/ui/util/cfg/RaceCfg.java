@@ -4,10 +4,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import rotp.model.game.IGameOptions;
-import rotp.ui.game.SetupRaceUI;
 import rotp.ui.util.cfg.Configs.Sections;
 
-public class RaceCfg {
+public class RaceCfg extends BaseCfg {
     // Assocated GUI: SetupRaceUI.java
 
     static final List<String> EMPIRE_COLORS  =
@@ -17,32 +16,35 @@ public class RaceCfg {
     // ========================================================================
 	// Public Methods
 	//
-    public static void reloadLocalUserPresets(SetupRaceUI SetupRaceUI) {
-        Presets presets = new Presets().readUserConfig(SetupRaceUI.options());
-        // User asked for this then it overload GLOBAL ENABLE
-        overrideGameOptions(presets, false); // resetToDefault = false
-    }
-    public static void reloadGlobalUserPresets(SetupRaceUI SetupRaceUI) {
-        Presets presets = new Presets().readUserConfig(SetupRaceUI.options());
-        // User asked for this then it overload GLOBAL ENABLE
-        presets.overrideGameOptions(false); // resetToDefault = false
-    }
-    public static void reloadDefaultConfig(SetupRaceUI SetupRaceUI) {
-        Presets presets = new Presets().readUserConfig(SetupRaceUI.options());
-		overrideGameOptions(presets, true); // resetToDefault = true
-	}
+    // public static void reloadLocalUserPresets(IGameOptions gameOptions) {
+    //     Presets presets = new Presets().readUserConfig(gameOptions);
+    //     // User asked for this then it overload GLOBAL ENABLE
+    //     overrideGameOptions(presets, false); // resetToDefault = false
+    // }
+    // public static void reloadGlobalUserPresets(IGameOptions gameOptions) {
+    //     Presets presets = new Presets().readUserConfig(gameOptions);
+    //     // User asked for this then it overload GLOBAL ENABLE
+    //     presets.overrideGameOptions(false); // resetToDefault = false
+    // }
+    // public static void reloadDefaultConfig(IGameOptions gameOptions) {
+    //     Presets presets = new Presets().readUserConfig(gameOptions);
+	// 	overrideGameOptions(presets, true); // resetToDefault = true
+	// }
     // ========================================================================
 	// Initialization Methods
 	//
-    static void loadGameOptions(Presets p, boolean u) {
+    @Override
+    void loadGameOptions(Presets p, boolean u) {
         p.initDV(u, "PLAYER RACE",  p.gameOptions.selectedPlayerRace(), p.gameOptions.startingRaceOptions());
 		p.initDV(u, "PLAYER COLOR", EMPIRE_COLORS.get(p.gameOptions.selectedPlayerColor()), EMPIRE_COLORS);
     }
-    static void initComments(Presets p) {
+    @Override
+    void initComments(Presets p) {
         p.settingsMap.get("PLAYER RACE").headComments(p
             .new Comments(List.of("", "--------- Races Game Options ---------", " ")));
     }
-    static void overrideGameOptions (Presets p, boolean resetToDefault) {
+    @Override
+    void overrideGameOptions (Presets p, boolean resetToDefault) {
         String setting;
         Sections section;
         LinkedHashMap<String, Sections> settingsMap = p.settingsMap;

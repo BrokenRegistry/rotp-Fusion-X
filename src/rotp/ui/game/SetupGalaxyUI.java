@@ -893,14 +893,14 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
                 startGame();
                 return;
             case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
-                new Presets().reloadDefaultConfig(options());
+                GalaxyCfg.reloadDefaultConfig(options());
                 goToThisMenu();
                 break;
             case KeyEvent.VK_G: // BR: "G" = Reload Global User Presets
-                GalaxyCfg.reloadGlobalUserPresets(this);
+                GalaxyCfg.reloadGlobalUserPresets(options());
                 break;
             case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
-                GalaxyCfg.reloadLocalUserPresets(this);
+                GalaxyCfg.reloadLocalUserPresets(options());
                 goToThisMenu();
                 break;
             case KeyEvent.VK_U: // BR: "U" = Update User Presets
