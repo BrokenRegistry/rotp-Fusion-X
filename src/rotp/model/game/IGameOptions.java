@@ -247,10 +247,8 @@ public interface IGameOptions {
 
     public String selectedGalaxySize();
     public void selectedGalaxySize(String s);
-    public void softSelectGalaxySize(String s); // BR:
     public String selectedGalaxyShape();
     public void selectedGalaxyShape(String s);
-    public void softSelectGalaxyShape(String s); // BR:
     public String selectedGalaxyAge();
     public void selectedGalaxyAge(String s);
     public String selectedResearchRate();
@@ -298,7 +296,6 @@ public interface IGameOptions {
     public void selectedGameDifficulty(String s);
     public int selectedNumberOpponents();
     public void selectedNumberOpponents(int i);
-    public void softSelectNumberOpponents(int i); // BR:
 
     public int numPlayers();
     public NewPlayer selectedPlayer();

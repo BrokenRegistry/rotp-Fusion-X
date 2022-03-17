@@ -29,6 +29,7 @@ import java.util.List;
 import rotp.ui.BasePanel;
 import rotp.ui.BaseText;
 import rotp.ui.main.SystemPanel;
+import rotp.ui.util.cfg.AdvancedCfg;
 import rotp.ui.util.cfg.Presets;
 
 public class StartOptionsUI extends BasePanel implements MouseListener, MouseMotionListener {
@@ -597,7 +598,40 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
         newGameOptions().selectedTechTradeOption(newGameOptions().nextTechTradeOption());
         techTradingText.repaint(techTradingStr());
     }
-
+    // BR:
+    private void refreshThisMenu() {
+        buttonClick();
+        newGameOptions().selectedGalaxyAge(options().selectedGalaxyAge());
+        galaxyAgeText.repaint(galaxyAgeStr());
+        newGameOptions().selectedStarDensityOption(options().selectedStarDensityOption());
+        starDensityText.repaint(starDensityStr());
+        newGameOptions().selectedAIHostilityOption(options().selectedAIHostilityOption());
+        aiHostilityText.repaint(aiHostilityStr());
+        newGameOptions().selectedNebulaeOption(options().selectedNebulaeOption());
+        nebulaeText.repaint(nebulaeStr());
+        newGameOptions().selectedRandomEventOption(options().selectedRandomEventOption());
+        randomEventsText.repaint(randomEventsStr());
+        newGameOptions().selectedPlanetQualityOption(options().selectedPlanetQualityOption());
+        planetQualityText.repaint(planetQualityStr());
+        newGameOptions().selectedTerraformingOption(options().selectedTerraformingOption());
+        terraformingText.repaint(terraformingStr());
+        newGameOptions().selectedColonizingOption(options().selectedColonizingOption());
+        colonizingText.repaint(colonizingStr());
+        newGameOptions().selectedCouncilWinOption(options().selectedCouncilWinOption());
+        councilWinText.repaint(councilWinStr());
+        newGameOptions().selectedRandomizeAIOption(options().selectedRandomizeAIOption());
+        randomizeAIText.repaint(randomizeAIStr());
+        newGameOptions().selectedAutoplayOption(options().selectedAutoplayOption());
+        autoplayText.repaint(autoplayStr());
+        newGameOptions().selectedResearchRate(options().selectedResearchRate());
+        researchRateText.repaint(researchRateStr());
+        newGameOptions().selectedWarpSpeedOption(options().selectedWarpSpeedOption());
+        warpSpeedText.repaint(warpSpeedStr());
+        newGameOptions().selectedFuelRangeOption(options().selectedFuelRangeOption());
+        fuelRangeText.repaint(fuelRangeStr());
+        newGameOptions().selectedTechTradeOption(options().selectedTechTradeOption());
+        techTradingText.repaint(techTradingStr());
+    } // \ BR:
     @Override
     public void keyPressed(KeyEvent e) {
         switch(e.getKeyCode()) {
@@ -608,17 +642,23 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
             case KeyEvent.VK_ENTER:
                 parent.advanceHelp();
                 break;
-            case 82: // BR: "R" = Reload User Presets
-                new Presets().loadUserConfig(options());
-                init0();
-                // newGameOptions().galaxyShape().quickGenerate();
-                // repaint();
+            case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
+                // new Presets().reloadDefaultConfig(options());
+                new AdvancedCfg().reloadDefaultConfig(options());
+                refreshThisMenu();
                 break;
-            case 85: // BR: "U" = Update User Presets
+            case KeyEvent.VK_R: // BR: "G" = Reload User Presets
+                new AdvancedCfg().reloadGlobalUserPresets(options());
+                // new Presets().loadUserConfig(options());
+                refreshThisMenu();
+                break;
+            case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
+                new AdvancedCfg().reloadLocalUserPresets(options());
+                refreshThisMenu();
+                break;
+            case KeyEvent.VK_U: // BR: "U" = Update User Presets
                 new Presets().saveToUserConfig(options());
-                init0();
-                // newGameOptions().galaxyShape().quickGenerate();
-                // repaint();
+                refreshThisMenu();
                 break;
         }
     }

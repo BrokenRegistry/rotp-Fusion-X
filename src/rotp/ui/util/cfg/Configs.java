@@ -65,7 +65,9 @@ abstract class Configs {
 
 	// Variables
 	List<String> ACTION_OPTIONS;
-	String currentSetting = "";
+	String currentSetting  = "";
+	boolean resetToDefault = false;
+	boolean forceRandom    = false;
 	LinkedHashMap<String, Sections> settingsMap;
 	LinkedHashSet<String> multipleUserOptionsSet;
 	LinkedHashSet<String> singleUserOptionsSet = new LinkedHashSet<String>(List.of(ENABLE_KEY));
@@ -80,7 +82,7 @@ abstract class Configs {
 	// Abstract Methods
 	//
 	abstract void initComments();
-	abstract void overrideGameOptions(boolean resetToDefault);
+	abstract void overrideGameOptions();
 	abstract void loadGameOptions(boolean u);
 	// ========================================================================
 	// Other Methods
@@ -244,11 +246,17 @@ abstract class Configs {
 	private static boolean getBooleanRandom() {return ThreadLocalRandom.current().nextBoolean();}
 	private static Integer getIntegerRandom(int min, int max) {
 		int diff = max - min;
-		if (diff == 0) return min;
-		if (diff < 0)  return getIntegerRandom(max, min);
-		return ThreadLocalRandom.current().nextInt(diff) + min;
+		if (diff == 0) {
+			return min;
+		}
+		if (diff < 0) {
+			return getIntegerRandom(max, min);
+		}
+		return ThreadLocalRandom.current().nextInt(diff + 1) + min; // +1 because last value is exclusive!!!
 	}
-	private static Integer getIntegerRandom(int[] lim) {return getIntegerRandom(lim[0], lim[1]);}
+	private static Integer getIntegerRandom(int[] lim) {
+		return getIntegerRandom(lim[0], lim[1]);
+	}
 	// private static String  getStringRandom(List<String> options) {
 	// 	if (options.size() == 1) return options.get(0);
 	// 	return options.get(ThreadLocalRandom.current().nextInt(options.size()-1));
@@ -371,8 +379,6 @@ abstract class Configs {
 						int rnd = getIntegerRandom(rndParam);
 						String result = settingOptions.get(rnd);
 						return settingNameToLabel(result);
-						// return settingOptions.get(getIntegerRandom(setting
-						// 	.getRandomParameters(0, settingOptions.size()-1)));
 					}
     				String value = setting.getValue();
     				if (value.isBlank() || labelOptionsMap.keySet().contains(value.toUpperCase())) {

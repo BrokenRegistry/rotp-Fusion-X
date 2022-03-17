@@ -58,13 +58,16 @@ public class Presets extends Configs {
 	// ========================================================================
 	// Public Methods
 	//
-	public void loadUserConfig(IGameOptions gameOptions) {
-		readUserConfig(gameOptions);
-		if (ENABLE_LOAD.contains(selectedEnableGlobal)) overrideGameOptions(false);
-	}
+	// public void loadUserConfig(IGameOptions gameOptions) {
+	// 	readUserConfig(gameOptions);
+	// 	resetToDefault = false;
+	// 	if (ENABLE_LOAD.contains(selectedEnableGlobal)) overrideGameOptions();
+	// }
 	public void reloadDefaultConfig(IGameOptions gameOptions) {
 		readUserConfig(gameOptions);
-		overrideGameOptions(true); // resetToDefault = true
+		resetToDefault = true;
+		overrideGameOptions();
+		resetToDefault = false;
 	}
 	public void saveToUserConfig(IGameOptions options) {
 		readUserConfig(gameOptions);
@@ -81,11 +84,11 @@ public class Presets extends Configs {
 		settingsMap.get(ACTION_KEY).removeLocalEnable();
 
 		new RaceCfg().loadGameOptions(this, u);
-		GalaxyCfg.loadGameOptions(this, u);
-		AdvancedCfg.loadGameOptions(this, u);
-		GovernorCfg.loadGameOptions(this, u);
-		ModnarCfg.loadGameOptions(this, u);
-		ExtCfg.loadGameOptions(this, u);
+		new GalaxyCfg().loadGameOptions(this, u);
+		new AdvancedCfg().loadGameOptions(this, u);
+		new GovernorCfg().loadGameOptions(this, u);
+		new ModnarCfg().loadGameOptions(this, u);
+		new ExtCfg().loadGameOptions(this, u);
 
 		// Build setting list excluding single config list
 		multipleUserOptionsSet = new LinkedHashSet<String>();
@@ -105,21 +108,21 @@ public class Presets extends Configs {
 			new Comments("(---- The last loaded Win)"));
 
 		new RaceCfg().initComments(this);
-		GalaxyCfg.initComments(this);
-		AdvancedCfg.initComments(this);
-		GovernorCfg.initComments(this);
-		ModnarCfg.initComments(this);
-		ExtCfg.initComments(this);
+		new GalaxyCfg().initComments(this);
+		new AdvancedCfg().initComments(this);
+		new GovernorCfg().initComments(this);
+		new ModnarCfg().initComments(this);
+		new ExtCfg().initComments(this);
 	}
 	@Override
-	void overrideGameOptions (boolean resetToDefault) {
-		new RaceCfg().overrideGameOptions(this, resetToDefault);     // Associated GUI: SetupRaceUI.java
-		AdvancedCfg.overrideGameOptions(this, resetToDefault); // Associated GUI: StartOptionsUI.java
-		GovernorCfg.overrideGameOptions(this, resetToDefault); // Associated GUI: .java
-		ModnarCfg.overrideGameOptions(this, resetToDefault);   // Associated GUI: StartModOptionsUI.java
-		ExtCfg.overrideGameOptions(this, resetToDefault);      // Associated GUI: NONE
+	void overrideGameOptions () {
+		new RaceCfg().overrideGameOptions(this);     // Associated GUI: SetupRaceUI.java
+		new AdvancedCfg().overrideGameOptions(this); // Associated GUI: StartOptionsUI.java
+		new GovernorCfg().overrideGameOptions(this); // Associated GUI: .java
+		new ModnarCfg().overrideGameOptions(this);   // Associated GUI: StartModOptionsUI.java
+		new ExtCfg().overrideGameOptions(this);      // Associated GUI: NONE
 		// to the end: NB Empire is depedent of MIN STARS PER EMPIRE
-		GalaxyCfg.overrideGameOptions(this, resetToDefault);   // Associated GUI: SetupGalaxyUI.java
+		new GalaxyCfg().overrideGameOptions(this);   // Associated GUI: SetupGalaxyUI.java
 		// RemnantCfg                                          // Associated GUI: GameSettingsUI.java
 		// LaunchCfg                                           // Associated GUI: GameUI.java
 		// LoadFileCfg                                         // Associated GUI: LoadGameUI.java

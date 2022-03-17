@@ -300,7 +300,7 @@ public final class SetupRaceUI extends BasePanel implements MouseListener, Mouse
         backImg = null;
         raceImg = null;
     }
-    public void refreshThisMenu() {
+    private void refreshThisMenu() {
         buttonClick();
         newGameOptions().selectedPlayerRace(options().selectedPlayerRace());
         raceChanged();

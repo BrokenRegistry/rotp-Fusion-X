@@ -1,12 +1,12 @@
 /*
  * Copyright 2015-2020 Ray Fowler
- * 
+ *
  * Licensed under the GNU General Public License, Version 3 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     https://www.gnu.org/licenses/gpl-3.0.html
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,18 +33,19 @@ import rotp.ui.BasePanel;
 import rotp.ui.BaseText;
 import rotp.ui.UserPreferences;
 import rotp.ui.main.SystemPanel;
+import rotp.ui.util.cfg.ModnarCfg;
 import rotp.ui.util.cfg.Presets;
 
 // modnar: add UI panel for modnar MOD game options, based on StartOptionsUI.java
 public class StartModOptionsUI extends BasePanel implements MouseListener, MouseMotionListener, MouseWheelListener {
     private static final long serialVersionUID = 1L;
     private static final Color backgroundHaze = new Color(0,0,0,160);
-    
+
     public static final Color lightBrown = new Color(178,124,87);
     public static final Color brown = new Color(141,101,76);
     public static final Color darkBrown = new Color(112,85,68);
     public static final Color darkerBrown = new Color(75,55,39);
-    
+
     Rectangle hoverBox;
     Rectangle okBox = new Rectangle();
     Rectangle defaultBox = new Rectangle();
@@ -57,7 +58,7 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
     BaseText randomTechStartText;
     BaseText customDifficultyText;
     BaseText dynamicDifficultyText;
-    
+
     public StartModOptionsUI() {
         init0();
     }
@@ -105,16 +106,16 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
     @Override
     public void paintComponent(Graphics g0) {
         super.paintComponent(g0);
-        
+
         int w = getWidth();
         int h = getHeight();
         Graphics2D g = (Graphics2D) g0;
-        
-        
+
+
         // draw background "haze"
         g.setColor(backgroundHaze);
         g.fillRect(0, 0, w, h);
-        
+
         int numColumns = 3;
         int columnPad = s20;
         int lineH = s17;
@@ -132,16 +133,16 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
         int x1 = leftM+((w1-sw)/numColumns);
         int y1 = topM+s40;
         drawBorderedString(g, title, 1, x1, y1, Color.black, Color.white);
-        
+
         g.setFont(narrowFont(18));
         String expl = text("SETTINGS_DESCRIPTION");
         g.setColor(SystemPanel.blackText);
         drawString(g,expl, leftM+s10, y1+s20);
-        
+
         Stroke prev = g.getStroke();
         g.setStroke(stroke3);
 
-        
+
         // left column
         int y2 = topM+scaled(110);
         int x2 = leftM+s10;
@@ -162,7 +163,7 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
         }
-        
+
         y2 += (h2+s20);
         g.setColor(SystemPanel.blackText);
         g.drawRect(x2, y2, w2, h2);
@@ -178,8 +179,8 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
         for (String line: lines) {
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
-        }       
-       
+        }
+
         y2 += (h2+s20);
         g.setColor(SystemPanel.blackText);
         g.drawRect(x2, y2, w2, h2);
@@ -196,7 +197,7 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
         }
-        
+
         // middle column
         y2 = topM+scaled(110);
         x2 = x2+w2+s20;
@@ -216,7 +217,7 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
         }
-        
+
         y2 += (h2+s20);
         g.setColor(SystemPanel.blackText);
         g.drawRect(x2, y2, w2, h2);
@@ -232,8 +233,8 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
         for (String line: lines) {
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
-        }       
-       
+        }
+
 
         y2 += (h2+s20);
         g.setColor(SystemPanel.blackText);
@@ -251,7 +252,7 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
         }
-        
+
         // right side
         y2 = topM+scaled(110);
         h2 = s90;
@@ -271,7 +272,7 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
         }
-        
+
         y2 += (h2+s20);
         g.setColor(SystemPanel.blackText);
         g.drawRect(x2, y2, w2, h2);
@@ -404,7 +405,10 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
         UserPreferences.toggleDynamicDifficulty();
         dynamicDifficultyText.repaint(dynamicDifficultyStr());
     }
-
+    // BR:
+    private void refreshThisMenu() {
+        buttonClick();
+    } // \ BR:
     @Override
     public void keyPressed(KeyEvent e) {
         switch(e.getKeyCode()) {
@@ -415,15 +419,23 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
             case KeyEvent.VK_ENTER:
                 parent.advanceHelp();
                 break;
-            case 82: // BR: "R" = Reload User Presets
-                new Presets().loadUserConfig(options());
-                init();
-                repaint();
+                case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
+                // new Presets().reloadDefaultConfig(options());
+                new ModnarCfg().reloadDefaultConfig(options());
+                refreshThisMenu();
                 break;
-            case 85: // BR: "U" = Update User Presets
+            case KeyEvent.VK_R: // BR: "G" = Reload User Presets
+                new ModnarCfg().reloadGlobalUserPresets(options());
+                // new Presets().loadUserConfig(options());
+                refreshThisMenu();
+                break;
+            case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
+                new ModnarCfg().reloadLocalUserPresets(options());
+                refreshThisMenu();
+                break;
+            case KeyEvent.VK_U: // BR: "U" = Update User Presets
                 new Presets().saveToUserConfig(options());
-                init();
-                repaint();
+                refreshThisMenu();
                 break;
         }
     }
@@ -455,7 +467,7 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
             hoverBox = okBox;
         else if (defaultBox.contains(x,y))
             hoverBox = defaultBox;
-		
+
         if (hoverBox != prevHover) {
             if (prevHover == alwaysStarGatesText.bounds())
                 alwaysStarGatesText.mouseExit();
@@ -545,21 +557,21 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
         boolean up = e.getWheelRotation() < 0;
         if (hoverBox == customDifficultyText.bounds()) {
             if (up) {
-                if (shiftPressed) 
+                if (shiftPressed)
                     scrollCustomDifficulty(5);
                 else if (ctrlPressed)
                     scrollCustomDifficulty(20);
                 else
-                    scrollCustomDifficulty(1); 
+                    scrollCustomDifficulty(1);
                 return;
             }
             else {
-                if (shiftPressed) 
+                if (shiftPressed)
                     scrollCustomDifficulty(-5);
                 else if (ctrlPressed)
                     scrollCustomDifficulty(-20);
                 else
-                    scrollCustomDifficulty(-1); 
+                    scrollCustomDifficulty(-1);
                 return;
             }
         }

@@ -14,23 +14,6 @@ public class RaceCfg extends BaseCfg {
 			"brown", "white", "lime", "grey", "plum", "light blue", "mint", "olive");
 
     // ========================================================================
-	// Public Methods
-	//
-    // public static void reloadLocalUserPresets(IGameOptions gameOptions) {
-    //     Presets presets = new Presets().readUserConfig(gameOptions);
-    //     // User asked for this then it overload GLOBAL ENABLE
-    //     overrideGameOptions(presets, false); // resetToDefault = false
-    // }
-    // public static void reloadGlobalUserPresets(IGameOptions gameOptions) {
-    //     Presets presets = new Presets().readUserConfig(gameOptions);
-    //     // User asked for this then it overload GLOBAL ENABLE
-    //     presets.overrideGameOptions(false); // resetToDefault = false
-    // }
-    // public static void reloadDefaultConfig(IGameOptions gameOptions) {
-    //     Presets presets = new Presets().readUserConfig(gameOptions);
-	// 	overrideGameOptions(presets, true); // resetToDefault = true
-	// }
-    // ========================================================================
 	// Initialization Methods
 	//
     @Override
@@ -44,17 +27,17 @@ public class RaceCfg extends BaseCfg {
             .new Comments(List.of("", "--------- Races Game Options ---------", " ")));
     }
     @Override
-    void overrideGameOptions (Presets p, boolean resetToDefault) {
+    void overrideGameOptions (Presets p) {
         String setting;
         Sections section;
         LinkedHashMap<String, Sections> settingsMap = p.settingsMap;
         IGameOptions gameOptions = p.gameOptions;
         for (String userOption : p.selectedUserOptionsSet) {
-            if (resetToDefault || settingsMap.get(Configs.ACTION_KEY).getPairValue(userOption).toUpperCase().contains("LOAD")) {
+            if (p.resetToDefault || settingsMap.get(Configs.ACTION_KEY).getPairValue(userOption).toUpperCase().contains("LOAD")) {
                 setting = "PLAYER RACE";
                 if (settingsMap.containsKey(setting)) {
                     section = settingsMap.get(setting);
-                    if (resetToDefault)
+                    if (p.resetToDefault)
                         gameOptions.selectedPlayerRace(section.getDefaultValue());
                     else if (section.isSectionReadable(userOption))
                         gameOptions.selectedPlayerRace(section.getValidSetting(userOption));
@@ -62,7 +45,7 @@ public class RaceCfg extends BaseCfg {
                 setting = "PLAYER COLOR";
                 if (settingsMap.containsKey(setting)) {
                     section = settingsMap.get(setting);
-                    if (resetToDefault)
+                    if (p.resetToDefault)
                         gameOptions.selectedPlayerColor(EMPIRE_COLORS.indexOf(section.getDefaultValue()));
                     else if (section.isSectionReadable(userOption))
                         gameOptions.selectedPlayerColor(EMPIRE_COLORS.indexOf(section.getValidSetting(userOption)));

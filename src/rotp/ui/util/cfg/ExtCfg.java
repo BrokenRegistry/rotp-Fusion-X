@@ -5,7 +5,7 @@ import java.util.List;
 
 import rotp.ui.util.cfg.Configs.Sections;
 
-public class ExtCfg {
+public class ExtCfg extends BaseCfg {
     // Parameters are outside their class for an easier acces to their default value
     // Spacing
     private static boolean selectedMaximizeEmpiresSpacing = true;
@@ -22,13 +22,13 @@ public class ExtCfg {
         selectedNoPlanetPctMult =  val;
     }
     // Other Methods
-    static void loadGameOptions(Presets p, boolean u) {
+    void loadGameOptions(Presets p, boolean u) {
 		p.initDV(u, "MAXIMIZE EMPIRES SPACING", Spacing.selectedMaximizeEmpiresSpacing());
 		p.initDV(u, "PREF STARS PER EMPIRE",    Spacing.selectedPrefStarsPerEmpire(), 0, 1000000, 16, 24);
 		p.initDV(u, "MIN STARS PER EMPIRE",     Spacing.selectedMinStarsPerEmpire(), 0, 1000000, 4, 16);
 		p.initDV(u, "NO PLANET PCTS MULT",      selectedNoPlanetPctMult(), 0, 1000000, 0, 200);
     }
-    static void initComments(Presets p) {
+    void initComments(Presets p) {
         p.settingsMap.get("MAXIMIZE EMPIRES SPACING").optionsComments(p
 			.new Comments("Empires may want space to breath"));
         p.settingsMap.get("PREF STARS PER EMPIRE").optionsComments(p
@@ -36,17 +36,17 @@ public class ExtCfg {
         p.settingsMap.get("MAXIMIZE EMPIRES SPACING").headComments(p
             .new Comments(List.of("--------- BrokenRegistry's Options ---------", " ")));
     }
-    static void overrideGameOptions (Presets p, boolean resetToDefault) {
+    void overrideGameOptions (Presets p) {
         String setting;
         Sections section;
         LinkedHashMap<String, Sections> settingsMap = p.settingsMap;
 
         for (String userOption : p.selectedUserOptionsSet) {
-            if (resetToDefault || settingsMap.get(Configs.ACTION_KEY).getPairValue(userOption).toUpperCase().contains("LOAD")) {
+            if (p.resetToDefault || settingsMap.get(Configs.ACTION_KEY).getPairValue(userOption).toUpperCase().contains("LOAD")) {
                 setting = "MAXIMIZE EMPIRES SPACING";
                 if (settingsMap.containsKey(setting)) {
                     section = settingsMap.get(setting);
-                    if (resetToDefault)
+                    if (p.resetToDefault)
                     Spacing.selectedMaximizeEmpiresSpacing(Configs.toBoolean(section.getDefaultValue()));
                     else if (section.isSectionReadable(userOption))
                         Spacing.selectedMaximizeEmpiresSpacing(section.getBooleanSetting(userOption));
@@ -54,7 +54,7 @@ public class ExtCfg {
                 setting = "MIN STARS PER EMPIRE";
                 if (settingsMap.containsKey(setting)) {
                     section = settingsMap.get(setting);
-                    if (resetToDefault)
+                    if (p.resetToDefault)
                     Spacing.selectedMinStarsPerEmpire(Configs.getInteger(section.getDefaultValue(), 16));
                     else if (section.isSectionReadable(userOption))
                         Spacing.selectedMinStarsPerEmpire(section.getIntegerSetting(userOption));
@@ -62,7 +62,7 @@ public class ExtCfg {
                 setting = "PREF STARS PER EMPIRE";
                 if (settingsMap.containsKey(setting)) {
                     section = settingsMap.get(setting);
-                    if (resetToDefault)
+                    if (p.resetToDefault)
                     Spacing.selectedPrefStarsPerEmpire(Configs.getInteger(section.getDefaultValue(), 16));
                     else if (section.isSectionReadable(userOption))
                         Spacing.selectedPrefStarsPerEmpire(section.getIntegerSetting(userOption));
@@ -70,7 +70,7 @@ public class ExtCfg {
                 setting = "NO PLANET PCTS MULT";
                 if (settingsMap.containsKey(setting)) {
                     section = settingsMap.get(setting);
-                    if (resetToDefault)
+                    if (p.resetToDefault)
                         ExtCfg.selectedNoPlanetPctMult(Configs.getInteger(section.getDefaultValue(), 100));
                     else if (section.isSectionReadable(userOption))
                     ExtCfg.selectedNoPlanetPctMult(section.getIntegerSetting(userOption));

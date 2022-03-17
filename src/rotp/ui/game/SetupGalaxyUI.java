@@ -550,7 +550,7 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
         release();
         RotPUI.instance().selectSetupRacePanel();
     }
-    public void goToThisMenu() {
+    public void refreshThisMenu() {
         buttonClick();
         newGameOptions().selectedPlayerRace(options().selectedPlayerRace());
         playerRaceImg = null;
@@ -893,19 +893,19 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
                 startGame();
                 return;
             case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
-                GalaxyCfg.reloadDefaultConfig(options());
-                goToThisMenu();
+                new GalaxyCfg().reloadDefaultConfig(options());
+                refreshThisMenu();
                 break;
             case KeyEvent.VK_G: // BR: "G" = Reload Global User Presets
-                GalaxyCfg.reloadGlobalUserPresets(options());
+            new GalaxyCfg().reloadGlobalUserPresets(options());
                 break;
             case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
-                GalaxyCfg.reloadLocalUserPresets(options());
-                goToThisMenu();
+            new GalaxyCfg().reloadLocalUserPresets(options());
+                refreshThisMenu();
                 break;
             case KeyEvent.VK_U: // BR: "U" = Update User Presets
                 new Presets().saveToUserConfig(options());
-                goToThisMenu();
+                refreshThisMenu();
                 break;
         }
     }
