@@ -31,6 +31,9 @@ public class Presets extends Configs {
 	// ========================================================================
 	// Initializations Methods
 	//
+	public void initDefaultValues(IGameOptions options) {
+		if (firstLoad()) readUserConfig(options);
+	}
 	Presets initPresets(IGameOptions options) {
 		fileName = "Presets.cfg";
 		HEADER_COMMENT = new Comments(List.of(
