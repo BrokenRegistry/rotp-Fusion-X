@@ -550,7 +550,14 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
         release();
         RotPUI.instance().selectSetupRacePanel();
     }
-    public void refreshThisMenu() {
+    // BR: Add option to return to the main menu
+    private void goToMainMenu() {
+        buttonClick();
+        release();
+        RotPUI.instance().selectGamePanel();
+    }
+    // BR: Needed for reloading
+    private void refreshThisMenu() {
         buttonClick();
         newGameOptions().selectedPlayerRace(options().selectedPlayerRace());
         playerRaceImg = null;
@@ -898,10 +905,14 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
                 break;
             case KeyEvent.VK_G: // BR: "G" = Reload Global User Presets
             new GalaxyCfg().reloadGlobalUserPresets(options());
+                refreshThisMenu();
                 break;
             case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
             new GalaxyCfg().reloadLocalUserPresets(options());
                 refreshThisMenu();
+                break;
+            case KeyEvent.VK_M: // BR: "M" = Go to Main Menu
+                goToMainMenu();
                 break;
             case KeyEvent.VK_U: // BR: "U" = Update User Presets
                 new Presets().saveToUserConfig(options());
@@ -995,8 +1006,8 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
             return;
         if (hoverBox == null)
             return;
-        int x = e.getX();
-        int y = e.getY();
+        // int x = e.getX();
+        // int y = e.getY();
         if (hoverBox == backBox)
             goToRaceSetup();
         else if (hoverBox == settingsBox)

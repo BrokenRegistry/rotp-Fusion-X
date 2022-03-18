@@ -18,39 +18,44 @@ public class RaceCfg extends BaseCfg {
 	//
     @Override
     void loadGameOptions(Presets p, boolean u) {
-        p.initDV(u, "PLAYER RACE",  p.gameOptions.selectedPlayerRace(), p.gameOptions.startingRaceOptions());
-		p.initDV(u, "PLAYER COLOR", EMPIRE_COLORS.get(p.gameOptions.selectedPlayerColor()), EMPIRE_COLORS);
+        p.setSetting("PLAYER RACE",  p.gameOptions.selectedPlayerRace(), p.gameOptions.startingRaceOptions());
+		p.setSetting("PLAYER COLOR", EMPIRE_COLORS.get(p.gameOptions.selectedPlayerColor()), EMPIRE_COLORS);
     }
     @Override
     void initComments(Presets p) {
-        p.settingsMap.get("PLAYER RACE").headComments(p
+        p.settingsMap().get("PLAYER RACE").headComments(p
             .new Comments(List.of("", "--------- Races Game Options ---------", " ")));
     }
     @Override
     void overrideGameOptions (Presets p) {
         String setting;
         Sections section;
-        LinkedHashMap<String, Sections> settingsMap = p.settingsMap;
+        LinkedHashMap<String, Sections> settingsMap = p.settingsMap();
         IGameOptions gameOptions = p.gameOptions;
         for (String userOption : p.selectedUserOptionsSet) {
-            if (p.resetToDefault || settingsMap.get(Configs.ACTION_KEY).getPairValue(userOption).toUpperCase().contains("LOAD")) {
-                setting = "PLAYER RACE";
-                if (settingsMap.containsKey(setting)) {
-                    section = settingsMap.get(setting);
-                    if (p.resetToDefault)
-                        gameOptions.selectedPlayerRace(section.getDefaultValue());
-                    else if (section.isSectionReadable(userOption))
-                        gameOptions.selectedPlayerRace(section.getValidSetting(userOption));
-                }
-                setting = "PLAYER COLOR";
-                if (settingsMap.containsKey(setting)) {
-                    section = settingsMap.get(setting);
-                    if (p.resetToDefault)
-                        gameOptions.selectedPlayerColor(EMPIRE_COLORS.indexOf(section.getDefaultValue()));
-                    else if (section.isSectionReadable(userOption))
-                        gameOptions.selectedPlayerColor(EMPIRE_COLORS.indexOf(section.getValidSetting(userOption)));
-                }
-            } // \ if ACTION LOAD
+            setting = "PLAYER RACE";
+            if (settingsMap.containsKey(setting)) {
+                section = settingsMap.get(setting);
+                if (section.isSectionReadable(userOption))
+                    gameOptions.selectedPlayerRace(section.getValidSetting(userOption));
+            }
+            setting = "PLAYER COLOR";
+            if (settingsMap.containsKey(setting)) {
+                section = settingsMap.get(setting);
+                if (section.isSectionReadable(userOption))
+                    gameOptions.selectedPlayerColor(EMPIRE_COLORS.indexOf(section.getValidSetting(userOption)));
+            }
         }
+    }
+    @Override
+    void setGameOptionsToDefault(Presets p) {
+        String setting;
+        LinkedHashMap<String, String> defaultValues = p.defaultValuesMap();
+        IGameOptions gameOptions = p.gameOptions;
+        setting = "PLAYER RACE";
+        gameOptions.selectedPlayerRace(defaultValues.get(setting));
+        // gameOptions.selectedPlayerRace(gameOptions.startingRaceOptions().get(0));
+        setting = "PLAYER COLOR";
+        gameOptions.selectedPlayerColor(EMPIRE_COLORS.indexOf(defaultValues.get(setting)));
     }
 }

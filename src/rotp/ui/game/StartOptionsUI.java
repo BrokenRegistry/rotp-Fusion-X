@@ -599,6 +599,11 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
         techTradingText.repaint(techTradingStr());
     }
     // BR:
+    private void goToMainMenu() {
+        buttonClick();
+        close();
+        rotp.ui.RotPUI.instance().selectGamePanel();
+    }
     private void refreshThisMenu() {
         buttonClick();
         newGameOptions().selectedGalaxyAge(options().selectedGalaxyAge());
@@ -643,18 +648,19 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
                 parent.advanceHelp();
                 break;
             case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
-                // new Presets().reloadDefaultConfig(options());
                 new AdvancedCfg().reloadDefaultConfig(options());
                 refreshThisMenu();
                 break;
-            case KeyEvent.VK_R: // BR: "G" = Reload User Presets
+            case KeyEvent.VK_G: // BR: "G" = Reload User Presets
                 new AdvancedCfg().reloadGlobalUserPresets(options());
-                // new Presets().loadUserConfig(options());
                 refreshThisMenu();
                 break;
             case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
                 new AdvancedCfg().reloadLocalUserPresets(options());
                 refreshThisMenu();
+                break;
+            case KeyEvent.VK_M: // BR: "M" = Go to Main Menu
+                goToMainMenu();
                 break;
             case KeyEvent.VK_U: // BR: "U" = Update User Presets
                 new Presets().saveToUserConfig(options());
@@ -782,8 +788,8 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
             return;
         if (hoverBox == null)
             return;
-        int x = e.getX();
-        int y = e.getY();
+        // int x = e.getX();
+        // int y = e.getY();
         if (hoverBox == galaxyAgeText.bounds())
             toggleGalaxyAge();
         else if (hoverBox == starDensityText.bounds())

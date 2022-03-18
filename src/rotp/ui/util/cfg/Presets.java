@@ -16,7 +16,6 @@
 
 package rotp.ui.util.cfg;
 
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import rotp.model.game.IGameOptions;
@@ -32,7 +31,7 @@ public class Presets extends Configs {
 	// ========================================================================
 	// Initializations Methods
 	//
-	Presets readUserConfig(IGameOptions options) {
+	Presets initPresets(IGameOptions options) {
 		fileName = "Presets.cfg";
 		HEADER_COMMENT = new Comments(List.of(
 			"        EXTENDED PLAYER'S POSTSETS",
@@ -43,16 +42,19 @@ public class Presets extends Configs {
 			"LOAD AND UPDATE", "SAVE DEFAULT", "UPDATE TO DEFAULT");
 		selectedEnableGlobal = "SAVE";
 		selectedConfigAction = "SAVE";
-
 		gameOptions = options;
-		settingsMap = new LinkedHashMap<String, Sections>();
+		return this;
+	}
+	Presets readUserConfig(IGameOptions options) {
+		initPresets(options);
 		// Load configuration file
 		loadSettingsMap();
 		// Update user presets key list
-		if (settingsMap.containsKey(ACTION_KEY))
-			selectedUserOptionsSet = settingsMap.get(ACTION_KEY).getGroupKeySet();
+		if (settingsMap().containsKey(ACTION_KEY))
+			selectedUserOptionsSet = settingsMap().get(ACTION_KEY).getGroupKeySet();
 		// Update Enable Setting
-		selectedEnableGlobal = settingsMap.get(ENABLE_KEY).getValidNonBlankSetting(ENABLE_KEY);
+		selectedEnableGlobal = settingsMap().get(ENABLE_KEY).getValidNonBlankSetting(ENABLE_KEY);
+		setFirstLoad(false);
 		return this;
 	}
 	// ========================================================================
@@ -63,14 +65,19 @@ public class Presets extends Configs {
 	// 	resetToDefault = false;
 	// 	if (ENABLE_LOAD.contains(selectedEnableGlobal)) overrideGameOptions();
 	// }
+	public void initUserConfig(IGameOptions options) {
+		setFirstLoad(true);
+		readUserConfig(options);
+		setFirstLoad(false);
+	}
 	public void reloadDefaultConfig(IGameOptions gameOptions) {
 		readUserConfig(gameOptions);
-		resetToDefault = true;
+		setResetToDefault(true);
 		overrideGameOptions();
-		resetToDefault = false;
+		setResetToDefault(false);
 	}
 	public void saveToUserConfig(IGameOptions options) {
-		readUserConfig(gameOptions);
+		readUserConfig(options);
 		updateAndSave();
 	}
 	// ========================================================================
@@ -78,10 +85,10 @@ public class Presets extends Configs {
 	//
 	@Override
 	void loadGameOptions(boolean u) {
-		initDV(u, ENABLE_KEY, selectedEnableGlobal, ENABLE_OPTIONS);
-		settingsMap.get(ENABLE_KEY).removeLocalEnable();
-		initDV(u, ACTION_KEY, selectedConfigAction, ACTION_OPTIONS);
-		settingsMap.get(ACTION_KEY).removeLocalEnable();
+		setSetting(ENABLE_KEY, selectedEnableGlobal, ENABLE_OPTIONS);
+		settingsMap().get(ENABLE_KEY).removeLocalEnable();
+		setSetting(ACTION_KEY, selectedConfigAction, ACTION_OPTIONS);
+		settingsMap().get(ACTION_KEY).removeLocalEnable();
 
 		new RaceCfg().loadGameOptions(this, u);
 		new GalaxyCfg().loadGameOptions(this, u);
@@ -92,7 +99,7 @@ public class Presets extends Configs {
 
 		// Build setting list excluding single config list
 		multipleUserOptionsSet = new LinkedHashSet<String>();
-		for (String setting : settingsMap.keySet()) {
+		for (String setting : settingsMap().keySet()) {
 			if ( !singleUserOptionsSet.contains(setting) ) {
 				multipleUserOptionsSet.add(setting);
 			}
@@ -100,11 +107,11 @@ public class Presets extends Configs {
 	}
 	@Override
 	void initComments() {
-		settingsMap.get(ENABLE_KEY).headComments(new Comments("---- MOD activation"));
-		settingsMap.get(ACTION_KEY).headComments(new Comments(
+		settingsMap().get(ENABLE_KEY).headComments(new Comments("---- MOD activation"));
+		settingsMap().get(ACTION_KEY).headComments(new Comments(
 				List.of("---- This is where you add your configuration list ",
 						"---- Multiple LOAD will follow this sequence")));
-		settingsMap.get(ACTION_KEY).bottomComments(
+		settingsMap().get(ACTION_KEY).bottomComments(
 			new Comments("(---- The last loaded Win)"));
 
 		new RaceCfg().initComments(this);

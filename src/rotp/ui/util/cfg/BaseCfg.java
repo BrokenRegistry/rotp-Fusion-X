@@ -9,26 +9,28 @@ public abstract class BaseCfg {
     public void reloadLocalUserPresets(IGameOptions gameOptions) {
         Presets presets = new Presets().readUserConfig(gameOptions);
         // User asked for this then it overload GLOBAL ENABLE
-        presets.resetToDefault = false;
+        presets.setResetToDefault(false);
         overrideGameOptions(presets);
     }
     public void reloadGlobalUserPresets(IGameOptions gameOptions) {
         Presets presets = new Presets().readUserConfig(gameOptions);
         // User asked for this then it overload GLOBAL ENABLE
-        presets.resetToDefault = false;
+        presets.setResetToDefault(false);
         presets.overrideGameOptions();
-   }
+        overrideGameOptions(presets);
+    }
     public void reloadDefaultConfig(IGameOptions gameOptions) {
-        Presets presets = new Presets().readUserConfig(gameOptions);
-        presets.resetToDefault = true;
-		overrideGameOptions(presets);
-        presets.resetToDefault = false;
+        Presets presets = new Presets().initPresets(gameOptions);
+        // presets.setResetToDefault(true);
+		setGameOptionsToDefault(presets);
+        // presets.setResetToDefault(false);
 	}
+
     // ========================================================================
 	// Initialization Methods
 	//
     abstract void loadGameOptions(Presets p, boolean u); // u for Update
     abstract void initComments(Presets p);
     abstract void overrideGameOptions (Presets p);
-
+    abstract void setGameOptionsToDefault (Presets p);
 }

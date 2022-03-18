@@ -23,62 +23,66 @@ public class ExtCfg extends BaseCfg {
     }
     // Other Methods
     void loadGameOptions(Presets p, boolean u) {
-		p.initDV(u, "MAXIMIZE EMPIRES SPACING", Spacing.selectedMaximizeEmpiresSpacing());
-		p.initDV(u, "PREF STARS PER EMPIRE",    Spacing.selectedPrefStarsPerEmpire(), 0, 1000000, 16, 24);
-		p.initDV(u, "MIN STARS PER EMPIRE",     Spacing.selectedMinStarsPerEmpire(), 0, 1000000, 4, 16);
-		p.initDV(u, "NO PLANET PCTS MULT",      selectedNoPlanetPctMult(), 0, 1000000, 0, 200);
+		p.setSetting("MAXIMIZE EMPIRES SPACING", Spacing.selectedMaximizeEmpiresSpacing());
+		p.setSetting("PREF STARS PER EMPIRE",    Spacing.selectedPrefStarsPerEmpire(), 0, 1000000, 16, 24);
+		p.setSetting("MIN STARS PER EMPIRE",     Spacing.selectedMinStarsPerEmpire(), 0, 1000000, 4, 16);
+		p.setSetting("NO PLANET PCTS MULT",      selectedNoPlanetPctMult(), 0, 1000000, 0, 200);
     }
     void initComments(Presets p) {
-        p.settingsMap.get("MAXIMIZE EMPIRES SPACING").optionsComments(p
+        p.settingsMap().get("MAXIMIZE EMPIRES SPACING").optionsComments(p
 			.new Comments("Empires may want space to breath"));
-        p.settingsMap.get("PREF STARS PER EMPIRE").optionsComments(p
+        p.settingsMap().get("PREF STARS PER EMPIRE").optionsComments(p
 			.new Comments("Determine default opponents number"));
-        p.settingsMap.get("MAXIMIZE EMPIRES SPACING").headComments(p
+        p.settingsMap().get("MAXIMIZE EMPIRES SPACING").headComments(p
             .new Comments(List.of("--------- BrokenRegistry's Options ---------", " ")));
     }
     void overrideGameOptions (Presets p) {
         String setting;
         Sections section;
-        LinkedHashMap<String, Sections> settingsMap = p.settingsMap;
+        LinkedHashMap<String, Sections> settingsMap = p.settingsMap();
 
         for (String userOption : p.selectedUserOptionsSet) {
-            if (p.resetToDefault || settingsMap.get(Configs.ACTION_KEY).getPairValue(userOption).toUpperCase().contains("LOAD")) {
+            if (p.resetToDefault() || settingsMap.get(Configs.ACTION_KEY).getPairValue(userOption).toUpperCase().contains("LOAD")) {
                 setting = "MAXIMIZE EMPIRES SPACING";
                 if (settingsMap.containsKey(setting)) {
                     section = settingsMap.get(setting);
-                    if (p.resetToDefault)
-                    Spacing.selectedMaximizeEmpiresSpacing(Configs.toBoolean(section.getDefaultValue()));
-                    else if (section.isSectionReadable(userOption))
+                    if (section.isSectionReadable(userOption))
                         Spacing.selectedMaximizeEmpiresSpacing(section.getBooleanSetting(userOption));
                 }
                 setting = "MIN STARS PER EMPIRE";
                 if (settingsMap.containsKey(setting)) {
                     section = settingsMap.get(setting);
-                    if (p.resetToDefault)
-                    Spacing.selectedMinStarsPerEmpire(Configs.getInteger(section.getDefaultValue(), 16));
-                    else if (section.isSectionReadable(userOption))
+                    if (section.isSectionReadable(userOption))
                         Spacing.selectedMinStarsPerEmpire(section.getIntegerSetting(userOption));
                 }
                 setting = "PREF STARS PER EMPIRE";
                 if (settingsMap.containsKey(setting)) {
                     section = settingsMap.get(setting);
-                    if (p.resetToDefault)
-                    Spacing.selectedPrefStarsPerEmpire(Configs.getInteger(section.getDefaultValue(), 16));
-                    else if (section.isSectionReadable(userOption))
+                    if (section.isSectionReadable(userOption))
                         Spacing.selectedPrefStarsPerEmpire(section.getIntegerSetting(userOption));
                 }
                 setting = "NO PLANET PCTS MULT";
                 if (settingsMap.containsKey(setting)) {
                     section = settingsMap.get(setting);
-                    if (p.resetToDefault)
-                        ExtCfg.selectedNoPlanetPctMult(Configs.getInteger(section.getDefaultValue(), 100));
-                    else if (section.isSectionReadable(userOption))
-                    ExtCfg.selectedNoPlanetPctMult(section.getIntegerSetting(userOption));
+                    if (section.isSectionReadable(userOption))
+                        ExtCfg.selectedNoPlanetPctMult(section.getIntegerSetting(userOption));
                 }
             } // \ if ACTION LOAD
         }
     }
-
+    @Override
+    void setGameOptionsToDefault(Presets p) {
+        String setting;
+        LinkedHashMap<String, String> defaultValues = p.defaultValuesMap();
+        setting = "MAXIMIZE EMPIRES SPACING";
+        Spacing.selectedMaximizeEmpiresSpacing(Configs.toBoolean(defaultValues.get(setting)));
+        setting = "MIN STARS PER EMPIRE";
+        Spacing.selectedMinStarsPerEmpire(Configs.getInteger(defaultValues.get(setting), 16));
+        setting = "PREF STARS PER EMPIRE";
+        Spacing.selectedPrefStarsPerEmpire(Configs.getInteger(defaultValues.get(setting), 16));
+        setting = "NO PLANET PCTS MULT";
+        ExtCfg.selectedNoPlanetPctMult(Configs.getInteger(defaultValues.get(setting), 100));
+    }
     // ------------------------------------------------------------------------
 	// Nested Classes
 	//

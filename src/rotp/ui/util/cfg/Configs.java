@@ -32,6 +32,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import rotp.Rotp;
+import rotp.ui.UserPreferences;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 abstract class Configs {
@@ -62,20 +64,21 @@ abstract class Configs {
 	static final List<String> ENABLE_OPTIONS = List.of("NO", "SAVE", "LOAD", "BOTH");
 	static final List<String> ENABLE_LOAD    = List.of("LOAD", "BOTH");
 	static final List<String> ENABLE_WRITE   = List.of("SAVE", "BOTH");
-
-	// Variables
+	private static final LinkedHashMap<String, String> defaultValuesMap = new LinkedHashMap<String, String>();
+	// Static Variables List<String> settingOptions
+	private static boolean resetToDefault = false;
+	private static boolean forceRandom   = false;
+	// Other Variables
 	List<String> ACTION_OPTIONS;
-	String currentSetting  = "";
-	boolean resetToDefault = false;
-	boolean forceRandom    = false;
 	LinkedHashMap<String, Sections> settingsMap;
 	LinkedHashSet<String> multipleUserOptionsSet;
 	LinkedHashSet<String> singleUserOptionsSet = new LinkedHashSet<String>(List.of(ENABLE_KEY));
 	LinkedHashSet<String> selectedUserOptionsSet = new LinkedHashSet<String>(List.of("User", "Last", "Cryslonoid"));
-	String selectedEnableGlobal;
-	String selectedConfigAction;
 	String filePath = Rotp.jarPath();
 	String fileName;
+	String currentSetting = "";
+	String selectedEnableGlobal = "SAVE";
+	String selectedConfigAction;
 	Comments HEADER_COMMENT;
 	Comments FOOTER_COMMENT;
 	// ========================================================================
@@ -87,6 +90,15 @@ abstract class Configs {
 	// ========================================================================
 	// Other Methods
 	//
+	LinkedHashMap<String, String> defaultValuesMap() { return defaultValuesMap;}
+	void    setResetToDefault (boolean b) { resetToDefault = b; }
+	boolean resetToDefault () { return resetToDefault; }
+	void    setFirstLoad (boolean b) { UserPreferences.firstLoad(b); }
+	boolean firstLoad() { return UserPreferences.firstLoad(); }
+	void    setForceRandom (boolean b) { forceRandom = b; }
+	boolean forceRandom () { return forceRandom; }
+//	void    settingsMap (LinkedHashMap<String, Sections> map) { settingsMap = map; }
+	LinkedHashMap<String, Sections> settingsMap () { return settingsMap; }
 	void updateAndSave() {
 		// Validate if save is allowed
 		selectedEnableGlobal = settingsMap.get(ENABLE_KEY).getValidNonBlankSetting(ENABLE_KEY);
@@ -138,6 +150,7 @@ abstract class Configs {
 	    }
 	}
 	void loadSettingsMap() {
+		settingsMap = new LinkedHashMap<String, Sections>();
 		// Init local default value
 		loadGameOptions(false); // To set default value
 		// Load the config file
@@ -185,37 +198,24 @@ abstract class Configs {
 			settingsMap.get(currentSetting).setKeyValuePair(configLine);
 		}
 	}
-	void initDV(boolean update, String key, String value, List<String> options) {
-		if ( settingsMap.containsKey(key) ) {
-			if (update) {
-				settingsMap.get(key).setLastValue(value);
-				return;
-			}
-			settingsMap.get(key).initSection(key, value, options);
-			return;
+	void setSetting(String key, String value, List<String> options) {
+		if(settingsMap.containsKey(key)) {
+			// update setting
+			settingsMap.get(key).setLastValue(value);
 		}
 		settingsMap.put(key, new Sections(key, value, options));
 	}
-	void initDV(boolean update, String key, boolean value) {
-		if ( settingsMap.containsKey(key) ) {
-			if (update) {
-				settingsMap.get(key).setLastValue(value);
-				return;
-			}
-			settingsMap.get(key).initSection(key, value);
-			return;
+	void setSetting(String key, boolean value) {
+		if(settingsMap.containsKey(key)) {
+			// update setting
+			settingsMap.get(key).setLastValue(value);
 		}
 		settingsMap.put(key, new Sections(key, value));
 	}
-	void initDV(boolean update, String key, Integer value,
-	                     Integer min, Integer max, Integer minR, Integer maxR) {
-		if ( settingsMap.containsKey(key) ) {
-			if (update) {
-				settingsMap.get(key).setLastValue(value);
-				return;
-			}
-			settingsMap.get(key).initSection(key, value, min, max, minR, maxR);
-			return;
+	void setSetting(String key, int value, int min, int max, int minR, int maxR) {
+		if(settingsMap.containsKey(key)) {
+			// update setting
+			settingsMap.get(key).setLastValue(value);
 		}
 		settingsMap.put(key, new Sections(key, value, min, max, minR, maxR));
 	}
@@ -273,7 +273,7 @@ abstract class Configs {
     	private KeyValuePair settingKey   = new KeyValuePair(LABEL_OF_SECTION_KEY, null);
 		private KeyValuePair localEnable  = new KeyValuePair(LABEL_OF_ENABLE_SECTION_KEY, "Both");
     	private KeyValuePair optionsList  = new KeyValuePair(HEAD_OF_OPTIONS, null);
-    	private KeyValuePair defaultValue = new KeyValuePair(HEAD_OF_DEFAULT, null);
+    	// private KeyValuePair defaultValue = new KeyValuePair(HEAD_OF_DEFAULT, null);
     	private KeyValuePair lastValue    = new KeyValuePair(HEAD_OF_LAST, null);
     	private Comments     settingComments;
     	private List<String> settingOptions;
@@ -293,44 +293,39 @@ abstract class Configs {
     	// Constructors
     	//
     	private Sections(String key, String defaultValue, List<String> settingOptions) { // String Value
-    		initSection(key, defaultValue, settingOptions);
+    		settingKey.setValue(key); // YES key! because the key is LABEL_OF_MAIN_KEY!
+    		setSettingOptions(settingOptions);
     		settingMap = new LinkedHashMap<String, KeyValuePair>();
+			if (firstLoad()) {
+				defaultValuesMap.put(key, defaultValue);
+			}
     	}
     	private Sections(String key, boolean defaultValue) { // Boolean Value
-    		initSection(key, defaultValue);
+    		settingKey.setValue(key); // YES key! because the key is LABEL_OF_MAIN_KEY!
+    		setSettingOptions(BOOLEAN_LIST);
     		settingMap = new LinkedHashMap<String, KeyValuePair>();
+			if (firstLoad()) {
+				defaultValuesMap.put(key, toYesNoString(defaultValue));
+			}
     		isBoolean  = true;
     	}
     	private Sections(String key, Integer defaultValue,
-						 Integer min, Integer max, Integer minR, Integer maxR) { // Integer Value
-    		initSection(key, defaultValue, min, max, minR, maxR);
-    		settingMap = new LinkedHashMap<String, KeyValuePair>();
-    		isInteger  = true;
-    	}
-    	// ------------------------------------------------------------------------
-    	// Initializers
-    	//
-    	private void initSection(String key, String value, List<String> settingOptions) { // String Value
+				Integer min, Integer max, Integer minR, Integer maxR) { // Integer Value
     		settingKey.setValue(key); // YES key! because the key is LABEL_OF_MAIN_KEY!
-    		defaultValue.setValue(settingNameToLabel(value));
-    		setSettingOptions(settingOptions);
-    	}
-    	private void initSection(String key, boolean value) { // Boolean Value
-    		settingKey.setValue(key); // YES key! because the key is LABEL_OF_MAIN_KEY!
-    		defaultValue.setValue(toYesNoString(value));
-    		setSettingOptions(BOOLEAN_LIST);
-    	}
-    	private void initSection(String key, Integer value,
-		                         Integer min, Integer max, Integer minR, Integer maxR) { // Integer Value
-    		settingKey.setValue(key); // YES key! because the key is LABEL_OF_MAIN_KEY!
-    		defaultValue.setValue(value.toString());
     		setSettingOptions(min, max, minR, maxR);
+    		settingMap = new LinkedHashMap<String, KeyValuePair>();
+			if (firstLoad()) {
+				defaultValuesMap.put(key, defaultValue.toString());
+			}
+    		isInteger  = true;
     	}
     	// ------------------------------------------------------------------------
     	// Getters and Setters
     	//
+		String getKey() { return settingKey.value; }
+
     	String getDefaultValue() {
-    		return defaultValue.getValue();
+    		return defaultValuesMap.get(getKey().toUpperCase());
     	}
     	String getLastValue() {
     		return lastValue.getValue();
@@ -342,10 +337,10 @@ abstract class Configs {
     		if (key != null && settingMap.containsKey(key)) {
     			return settingMap.get(key).getValue();
     		}
-    		return defaultValue.getValue();
+    		return getDefaultValue();
     	}
     	boolean getBooleanSetting(String key) {
-    		boolean preset = defaultValue.getBooleanValue();
+    		boolean preset = toBoolean(getDefaultValue());
     		if (key != null && isBoolean) {
     			String Key = key.toUpperCase();
     			if (settingMap.containsKey(Key)) {
@@ -357,7 +352,7 @@ abstract class Configs {
     		return preset;
     	}
     	Integer getIntegerSetting(String key) {
-    		Integer preset = defaultValue.getIntegerValue();
+    		Integer preset = getInteger(getDefaultValue(), 0);
     		if (key != null && isInteger) {
     			String Key = key.toUpperCase();
     			if (settingMap.containsKey(Key)) {
@@ -386,7 +381,7 @@ abstract class Configs {
     				}
     			}
     		}
-    		return defaultValue.getValue();
+    		return getDefaultValue();
     	}
     	String  getValidSetting(String key) {
     		if (key != null) {
@@ -398,7 +393,7 @@ abstract class Configs {
     		return "";
     	}
     	String  getValidNonBlankSetting(String key) {
-    		String value = defaultValue.getValue();
+    		String value = getDefaultValue();
     		if (key != null) {
     			value = getValidNonBlankValue(key);
     		}
@@ -414,7 +409,7 @@ abstract class Configs {
     				}
     			}
     		}
-    		return defaultValue.getValue();
+    		return getDefaultValue();
     	}
     	private void setKeyValuePair (KeyValuePair pair) { setKeyValuePair (pair.getKey(), pair.getValue()); }
     	private void setKeyValuePair (String key, String value) {
@@ -436,7 +431,6 @@ abstract class Configs {
     		maxValue  = max;
 			minRandom = minR;
     		maxRandom = maxR;
-    		//setSettingOptions(List.of(min.toString(), max.toString()));
     		setSettingOptions( List.of(
 				"Rmin = " + minR.toString(),
 				"Rmax = " + maxR.toString(),
@@ -463,9 +457,9 @@ abstract class Configs {
         	if (localEnable  != null    && localEnable.hasKey())       out += (localEnable.toString()     + System.lineSeparator());
         	if (settingComments != null && !settingComments.isEmpty()) out += (settingComments.toString() + System.lineSeparator());
         	if (optionsList  != null    && optionsList.hasKey())       out += (optionsList.toString()     + System.lineSeparator());
-			if (defaultValue != null && defaultValue.hasKey() && lastValue != null && lastValue.hasKey())
+			if (lastValue != null && lastValue.hasKey())
 				out += (String.format(KEY_FORMAT, HEAD_OF_INFO) +
-						defaultValue.getValue().toString() + " / " +
+						getDefaultValue() + " / " +
 						lastValue.getValue().toString() +
 						System.lineSeparator());
 			if (optionsComments != null && !optionsComments.isEmpty()) out += (optionsComments.toString() + System.lineSeparator());
@@ -538,7 +532,6 @@ abstract class Configs {
 // KeyValuePair
 //
     class KeyValuePair {
-    	private final Integer DEFAULT_VALUE = 0;
     	private String  key   = "";
     	private String  value = "";
    	// ------------------------------------------------------------------------
@@ -565,8 +558,7 @@ abstract class Configs {
     	//
 		private void setKey(String key)     { this.key = key; }
     	private void setValue(String value) { this.value = value; }
-    	private boolean getBooleanValue()   { return toBoolean(value); }
-    	private Integer getIntegerValue()   { return getInteger(value, DEFAULT_VALUE); }
+
     	private Integer getValue(Integer onWrong) { return getInteger(value, onWrong); }
     	private boolean getValue(boolean onWrong) { return toBoolean(value, onWrong); }
     	private String  getValue() { return value; }

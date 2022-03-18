@@ -50,9 +50,15 @@ In every configuration panel<br>
 ---
 ---
 ### Additional features / changelog<br>
-- 0.87.1 (2022-03-)
+- 0.87.1 (2022-03-18)
   - Updated to Xilmi Fusion 1.03.10<br>
   - Restored Maximize Empires spacing...<br>
+  - Implemented Press "D" to reload __D__efault settings.<br>
+  - Implemented Press "L" to load __L__ocal GUI settings. (Race, Galaxy and Advanced)<br>
+  - Implemented Press "G" to Load __G__lobal GUI settings.<br>
+  - Implemented Press "U" to __U__pdate global GUI settings.<br>
+  - The presets are no more loaded at the start.<br>
+  - The presets are read for each action, consequently the configuration file may be edited "live".<br>
 - 0.86.1 (2022-03-14)
   - Added user range option to randomised settings (min max)<br>
   - Added key actions to UI "R" to Reload "U" to Update<br>

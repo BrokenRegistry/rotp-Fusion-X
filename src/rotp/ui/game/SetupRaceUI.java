@@ -507,26 +507,21 @@ public final class SetupRaceUI extends BasePanel implements MouseListener, Mouse
                 goToGalaxySetup();
                 return;
             case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
-                // new Presets().reloadDefaultConfig(options());
                 new RaceCfg().reloadDefaultConfig(options());
+                options().selectedPlayerRace(options().startingRaceOptions().get(0));
                 refreshThisMenu();
-                break;
-            case KeyEvent.VK_R: // BR: "G" = Reload User Presets
-            new RaceCfg().reloadGlobalUserPresets(options());
-                // new Presets().loadUserConfig(options());
+                return;
+            case KeyEvent.VK_G: // BR: "G" = Reload User Presets
+                new RaceCfg().reloadGlobalUserPresets(options());
                 refreshThisMenu();
-                // init();
-                // repaint();
                 return;
             case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
-            new RaceCfg().reloadLocalUserPresets(options());
+                new RaceCfg().reloadLocalUserPresets(options());
                 refreshThisMenu();
-                break;
+                return;
             case KeyEvent.VK_U: // BR: "U" = Update User Presets
                 new Presets().saveToUserConfig(options());
                 refreshThisMenu();
-                // init();
-                // repaint();
                 return;
         }
     }
