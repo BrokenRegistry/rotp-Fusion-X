@@ -47,8 +47,8 @@ _Value = Random_<br>
 ---
 ---
 ### Additional features / changelog<br>
-- 0.88.1 (2022-03-)
-  - add modnar presets (not yet finished)<br>
+- 0.87.2 (2022-03-18)
+  - Update now working as it should<br>
 - 0.87.1 (2022-03-18)
   - Updated to Xilmi Fusion 1.03.10<br>
   - Restored Maximize Empires spacing...<br>
