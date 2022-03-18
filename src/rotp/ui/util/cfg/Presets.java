@@ -63,16 +63,6 @@ public class Presets extends Configs {
 	// ========================================================================
 	// Public Methods
 	//
-	// public void loadUserConfig(IGameOptions gameOptions) {
-	// 	readUserConfig(gameOptions);
-	// 	resetToDefault = false;
-	// 	if (ENABLE_LOAD.contains(selectedEnableGlobal)) overrideGameOptions();
-	// }
-	public void initUserConfig(IGameOptions options) {
-		setFirstLoad(true);
-		readUserConfig(options);
-		setFirstLoad(false);
-	}
 	public void reloadDefaultConfig(IGameOptions gameOptions) {
 		readUserConfig(gameOptions);
 		setResetToDefault(true);
