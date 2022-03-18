@@ -583,7 +583,7 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
     public void startGame() {
         starting = true;
         // BR: Save user presets
-        new Presets().saveToUserConfig(options());
+        // new Presets().saveToUserConfig(options());
 
         Race r = Race.keyed(newGameOptions().selectedPlayerRace());
         GameUI.gameName = r.setupName()+ " - "+text(newGameOptions().selectedGalaxySize())+ " - "+text(newGameOptions().selectedGameDifficulty());
