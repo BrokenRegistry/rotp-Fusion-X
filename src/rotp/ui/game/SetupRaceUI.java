@@ -500,6 +500,7 @@ public final class SetupRaceUI extends BasePanel implements MouseListener, Mouse
     public void keyPressed(KeyEvent e) {
         int k = e.getKeyCode();
         switch(k) {
+            case KeyEvent.VK_M: // BR: "M" = Go to Main Menu
             case KeyEvent.VK_ESCAPE:
                 goToMainMenu();
                 return;
