@@ -100,9 +100,9 @@ abstract class Configs {
 //	void    settingsMap (LinkedHashMap<String, Sections> map) { settingsMap = map; }
 	LinkedHashMap<String, Sections> settingsMap () { return settingsMap; }
 	void updateAndSave() {
-		// Validate if save is allowed
-		selectedEnableGlobal = settingsMap.get(ENABLE_KEY).getValidNonBlankSetting(ENABLE_KEY);
-		if (ENABLE_WRITE.contains(selectedEnableGlobal)) {
+		// // Validate if save is allowed
+		// selectedEnableGlobal = settingsMap.get(ENABLE_KEY).getValidNonBlankSetting(ENABLE_KEY);
+		// if (ENABLE_WRITE.contains(selectedEnableGlobal)) {
 			loadGameOptions(true); // To update config Last value
 			for (String userOption : selectedUserOptionsSet) {
 				userOption = userOption.toUpperCase();
@@ -127,7 +127,7 @@ abstract class Configs {
 				}
 			}
 			saveConfigFile();
-		}
+		// }
 	}
 	int saveConfigFile() {
 		try (FileOutputStream fout = new FileOutputStream(new File(filePath, fileName));
@@ -202,6 +202,7 @@ abstract class Configs {
 		if(settingsMap.containsKey(key)) {
 			// update setting
 			settingsMap.get(key).setLastValue(value);
+			return;
 		}
 		settingsMap.put(key, new Sections(key, value, options));
 	}
@@ -209,6 +210,7 @@ abstract class Configs {
 		if(settingsMap.containsKey(key)) {
 			// update setting
 			settingsMap.get(key).setLastValue(value);
+			return;
 		}
 		settingsMap.put(key, new Sections(key, value));
 	}
@@ -216,6 +218,7 @@ abstract class Configs {
 		if(settingsMap.containsKey(key)) {
 			// update setting
 			settingsMap.get(key).setLastValue(value);
+			return;
 		}
 		settingsMap.put(key, new Sections(key, value, min, max, minR, maxR));
 	}
@@ -422,7 +425,9 @@ abstract class Configs {
     				}
     		}
     	}
-    	void    setLastValue(String value) { lastValue.setValue(settingNameToLabel(value)); }
+    	void    setLastValue(String value) {
+			lastValue.setValue(settingNameToLabel(value));
+		}
 		void    removeLocalEnable() { localEnable = null; }
     	private void setLastValue(boolean value) { lastValue.setValue(toYesNoString(value)); }
     	private void setLastValue(Integer value) { lastValue.setValue(value.toString()); }
