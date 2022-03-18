@@ -12,12 +12,14 @@ Download site: https://github.com/Xilmi/rotp-coder/releases/<br>
 ---
 # Added features by BrokenRegistry
 ## Extended Configuration file: Presets.cfg
-Allowing full or partial control over most settings for new game start.
-- ### _Working sequence:_
-  - The Standard configuration file (Remnant.cfg) is loaded.
-  - The Extended presets file (Presets.cfg) is loaded and activated if ENABLE is either "Load" or "Both".
-  - The Player may change the parameters with the standard in game interface.
-  - When the "Start" button is activated, the presets file is updated if ENABLE is either "Save" or "Both".
+Allowing full or partial control over most settings for new game start.<br>
+The presets are loaded thru GUI Hotkeys (configuration panels only)
+### <u>User interfaces</u>
+  - "L" to load **L**ocal to the GUI presets settings. (Race, Galaxy and Advanced)<br>
+  - "G" to Load **G**lobal presets settings.<br>
+  - "D" to reload **D**efault settings (Local to the GUI).<br>
+  - "R" to reload all **_R**emnant.cfg default settings.<br>
+  - "U" to **U**pdate presets settings file.<br>
 ### <u>Player Presets</u>
 The player may add as many presets as necessary.<br>
 Each preset is given a name. They are listed at the begining of the file and associated with an action.<br>
@@ -31,17 +33,12 @@ Then all the useful settings are listed with their allowed option.<br>
 _LOCAL ENABLE_<br>
 Each setting may be localy enabled / disabled for Load and Save options<br>
 - LOCAL ENABLE OPTIONS = [No, Save, Load, Both]<br>
-- Any Local or Global "NO" has priority.<br>
 
 _Value = Random_<br>
 - Any setting may  be set to: Random<br>
 - A range may be specified for the randomisation: Random min max<br>
 - For String values, the range specify the options list range (start at 0)<br>
 - _For String values, the allowed list may be specified: Range o1, o2, o3 (Not yet functional)_<br>
-### <u>User interface</u>
-In every configuration panel<br>
-- Press "R" to reload the configuration file<br>
-- Press "U" to update the configuration file<br>
 ## Extended Settings
 ### Selection of the distance between Empires:
 - Option to specify a typical number of stars around each Empire.<br>
