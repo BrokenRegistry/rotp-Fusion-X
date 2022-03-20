@@ -26,6 +26,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import rotp.Rotp;
 import rotp.model.game.GameSession;
+import rotp.model.game.IGameOptions;
+import rotp.ui.util.cfg.UserSettings;
 import rotp.util.LanguageManager;
 import rotp.util.sound.SoundManager;
 
@@ -87,6 +89,8 @@ public class UserPreferences {
     private static int screenSizePct = 93;
     private static int backupTurns = 5; // modnar: change default turns between backups to 5
     private static boolean firstLoad = true; // BR:
+    private static boolean firstLoad2 = true; // BR:
+    private static UserSettings userSettings; // BR:
 
     public static void setToDefault() {
         autoColonize = false;
@@ -295,8 +299,18 @@ public class UserPreferences {
     public static void uiTexturePct(int i)    { uiTexturePct = i / 100.0f; }
     public static float uiTexturePct()        { return uiTexturePct; }
 
+    // BR:
     public static void firstLoad(boolean b) { firstLoad = b; }    // BR:
     public static boolean firstLoad ()      { return firstLoad; } // BR:
+    public static void firstLoad2(boolean b) { firstLoad2 = b; }    // BR:
+    public static boolean firstLoad2 ()      { return firstLoad2; } // BR:
+    public static void initUserSetting(IGameOptions options) {
+        if (firstLoad2()) {
+             userSettings = new UserSettings(options);
+             firstLoad2 (false);
+        }
+    }
+    // \BR:
 
     public static void loadAndSave() {
         load();
