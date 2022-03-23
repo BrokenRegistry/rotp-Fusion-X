@@ -47,6 +47,8 @@ _Value = Random_<br>
 ---
 ---
 ### Additional features / changelog<br>
+- 0.87.5 (2022-03-22)
+  - No code change, but the mini Jar and window .exe should now be OK! <br>
 - 0.87.4 (2022-03-22)
   - Remote build different from the local one... Try again <br>
 - 0.87.3 (2022-03-22)
