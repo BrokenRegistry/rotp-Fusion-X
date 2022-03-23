@@ -47,6 +47,8 @@ _Value = Random_<br>
 ---
 ---
 ### Additional features / changelog<br>
+- 0.87.3 (2022-03-22)
+  - Update now working as it should<br>
 - 0.87.2 (2022-03-18)
   - Update now working as it should<br>
 - 0.87.1 (2022-03-18)
