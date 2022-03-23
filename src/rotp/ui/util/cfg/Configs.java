@@ -465,12 +465,12 @@ abstract class Configs {
 			if (lastValue != null && lastValue.hasKey())
 				out += (String.format(KEY_FORMAT, HEAD_OF_INFO) +
 						settingNameToLabel(getDefaultValue()) + " / " +
-						lastValue.getValue().toString() +
+						settingNameToLabel(lastValue.getValue().toString()) +
 						System.lineSeparator());
 			if (optionsComments != null && !optionsComments.isEmpty()) out += (optionsComments.toString() + System.lineSeparator());
         	for (String option : groupOptions) {
         		if (!settingMap.containsKey(option.toUpperCase())) {
-        			settingMap.put(option.toUpperCase(), new KeyValuePair(option, getDefaultValue()));
+        			settingMap.put(option.toUpperCase(), new KeyValuePair(option, (settingNameToLabel(getDefaultValue()))));
         		}
         		 out += (settingMap.get(option.toUpperCase()).toString() + System.lineSeparator());
         	}
