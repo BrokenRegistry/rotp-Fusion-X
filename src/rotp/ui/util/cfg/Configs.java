@@ -464,7 +464,7 @@ abstract class Configs {
         	if (optionsList  != null    && optionsList.hasKey())       out += (optionsList.toString()     + System.lineSeparator());
 			if (lastValue != null && lastValue.hasKey())
 				out += (String.format(KEY_FORMAT, HEAD_OF_INFO) +
-						getDefaultValue() + " / " +
+						settingNameToLabel(getDefaultValue()) + " / " +
 						lastValue.getValue().toString() +
 						System.lineSeparator());
 			if (optionsComments != null && !optionsComments.isEmpty()) out += (optionsComments.toString() + System.lineSeparator());
@@ -479,27 +479,27 @@ abstract class Configs {
     	}
     	void actionSave(String key) {
 			// Section should be writable to overwrite with last value
-			if (isSectionWritable()) setKeyValuePair(key, getLastValue());
+			if (isSectionWritable()) setKeyValuePair(key, settingNameToLabel(getLastValue()));
 		}
     	void actionUpdate(String key) {
 			// if the key is absent, add it with last value
     		if (!settingMap.containsKey(key)) {
-    			setKeyValuePair(key, getLastValue());
+    			setKeyValuePair(key, settingNameToLabel(getLastValue()));
     			return;
     		}
 			// Section should be writable and value not blank
     		if (isSectionWritable() && !settingMap.get(key).isBlank())
-    			settingMap.get(key).setValue(getLastValue());
+    			settingMap.get(key).setValue(settingNameToLabel(getLastValue()));
     	}
     	void actionDefault(String key) {
 			// if the key is absent, add it with default value
     		if (!settingMap.containsKey(key)) {
-    			setKeyValuePair(key, getDefaultValue());
+    			setKeyValuePair(key, settingNameToLabel(getDefaultValue()));
     			return;
     		}
 			// Section should be writable and value not blank
 			if (isSectionWritable() && !settingMap.get(key).isBlank())
-					settingMap.get(key).setValue(getDefaultValue());
+					settingMap.get(key).setValue(settingNameToLabel(getDefaultValue()));
     	}
     	void headComments(Comments comments)    { headComments = comments; }
     	void settingComments(Comments comments) { settingComments = comments; }

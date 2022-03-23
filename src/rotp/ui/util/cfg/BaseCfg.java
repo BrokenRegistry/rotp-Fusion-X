@@ -3,7 +3,7 @@ package rotp.ui.util.cfg;
 import rotp.model.game.IGameOptions;
 
 public abstract class BaseCfg {
-    // ========================================================================
+      // ========================================================================
 	// Public Methods
 	//
     public void reloadLocalUserPresets(IGameOptions gameOptions) {
