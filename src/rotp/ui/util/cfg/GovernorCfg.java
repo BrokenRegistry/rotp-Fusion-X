@@ -4,7 +4,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import rotp.ui.UserPreferences;
-import rotp.ui.util.cfg.Configs.Sections;
+import br.config.Sections;
+//import rotp.ui.util.cfg.Configs.Sections;
+import br.config.comment.Comment;
 
 public class GovernorCfg extends BaseCfg {
     // Assocated GUI: .java
@@ -17,8 +19,8 @@ public class GovernorCfg extends BaseCfg {
 		p.setSetting("DIVERT EXCESS TO RESEARCH", UserPreferences.divertColonyExcessToResearch());
     }
     void initComments(Presets p) {
-        p.settingsMap().get("GOVERNOR ON BY DEFAULT").headComments(p
-			.new Comments(List.of("------------ Governor's Options ------------", "")));
+        p.settingsMap().get("GOVERNOR ON BY DEFAULT").headComments(
+			new Comment(List.of("------------ Governor's Options ------------", "")));
     }
     void overrideGameOptions (Presets p) {
         String setting;
@@ -26,7 +28,9 @@ public class GovernorCfg extends BaseCfg {
         LinkedHashMap<String, Sections> settingsMap = p.settingsMap();
         // IGameOptions gameOptions = p.gameOptions;
         for (String userOption : p.selectedUserOptionsSet) {
-            if (p.resetToDefault() || settingsMap.get(Configs.ACTION_KEY).getPairValue(userOption).toUpperCase().contains("LOAD")) {
+            if (p.resetToDefault() 
+            		|| settingsMap.get(Configs.ACTION_KEY)
+            			.getUserChoice(userOption).getAsKey().contains("LOAD")) {
 
             } // \ if ACTION LOAD
         }
@@ -34,7 +38,8 @@ public class GovernorCfg extends BaseCfg {
     @Override
     void setGameOptionsToDefault(Presets p) {
         String setting;
-        LinkedHashMap<String, String> defaultValues = p.defaultValuesMap();
+        LinkedHashMap<String, String> defaultValues = Presets.defaultValuesMap();
+//        LinkedHashMap<String, String> defaultValues = p.defaultValuesMap();
         // IGameOptions gameOptions = p.gameOptions;
 
     }

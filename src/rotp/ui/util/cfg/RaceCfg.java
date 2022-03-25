@@ -4,7 +4,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import rotp.model.game.IGameOptions;
-import rotp.ui.util.cfg.Configs.Sections;
+import br.config.Sections;
+//import rotp.ui.util.cfg.Configs.Sections;
+import br.config.comment.Comment;
 
 public class RaceCfg extends BaseCfg {
     // Assocated GUI: SetupRaceUI.java
@@ -23,8 +25,8 @@ public class RaceCfg extends BaseCfg {
     }
     @Override
     void initComments(Presets p) {
-        p.settingsMap().get("PLAYER RACE").headComments(p
-            .new Comments(List.of("", "--------- Races Game Options ---------", " ")));
+        p.settingsMap().get("PLAYER RACE").headComments(
+            new Comment(List.of("", "--------- Races Game Options ---------", " ")));
     }
     @Override
     void overrideGameOptions (Presets p) {
@@ -50,7 +52,8 @@ public class RaceCfg extends BaseCfg {
     @Override
     void setGameOptionsToDefault(Presets p) {
         String setting;
-        LinkedHashMap<String, String> defaultValues = p.defaultValuesMap();
+        LinkedHashMap<String, String> defaultValues = Presets.defaultValuesMap();
+//        LinkedHashMap<String, String> defaultValues = p.defaultValuesMap();
         IGameOptions gameOptions = p.gameOptions;
         setting = "PLAYER RACE";
         gameOptions.selectedPlayerRace(defaultValues.get(setting));

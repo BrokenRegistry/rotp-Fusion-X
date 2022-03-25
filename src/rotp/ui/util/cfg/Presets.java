@@ -19,6 +19,7 @@ package rotp.ui.util.cfg;
 import java.util.LinkedHashSet;
 import java.util.List;
 import rotp.model.game.IGameOptions;
+import br.config.comment.Comment;
 
 public class Presets extends Configs {
 
@@ -36,7 +37,7 @@ public class Presets extends Configs {
 	}
 	Presets initPresets(IGameOptions options) {
 		fileName = "Presets.cfg";
-		HEADER_COMMENT = new Comments(List.of(
+		HEADER_COMMENT = new Comment(List.of(
 			"        EXTENDED PLAYER'S POSTSETS",
 			"----------------------------------------- ",
 			" "));
@@ -74,7 +75,7 @@ public class Presets extends Configs {
 		updateAndSave();
 	}
 	// ========================================================================
-	// Overrrided abstract Methods
+	// Overridden Abstract Methods
 	//
 	@Override
 	void loadGameOptions(boolean u) {
@@ -100,12 +101,12 @@ public class Presets extends Configs {
 	}
 	@Override
 	void initComments() {
-		settingsMap().get(ENABLE_KEY).headComments(new Comments("---- MOD activation"));
-		settingsMap().get(ACTION_KEY).headComments(new Comments(
+		settingsMap().get(ENABLE_KEY).headComments(new Comment("---- MOD activation"));
+		settingsMap().get(ACTION_KEY).headComments(new Comment(
 				List.of("---- This is where you add your configuration list ",
 						"---- Multiple LOAD will follow this sequence")));
 		settingsMap().get(ACTION_KEY).bottomComments(
-			new Comments("(---- The last loaded Win)"));
+			new Comment("(---- The last loaded Win)"));
 
 		new RaceCfg().initComments(this);
 		new GalaxyCfg().initComments(this);

@@ -4,7 +4,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import rotp.ui.UserPreferences;
-import rotp.ui.util.cfg.Configs.Sections;
+import br.config.Sections;
+//import rotp.ui.util.cfg.Configs.Sections;
+import br.config.comment.Comment;
 
 public class ModnarCfg extends BaseCfg {
     // Assocated GUI: StartModOptionsUI.java
@@ -21,8 +23,8 @@ public class ModnarCfg extends BaseCfg {
 		p.setSetting("DYNAMIC DIFFICULTY", UserPreferences.dynamicDifficulty());
     }
     void initComments(Presets p) {
-        p.settingsMap().get("ALWAYS STAR GATES").headComments(p
-			.new Comments(List.of("------------- Modnar's Options -------------", " ")));
+        p.settingsMap().get("ALWAYS STAR GATES").headComments(
+			new Comment(List.of("------------- Modnar's Options -------------", " ")));
     }
     void overrideGameOptions (Presets p) {
         String setting;
@@ -30,7 +32,9 @@ public class ModnarCfg extends BaseCfg {
         LinkedHashMap<String, Sections> settingsMap = p.settingsMap();
 
         for (String userOption : p.selectedUserOptionsSet) {
-            if (p.resetToDefault() || settingsMap.get(Configs.ACTION_KEY).getPairValue(userOption).toUpperCase().contains("LOAD")) {
+            if (p.resetToDefault() 
+            		|| settingsMap.get(Configs.ACTION_KEY)
+            			.getUserChoice(userOption).getAsKey().contains("LOAD")) {
 
             } // \ if ACTION LOAD
         }
@@ -38,7 +42,8 @@ public class ModnarCfg extends BaseCfg {
     @Override
     void setGameOptionsToDefault(Presets p) {
         String setting;
-        LinkedHashMap<String, String> defaultValues = p.defaultValuesMap();
+        LinkedHashMap<String, String> defaultValues = Presets.defaultValuesMap();
+//        LinkedHashMap<String, String> defaultValues = p.defaultValuesMap();
         // IGameOptions gameOptions = p.gameOptions;
 
     }

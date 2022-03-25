@@ -3,7 +3,10 @@ package rotp.ui.util.cfg;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import rotp.ui.util.cfg.Configs.Sections;
+//import rotp.ui.util.cfg.Configs.Sections;
+import br.config.comment.Comment;
+import br.config.Sections;
+import br.config.StrField;
 
 public class ExtCfg extends BaseCfg {
     // Parameters are outside their class for an easier acces to their default value
@@ -29,12 +32,12 @@ public class ExtCfg extends BaseCfg {
 		p.setSetting("NO PLANET PCTS MULT",      selectedNoPlanetPctMult(), 0, 1000000, 0, 200);
     }
     void initComments(Presets p) {
-        p.settingsMap().get("MAXIMIZE EMPIRES SPACING").optionsComments(p
-			.new Comments("Empires may want space to breath"));
-        p.settingsMap().get("PREF STARS PER EMPIRE").optionsComments(p
-			.new Comments("Determine default opponents number"));
-        p.settingsMap().get("MAXIMIZE EMPIRES SPACING").headComments(p
-            .new Comments(List.of("--------- BrokenRegistry's Options ---------", " ")));
+        p.settingsMap().get("MAXIMIZE EMPIRES SPACING").optionsComments(
+			new Comment("Empires may want space to breath"));
+        p.settingsMap().get("PREF STARS PER EMPIRE").optionsComments(
+			new Comment("Determine default opponents number"));
+        p.settingsMap().get("MAXIMIZE EMPIRES SPACING").headComments(
+            new Comment(List.of("--------- BrokenRegistry's Options ---------", " ")));
     }
     void overrideGameOptions (Presets p) {
         String setting;
@@ -42,7 +45,9 @@ public class ExtCfg extends BaseCfg {
         LinkedHashMap<String, Sections> settingsMap = p.settingsMap();
 
         for (String userOption : p.selectedUserOptionsSet) {
-            if (p.resetToDefault() || settingsMap.get(Configs.ACTION_KEY).getPairValue(userOption).toUpperCase().contains("LOAD")) {
+            if (p.resetToDefault() || 
+            		settingsMap.get(Configs.ACTION_KEY)
+            			.getUserChoice(userOption).getAsKey().contains("LOAD")) {
                 setting = "MAXIMIZE EMPIRES SPACING";
                 if (settingsMap.containsKey(setting)) {
                     section = settingsMap.get(setting);
@@ -73,15 +78,20 @@ public class ExtCfg extends BaseCfg {
     @Override
     void setGameOptionsToDefault(Presets p) {
         String setting;
-        LinkedHashMap<String, String> defaultValues = p.defaultValuesMap();
+        LinkedHashMap<String, String> defaultValues = Presets.defaultValuesMap();
+//        LinkedHashMap<String, String> defaultValues = p.defaultValuesMap();
         setting = "MAXIMIZE EMPIRES SPACING";
-        Spacing.selectedMaximizeEmpiresSpacing(Configs.toBoolean(defaultValues.get(setting)));
+        Spacing.selectedMaximizeEmpiresSpacing(
+        		StrField.getOrDefault(defaultValues.get(setting), false));
         setting = "MIN STARS PER EMPIRE";
-        Spacing.selectedMinStarsPerEmpire(Configs.getInteger(defaultValues.get(setting), 16));
+        Spacing.selectedMinStarsPerEmpire(
+        		StrField.getOrDefault(defaultValues.get(setting), 16));
         setting = "PREF STARS PER EMPIRE";
-        Spacing.selectedPrefStarsPerEmpire(Configs.getInteger(defaultValues.get(setting), 16));
+        Spacing.selectedPrefStarsPerEmpire(
+        		StrField.getOrDefault(defaultValues.get(setting), 16));
         setting = "NO PLANET PCTS MULT";
-        ExtCfg.selectedNoPlanetPctMult(Configs.getInteger(defaultValues.get(setting), 100));
+        ExtCfg.selectedNoPlanetPctMult(
+        		StrField.getOrDefault(defaultValues.get(setting), 100));
     }
     // ------------------------------------------------------------------------
 	// Nested Classes

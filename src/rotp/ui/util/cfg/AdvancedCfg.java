@@ -3,11 +3,13 @@ package rotp.ui.util.cfg;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import br.config.Sections;
+import br.config.comment.Comment;
 import rotp.model.game.IGameOptions;
-import rotp.ui.util.cfg.Configs.Sections;
+//import rotp.ui.util.cfg.Configs.Sections;
 
 public class AdvancedCfg extends BaseCfg {
-    // Assocated GUI: StartOptionsUI.java
+    // Associated GUI: StartOptionsUI.java
 
     // Other Methods
     void loadGameOptions(Presets p, boolean u) {
@@ -30,8 +32,8 @@ public class AdvancedCfg extends BaseCfg {
 
     }
     void initComments(Presets p) {
-        p.settingsMap().get("GALAXY AGE").headComments(p
-            .new Comments(List.of(" ", "----------- Advanced Game Options -----------", " ")));
+        p.settingsMap().get("GALAXY AGE").headComments(
+            new Comment(List.of(" ", "----------- Advanced Game Options -----------", " ")));
     }
     void overrideGameOptions (Presets p) {
         String setting;
@@ -39,7 +41,9 @@ public class AdvancedCfg extends BaseCfg {
         LinkedHashMap<String, Sections> settingsMap = p.settingsMap();
         IGameOptions gameOptions = p.gameOptions;
         for (String userOption : p.selectedUserOptionsSet) {
-            if (p.resetToDefault() || settingsMap.get(Configs.ACTION_KEY).getPairValue(userOption).toUpperCase().contains("LOAD")) {
+            if (p.resetToDefault() || 
+            		settingsMap.get(Configs.ACTION_KEY)
+            			.getUserChoice(userOption).getAsKey().contains("LOAD")) {
                 setting = "GALAXY AGE";
                 if (settingsMap.containsKey(setting)) {
                     section = settingsMap.get(setting);
@@ -98,7 +102,7 @@ public class AdvancedCfg extends BaseCfg {
                 if (settingsMap.containsKey(setting)) {
                     section = settingsMap.get(setting);
                     if (p.resetToDefault())
-                        gameOptions.selectedAutoplayOption(section.getDefaultValue());
+                        gameOptions.selectedAutoplayOption(section.getDefaultValueAsString());
                     else if (section.isSectionReadable(userOption))
                         gameOptions.selectedAutoplayOption(section.getValidSetting(userOption));
                 }
@@ -138,7 +142,8 @@ public class AdvancedCfg extends BaseCfg {
     @Override
     void setGameOptionsToDefault(Presets p) {
         String setting;
-        LinkedHashMap<String, String> defaultValues = p.defaultValuesMap();
+        LinkedHashMap<String, String> defaultValues = Presets.defaultValuesMap();
+//        LinkedHashMap<String, String> defaultValues = p.defaultValuesMap();
         IGameOptions gameOptions = p.gameOptions;
         setting = "GALAXY AGE";
                 gameOptions.selectedGalaxyAge(defaultValues.get(setting));

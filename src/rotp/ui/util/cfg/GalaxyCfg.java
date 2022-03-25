@@ -4,7 +4,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import rotp.model.game.IGameOptions;
-import rotp.ui.util.cfg.Configs.Sections;
+import br.config.Sections;
+//import rotp.ui.util.cfg.Configs.Sections;
+import br.config.comment.Comment;
 
 public class GalaxyCfg extends BaseCfg {
     // Assocated GUI: SetupGalaxyUI.java
@@ -24,8 +26,8 @@ public class GalaxyCfg extends BaseCfg {
                                                                            1, gameOptions.maximumOpponentsOptions());
     }
     void initComments(Presets p) {
-        p.settingsMap().get("GALAXY SHAPE").headComments(p
-			.new Comments(List.of(" ", "------------- Galaxy Options -------------", " ")));
+        p.settingsMap().get("GALAXY SHAPE").headComments(
+			new Comment(List.of(" ", "------------- Galaxy Options -------------", " ")));
     }
     void overrideGameOptions (Presets p) {
         String setting;
@@ -34,7 +36,9 @@ public class GalaxyCfg extends BaseCfg {
         IGameOptions gameOptions = p.gameOptions;
 
         for (String userOption : p.selectedUserOptionsSet) {
-            if (p.resetToDefault() || settingsMap.get(Configs.ACTION_KEY).getPairValue(userOption).toUpperCase().contains("LOAD")) {
+            if (p.resetToDefault() 
+            		|| settingsMap.get(Configs.ACTION_KEY)
+            			.getUserChoice(userOption).getAsKey().contains("LOAD")) {
                 setting = "GALAXY SHAPE";
                 if (settingsMap.containsKey(setting)) {
                     section = settingsMap.get(setting);
@@ -77,7 +81,8 @@ public class GalaxyCfg extends BaseCfg {
     @Override
     void setGameOptionsToDefault(Presets p) {
         String setting;
-        LinkedHashMap<String, String> defaultValues = p.defaultValuesMap();
+        LinkedHashMap<String, String> defaultValues = Presets.defaultValuesMap();
+//        LinkedHashMap<String, String> defaultValues = p.defaultValuesMap();
         IGameOptions gameOptions = p.gameOptions;
         setting = "GALAXY SHAPE";
         gameOptions.selectedGalaxyShape(defaultValues.get(setting));
