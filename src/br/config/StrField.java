@@ -78,7 +78,7 @@ public class StrField {
 		return this;
 	}
 	/**
-	 * return raw value
+	 * return raw value as String
 	 */
 	public String get() { 
 		return strField;
@@ -206,31 +206,32 @@ public class StrField {
 	 * check if is member of RANDOM_LIST
 	 */
 	public boolean isRandom() {
-		return keyTest(RANDOM_ID);
+		return getAsKey().contains(RANDOM_ID);
 	}
 	/**
-	 * Get the parameters following RANDOM_ID as String
+	 * Extract the parameters following RANDOM_ID as String
 	 */
-	public String getRandomParametersString() {
+	public String extractRandomParametersString() {
 		return getAsKey().replace(RANDOM_ID, "").strip();
 	}
 	/**
-	 * Get the parameters following RANDOM_ID as List
+	 * Extract the parameters following RANDOM_ID as List
 	 */
-	public String[] getRandomParameters() {
-		return getRandomParametersString().split(RANDOM_PARAMETERS_SEPARATOR);
+	public String[] extractRandomParameters() {
+		return extractRandomParametersString().split(RANDOM_PARAMETERS_SEPARATOR);
 	}
 	/**
-	 * Get the parameters following RANDOM_ID as List
+	 * Extract the parameters following RANDOM_ID as List
+	 * And return as integer Value
 	 */
-	public int[] getOrDefaultMinMaxRandomParameters(int min, int max) {
+	public int[] extractOrDefaultMinMaxRandomParameters(int min, int max) {
 		int userMin = min;
 		int userMax = max;
-		String[] param = getRandomParameters();
+		String[] param = extractRandomParameters();
 		if (param.length > 0) {
 			userMin = StrField.getOrDefault(param[0], min);
 			if (param.length > 1) {
-				userMax = StrField.getOrDefault(param[0], max);
+				userMax = StrField.getOrDefault(param[1], max);
 			}
 		}
 		return new int[] {userMin, userMax} ;

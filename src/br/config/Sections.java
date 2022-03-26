@@ -10,6 +10,13 @@ import br.config.comment.Comment;
 import rotp.ui.util.cfg.Presets;
 
 public class Sections {
+	static final List<String> BOOLEAN_LIST   = List.of("YES", "NO", "TRUE", "FALSE");
+	static final String HEAD_OF_INFO    = "# DEFAULT / LAST";
+	static final String LABEL_OF_SECTION_KEY = "¦ SETTING";
+	static final String LABEL_OF_ENABLE_SECTION_KEY = "¦ LOCAL ENABLE";
+	static final String HEAD_OF_OPTIONS = "# OPTIONS";
+	static final String HEAD_OF_LAST    = "# LAST";
+//	static final String HEAD_OF_DEFAULT = "# DEFAULT";
 	private Comment      headComments;
 	private UserChoice settingKey   = new UserChoice(LABEL_OF_SECTION_KEY, "");
 	private UserChoice localEnable  = new UserChoice(LABEL_OF_ENABLE_SECTION_KEY, "Both");
@@ -135,7 +142,7 @@ public class Sections {
 		Integer preset = getDefaultValue().getOrDefault(0);
 		StrField setting = getUserChoice(key);
 		if (setting.isRandom()) {
-			return getIntegerRandom(setting.getOrDefaultMinMaxRandomParameters(minRandom, maxRandom));
+			return getIntegerRandom(setting.extractOrDefaultMinMaxRandomParameters(minRandom, maxRandom));
 		}
 		return setting.getOrDefault(preset);
 	}
@@ -144,14 +151,14 @@ public class Sections {
 	 */
 	private String getValidValue(String key) {
 		String preset = getDefaultValueAsString();
-		StrField setting = getUserChoice(key);
-		if (setting.isRandom()) {
-			int[] rndParam = setting.getOrDefaultMinMaxRandomParameters(0, settingOptions.size()-1); // (defaultMin, defaultMax)
+		StrField userChoice = getUserChoice(key);
+		if (userChoice.isRandom()) { 
+			int[] rndParam = userChoice.extractOrDefaultMinMaxRandomParameters(0, settingOptions.size()-1); // (defaultMin, defaultMax)
 			int rnd = getIntegerRandom(rndParam);
 			String result = settingOptions.get(rnd);
 			return settingNameToLabel(result);
 		}
-		return setting.getOrDefault(preset);
+		return userChoice.getOrDefault(preset);
 	}
 	/**
 	 * Return Setting's selected User Choice as ROTP Understand
@@ -237,41 +244,41 @@ public class Sections {
 	// ------------------------------------------------------------------------
 	// Other Methods
 	//
-	public String toString(LinkedHashSet<String> groupOptions) {
+	public String toPrint(LinkedHashSet<String> groupOptions) {
 		String out = "";
     	if (headComments != null && !headComments.isEmpty()) {
-    		out += (headComments.toString() + System.lineSeparator());
+    		out += (headComments.toPrint() + System.lineSeparator());
     	}
     	if (settingKey != null && settingKey.hasKey()) {
-    		out += (settingKey.toString() + System.lineSeparator());
+    		out += (settingKey.toPrint() + System.lineSeparator());
     	}
     	if (localEnable != null && localEnable.hasKey()) {
-    		out += (localEnable.toString() + System.lineSeparator());
+    		out += (localEnable.toPrint() + System.lineSeparator());
     	}
     	if (settingComments != null && !settingComments.isEmpty()) {
-    		out += (settingComments.toString() + System.lineSeparator());
+    		out += (settingComments.toPrint() + System.lineSeparator());
     	}
     	if (optionsList != null && optionsList.hasKey()) {
-    		out += (optionsList.toString() + System.lineSeparator());
+    		out += (optionsList.toPrint() + System.lineSeparator());
     	}
 		if (lastValue != null && lastValue.hasKey()) {
 			out += (String.format(UserChoice.KEY_FORMAT, HEAD_OF_INFO) +
-					getDefaultValue() + " / " +
+					settingNameToLabel(getDefaultValueAsString()) + " / " +
 					settingNameToLabel(lastValue.getValue().toString()) +
 					System.lineSeparator());
 		}
 		if (optionsComments != null && !optionsComments.isEmpty()) {
-			out += (optionsComments.toString() + System.lineSeparator());
+			out += (optionsComments.toPrint() + System.lineSeparator());
 		}
     	for (String option : groupOptions) {
     		if (!settingMap.containsKey(option.toUpperCase())) {
     			settingMap.put(option.toUpperCase(), 
     					new UserChoice(option, (getDefaultValue())));
     		}
-    		 out += (settingMap.get(option.toUpperCase()).toString() + System.lineSeparator());
+    		out += (settingMap.get(option.toUpperCase()).toPrint() + System.lineSeparator());
     	}
     	if (bottomComments != null && !bottomComments.isEmpty()) { 
-    		out += (bottomComments.toString() + System.lineSeparator()); 
+    		out += (bottomComments.toPrint() + System.lineSeparator()); 
     		}
     	return out;
 	}
@@ -346,13 +353,7 @@ public class Sections {
 	}
 	// ==============================================================
 	// From Configs
-	static final List<String> BOOLEAN_LIST   = List.of("YES", "NO", "TRUE", "FALSE");
-	static final String HEAD_OF_INFO    = "# DEFAULT / LAST";
-	static final String LABEL_OF_SECTION_KEY = "¦ SETTING";
-	static final String LABEL_OF_ENABLE_SECTION_KEY = "¦ LOCAL ENABLE";
-	static final String HEAD_OF_OPTIONS = "# OPTIONS";
-	static final String HEAD_OF_LAST    = "# LAST";
-//	static final String HEAD_OF_DEFAULT = "# DEFAULT";
+
 	
 	private static Integer getIntegerRandom(int min, int max) {
 		int diff = max - min;

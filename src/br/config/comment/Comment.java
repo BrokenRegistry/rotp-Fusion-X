@@ -49,7 +49,7 @@ public class Comment {
     public boolean isEmpty() {
         return commentList == null || commentList.isEmpty();
     }
-    public String toString() {
+    public String toPrint() {
         if (isEmpty()) { 
         	return new CommentLine("").toString();
         }

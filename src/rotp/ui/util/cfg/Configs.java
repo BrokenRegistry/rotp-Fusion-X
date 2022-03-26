@@ -116,15 +116,19 @@ abstract class Configs {
 		try (FileOutputStream fout = new FileOutputStream(new File(filePath, fileName));
 		PrintWriter out = new PrintWriter(new OutputStreamWriter(fout, "UTF-8")); )
 		{
-	    	if (HEADER_COMMENT != null && !HEADER_COMMENT.isEmpty()) { out.println(HEADER_COMMENT.toString()); }
+	    	if (HEADER_COMMENT != null && !HEADER_COMMENT.isEmpty()) { 
+	    		out.println(HEADER_COMMENT.toPrint()); 
+	    		}
 	        for (String setting : singleUserOptionsSet) {
-	    		out.println(settingsMap.get(setting).toString(new LinkedHashSet<String>(List.of(setting))));
+	    		out.println(settingsMap.get(setting).toPrint(new LinkedHashSet<String>(List.of(setting))));
 			}
 			settingsMap.get(ACTION_KEY).setLastValue("-");
 			for (String setting : multipleUserOptionsSet) {
-				out.println(settingsMap.get(setting).toString(selectedUserOptionsSet));
+				out.println(settingsMap.get(setting).toPrint(selectedUserOptionsSet));
 			}
-	       	if (FOOTER_COMMENT != null && !FOOTER_COMMENT.isEmpty()) { out.println(FOOTER_COMMENT.toString()); }
+	       	if (FOOTER_COMMENT != null && !FOOTER_COMMENT.isEmpty()) {
+	       		out.println(FOOTER_COMMENT.toPrint()); 
+	       		}
 			return 0;
 	    }
 	    catch (IOException e) {

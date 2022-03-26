@@ -176,7 +176,7 @@ public class UserChoice {
 	// Other Methods
 	//
 	public int[] getRandomParameters(int min, int max) {
-		return value.getOrDefaultMinMaxRandomParameters(min, max);
+		return value.extractOrDefaultMinMaxRandomParameters(min, max);
 	}
 	public boolean isValid(Integer min, Integer max) {
 		Integer val = value.getOrDefault(min - 1);
@@ -206,7 +206,7 @@ public class UserChoice {
 	public boolean isReadable() { 
 		return value.isMemberOf(ENABLE_LOAD);
 	}
-	public String toString() {
+	public String toPrint() {
 		return String.format(KEY_FORMAT, key.toString()) + value.getCapitalized(true);
 	}
 //	public static boolean isRandomValue(StrField value) {
