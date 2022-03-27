@@ -6,7 +6,7 @@ import java.util.List;
 //import rotp.ui.util.cfg.Configs.Sections;
 import br.config.comment.Comment;
 import br.config.Sections;
-import br.config.StrField;
+import br.config.CfgField;
 
 public class ExtCfg extends BaseCfg {
     // Parameters are outside their class for an easier acces to their default value
@@ -47,7 +47,7 @@ public class ExtCfg extends BaseCfg {
         for (String userOption : p.selectedUserOptionsSet) {
             if (p.resetToDefault() || 
             		settingsMap.get(Configs.ACTION_KEY)
-            			.getUserChoice(userOption).getAsKey().contains("LOAD")) {
+            			.getCfgLine(userOption).toKey().contains("LOAD")) {
                 setting = "MAXIMIZE EMPIRES SPACING";
                 if (settingsMap.containsKey(setting)) {
                     section = settingsMap.get(setting);
@@ -82,16 +82,16 @@ public class ExtCfg extends BaseCfg {
 //        LinkedHashMap<String, String> defaultValues = p.defaultValuesMap();
         setting = "MAXIMIZE EMPIRES SPACING";
         Spacing.selectedMaximizeEmpiresSpacing(
-        		StrField.getOrDefault(defaultValues.get(setting), false));
+        		CfgField.getOrDefault(defaultValues.get(setting), false));
         setting = "MIN STARS PER EMPIRE";
         Spacing.selectedMinStarsPerEmpire(
-        		StrField.getOrDefault(defaultValues.get(setting), 16));
+        		CfgField.getOrDefault(defaultValues.get(setting), 16));
         setting = "PREF STARS PER EMPIRE";
         Spacing.selectedPrefStarsPerEmpire(
-        		StrField.getOrDefault(defaultValues.get(setting), 16));
+        		CfgField.getOrDefault(defaultValues.get(setting), 16));
         setting = "NO PLANET PCTS MULT";
         ExtCfg.selectedNoPlanetPctMult(
-        		StrField.getOrDefault(defaultValues.get(setting), 100));
+        		CfgField.getOrDefault(defaultValues.get(setting), 100));
     }
     // ------------------------------------------------------------------------
 	// Nested Classes

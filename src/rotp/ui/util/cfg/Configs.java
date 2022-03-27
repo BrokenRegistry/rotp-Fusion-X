@@ -31,7 +31,7 @@ import java.util.List;
 import rotp.Rotp;
 import rotp.ui.UserPreferences;
 import br.config.comment.Comment;
-import br.config.UserChoice;
+import br.config.CfgLine;
 import br.config.Sections;
 
 abstract class Configs {
@@ -76,21 +76,38 @@ abstract class Configs {
 	// ========================================================================
 	// Other Methods
 	//
-	public static LinkedHashMap<String, String> defaultValuesMap() { return defaultValuesMap;}
-	void    setResetToDefault (boolean b) { resetToDefault = b; }
-	boolean resetToDefault () { return resetToDefault; }
-	void    setFirstLoad (boolean b) { UserPreferences.firstLoad(b); }
+	public static LinkedHashMap<String, String> defaultValuesMap() {
+		return defaultValuesMap;
+	}
+	void setResetToDefault (boolean b) {
+		resetToDefault = b;
+	}
+	boolean resetToDefault () {
+		return resetToDefault;
+	}
+	void setFirstLoad (boolean b) {
+		UserPreferences.firstLoad(b);
+	}
 	public static boolean firstLoad() { 
 		return UserPreferences.firstLoad();
 	}
-	void    setForceRandom (boolean b) { forceRandom = b; }
-	boolean forceRandom () { return forceRandom; }
+	void setForceRandom (boolean b) {
+		forceRandom = b;
+	}
+	boolean forceRandom() {
+		return forceRandom;
+	}
 	LinkedHashMap<String, Sections> settingsMap () { return settingsMap; }
+	/**
+	 * Load the config File to the setting Map
+	 * Update the setting Map with the current game option
+	 * Write the setting Map Contents to the config file
+	 */
 	void updateAndSave() {
 		loadGameOptions(true); // To update config Last value
 		for (String userOption : selectedUserOptionsSet) {
 			userOption = userOption.toUpperCase();
-			String action = settingsMap.get(ACTION_KEY).getUserChoice(userOption).getAsKey();
+			String action = settingsMap.get(ACTION_KEY).getCfgLine(userOption).toKey();
 			if (action.contains("SAVE")) {
 				for(String setting : multipleUserOptionsSet) {
 				if (setting == ACTION_KEY) continue;
@@ -112,6 +129,10 @@ abstract class Configs {
 		}
 		saveConfigFile();
 	}
+	/**
+	 * Write the setting Map Contents to the config file
+	 * Return 0 if OK, -1 if not
+	 */
 	int saveConfigFile() {
 		try (FileOutputStream fout = new FileOutputStream(new File(filePath, fileName));
 		PrintWriter out = new PrintWriter(new OutputStreamWriter(fout, "UTF-8")); )
@@ -120,11 +141,13 @@ abstract class Configs {
 	    		out.println(HEADER_COMMENT.toPrint()); 
 	    		}
 	        for (String setting : singleUserOptionsSet) {
-	    		out.println(settingsMap.get(setting).toPrint(new LinkedHashSet<String>(List.of(setting))));
+	    		out.println(settingsMap.get(setting)
+	    				.toPrint(new LinkedHashSet<String>(List.of(setting))));
 			}
 			settingsMap.get(ACTION_KEY).setLastValue("-");
 			for (String setting : multipleUserOptionsSet) {
-				out.println(settingsMap.get(setting).toPrint(selectedUserOptionsSet));
+				out.println(settingsMap.get(setting)
+						.toPrint(selectedUserOptionsSet));
 			}
 	       	if (FOOTER_COMMENT != null && !FOOTER_COMMENT.isEmpty()) {
 	       		out.println(FOOTER_COMMENT.toPrint()); 
@@ -136,10 +159,14 @@ abstract class Configs {
 	        return -1;
 	    }
 	}
+	/**
+	 * Initial Load of the setting Map
+	 */
 	void loadSettingsMap() {
 		settingsMap = new LinkedHashMap<String, Sections>();
 		// Init local default value
-		loadGameOptions(false); // To set default value
+		final boolean update = false; 
+		loadGameOptions(update); // To set default value
 		// Load the config file
 		loadConfigFile();
 		initComments();
@@ -147,15 +174,15 @@ abstract class Configs {
 	/**
 	 * Load the configuration file and process its contents
 	 */
-	void loadConfigFile () {
+	void loadConfigFile() {
         File configFile = new File(filePath, fileName);
-        if ( configFile.exists() ) {
-        	try ( BufferedReader in = new BufferedReader(
+        if (configFile.exists()) {
+        	try (BufferedReader in = new BufferedReader(
         								new InputStreamReader(
         									new FileInputStream(configFile), "UTF-8"));) {
         		String line;
         		if (in != null) {
-        			while ((line = in.readLine()) != null) loadLine(line.trim());
+        			while ((line = in.readLine()) != null) loadLine(line.strip());
         		}
         	}
         	catch (FileNotFoundException e) {
@@ -174,24 +201,24 @@ abstract class Configs {
 	 */
 	void loadLine(String line) {
 		// test for emptiness
-		if ( line.isEmpty() ) return;
+		if (line.isEmpty()) return;
 		// test for comment
-		if ( Comment.isComment(line) ) return;
+		if (Comment.isComment(line)) return;
 		// test for setting
-		UserChoice configLine = new UserChoice(line);
-		if ( configLine.getKey().isBlank() ) return;
+		CfgLine configLine = new CfgLine(line);
+		if (configLine.leftSide().isBlank()) return;
 		add(configLine);
 	}
 	/**
 	 * Add User Choice from configuration line
 	 */
-	void add(UserChoice configLine) {
-		if ( configLine.isSectionKey() ) {
-			currentSetting = configLine.getValueAsKey();
+	void add(CfgLine configLine) {
+		if ( configLine.leftSide().isSectionKey() ) {
+			currentSetting = configLine.rightSide().toKey();
 			return;
 		}
 		if ( settingsMap.containsKey(currentSetting) ) {
-			settingsMap.get(currentSetting).setUserChoice(configLine);
+			settingsMap.get(currentSetting).setCfgLine(configLine);
 		}
 	}
 	/**

@@ -15,13 +15,13 @@
 
 package br.config.comment;
 
-import br.config.StrField;
+import br.config.CfgField;
 
 public class CommentLine {
     private static final String KEY     = "#";
     private static final String SPACER  = " ";
     private static final String KEY_PRT = KEY + SPACER;
-    private StrField comment = new StrField();
+    private String comment = "";
 
     // ------------------------------------------------------------------------
     // Constructors
@@ -29,25 +29,62 @@ public class CommentLine {
     CommentLine(String newComment) {
         set(newComment);
     }
+    CommentLine(CfgField newComment) {
+        set(newComment);
+    }
     // ------------------------------------------------------------------------
     // Getters and Setters
     //
-    void set(String newComment) {
-        comment.set(newComment);
+    /**
+	 * set a new String value
+	 * Return current object to allow chaining
+	 */
+    CommentLine set(String newComment) {
+        comment = CfgField.neverNull(newComment);
+        return this;
+    }
+    /**
+	 * set a new CfgField value
+	 * Return current object to allow chaining
+	 */
+    CommentLine set(CfgField newComment) {
+        comment = newComment.toString();
+        return this;
     }
     // ------------------------------------------------------------------------
-    // Other package Methods
+    // Other Package Methods
     //
+    /**
+	 * Check if null or empty
+	 */
     boolean isEmpty() {
-        return comment.isEmpty();
+        return comment == null || comment.isEmpty();
     }
-    public String toString() {
-        return KEY_PRT + comment.toString();
+    /**
+	 * Return a String ready to be printed
+	 */
+    String toPrint() {
+        return KEY_PRT + comment;
     }
     // ------------------------------------------------------------------------
-    // Static Methods
+    // Overrider
     //
+    public String toString() {
+        return toPrint();
+    }    
+    // ------------------------------------------------------------------------
+    // Package Static Methods
+    //
+    /**
+	 * Check if the string is a comment
+	 */
 	static boolean isComment(String line) {
-	    return StrField.clean(line).startsWith(KEY);
+	    return CfgField.clean(line).startsWith(KEY);
+    }
+	/**
+	 * Check if the CfgField is a comment
+	 */
+	static boolean isComment(CfgField line) {
+	    return line.toKey().startsWith(KEY);
     }
 }

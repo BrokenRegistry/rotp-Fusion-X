@@ -38,7 +38,7 @@ public class GalaxyCfg extends BaseCfg {
         for (String userOption : p.selectedUserOptionsSet) {
             if (p.resetToDefault() 
             		|| settingsMap.get(Configs.ACTION_KEY)
-            			.getUserChoice(userOption).getAsKey().contains("LOAD")) {
+            			.getCfgLine(userOption).toKey().contains("LOAD")) {
                 setting = "GALAXY SHAPE";
                 if (settingsMap.containsKey(setting)) {
                     section = settingsMap.get(setting);

@@ -34,7 +34,7 @@ public class ModnarCfg extends BaseCfg {
         for (String userOption : p.selectedUserOptionsSet) {
             if (p.resetToDefault() 
             		|| settingsMap.get(Configs.ACTION_KEY)
-            			.getUserChoice(userOption).getAsKey().contains("LOAD")) {
+            			.getCfgLine(userOption).toKey().contains("LOAD")) {
 
             } // \ if ACTION LOAD
         }
