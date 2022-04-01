@@ -3,13 +3,13 @@ package rotp.ui.util.cfg;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-//import rotp.ui.util.cfg.Configs.Sections;
+//import rotp.ui.util.cfg.Configs.Section;
 import br.config.comment.Comment;
-import br.config.Sections;
+import br.config.Section;
 import br.config.CfgField;
 
 public class ExtCfg extends BaseCfg {
-    // Parameters are outside their class for an easier acces to their default value
+    // Parameters are outside their class for an easier access to their default value
     // Spacing
     private static boolean selectedMaximizeEmpiresSpacing = true;
     private static Integer selectedPrefStarsPerEmpire = 16;
@@ -41,8 +41,8 @@ public class ExtCfg extends BaseCfg {
     }
     void overrideGameOptions (Presets p) {
         String setting;
-        Sections section;
-        LinkedHashMap<String, Sections> settingsMap = p.settingsMap();
+        Section section;
+        LinkedHashMap<String, Section> settingsMap = p.settingsMap();
 
         for (String userOption : p.selectedUserOptionsSet) {
             if (p.resetToDefault() || 

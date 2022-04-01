@@ -421,20 +421,24 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
                 break;
                 case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
                 // new Presets().reloadDefaultConfig(options());
-                new ModnarCfg().reloadDefaultConfig(options());
+//                new ModnarCfg().reloadDefaultConfig(options());
+                UserPreferences.userSettings().resetFirstOptions(options());
                 refreshThisMenu();
                 break;
             case KeyEvent.VK_R: // BR: "G" = Reload User Presets
-                new ModnarCfg().reloadGlobalUserPresets(options());
+//                new ModnarCfg().reloadGlobalUserPresets(options());
+                UserPreferences.userSettings().loadGlobalGroupSettings(options());
                 // new Presets().loadUserConfig(options());
                 refreshThisMenu();
                 break;
             case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
-                new ModnarCfg().reloadLocalUserPresets(options());
+//                new ModnarCfg().reloadLocalUserPresets(options());
+                UserPreferences.userSettings().loadLocalGroupSettings("Modnar",options());
                 refreshThisMenu();
                 break;
             case KeyEvent.VK_U: // BR: "U" = Update User Presets
-                new Presets().saveToUserConfig(options());
+//                new Presets().saveToUserConfig(options());
+                UserPreferences.userSettings().saveToUserConfig(options());
                 refreshThisMenu();
                 break;
         }

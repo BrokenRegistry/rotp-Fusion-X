@@ -277,6 +277,7 @@ public class RotPUI extends BasePanel implements ActionListener, KeyListener {
     private void init() {
         initModel();
         new rotp.ui.util.cfg.Presets().initDefaultValues(options()); // BR:
+        UserPreferences.userSettings().init(options()); // BR:
         addKeyListener(this);
         if (startupException != null)
             selectErrorPanel(startupException);

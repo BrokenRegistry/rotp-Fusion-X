@@ -3,10 +3,10 @@ package rotp.ui.util.cfg;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import br.config.Sections;
+import br.config.Section;
 import br.config.comment.Comment;
 import rotp.model.game.IGameOptions;
-//import rotp.ui.util.cfg.Configs.Sections;
+//import rotp.ui.util.cfg.Configs.Section;
 
 public class AdvancedCfg extends BaseCfg {
     // Associated GUI: StartOptionsUI.java
@@ -37,8 +37,8 @@ public class AdvancedCfg extends BaseCfg {
     }
     void overrideGameOptions (Presets p) {
         String setting;
-        Sections section;
-        LinkedHashMap<String, Sections> settingsMap = p.settingsMap();
+        Section section;
+        LinkedHashMap<String, Section> settingsMap = p.settingsMap();
         IGameOptions gameOptions = p.gameOptions;
         for (String userOption : p.selectedUserOptionsSet) {
             if (p.resetToDefault() || 

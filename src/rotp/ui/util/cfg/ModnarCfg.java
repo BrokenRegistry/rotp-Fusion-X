@@ -4,8 +4,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import rotp.ui.UserPreferences;
-import br.config.Sections;
-//import rotp.ui.util.cfg.Configs.Sections;
+import br.config.Section;
+//import rotp.ui.util.cfg.Configs.Section;
 import br.config.comment.Comment;
 
 public class ModnarCfg extends BaseCfg {
@@ -28,8 +28,8 @@ public class ModnarCfg extends BaseCfg {
     }
     void overrideGameOptions (Presets p) {
         String setting;
-        Sections section;
-        LinkedHashMap<String, Sections> settingsMap = p.settingsMap();
+        Section section;
+        LinkedHashMap<String, Section> settingsMap = p.settingsMap();
 
         for (String userOption : p.selectedUserOptionsSet) {
             if (p.resetToDefault() 

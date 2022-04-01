@@ -49,13 +49,13 @@ public class Presets extends Configs {
 		gameOptions = options;
 		return this;
 	}
-	Presets readUserConfig(IGameOptions options) {
+	public Presets readUserConfig(IGameOptions options) {
 		initPresets(options);
 		// Load configuration file
 		loadSettingsMap();
 		// Update user presets key list
 		if (settingsMap().containsKey(ACTION_KEY))
-			selectedUserOptionsSet = settingsMap().get(ACTION_KEY).getGroupKeySet();
+			selectedUserOptionsSet = settingsMap().get(ACTION_KEY).getUserSettingKeySet();
 		// Update Enable Setting
 		selectedEnableGlobal = settingsMap().get(ENABLE_KEY).getValidNonBlankSetting(ENABLE_KEY);
 		setFirstLoad(false);
@@ -122,7 +122,7 @@ public class Presets extends Configs {
 		new GovernorCfg().overrideGameOptions(this); // Associated GUI: .java
 		new ModnarCfg().overrideGameOptions(this);   // Associated GUI: StartModOptionsUI.java
 		new ExtCfg().overrideGameOptions(this);      // Associated GUI: NONE
-		// to the end: NB Empire is depedent of MIN STARS PER EMPIRE
+		// to the end: NB Empire is dependent of MIN STARS PER EMPIRE
 		new GalaxyCfg().overrideGameOptions(this);   // Associated GUI: SetupGalaxyUI.java
 		// RemnantCfg                                          // Associated GUI: GameSettingsUI.java
 		// LaunchCfg                                           // Associated GUI: GameUI.java

@@ -31,35 +31,35 @@ public class CfgLine {
     // ------------------------------------------------------------------------
 	// Variables Properties
     //
-	private CfgField leftSide  = new CfgField();
-	private CfgField rightSide = new CfgField();
+	private KeyField key   = new KeyField();
+	private CfgField value = new CfgField();
    	// --------------------------------------------------------------
     // Constructors
     //
-	public CfgLine(String leftSide, String rightSide) {
-		setLeftSide(leftSide);
-		setRightSide(rightSide);
+	public CfgLine(String key, String value) {
+		setKey(key);
+		setValue(value);
 	}
-	public CfgLine(CfgField leftSide, CfgField rightSide) {
-		setLeftSide(leftSide);
-		setRightSide(rightSide);
+	public CfgLine(KeyField key, CfgField value) {
+		setKey(key);
+		setValue(value);
 	}
-	public CfgLine(CfgField leftSide, String rightSide) {
-		setLeftSide(leftSide);
-		setRightSide(rightSide);
+	public CfgLine(KeyField key, String value) {
+		setKey(key);
+		setValue(value);
 	}
-	public CfgLine(String leftSide, CfgField rightSide) {
-		setLeftSide(leftSide);
-		setRightSide(rightSide);
+	public CfgLine(String key, CfgField value) {
+		setKey(key);
+		setValue(value);
 	}
 	public CfgLine(String line) {
  		if (CfgField.isBlank(line)) {
  			return;
  			}
 		List<String> list = Arrays.asList(line.split(KEY_VALUE_SEPARATOR));
-		setLeftSide(list.get(0));
-		if (list.size() > 1) { // in the case the rightSide contains KEY_VALUE_SEPARATOR
-			setRightSide(String.join(KEY_VALUE_SEPARATOR, list.subList(1, list.size())));
+		setKey(list.get(0));
+		if (list.size() > 1) { // in the case the value contains KEY_VALUE_SEPARATOR
+			setValue(String.join(KEY_VALUE_SEPARATOR, list.subList(1, list.size())));
 		}
 	}
 	// --------------------------------------------------------------
@@ -69,67 +69,67 @@ public class CfgLine {
 	 * set a new String value for the left side field
 	 * Return current object to allow chaining
 	 */
-	private CfgLine setLeftSide(String newValue) {
-		leftSide.set(newValue);
+	private CfgLine setKey(String newValue) {
+		key.set(newValue);
 		return this;
 	}
 	/**
 	 * set a new CfgField value for the left side field
 	 * Return current object to allow chaining
 	 */
-	private CfgLine setLeftSide(CfgField newValue) {
-		leftSide = newValue;
+	private CfgLine setKey(KeyField newValue) {
+		key = newValue;
 		return this;
 	}
 	/**
 	 * set a new String value for the right Side field
 	 * Return current object to allow chaining
 	 */
-	public CfgLine setRightSide(String newValue) { 
-		rightSide.set(newValue);
+	public CfgLine setValue(String newValue) { 
+		value.set(newValue);
 		return this;
 	}
 	/**
 	 * set a new CfgField value for the right Side field
 	 * Return current object to allow chaining
 	 */
-	public CfgLine setRightSide(CfgField newValue) { 
-		rightSide = newValue;
+	public CfgLine setValue(CfgField newValue) { 
+		value = newValue;
 		return this;
 	}
 	/**
 	 * set a new boolean value for the right Side field
 	 * Return current object to allow chaining
 	 */
-	public CfgLine setRightSide(boolean newValue) { 
-		rightSide.set(newValue);
+	public CfgLine setValue(boolean newValue) { 
+		value.set(newValue);
 		return this;
 	}
 	/**
 	 * set a new integer value for the right Side field
 	 * Return current object to allow chaining
 	 */
-	public CfgLine setRightSide(int newValue) { 
-		rightSide.set(newValue);
+	public CfgLine setValue(int newValue) { 
+		value.set(newValue);
 		return this;
 	}
 	/**
 	 * Return the Right Side value as CfgField
 	 */
-	public CfgField rightSide() {
-		return rightSide;
+	public CfgField value() {
+		return value;
 	}
 	/**
 	 * Return the left Side value as CfgField
 	 */
-	public CfgField leftSide() {
-		return leftSide;
+	public KeyField key() {
+		return key;
 	}
 	/**
 	 * true if not null nor blank
 	 */
-	public boolean hasLeftSide() {
-		return !leftSide.isBlank();
+	public boolean hasKey() {
+		return !key.isBlank();
 	}
 	// ------------------------------------------------------------------------
 	// Other Methods
@@ -138,7 +138,7 @@ public class CfgLine {
 	 * return line as String, ready to be printed
 	 */
 	public String toPrint() {
-		return String.format(KEY_FORMAT, leftSide.toString()) + rightSide.toCapitalized();
+		return String.format(KEY_FORMAT, key.toString()) + value.toCapitalized();
 	}
 }
 

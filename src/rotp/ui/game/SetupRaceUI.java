@@ -37,6 +37,7 @@ import javax.swing.JTextField;
 import rotp.model.empires.Race;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
+import rotp.ui.UserPreferences;
 import rotp.ui.util.cfg.Presets; // BR:
 import rotp.ui.util.cfg.RaceCfg;
 
@@ -509,19 +510,23 @@ public final class SetupRaceUI extends BasePanel implements MouseListener, Mouse
                 return;
             case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
                 new RaceCfg().reloadDefaultConfig(options());
-                options().selectedPlayerRace(options().startingRaceOptions().get(0));
+//                options().selectedPlayerRace(options().startingRaceOptions().get(0));
+                UserPreferences.userSettings().resetFirstOptions(options());
                 refreshThisMenu();
                 return;
             case KeyEvent.VK_G: // BR: "G" = Reload User Presets
-                new RaceCfg().reloadGlobalUserPresets(options());
+//                new RaceCfg().reloadGlobalUserPresets(options());
+                UserPreferences.userSettings().loadGlobalGroupSettings(options());
                 refreshThisMenu();
                 return;
             case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
-                new RaceCfg().reloadLocalUserPresets(options());
+//                new RaceCfg().reloadLocalUserPresets(options());
+                UserPreferences.userSettings().loadLocalGroupSettings("Race",options());
                 refreshThisMenu();
                 return;
             case KeyEvent.VK_U: // BR: "U" = Update User Presets
-                new Presets().saveToUserConfig(options());
+//                new Presets().saveToUserConfig(options());
+                UserPreferences.userSettings().saveToUserConfig(options());
                 refreshThisMenu();
                 return;
         }

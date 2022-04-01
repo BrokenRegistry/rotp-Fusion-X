@@ -32,7 +32,7 @@ import rotp.Rotp;
 import rotp.ui.UserPreferences;
 import br.config.comment.Comment;
 import br.config.CfgLine;
-import br.config.Sections;
+import br.config.Section;
 
 abstract class Configs {
 
@@ -56,10 +56,10 @@ abstract class Configs {
 	private static boolean forceRandom   = false;
 	// Other Variables
 	List<String> ACTION_OPTIONS;
-	LinkedHashMap<String, Sections> settingsMap;
+	LinkedHashMap<String, Section> settingsMap;
 	LinkedHashSet<String> multipleUserOptionsSet;
 	LinkedHashSet<String> singleUserOptionsSet = new LinkedHashSet<String>(List.of(ENABLE_KEY));
-	LinkedHashSet<String> selectedUserOptionsSet = new LinkedHashSet<String>(List.of("User", "Last", "Cryslonoid"));
+	public LinkedHashSet<String> selectedUserOptionsSet = new LinkedHashSet<String>(List.of("User", "Last", "Cryslonoid"));
 	String filePath = Rotp.jarPath();
 	String fileName;
 	String currentSetting = "";
@@ -97,7 +97,7 @@ abstract class Configs {
 	boolean forceRandom() {
 		return forceRandom;
 	}
-	LinkedHashMap<String, Sections> settingsMap () { return settingsMap; }
+	LinkedHashMap<String, Section> settingsMap () { return settingsMap; }
 	/**
 	 * Load the config File to the setting Map
 	 * Update the setting Map with the current game option
@@ -163,7 +163,7 @@ abstract class Configs {
 	 * Initial Load of the setting Map
 	 */
 	void loadSettingsMap() {
-		settingsMap = new LinkedHashMap<String, Sections>();
+		settingsMap = new LinkedHashMap<String, Section>();
 		// Init local default value
 		final boolean update = false; 
 		loadGameOptions(update); // To set default value
@@ -206,19 +206,19 @@ abstract class Configs {
 		if (Comment.isComment(line)) return;
 		// test for setting
 		CfgLine configLine = new CfgLine(line);
-		if (configLine.leftSide().isBlank()) return;
+		if (configLine.key().isBlank()) return;
 		add(configLine);
 	}
 	/**
 	 * Add User Choice from configuration line
 	 */
 	void add(CfgLine configLine) {
-		if ( configLine.leftSide().isSectionKey() ) {
-			currentSetting = configLine.rightSide().toKey();
+		if ( configLine.key().isSectionKey() ) {
+			currentSetting = configLine.value().toKey();
 			return;
 		}
 		if ( settingsMap.containsKey(currentSetting) ) {
-			settingsMap.get(currentSetting).setCfgLine(configLine);
+			settingsMap.get(currentSetting).putCfgLine(configLine);
 		}
 	}
 	/**
@@ -230,7 +230,7 @@ abstract class Configs {
 			settingsMap.get(key).setLastValue(value);
 			return;
 		}
-		settingsMap.put(key, new Sections(key, value, options));
+		settingsMap.put(key, new Section(key, value, options));
 	}
 	/**
 	 * Set boolean Setting
@@ -241,7 +241,7 @@ abstract class Configs {
 			settingsMap.get(key).setLastValue(value);
 			return;
 		}
-		settingsMap.put(key, new Sections(key, value));
+		settingsMap.put(key, new Section(key, value));
 	}
 	/**
 	 * Set integer Setting
@@ -252,6 +252,6 @@ abstract class Configs {
 			settingsMap.get(key).setLastValue(value);
 			return;
 		}
-		settingsMap.put(key, new Sections(key, value, min, max, minR, maxR));
+		settingsMap.put(key, new Section(key, value, min, max, minR, maxR));
 	}
 }

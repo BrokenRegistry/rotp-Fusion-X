@@ -18,7 +18,7 @@ package br.config.comment;
 import br.config.CfgField;
 
 public class CommentLine {
-    private static final String KEY     = "#";
+    public static final String KEY     = "#";
     private static final String SPACER  = " ";
     private static final String KEY_PRT = KEY + SPACER;
     private String comment = "";
@@ -26,7 +26,7 @@ public class CommentLine {
     // ------------------------------------------------------------------------
     // Constructors
     //
-    CommentLine(String newComment) {
+    public CommentLine(String newComment) {
         set(newComment);
     }
     CommentLine(CfgField newComment) {
@@ -63,7 +63,7 @@ public class CommentLine {
     /**
 	 * Return a String ready to be printed
 	 */
-    String toPrint() {
+    public String toPrint() {
         return KEY_PRT + comment;
     }
     // ------------------------------------------------------------------------

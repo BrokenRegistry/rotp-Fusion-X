@@ -7,20 +7,28 @@ import java.util.List;
 import br.config.comment.Comment;
 import rotp.ui.util.cfg.Presets;
 
-public class Sections {
-	static final String HEAD_OF_INFO    = "# DEFAULT / LAST";
-	static final String HEAD_OF_OPTIONS = "# OPTIONS";
-	static final String HEAD_OF_LAST    = "# LAST";
+public class Section {
+    // ------------------------------------------------------------------------
+	// Constant Properties
+    //
+	static final String HEAD_OF_INFO    = new Comment("DEFAULT / LAST").toPrint();
+	static final String HEAD_OF_OPTIONS = new Comment("OPTIONS").toPrint();
+    // ------------------------------------------------------------------------
+	// Variables Properties
+    //
 	private Comment headComments;
-	private CfgLine settingKey  = new CfgLine(CfgField.LABEL_OF_SECTION_KEY, "");
-	private CfgLine localEnable = new CfgLine(CfgField.LABEL_OF_ENABLE_SECTION_KEY, "Both");
-	private CfgLine optionsList = new CfgLine(HEAD_OF_OPTIONS, "");
-	private CfgLine lastValue   = new CfgLine(HEAD_OF_LAST, "");
 	private Comment settingComments;
-	private List<String> settingOptions;
 	private Comment optionsComments;
-	private LinkedHashMap<String, CfgLine> settingMap;
 	private Comment bottomComments;
+
+	private CfgField settingKey = new CfgField();
+	private CfgField lastValue  = new CfgField(); // Last saved value
+	private CfgField initValue  = new CfgField(); // Value when initially loaded
+	private CfgField userOptionList = new CfgField();
+	private CfgField localEnable = new CfgField("Both");
+	
+	private List<String> settingOptions;
+	private LinkedHashMap<String, CfgLine> settingMap;
 	private LinkedHashMap<String, String> labelOptionsMap;
 	private Integer minValue;
 	private Integer maxValue;
@@ -33,16 +41,16 @@ public class Sections {
 	// ------------------------------------------------------------------------
 	// Constructors
 	//
-	public Sections(String key, String defaultValue, List<String> settingOptions) { // String Value
-		settingKey.setRightSide(key);
+	public Section(String key, String defaultValue, List<String> settingOptions) { // String Value
+		settingKey.set(key);
 		setSettingOptions(settingOptions);
 		settingMap = new LinkedHashMap<String, CfgLine>();
 		if (Presets.firstLoad()) {
 			Presets.defaultValuesMap().put(key, defaultValue);
 		}
 	}
-	public Sections(String key, boolean defaultValue) { // Boolean Value
-		settingKey.setRightSide(key);
+	public Section(String key, boolean defaultValue) { // Boolean Value
+		settingKey.set(key);
 		setSettingOptions(CfgField.BOOLEAN_LIST);
 		settingMap = new LinkedHashMap<String, CfgLine>();
 		if (Presets.firstLoad()) {
@@ -50,8 +58,8 @@ public class Sections {
 		}
 		isBoolean  = true;
 	}
-	public Sections(String key, Integer defaultValue, int min, int max, int minR, int maxR) { // Integer Value
-		settingKey.setRightSide(key);
+	public Section(String key, Integer defaultValue, int min, int max, int minR, int maxR) { // Integer Value
+		settingKey.set(key);
 		setSettingOptions(min, max, minR, maxR);
 		settingMap = new LinkedHashMap<String, CfgLine>();
 		if (Presets.firstLoad()) {
@@ -63,22 +71,41 @@ public class Sections {
 	// Getters and Setters
 	//
 	/**
-	 * Return Setting's Key as String 
-	 */
-	String getKeyAsString() {
-		return settingKey.rightSide().toString();
-	}
-	/**
 	 * Return Setting's Key as CfgFields 
 	 */
-	CfgField getKey() {
-		return settingKey.rightSide();
+	CfgField settingKey() {
+		return settingKey;
 	}
+	/**
+	 * Return initValue as CfgFields 
+	 */
+	CfgField initValue() {
+		return initValue;
+	}
+	/**
+	 * Return lastValue as CfgFields 
+	 */
+	CfgField lastValue() {
+		return lastValue;
+	}
+	/**
+	 * Return userOptionList as CfgFields 
+	 */
+	CfgField userOptionList() {
+		return userOptionList;
+	}
+	/**
+	 * Return localEnable as CfgFields 
+	 */
+	CfgField localEnable() {
+		return localEnable;
+	}
+	
 	/**
 	 * Return Setting's Default Choice as String 
 	 */
 	public String getDefaultValueAsString() {
-		return Presets.defaultValuesMap().get(getKey().toKey());
+		return Presets.defaultValuesMap().get(settingKey().toKey());
 	}
 	/**
 	 * Return Setting's Default Choice as CfgField 
@@ -87,32 +114,17 @@ public class Sections {
 		return new CfgField(getDefaultValueAsString()) ;
 	}
 	/**
-	 * Return Setting's Last Choice as String 
+	 * Return Set of User Setting Keys
 	 */
-	String getLastValueAsString() {
-		return lastValue.rightSide().toString();
-	}
-	/**
-	 * Return Setting's Last Choice as CfgField 
-	 */
-	CfgField getLastValue() {
-		return lastValue.rightSide();
-	}
-	public LinkedHashSet<String> getGroupKeySet () {
+	public LinkedHashSet<String> getUserSettingKeySet () {
 		return new LinkedHashSet<String>(settingMap.keySet());
-	}
-	/**
-	 * Return Setting's raw selected User Choice as String 
-	 */
-	public String getCfgLineAsString(String key) {
-		return getCfgLine(key).toString();
 	}
 	/**
 	 * Return  Setting's selected User Choice as CfgField 
 	 */
 	public CfgField getCfgLine(String key) {
 		if (key != null && settingMap.containsKey(key)) {
-			return settingMap.get(key).rightSide();
+			return settingMap.get(key).value();
 		}
 		return getDefaultValue();
 	}
@@ -180,7 +192,7 @@ public class Sections {
 		if (key != null) {
 			String Key = key.toUpperCase();
 			if (settingMap.containsKey(Key)) {
-				String value = settingMap.get(Key).rightSide().toString();
+				String value = settingMap.get(Key).value().toString();
 				if (labelOptionsMap.keySet().contains(value.toUpperCase())) {
 					return value;
 				}
@@ -188,10 +200,10 @@ public class Sections {
 		}
 		return getDefaultValueAsString();
 	}
-	public void setCfgLine (CfgLine pair) { 
-		setCfgLine(pair.leftSide(), pair.rightSide());
+	public void putCfgLine (CfgLine pair) { 
+		putCfgLine(pair.key(), pair.value());
 	}
-	private void setCfgLine (CfgField key, CfgField value) {
+	private void putCfgLine (KeyField key, CfgField value) {
 		if (key != null && value != null) {
 			if (value.isBlank() 
 					|| value.isRandom() 
@@ -203,15 +215,17 @@ public class Sections {
 				}
 		}
 	}
-	public void    setLastValue(String value) {
-		lastValue.setRightSide(settingNameToLabel(value));
+	public void setLastValue(String value) {
+		lastValue.set(settingNameToLabel(value));
 	}
-	public void    removeLocalEnable() { localEnable = null; }
+	public void removeLocalEnable() {
+		localEnable.set("");
+	}
 	public void setLastValue(boolean value) {
-		lastValue.setRightSide(value);
+		lastValue.set(value);
 	}
 	public void setLastValue(Integer value) { 
-		lastValue.setRightSide(value.toString());
+		lastValue.set(value.toString());
 	}
 	public void setSettingOptions(Integer min, Integer max, Integer minR, Integer maxR) {
 		minValue  = min;
@@ -232,7 +246,7 @@ public class Sections {
 			settingOptions.add(option);
 			labelOptionsMap.put(settingNameToLabel(option).toUpperCase(), option);
 		}
-		optionsList.setRightSide(settingNameToLabel(settingOptions).toString());
+		userOptionList.set(settingNameToLabel(settingOptions).toString());
 	}
 	// ------------------------------------------------------------------------
 	// Other Methods
@@ -245,24 +259,23 @@ public class Sections {
     	if (headComments != null && !headComments.isEmpty()) {
     		out += (headComments.toPrint() + System.lineSeparator());
     	}
-    	if (settingKey != null && settingKey.hasLeftSide()) {
-    		out += (settingKey.toPrint() + System.lineSeparator());
-    	}
-    	if (localEnable != null && localEnable.hasLeftSide()) {
-    		out += (localEnable.toPrint() + System.lineSeparator());
-    	}
+   		out += new CfgLine(KeyField.LABEL_OF_SECTION_KEY, settingKey)
+				.toPrint() + System.lineSeparator();
+   		if (!localEnable.isBlank()) {
+	   		out += new CfgLine(KeyField.LABEL_OF_ENABLE_SECTION_KEY, localEnable)
+					.toPrint() + System.lineSeparator();
+   		}
     	if (settingComments != null && !settingComments.isEmpty()) {
     		out += (settingComments.toPrint() + System.lineSeparator());
     	}
-    	if (optionsList != null && optionsList.hasLeftSide()) {
-    		out += (optionsList.toPrint() + System.lineSeparator());
-    	}
-		if (lastValue != null && lastValue.hasLeftSide()) {
-			out += (String.format(CfgLine.KEY_FORMAT, HEAD_OF_INFO) +
-					settingNameToLabel(getDefaultValueAsString()) + " / " +
-					settingNameToLabel(lastValue.rightSide().toString()) +
-					System.lineSeparator());
-		}
+   		out += new CfgLine(HEAD_OF_OPTIONS, userOptionList)
+				.toPrint() + System.lineSeparator();
+   		out += new CfgLine(HEAD_OF_INFO
+   						, (settingNameToLabel(getDefaultValueAsString())
+   							+ " / "
+   							+settingNameToLabel(lastValue.toString())
+   						)
+   					).toPrint() + System.lineSeparator();
 		if (optionsComments != null && !optionsComments.isEmpty()) {
 			out += (optionsComments.toPrint() + System.lineSeparator());
 		}
@@ -278,31 +291,36 @@ public class Sections {
     		}
     	return out;
 	}
+	/**
+	 * if Writing is allowed:
+	 *     Set user choice to Last Value
+	 */
 	public void actionSave(String key) {
-		// Section should be writable to overwrite with last value
-		if (isSectionWritable()) setCfgLine(new CfgField(key), getLastValue());
+		if (isSectionWritable()) {
+			putCfgLine(new KeyField(key), lastValue());
+		}
 	}
 	public void actionUpdate(String key) {
 		// if the key is absent, add it with last value
 		if (!settingMap.containsKey(key.toUpperCase())) {
-			setCfgLine(new CfgField(key), getLastValue());
+			putCfgLine(new KeyField(key), lastValue());
 			return;
 		}
 		// Section should be writable and value not blank
 		if (isSectionWritable() 
-			&& !settingMap.get(key.toUpperCase()).rightSide().isBlank())
-				settingMap.get(key).setRightSide(getLastValue());
+			&& !settingMap.get(key.toUpperCase()).value().isBlank())
+				settingMap.get(key).setValue(lastValue());
 	}
 	public void actionDefault(String key) {
 		// if the key is absent, add it with default value
 		if (!settingMap.containsKey(key.toUpperCase())) {
-			setCfgLine(new CfgField(key), getDefaultValue());
+			putCfgLine(new KeyField(key), getDefaultValue());
 			return;
 		}
 		// Section should be writable and value not blank
 		if (isSectionWritable() 
-			&& !settingMap.get(key).rightSide().isBlank())
-				settingMap.get(key).setRightSide(getDefaultValue());
+			&& !settingMap.get(key).value().isBlank())
+				settingMap.get(key).setValue(getDefaultValue());
 	}
 	public void headComments(Comment comments) {
 		headComments = comments;
@@ -330,29 +348,29 @@ public class Sections {
 		return labels;
 	}
 	private boolean isSectionEnabled() {
-		return localEnable.rightSide().isLoadEnabled();
+		return localEnable.isLoadEnabled();
 	}
 	private boolean isSectionWritable() {
-		return localEnable.rightSide().isWriteEnabled();
+		return localEnable.isWriteEnabled();
 	}
 	private boolean hasValidSetting (String key) {
 		if (key != null) {
 			String Key = key.toUpperCase();
 			if (settingMap.containsKey(Key)) {
 				currentSetting = settingMap.get(Key);
-				if (currentSetting.rightSide().isBlank()) {
+				if (currentSetting.value().isBlank()) {
 					return false;
 				}
-				if (currentSetting.rightSide().isRandom()) {
+				if (currentSetting.value().isRandom()) {
 					return true;
 				}
 				if (isBoolean) {
-					return currentSetting.rightSide().isBoolean();
+					return currentSetting.value().isBoolean();
 				}
 				if (isInteger) {
-					return currentSetting.rightSide().isValid(minValue, maxValue);
+					return currentSetting.value().isValid(minValue, maxValue);
 				}
-				return currentSetting.rightSide().isMemberOf(labelOptionsMap.keySet());
+				return currentSetting.value().isMemberOf(labelOptionsMap.keySet());
 			}
 		}
 		return false;

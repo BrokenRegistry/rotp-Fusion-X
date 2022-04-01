@@ -24,14 +24,13 @@ import java.util.concurrent.ThreadLocalRandom;
  * The field content will never be null
  * and will be striped
  */
-public class CfgField extends UserField{
+public class Old_CfgField2 {
 	
 	public static final List<String> YES_LIST     = List.of("YES", "TRUE");
 	public static final List<String> NO_LIST      = List.of("NO", "FALSE");
 	public static final List<String> BOOLEAN_LIST = List.of("YES", "NO", "TRUE", "FALSE");
 	public static final List<String> ENABLE_LOAD_LIST  = List.of("LOAD", "BOTH");
 	public static final List<String> ENABLE_WRITE_LIST = List.of("SAVE", "BOTH");
-	public static final List<String> ENABLE_VALID_LIST = List.of("BOTH", "SAVE", "LOAD", "NO");
 	public static final Boolean BOOLEAN_DEFAULT_VALUE = false;
 	public static final String  STRING_DEFAULT_VALUE  = "";
 	public static final char    CHAR_DEFAULT_VALUE    = ' ';
@@ -43,32 +42,81 @@ public class CfgField extends UserField{
 	public static final Double  DOUBLE_DEFAULT_VALUE  = 0.0D;
 	public static final String  PARAMETERS_SEPARATOR  = ",";
 	public static final String  RANDOM_ID             = "RANDOM";
+    public static final String LABEL_OF_SECTION_KEY   = "¦ SETTING";
+	public static final String LABEL_OF_ENABLE_SECTION_KEY = "¦ LOCAL ENABLE";
+
+	
+	private String cfgField = "";
 	
     // ==================================================
     // Constructors
     //
-	public CfgField() {}
-	public CfgField(Object newField) {
-        set(newField);
+	public Old_CfgField2() {}
+	public Old_CfgField2(Object newCfgField) {
+        set(newCfgField);
     }
     // ==================================================
     // Setters
     //
 	/**
-	 * Convert and set a new String value
+	 * Set a new String value
+	 * Return current object to allow chaining
 	 */
-	public void set(Object newValue) {
-		value = clean(newValue);
+	public Old_CfgField2 set(Object newValue) {
+		cfgField = clean(newValue);
+		return this;
 	}
 	/**
 	 * Never null and stripped / converted
+	 * Return current object to allow chaining
 	 */
-	public void set(Boolean newValue) {
-		value = toYesNoString(newValue); 
+	public Old_CfgField2 set(Boolean newValue) {
+		cfgField = toYesNoString(newValue); 
+		return this;
 	}
     // ==================================================
     // Getters simple
     //
+	/**
+	 * return value as String
+	 */
+	public String toString() { 
+		return cfgField;
+	}
+	/**
+	 * return value as String, ready to be printed
+	 */
+	public String toPrint() { 
+		return cfgField;
+	}
+	/**
+	 * return Upper Case String of value
+	 */
+	public String toKey() { 
+		return cfgField.toUpperCase();
+	}
+	/**
+	 * return cfgField in lower case, with first char to upper case,
+	 * with every word capitalized if eachWord is true
+	 */
+	public String toCapitalized() { 
+		String result = "";
+		if (cfgField.length() > 0) {
+			String[] elements = cfgField.toLowerCase().split("((?<= )|(?<=_)|(?<=-))");
+			for(String s : elements) {
+				result += s.substring(0, 1).toUpperCase();
+				result += s.substring(1);
+			}
+		}
+		return result;
+	}
+	/**
+	 * Strip and return in lower case with first char to upper case, never null
+	 */
+	public String toSentence() { 
+		return cfgField.substring(0, 1).toUpperCase() 
+				+ cfgField.substring(1).toLowerCase();
+	}
 	/**
 	 * return the Byte value, BYTE_DEFAULT_VALUE if none
 	 */
@@ -119,7 +167,7 @@ public class CfgField extends UserField{
 	 */
 	public Byte getOrDefault(Byte defaultValue) {
 		if (isNumeric()) {
-			return Byte.valueOf(value);
+			return Byte.valueOf(cfgField);
 		}
         return defaultValue;
 	}
@@ -128,7 +176,7 @@ public class CfgField extends UserField{
 	 */
 	public Short getOrDefault(Short defaultValue) {
 		if (isNumeric()) {
-			return Short.valueOf(value);
+			return Short.valueOf(cfgField);
 		}
         return defaultValue;
 	}
@@ -137,7 +185,7 @@ public class CfgField extends UserField{
 	 */
 	public Integer getOrDefault(Integer defaultValue) {
 		if (isNumeric()) {
-			return Integer.valueOf(value);
+			return Integer.valueOf(cfgField);
 		}
         return defaultValue;
 	}
@@ -146,7 +194,7 @@ public class CfgField extends UserField{
 	 */
 	public Long getOrDefault(Long defaultValue) {
 		if (isNumeric()) {
-			return Long.valueOf(value);
+			return Long.valueOf(cfgField);
 		}
         return defaultValue;
 	}
@@ -155,7 +203,7 @@ public class CfgField extends UserField{
 	 */
 	public Float getOrDefault(Float defaultValue) {
 		if (isNumeric()) {
-			return Float.valueOf(value);
+			return Float.valueOf(cfgField);
 		}
         return defaultValue;
 	}
@@ -164,7 +212,7 @@ public class CfgField extends UserField{
 	 */
 	public Double getOrDefault(Double defaultValue) {
 		if (isNumeric()) {
-			return Double.valueOf(value);
+			return Double.valueOf(cfgField);
 		}
         return defaultValue;
 	}
@@ -172,13 +220,22 @@ public class CfgField extends UserField{
 	 * return the boolean value, defaultValue if none
 	 */
 	public boolean getOrDefault(boolean defaultValue) {
-    	if (YES_LIST.contains(value.toUpperCase())) {
+    	if (YES_LIST.contains(cfgField)) {
     		return true;
     	}
-    	if (NO_LIST.contains(value.toUpperCase())) {
+    	if (NO_LIST.contains(cfgField)) {
     		return false;
     	}
         return defaultValue;
+	}
+	/**
+	 * return the value, defaultValue if blank
+	 */
+	public String getOrDefault(String defaultValue) {
+	   	if (cfgField.isBlank()) {
+    		return defaultValue;
+    	}
+        return cfgField;
 	}
     // ==================================================
     // Tests Methods
@@ -193,8 +250,38 @@ public class CfgField extends UserField{
 	 * check for the presence of "[0-9.]+"
 	 */
 	public boolean isNumeric() {
-        return value.matches("[0-9.]+");
+        return cfgField.matches("[0-9.]+");
     }
+ 	/**
+	 * true if Empty or null
+	 */
+	public boolean isEmpty() { 
+		return cfgField.isEmpty();
+	}
+	/**
+	 * true if Blank, Empty or null
+	 */
+	public boolean isBlank() {
+	    return cfgField.isBlank();
+    }
+	/**
+	 * check if value as Key == string
+	 */
+	public boolean keyTest(String string) {
+		return toKey().equalsIgnoreCase(string);
+	}
+	/**
+	 * check if is valid member of Set
+	 */
+	public boolean isMemberOf(Set<String> set) {
+		return set.contains(toKey());
+	}
+	/**
+	 * check if is valid member of List
+	 */
+	public boolean isMemberOf(List<String> list) {
+		return list.contains(toKey());
+	}
 	public boolean isValid(int min, int max) {
 		int val = getOrDefault(min - 1);
 		return (val >= min && val <= max);
@@ -209,6 +296,18 @@ public class CfgField extends UserField{
 		return toKey().contains(RANDOM_ID);
 	}
 	/**
+	 * check if it contains of LABEL_OF_SECTION_KEY
+	 */
+ 	public boolean isSectionKey() {
+		return toKey().contains(LABEL_OF_SECTION_KEY);
+	}
+	/**
+	 * check if it contains of LABEL_OF_ENABLE_SECTION_KEY
+	 */
+ 	public boolean isLocalEnableKey() {
+		return toKey().contains(LABEL_OF_ENABLE_SECTION_KEY);
+	}
+	/**
 	 * check if is member of ENABLE_LOAD_LIST
 	 */
 	public boolean isLoadEnabled() {
@@ -219,12 +318,6 @@ public class CfgField extends UserField{
 	 */
 	public boolean isWriteEnabled() {
 		return isMemberOf(ENABLE_WRITE_LIST);
-	}
-	/**
-	 * check if is member of ENABLE_VALID_LIST
-	 */
-	public boolean isValidEnable() {
-		return isMemberOf(ENABLE_VALID_LIST);
 	}
 	// ==================================================
     // Public Other Methods
@@ -250,9 +343,9 @@ public class CfgField extends UserField{
 		int userMax = max;
 		String[] param = extractParameters(head);
 		if (param.length > 0) {
-			userMin = CfgField.getOrDefault(param[0], min);
+			userMin = Old_CfgField2.getOrDefault(param[0], min);
 			if (param.length > 1) {
-				userMax = CfgField.getOrDefault(param[1], max);
+				userMax = Old_CfgField2.getOrDefault(param[1], max);
 			}
 		}
 		return new int[] {userMin, userMax} ;
@@ -269,22 +362,54 @@ public class CfgField extends UserField{
     // Public Static Methods
     //
 	/**
+	 * true if Empty or null
+	 */
+	public static boolean isEmpty(String string) {
+	    return (string == null || string.isEmpty());
+    }
+	/**
+	 * true if Blank, Empty or null
+	 */
+	public static boolean isBlank(String string) {
+	    return (string == null || string.isBlank());
+    }
+	/**
+	 * convert objects to String and strip them
+	 * and null objects to Empty Strings
+	 */
+	public static String clean(Object obj) {
+		if (obj == null) { 
+			return "";
+		}
+		return obj.toString().strip(); 
+    }
+	/**
+	 * convert objects to String
+	 * and null objects to Empty Strings
+	 */
+	public static String neverNull(Object obj) {
+		if (obj == null) { 
+			return "";
+		}
+		return obj.toString(); 
+    }
+	/**
 	 * Strip and return in lower case with first char to upper case, never null
 	 */
 	public static String toSentence(String string) {
-		return new CfgField(string).toSentence();
+		return new Old_CfgField2(string).toSentence();
 	}
 	 /**
 	 * return Upper Case of stripped string, never null
 	 */
 	public static String toKey(String string) {
-		return new CfgField(string).toKey();
+		return new Old_CfgField2(string).toKey();
 	}
 	/**
 	 * Strip and return every word capitalized, never null
 	 */
 	public static String capitalize(String string) {
-		return new CfgField(string).toCapitalized();
+		return new Old_CfgField2(string).toCapitalized();
 	}
 	/**
 	 * return the capitalized last element of the string (after "_")
@@ -296,19 +421,19 @@ public class CfgField extends UserField{
 	 * check for the presence of "[0-9.]+"
 	 */
 	public static boolean isNumeric(String string) {
-        return new CfgField(string).isNumeric();
+        return new Old_CfgField2(string).isNumeric();
     }
 	/**
 	 * return the integer value of string, defaultValue if none
 	 */
 	public static int getOrDefault(String string, int defaultValue) {
-		return new CfgField(string).getOrDefault(defaultValue);
+		return new Old_CfgField2(string).getOrDefault(defaultValue);
 	}
 	/**
 	 * return the boolean value of string, defaultValue if none
 	 */
 	public static boolean getOrDefault(String string, boolean defaultValue) {
-		return new CfgField(string).getOrDefault(defaultValue);
+		return new Old_CfgField2(string).getOrDefault(defaultValue);
 	}
 	/**
 	 * return the value of string, defaultValue if blank
@@ -337,7 +462,7 @@ public class CfgField extends UserField{
 	 * check if string is member of RANDOM_LIST
 	 */
 	public static boolean isRandomValue(String string) {
-		return new CfgField(string).isRandom();
+		return new Old_CfgField2(string).isRandom();
 	}  
 	/**
 	 * Return random Integer value between min and max, (inclusive)
