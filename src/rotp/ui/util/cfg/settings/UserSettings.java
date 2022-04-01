@@ -9,13 +9,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map.Entry;
-
 import br.config.AbstractGroup;
 import br.config.AbstractSetting;
 import br.config.CfgLine;
@@ -39,7 +35,8 @@ public class UserSettings {
     private static LinkedHashMap<String, AbstractGroup<IGameOptions>> keyGroupMap;
     private static LinkedHashMap<String, AbstractGroup<IGameOptions>> groupMap;
     private static Iterable<AbstractGroup<IGameOptions>> groupList;
-    private static Setting_PRESET_ACTION   settingPresetAction;
+    private static Setting_PRESET_ACTION settingPresetAction;
+    private static boolean cleanUserKeys = false;
 
     private AbstractSetting<IGameOptions> currentSetting;
     private String currentSettingKey;
@@ -110,18 +107,6 @@ public class UserSettings {
 	// Initializations Methods
 	//
     /*
-	 * Add all the groups to the list
-	 */
-//    private void initGroupList(IGameOptions options) {
-//        groupList = new ArrayList<AbstractGroup>();
-//        groupList.add(new Group_Race(options));
-//        groupList.add(new Group_Galaxy(options));
-//        groupList.add(new Group_Advanced(options));
-//        groupList.add(new Group_Modnar(options));
-//        groupList.add(new Group_BrokenRegistry(options));
-//        initKeyGroupMap();
-//    }
-    /*
 	 * Add all the groups to the Map with an easy key
 	 */
     private void initGroupMap(IGameOptions options) {
@@ -145,21 +130,9 @@ public class UserSettings {
             }
         }
     }
-//    private void initKeyGroupMap() {
-//        keyGroupMap = new LinkedHashMap<String, AbstractGroup>();
-//        for (AbstractGroup group : groupList) {
-//            for (String key : group.keyList()) {
-//                keyGroupMap.put(key, group);
-//            }
-//        }
-//    }
-
     // ========================================================================
 	// Other Methods
 	//
-//    public void readUserConfig(IGameOptions options) {
-//		loadConfigurationFile();
-//	}
     private LinkedHashSet<String> getUserKeySet() {
     	return settingPresetAction.getUserSettingKeySet();
     }
@@ -167,15 +140,6 @@ public class UserSettings {
     	LinkedHashSet<String> keySet = new LinkedHashSet<String>();
     	for (CfgLine userCfg : settingPresetAction.getSettingMapIterable()) {
     		if (userCfg.value().isLoadEnabled()) {
-    			keySet.add(userCfg.key().toKey());
-    		}
-    	}
-    	return keySet;
-    }
-    private LinkedHashSet<String> getWritableUserKeySet() {
-    	LinkedHashSet<String> keySet = new LinkedHashSet<String>();
-    	for (CfgLine userCfg : settingPresetAction.getSettingMapIterable()) {
-    		if (userCfg.value().isWriteEnabled()) {
     			keySet.add(userCfg.key().toKey());
     		}
     	}
@@ -248,7 +212,7 @@ public class UserSettings {
             out.print(settingPresetAction.toPrint(settingKeys));
             // Loop thru settings
 	        for (AbstractGroup<IGameOptions> group : groupList) {
-	    		out.print(group.toPrint(settingKeys));
+	    		out.print(group.toPrint(settingKeys, cleanUserKeys));
 			}
             return 0;
 	    }
@@ -265,23 +229,22 @@ public class UserSettings {
     void doUserUpdateActions() {
     	// Loop Thru User's Keys and perform requested action
     	LinkedHashSet<String> keySet = settingPresetAction.getUserSettingKeySet();
-		for (String userSettingKey : keySet) {
-			userSettingKey = userSettingKey.toUpperCase();
-			String action = settingPresetAction.getCfgLine(userSettingKey).value().toKey();
-//			String action = settingPresetAction.getSettingAsLabel(userSettingKey).toUpperCase();
+		for (String userKey : keySet) {
+			userKey = userKey.toUpperCase();
+			String action = settingPresetAction.getCfgLine(userKey).value().toKey();
 			if (action.contains("SAVE")) {
 				for (AbstractGroup<IGameOptions> group : groupList) {
-		    		group.actionSave(userSettingKey);
+		    		group.actionSave(userKey);
 				}
 			}
 			if (action.contains("UPDATE")) {
 				for (AbstractGroup<IGameOptions> group : groupList) {
-		    		group.actionUpdate(userSettingKey);
+		    		group.actionUpdate(userKey);
 				}
 			}
 			if (action.contains("DEFAULT")) {
 				for (AbstractGroup<IGameOptions> group : groupList) {
-		    		group.actionFirst(userSettingKey);
+		    		group.actionFirst(userKey);
 				}
 			}
 		}

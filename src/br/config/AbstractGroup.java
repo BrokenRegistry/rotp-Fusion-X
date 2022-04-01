@@ -49,10 +49,17 @@ public abstract class AbstractGroup <T> {
     public AbstractSetting<T> getSetting(String key) {
         return keySettingMap.get(key);
     }
-    public String toPrint(LinkedHashSet<String> userSettingKeys) {
+    public String toPrint(LinkedHashSet<String> userSettingKeys, boolean cleanUserKeys) {
         String out = "";
         for (AbstractSetting<T> setting : keySettingMap.values() ) {
-            out += setting.toPrint(userSettingKeys);
+        	if (cleanUserKeys) {
+        		out += setting.toPrint(userSettingKeys);
+        	}
+        	else {
+        		LinkedHashSet<String> keySet = new LinkedHashSet<String>(userSettingKeys);
+        		keySet.addAll(setting.getUserSettingKeySet());
+        		out += setting.toPrint(keySet);
+        	}
         }
         return out;
     }

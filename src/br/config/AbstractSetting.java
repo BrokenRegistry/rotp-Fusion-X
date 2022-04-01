@@ -1,13 +1,9 @@
 package br.config;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import br.config.comment.Comment;
 import br.config.comment.CommentLine;
 
@@ -38,7 +34,6 @@ public abstract class AbstractSetting <T> {
 	
 	private List<String> settingOptions; // (Computer friendly)
 	private LinkedHashMap<String, CfgLine> settingMap;
-	private CfgBlock userSettings;
 	private LinkedHashMap<String, String> labelToOptionMap; // (User friendly) to (Computer friendly)
 	private Integer minValue;
 	private Integer maxValue;
@@ -120,7 +115,6 @@ public abstract class AbstractSetting <T> {
 	}
     public void resetUserSettings() {
     	settingMap = new LinkedHashMap<String, CfgLine>();
-    	userSettings = new CfgBlock();
     }
 	// ========================================================================
 	// Abstract Methods
@@ -206,45 +200,6 @@ public abstract class AbstractSetting <T> {
 	private CfgField lastValue() {
 		return lastValue;
 	}
-	/**
-	 * Return last Option as CfgFields 
-	 */
-	private String lastOption() {
-		return lastOption;
-	}
-	/**
-	 * Return userOptionList as CfgFields 
-	 */
-	private CfgField userOptionList() {
-		return userOptionList;
-	}
-	/**
-	 * Return localEnable as CfgFields 
-	 */
-	private CfgField localEnable() {
-		return localEnable;
-	}
-	/**
-	 * Return Valid option as String : Initial if none 
-	 */
-    private String getValidOption(String key) {
-        if (key != null) {
-            String value = getValidValue(key);
-            if (!value.isBlank()) {
-                return labelToOptionMap.get(value.toUpperCase());
-            }
-        }
-        return firstOption();
-    }
-	/**
-	 * Return Setting's Default Choice as String 
-	 */
-//	private String getDefaultValueAsString() {
-//		return Presets.defaultValuesMap().get(settingKey().toKey());
-//	}
-	/**
-	 * Return Setting's Default Choice as CfgField 
-	 */
 //	private CfgField getDefaultValue() {
 //		return new CfgField(getDefaultValueAsString()) ;
 //	}
@@ -282,7 +237,6 @@ public abstract class AbstractSetting <T> {
 			return settingMap.get(key).value();
 		}
 		return firstValue();
-//		return userSettings.getOrDefaultValue(key, initialValue());
 	}
 	/**
 	 * Return Setting's selected User Choice as boolean 
@@ -307,32 +261,6 @@ public abstract class AbstractSetting <T> {
 		}
 		return setting.getOrDefault(preset);
 	}
-	/**
-	 * Return Setting's selected User Choice as String 
-	 */
-	private String getValidValue(String key) {
-		String preset = firstValue().toString();
-		CfgField cfgLine = getCfgValue(key);
-		if (cfgLine.isRandom()) { 
-			int[] rndParam = cfgLine.extractOrDefaultMinMaxRandomParameters(0, settingOptions.size()-1); // (defaultMin, defaultMax)
-			int rnd = CfgField.getIntegerRandom(rndParam);
-			String result = settingOptions.get(rnd);
-			return settingNameToLabel(result);
-		}
-		return cfgLine.getOrDefault(preset);
-	}
-	private String getValidNonBlankValue(String key) {
-		if (key != null) {
-			String Key = key.toUpperCase();
-			if (settingMap.containsKey(Key)) {
-				String value = settingMap.get(Key).value().toString();
-				if (labelToOptionMap.keySet().contains(value.toUpperCase())) {
-					return value;
-				}
-			}
-		}
-		return firstValue().toString();
-	}
 	public void putCfgLine (CfgLine cfgLine) { 
 		if (cfgLine == null || !cfgLine.hasKey()) {
 			return; // No idea what to do with that
@@ -356,17 +284,8 @@ public abstract class AbstractSetting <T> {
 	private void putCfgLine (KeyField key, CfgField value) {
 		putCfgLine(new CfgLine(key, value));
 	}
-	private void setLastValue(String value) {
-		lastValue.set(settingNameToLabel(value));
-	}
 	public void removeLocalEnable() {
 		localEnable.set("");
-	}
-	private void setLastValue(boolean value) {
-		lastValue.set(value);
-	}
-	private void setLastValue(Integer value) { 
-		lastValue.set(value.toString());
 	}
 	protected void setSettingOptions(int min, int max, int minR, int maxR) {
 		minValue  = min;
@@ -448,9 +367,6 @@ public abstract class AbstractSetting <T> {
     	out += System.lineSeparator();
     	return out;
 	}
-    /**
-	 * Get the last in game option (Computer friendly)
-	 */
 //    void actionGetLastValue(Object allOptions) {
 //    	String Option = getSelectedOption(allOptions);
 //    	setLastOption(Option);
@@ -461,8 +377,11 @@ public abstract class AbstractSetting <T> {
 	 *     - if the user choice is absent
 	 */
 	public void actionSave(String key) {
-		if (isSectionWritable() || !settingMap.containsKey(key.toUpperCase())) {
+		if (isSectionWritable()) {
 			putCfgLine(new KeyField(key), lastValue());
+		}
+		if (!settingMap.containsKey(key.toUpperCase())) {
+			putCfgLine(new KeyField(key), new CfgField(""));
 		}
 	}
 	/**
@@ -471,10 +390,10 @@ public abstract class AbstractSetting <T> {
 	 *    - if Writing is allowed and value not blank:
 	 */
 	public void actionUpdate(String key) {
-		if ((isSectionWritable() 
-				&& !settingMap.get(key.toUpperCase()).value().isBlank()
-				) 
-				|| !settingMap.containsKey(key.toUpperCase())) {
+		if (!settingMap.containsKey(key.toUpperCase())) {
+			putCfgLine(new KeyField(key), new CfgField(""));
+		}
+		if (isSectionWritable() && !settingMap.get(key.toUpperCase()).value().isBlank()) {
 			putCfgLine(new KeyField(key), lastValue());
 		}
 	}
@@ -484,10 +403,10 @@ public abstract class AbstractSetting <T> {
 	 *    - if Writing is allowed and value not blank:
 	 */
 	public void actionFirst(String key) {
-		if ((isSectionWritable() 
-				&& !settingMap.get(key.toUpperCase()).value().isBlank()
-				) 
-				|| !settingMap.containsKey(key.toUpperCase())) {
+		if (!settingMap.containsKey(key.toUpperCase())) {
+			putCfgLine(new KeyField(key), new CfgField(""));
+		}
+		if (isSectionWritable() && !settingMap.get(key.toUpperCase()).value().isBlank()) {
 			putCfgLine(new KeyField(key), firstValue());
 		}
 	}

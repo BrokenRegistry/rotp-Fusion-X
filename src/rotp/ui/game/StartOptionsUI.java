@@ -30,8 +30,7 @@ import rotp.ui.BasePanel;
 import rotp.ui.BaseText;
 import rotp.ui.UserPreferences;
 import rotp.ui.main.SystemPanel;
-import rotp.ui.util.cfg.AdvancedCfg;
-import rotp.ui.util.cfg.Presets;
+
 
 public class StartOptionsUI extends BasePanel implements MouseListener, MouseMotionListener {
     private static final long serialVersionUID = 1L;
@@ -649,17 +648,14 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
                 parent.advanceHelp();
                 break;
             case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
-//                new AdvancedCfg().reloadDefaultConfig(options());
             	UserPreferences.userSettings().resetFirstOptions(options());
                 refreshThisMenu();
                 break;
             case KeyEvent.VK_G: // BR: "G" = Reload User Presets
-//                new AdvancedCfg().reloadGlobalUserPresets(options());
                 UserPreferences.userSettings().loadGlobalGroupSettings(options());
                 refreshThisMenu();
                 break;
             case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
-//                new AdvancedCfg().reloadLocalUserPresets(options());
                 UserPreferences.userSettings().loadLocalGroupSettings("Advanced",options());
                 refreshThisMenu();
                 break;
@@ -667,7 +663,6 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
                 goToMainMenu();
                 break;
             case KeyEvent.VK_U: // BR: "U" = Update User Presets
-//                new Presets().saveToUserConfig(options());
                 UserPreferences.userSettings().saveToUserConfig(options());
                 refreshThisMenu();
                 break;
