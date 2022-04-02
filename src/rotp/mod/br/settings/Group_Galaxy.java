@@ -1,4 +1,4 @@
-package rotp.ui.util.cfg.settings;
+package rotp.mod.br.settings;
 
 import java.util.List;
 

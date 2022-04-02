@@ -1,4 +1,4 @@
-package rotp.ui.util.cfg.settings;
+package rotp.mod.br.settings;
 
 import java.util.List;
 
@@ -6,11 +6,10 @@ import br.config.AbstractSetting;
 import br.config.AbstractGroup;
 import br.config.CfgField;
 import br.config.comment.Comment;
+import rotp.mod.br.settings.BR_Options;
 import rotp.model.game.IGameOptions;
 
 public class Group_BrokenRegistry extends AbstractGroup <IGameOptions> {
-	
-// TODO ALL
 	
     Group_BrokenRegistry(IGameOptions gO) {
        super(gO);
@@ -18,38 +17,34 @@ public class Group_BrokenRegistry extends AbstractGroup <IGameOptions> {
     @Override
     protected void initSettingList(IGameOptions gO) {
         addSetting(new MaximizeEmpiresSpacing(gO));
-        addSetting(new PrefStarsPerEmpire(gO));
+        addSetting(new PreferedStarsPerEmpire(gO));
         addSetting(new MinStarsPerEmpire(gO));
-        addSetting(new NoPlanetPctMult(gO));
+        addSetting(new NoPlanetPctMultiplier(gO));
     }
 
     // ========================================================================
     // MAXIMIZE EMPIRES SPACING
     //
     public static class MaximizeEmpiresSpacing extends AbstractSetting <IGameOptions> {
-
-        private static final boolean DEFAULT = false;
-
-        private static boolean selectedMaximizeEmpiresSpacing = DEFAULT;
-        
+     
     	MaximizeEmpiresSpacing(IGameOptions gO) { super(
             "MAXIMIZE EMPIRES SPACING",
-            DEFAULT);
+            BR_Options.DEFAULT_MAXIMIZE_EMPIRES_SPACING);
         }
         // ------------------------------------------------
         // Overrider
         //
         @Override
         public String getSelectedOption (IGameOptions gO) {
-        	return CfgField.toYesNoString(selectedMaximizeEmpiresSpacing());
+        	return CfgField.toYesNoString(BR_Options.isMaximizeEmpiresSpacing());
         }
         @Override
         public void setSelectedOption(IGameOptions gO, String userOption) {
-        	selectedMaximizeEmpiresSpacing(getBooleanOption(userOption));
+        	BR_Options.setMaximizeEmpiresSpacing(getBooleanOption(userOption));
         }
         @Override
         public void setSelectedOptionToInitial(IGameOptions gO) {
-        	selectedMaximizeEmpiresSpacing(firstValue().getOrDefault(DEFAULT));
+        	BR_Options.setMaximizeEmpiresSpacing(firstValue().getOrDefault(BR_Options.DEFAULT_MAXIMIZE_EMPIRES_SPACING));
         }
         @Override
         public void initComments() {
@@ -58,146 +53,105 @@ public class Group_BrokenRegistry extends AbstractGroup <IGameOptions> {
                 "------------- Extended Options -------------",
                 " ")));
         }
-        // ------------------------------------------------
-        // Getters and Setters
-        //
-        private boolean selectedMaximizeEmpiresSpacing() {
-            return selectedMaximizeEmpiresSpacing;
-        }
-        private void selectedMaximizeEmpiresSpacing(boolean val) {
-        	selectedMaximizeEmpiresSpacing = val;
-        }
     }
     // ========================================================================
     // PREF STARS PER EMPIRE
     //
-    public static class PrefStarsPerEmpire extends AbstractSetting <IGameOptions> {
+    public static class PreferedStarsPerEmpire extends AbstractSetting <IGameOptions> {
 
-        private static final int DEFAULT = 16;
         private static final int MIN   = 0;
         private static final int MAX   = 1000000;
         private static final int MIN_R = 16;
         private static final int MAX_R = 24;
-        private static Integer selectedPrefStarsPerEmpire = DEFAULT;
     	
-    	PrefStarsPerEmpire(IGameOptions gO) { super(
+    	PreferedStarsPerEmpire(IGameOptions gO) { super(
             "PREF STARS PER EMPIRE",
             MIN, MAX, MIN_R, MAX_R,
-            DEFAULT);
+            BR_Options.DEFAULT_PREFERED_STARS_PER_EMPIRE);
         }
         // ------------------------------------------------
         // Overrider
         //
         @Override
         public String getSelectedOption (IGameOptions gO) {
-        	return String.valueOf(selectedPrefStarsPerEmpire());
+        	return String.valueOf(BR_Options.getPreferedStarsPerEmpire());
         }
         @Override
         public void setSelectedOption(IGameOptions gO, String userOption) {
-        	selectedPrefStarsPerEmpire(getIntegerOption(userOption));
+        	BR_Options.setPreferedStarsPerEmpire(getIntegerOption(userOption));
         }
         @Override
         public void setSelectedOptionToInitial(IGameOptions gO) {
-        	selectedPrefStarsPerEmpire(firstValue().getOrDefault(DEFAULT));
+        	BR_Options.setPreferedStarsPerEmpire(firstValue().getOrDefault(BR_Options.DEFAULT_PREFERED_STARS_PER_EMPIRE));
         }
         @Override
         public void initComments() {}
-        // ------------------------------------------------
-        // Getters and Setters
-        //
-        private int selectedPrefStarsPerEmpire() {
-            return selectedPrefStarsPerEmpire;
-        }
-        private void selectedPrefStarsPerEmpire(int val) {
-        	selectedPrefStarsPerEmpire = val;
-        }
     }
     // ========================================================================
     // MIN STARS PER EMPIRE
     //
     public static class MinStarsPerEmpire extends AbstractSetting <IGameOptions> {
 
-        private static final int DEFAULT = 8;
         private static final int MIN   = 0;
         private static final int MAX   = 1000000;
         private static final int MIN_R = 4;
         private static final int MAX_R = 16;
-        private static Integer selectedMinStarsPerEmpire  = DEFAULT;
         
     	MinStarsPerEmpire(IGameOptions gO) { super(
             "MIN STARS PER EMPIRE",
             MIN, MAX, MIN_R, MAX_R,
-            DEFAULT);
+            BR_Options.DEFAULT_MIN_STARS_PER_EMPIRE);
         }
         // ------------------------------------------------
         // Overrider
         //
         @Override
         public String getSelectedOption (IGameOptions gO) {
-        	return String.valueOf(selectedMinStarsPerEmpire());
+        	return String.valueOf(BR_Options.getMinStarsPerEmpire());
         }
         @Override
         public void setSelectedOption(IGameOptions gO, String userOption) {
-        	selectedMinStarsPerEmpire(getIntegerOption(userOption));
+        	BR_Options.setMinStarsPerEmpire(getIntegerOption(userOption));
         }
         @Override
         public void setSelectedOptionToInitial(IGameOptions gO) {
-        	selectedMinStarsPerEmpire(firstValue().getOrDefault(DEFAULT));
+        	BR_Options.setMinStarsPerEmpire(firstValue().getOrDefault(BR_Options.DEFAULT_MIN_STARS_PER_EMPIRE));
         }
         @Override
         public void initComments() {}
-        // ------------------------------------------------
-        // Getters and Setters
-        //
-        private int selectedMinStarsPerEmpire() {
-            return selectedMinStarsPerEmpire;
-        }
-        private void selectedMinStarsPerEmpire(int val) {
-        	selectedMinStarsPerEmpire = val;
-        }
+
     }
     // ========================================================================
     // NO PLANET PCT MULT
     //
-    public static class NoPlanetPctMult extends AbstractSetting <IGameOptions> {
+    public static class NoPlanetPctMultiplier extends AbstractSetting <IGameOptions> {
 
-        private static final int DEFAULT = 100;
         private static final int MIN   = 0;
         private static final int MAX   = 1000000;
         private static final int MIN_R = 0;
         private static final int MAX_R = 200;
-        private static int selectedNoPlanetPctMult = DEFAULT;
         
-    	NoPlanetPctMult(IGameOptions gO) { super(
+    	NoPlanetPctMultiplier(IGameOptions gO) { super(
             "NO PLANET PCT MULT",
             MIN, MAX, MIN_R, MAX_R,
-            DEFAULT);
+            BR_Options.NO_PLANET_PCT_MULTIPLIER);
         }
         // ------------------------------------------------
         // Overrider
         //
         @Override
         public String getSelectedOption (IGameOptions gO) {
-        	return String.valueOf(selectedNoPlanetPctMult());
+        	return String.valueOf(BR_Options.getNoPlanetPctMultiplier());
         }
         @Override
         public void setSelectedOption(IGameOptions gO, String userOption) {
-        	selectedNoPlanetPctMult(getIntegerOption(userOption));
+        	BR_Options.setNoPlanetPctMultiplier(getIntegerOption(userOption));
         }
         @Override
         public void setSelectedOptionToInitial(IGameOptions gO) {
-        	selectedNoPlanetPctMult(firstValue().getOrDefault(DEFAULT));
+        	BR_Options.setNoPlanetPctMultiplier(firstValue().getOrDefault(BR_Options.NO_PLANET_PCT_MULTIPLIER));
         }
         @Override
         public void initComments() {}
-        // ------------------------------------------------
-        // Getters and Setters
-        //
-        private int selectedNoPlanetPctMult() {
-            return selectedNoPlanetPctMult;
-        }
-        private void selectedNoPlanetPctMult(int val) {
-            selectedNoPlanetPctMult = val;
-        }
     }
 }

@@ -37,8 +37,7 @@ import javax.swing.JTextField;
 import rotp.model.empires.Race;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
-import rotp.ui.UserPreferences;
-import rotp.ui.util.cfg.RaceCfg;
+import rotp.mod.br.settings.UserSettings;
 
 public final class SetupRaceUI extends BasePanel implements MouseListener, MouseMotionListener {
     private static final long serialVersionUID = 1L;
@@ -300,6 +299,38 @@ public final class SetupRaceUI extends BasePanel implements MouseListener, Mouse
         backImg = null;
         raceImg = null;
     }
+    public void refreshAllMenu() {
+        buttonClick();
+        // Race
+//        newGameOptions().selectedPlayerRace(options().selectedPlayerRace());
+//        newGameOptions().selectedPlayerColor(options().selectedPlayerColor());
+        // Galaxy
+        newGameOptions().selectedPlayerRace(options().selectedPlayerRace());
+        newGameOptions().selectedGameDifficulty(options().selectedGameDifficulty());
+        newGameOptions().selectedOpponentAIOption(options().selectedOpponentAIOption());
+        newGameOptions().selectedOpponentAIOption(options().selectedOpponentAIOption());
+        newGameOptions().selectedGalaxySize(options().selectedGalaxySize());
+        newGameOptions().selectedGalaxyShape(options().selectedGalaxyShape());
+        newGameOptions().galaxyShape().quickGenerate();
+        newGameOptions().selectedNumberOpponents(
+            min(newGameOptions().maximumOpponentsOptions(), options().selectedNumberOpponents()));
+        // Advanced
+        newGameOptions().selectedGalaxyAge(options().selectedGalaxyAge());
+        newGameOptions().selectedStarDensityOption(options().selectedStarDensityOption());
+        newGameOptions().selectedAIHostilityOption(options().selectedAIHostilityOption());
+        newGameOptions().selectedNebulaeOption(options().selectedNebulaeOption());
+        newGameOptions().selectedRandomEventOption(options().selectedRandomEventOption());
+        newGameOptions().selectedPlanetQualityOption(options().selectedPlanetQualityOption());
+        newGameOptions().selectedTerraformingOption(options().selectedTerraformingOption());
+        newGameOptions().selectedColonizingOption(options().selectedColonizingOption());
+        newGameOptions().selectedCouncilWinOption(options().selectedCouncilWinOption());
+        newGameOptions().selectedRandomizeAIOption(options().selectedRandomizeAIOption());
+        newGameOptions().selectedAutoplayOption(options().selectedAutoplayOption());
+        newGameOptions().selectedResearchRate(options().selectedResearchRate());
+        newGameOptions().selectedWarpSpeedOption(options().selectedWarpSpeedOption());
+        newGameOptions().selectedFuelRangeOption(options().selectedFuelRangeOption());
+        newGameOptions().selectedTechTradeOption(options().selectedTechTradeOption());
+    }
     private void refreshThisMenu() {
         buttonClick();
         newGameOptions().selectedPlayerRace(options().selectedPlayerRace());
@@ -508,20 +539,21 @@ public final class SetupRaceUI extends BasePanel implements MouseListener, Mouse
                 goToGalaxySetup();
                 return;
             case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
-                new RaceCfg().reloadDefaultConfig(options());
-                UserPreferences.userSettings().resetFirstOptions(options());
+                UserSettings.resetFirstOptions(options());
+                refreshAllMenu();
                 refreshThisMenu();
                 return;
             case KeyEvent.VK_G: // BR: "G" = Reload User Presets
-                UserPreferences.userSettings().loadGlobalGroupSettings(options());
+                UserSettings.loadGlobalGroupSettings(options());
+                refreshAllMenu();
                 refreshThisMenu();
                 return;
             case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
-                UserPreferences.userSettings().loadLocalGroupSettings("Race",options());
+                UserSettings.loadLocalGroupSettings("Race", options());
                 refreshThisMenu();
                 return;
             case KeyEvent.VK_U: // BR: "U" = Update User Presets
-                UserPreferences.userSettings().saveToUserConfig(options());
+                UserSettings.saveToUserConfig(options());
                 refreshThisMenu();
                 return;
         }

@@ -432,7 +432,7 @@ public abstract class AbstractSetting <T> {
 		}
 		return labels;
 	}
-	private boolean isSectionEnabled() {
+	public boolean isSectionEnabled() {
 		return localEnable.isLoadEnabled();
 	}
 	public boolean isSectionReadable(String key) { 

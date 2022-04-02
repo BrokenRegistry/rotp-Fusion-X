@@ -33,6 +33,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
 import rotp.Rotp;
+import rotp.mod.br.settings.UserSettings;
 import rotp.model.colony.Colony;
 import rotp.model.combat.ShipCombatManager;
 import rotp.model.empires.Empire;
@@ -276,8 +277,7 @@ public class RotPUI extends BasePanel implements ActionListener, KeyListener {
     }
     private void init() {
         initModel();
-        new rotp.ui.util.cfg.Presets().initDefaultValues(options()); // BR:
-        UserPreferences.userSettings().init(options()); // BR:
+        UserSettings.init(options()); // BR:
         addKeyListener(this);
         if (startupException != null)
             selectErrorPanel(startupException);

@@ -33,8 +33,7 @@ import rotp.ui.BasePanel;
 import rotp.ui.BaseText;
 import rotp.ui.UserPreferences;
 import rotp.ui.main.SystemPanel;
-import rotp.ui.util.cfg.ModnarCfg;
-import rotp.ui.util.cfg.Presets;
+import rotp.mod.br.settings.UserSettings;
 
 // modnar: add UI panel for modnar MOD game options, based on StartOptionsUI.java
 public class StartModOptionsUI extends BasePanel implements MouseListener, MouseMotionListener, MouseWheelListener {
@@ -406,6 +405,38 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
         dynamicDifficultyText.repaint(dynamicDifficultyStr());
     }
     // BR:
+    public void refreshAllMenu() {
+        buttonClick();
+        // Race
+        newGameOptions().selectedPlayerRace(options().selectedPlayerRace());
+        newGameOptions().selectedPlayerColor(options().selectedPlayerColor());
+        // Galaxy
+        newGameOptions().selectedPlayerRace(options().selectedPlayerRace());
+        newGameOptions().selectedGameDifficulty(options().selectedGameDifficulty());
+        newGameOptions().selectedOpponentAIOption(options().selectedOpponentAIOption());
+        newGameOptions().selectedOpponentAIOption(options().selectedOpponentAIOption());
+        newGameOptions().selectedGalaxySize(options().selectedGalaxySize());
+        newGameOptions().selectedGalaxyShape(options().selectedGalaxyShape());
+        newGameOptions().galaxyShape().quickGenerate();
+        newGameOptions().selectedNumberOpponents(
+            min(newGameOptions().maximumOpponentsOptions(), options().selectedNumberOpponents()));
+        // Advanced
+        newGameOptions().selectedGalaxyAge(options().selectedGalaxyAge());
+        newGameOptions().selectedStarDensityOption(options().selectedStarDensityOption());
+        newGameOptions().selectedAIHostilityOption(options().selectedAIHostilityOption());
+        newGameOptions().selectedNebulaeOption(options().selectedNebulaeOption());
+        newGameOptions().selectedRandomEventOption(options().selectedRandomEventOption());
+        newGameOptions().selectedPlanetQualityOption(options().selectedPlanetQualityOption());
+        newGameOptions().selectedTerraformingOption(options().selectedTerraformingOption());
+        newGameOptions().selectedColonizingOption(options().selectedColonizingOption());
+        newGameOptions().selectedCouncilWinOption(options().selectedCouncilWinOption());
+        newGameOptions().selectedRandomizeAIOption(options().selectedRandomizeAIOption());
+        newGameOptions().selectedAutoplayOption(options().selectedAutoplayOption());
+        newGameOptions().selectedResearchRate(options().selectedResearchRate());
+        newGameOptions().selectedWarpSpeedOption(options().selectedWarpSpeedOption());
+        newGameOptions().selectedFuelRangeOption(options().selectedFuelRangeOption());
+        newGameOptions().selectedTechTradeOption(options().selectedTechTradeOption());
+    }
     private void refreshThisMenu() {
         buttonClick();
     } // \ BR:
@@ -420,25 +451,21 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
                 parent.advanceHelp();
                 break;
                 case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
-                // new Presets().reloadDefaultConfig(options());
-//                new ModnarCfg().reloadDefaultConfig(options());
-                UserPreferences.userSettings().resetFirstOptions(options());
+                UserSettings.resetFirstOptions(options());
+                refreshAllMenu();
                 refreshThisMenu();
                 break;
             case KeyEvent.VK_R: // BR: "G" = Reload User Presets
-//                new ModnarCfg().reloadGlobalUserPresets(options());
-                UserPreferences.userSettings().loadGlobalGroupSettings(options());
-                // new Presets().loadUserConfig(options());
+                UserSettings.loadGlobalGroupSettings(options());
+                refreshAllMenu();
                 refreshThisMenu();
                 break;
             case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
-//                new ModnarCfg().reloadLocalUserPresets(options());
-                UserPreferences.userSettings().loadLocalGroupSettings("Modnar",options());
+                UserSettings.loadLocalGroupSettings("Modnar", options());
                 refreshThisMenu();
                 break;
             case KeyEvent.VK_U: // BR: "U" = Update User Presets
-//                new Presets().saveToUserConfig(options());
-                UserPreferences.userSettings().saveToUserConfig(options());
+                UserSettings.saveToUserConfig(options());
                 refreshThisMenu();
                 break;
         }

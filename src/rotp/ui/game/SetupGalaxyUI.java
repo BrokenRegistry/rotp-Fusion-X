@@ -38,6 +38,8 @@ import java.awt.image.BufferedImage;
 import java.awt.RenderingHints; // modnar: needed for adding RenderingHints
 import java.util.List;
 import javax.swing.SwingUtilities;
+
+import rotp.mod.br.settings.UserSettings;
 import rotp.model.empires.Race;
 import rotp.model.galaxy.GalaxyShape;
 import rotp.model.game.GameSession;
@@ -46,6 +48,7 @@ import rotp.ui.NoticeMessage;
 import rotp.ui.RotPUI;
 import rotp.ui.UserPreferences;
 import rotp.ui.main.SystemPanel;
+
 
 public final class SetupGalaxyUI  extends BasePanel implements MouseListener, MouseMotionListener, MouseWheelListener {
     private static final long serialVersionUID = 1L;
@@ -554,23 +557,49 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
         release();
         RotPUI.instance().selectGamePanel();
     }
+    public void refreshAllMenu() {
+        buttonClick();
+        // Race
+        newGameOptions().selectedPlayerRace(options().selectedPlayerRace());
+        newGameOptions().selectedPlayerColor(options().selectedPlayerColor());
+        // Galaxy
+//        newGameOptions().selectedPlayerRace(options().selectedPlayerRace());
+//        newGameOptions().selectedGameDifficulty(options().selectedGameDifficulty());
+//        newGameOptions().selectedOpponentAIOption(options().selectedOpponentAIOption());
+//        newGameOptions().selectedOpponentAIOption(options().selectedOpponentAIOption());
+//        newGameOptions().selectedGalaxySize(options().selectedGalaxySize());
+//        newGameOptions().selectedGalaxyShape(options().selectedGalaxyShape());
+//        newGameOptions().galaxyShape().quickGenerate();
+//        newGameOptions().selectedNumberOpponents(
+//            min(newGameOptions().maximumOpponentsOptions(), options().selectedNumberOpponents()));
+        // Advanced
+        newGameOptions().selectedGalaxyAge(options().selectedGalaxyAge());
+        newGameOptions().selectedStarDensityOption(options().selectedStarDensityOption());
+        newGameOptions().selectedAIHostilityOption(options().selectedAIHostilityOption());
+        newGameOptions().selectedNebulaeOption(options().selectedNebulaeOption());
+        newGameOptions().selectedRandomEventOption(options().selectedRandomEventOption());
+        newGameOptions().selectedPlanetQualityOption(options().selectedPlanetQualityOption());
+        newGameOptions().selectedTerraformingOption(options().selectedTerraformingOption());
+        newGameOptions().selectedColonizingOption(options().selectedColonizingOption());
+        newGameOptions().selectedCouncilWinOption(options().selectedCouncilWinOption());
+        newGameOptions().selectedRandomizeAIOption(options().selectedRandomizeAIOption());
+        newGameOptions().selectedAutoplayOption(options().selectedAutoplayOption());
+        newGameOptions().selectedResearchRate(options().selectedResearchRate());
+        newGameOptions().selectedWarpSpeedOption(options().selectedWarpSpeedOption());
+        newGameOptions().selectedFuelRangeOption(options().selectedFuelRangeOption());
+        newGameOptions().selectedTechTradeOption(options().selectedTechTradeOption());
+    }
     // BR: Needed for reloading
     private void refreshThisMenu() {
         buttonClick();
         newGameOptions().selectedPlayerRace(options().selectedPlayerRace());
         playerRaceImg = null;
         playerRaceImg = playerRaceImg();
-        // repaint();
         newGameOptions().selectedGameDifficulty(options().selectedGameDifficulty());
-        // repaint();
         newGameOptions().selectedOpponentAIOption(options().selectedOpponentAIOption());
-        // repaint();
         newGameOptions().selectedOpponentAIOption(options().selectedOpponentAIOption());
-        // repaint();
         newGameOptions().selectedGalaxySize(options().selectedGalaxySize());
-        // repaint();
         newGameOptions().selectedGalaxyShape(options().selectedGalaxyShape());
-        // repaint();
         newGameOptions().galaxyShape().quickGenerate();
         backImg = null;
         repaint();
@@ -898,22 +927,24 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
                 startGame();
                 return;
             case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
-                UserPreferences.userSettings().resetFirstOptions(options());
+                UserSettings.resetFirstOptions(options());
+                refreshAllMenu();
                 refreshThisMenu();
                 break;
             case KeyEvent.VK_G: // BR: "G" = Reload Global User Presets
-            	UserPreferences.userSettings().loadGlobalGroupSettings(options());
+            	UserSettings.loadGlobalGroupSettings(options());
+            	refreshAllMenu();
                 refreshThisMenu();
                 break;
             case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
-            	UserPreferences.userSettings().loadLocalGroupSettings("Galaxy",options());
+            	UserSettings.loadLocalGroupSettings("Galaxy", options());
                 refreshThisMenu();
                 break;
             case KeyEvent.VK_M: // BR: "M" = Go to Main Menu
                 goToMainMenu();
                 break;
             case KeyEvent.VK_U: // BR: "U" = Update User Presets
-                UserPreferences.userSettings().saveToUserConfig(options());
+                UserSettings.saveToUserConfig(options());
                 refreshThisMenu();
                 break;
         }
