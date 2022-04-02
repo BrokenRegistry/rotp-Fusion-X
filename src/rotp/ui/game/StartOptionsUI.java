@@ -1,12 +1,12 @@
 /*
  * Copyright 2015-2020 Ray Fowler
- *
+ * 
  * Licensed under the GNU General Public License, Version 3 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  *     https://www.gnu.org/licenses/gpl-3.0.html
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,21 +26,21 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.List;
+
+import rotp.mod.br.settings.Settings;
 import rotp.ui.BasePanel;
 import rotp.ui.BaseText;
 import rotp.ui.main.SystemPanel;
-import rotp.mod.br.settings.UserSettings;
-
 
 public class StartOptionsUI extends BasePanel implements MouseListener, MouseMotionListener {
     private static final long serialVersionUID = 1L;
     private static final Color backgroundHaze = new Color(0,0,0,160);
-
+    
     public static final Color lightBrown = new Color(178,124,87);
     public static final Color brown = new Color(141,101,76);
     public static final Color darkBrown = new Color(112,85,68);
     public static final Color darkerBrown = new Color(75,55,39);
-
+    
     Rectangle hoverBox;
     Rectangle okBox = new Rectangle();
     Rectangle defaultBox = new Rectangle();
@@ -60,7 +60,7 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
     BaseText fuelRangeText;
     BaseText techTradingText;
     BaseText aiHostilityText;
-
+    
     public StartOptionsUI() {
         init0();
     }
@@ -118,16 +118,16 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
     @Override
     public void paintComponent(Graphics g0) {
         super.paintComponent(g0);
-
+        
         int w = getWidth();
         int h = getHeight();
         Graphics2D g = (Graphics2D) g0;
-
-
+        
+        
         // draw background "haze"
         g.setColor(backgroundHaze);
         g.fillRect(0, 0, w, h);
-
+        
         int numColumns = 3;
         int columnPad = s20;
         int lineH = s17;
@@ -145,16 +145,16 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
         int x1 = leftM+((w1-sw)/numColumns);
         int y1 = topM+s40;
         drawBorderedString(g, title, 1, x1, y1, Color.black, Color.white);
-
+        
         g.setFont(narrowFont(18));
         String expl = text("SETTINGS_DESCRIPTION");
         g.setColor(SystemPanel.blackText);
         drawString(g,expl, leftM+s10, y1+s20);
-
+        
         Stroke prev = g.getStroke();
         g.setStroke(stroke3);
 
-
+        
         // left column
         int y2 = topM+scaled(110);
         int x2 = leftM+s10;
@@ -175,7 +175,7 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
         }
-
+        
         y2 += (h2+s20);
         g.setColor(SystemPanel.blackText);
         g.drawRect(x2, y2, w2, h2);
@@ -191,8 +191,8 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
         for (String line: lines) {
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
-        }
-
+        }       
+       
         y2 += (h2+s20);
         g.setColor(SystemPanel.blackText);
         g.drawRect(x2, y2, w2, h2);
@@ -209,7 +209,7 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
         }
-
+        
         y2 += (h2+s20);
         g.setColor(SystemPanel.blackText);
         g.drawRect(x2, y2, w2, h2);
@@ -226,8 +226,8 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
         }
-
-
+        
+        
         y2 += (h2+s20);
         g.setColor(SystemPanel.blackText);
         g.drawRect(x2, y2, w2, h2);
@@ -244,7 +244,7 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
         }
-
+        
         // middle column
         y2 = topM+scaled(110);
         x2 = x2+w2+s20;
@@ -264,7 +264,7 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
         }
-
+        
         y2 += (h2+s20);
         g.setColor(SystemPanel.blackText);
         g.drawRect(x2, y2, w2, h2);
@@ -280,8 +280,8 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
         for (String line: lines) {
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
-        }
-
+        }       
+       
 
         y2 += (h2+s20);
         g.setColor(SystemPanel.blackText);
@@ -299,8 +299,8 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
         }
-
-
+ 
+        
         y2 += (h2+s20);
         g.setColor(SystemPanel.blackText);
         g.drawRect(x2, y2, w2, h2);
@@ -317,8 +317,8 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
         }
-
-
+        
+        
         y2 += (h2+s20);
         g.setColor(SystemPanel.blackText);
         g.drawRect(x2, y2, w2, h2);
@@ -335,7 +335,7 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
         }
-
+        
         // right side
         y2 = topM+scaled(110);
         h2 = s90;
@@ -355,7 +355,7 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
         }
-
+        
         y2 += (h2+s20);
         g.setColor(SystemPanel.blackText);
         g.drawRect(x2, y2, w2, h2);
@@ -372,7 +372,7 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
             y3 += lineH;
             drawString(g,line, x2+s20, y3);
         }
-
+          
         y2 += (h2+s20);
         g.setColor(SystemPanel.blackText);
         g.drawRect(x2, y2, w2, h2);
@@ -598,6 +598,7 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
         newGameOptions().selectedTechTradeOption(newGameOptions().nextTechTradeOption());
         techTradingText.repaint(techTradingStr());
     }
+
     // BR:
     private void goToMainMenu() {
         buttonClick();
@@ -680,24 +681,24 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
                 parent.advanceHelp();
                 break;
             case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
-            	UserSettings.resetFirstOptions(options());
+            	Settings.resetFirstOptions(options());
             	refreshAllMenu();
                 refreshThisMenu();
                 break;
             case KeyEvent.VK_G: // BR: "G" = Reload User Presets
-                UserSettings.loadGlobalGroupSettings(options());
+                Settings.loadGlobalGroupSettings(options());
                 refreshAllMenu();
                 refreshThisMenu();
                 break;
             case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
-                UserSettings.loadLocalGroupSettings("Advanced", options());
+                Settings.loadLocalGroupSettings("Advanced", options());
                 refreshThisMenu();
                 break;
             case KeyEvent.VK_M: // BR: "M" = Go to Main Menu
                 goToMainMenu();
                 break;
             case KeyEvent.VK_U: // BR: "U" = Update User Presets
-                UserSettings.saveToUserConfig(options());
+                Settings.saveToUserConfig(options());
                 refreshThisMenu();
                 break;
         }
@@ -744,7 +745,7 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
             hoverBox = okBox;
         else if (defaultBox.contains(x,y))
             hoverBox = defaultBox;
-
+		
         if (hoverBox != prevHover) {
             if (prevHover == galaxyAgeText.bounds())
                 galaxyAgeText.mouseExit();
@@ -822,8 +823,8 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
             return;
         if (hoverBox == null)
             return;
-        // int x = e.getX();
-        // int y = e.getY();
+        int x = e.getX();
+        int y = e.getY();
         if (hoverBox == galaxyAgeText.bounds())
             toggleGalaxyAge();
         else if (hoverBox == starDensityText.bounds())

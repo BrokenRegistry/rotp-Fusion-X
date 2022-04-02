@@ -16,8 +16,10 @@ public class GovernorOptions implements Serializable {
     }
     // keep backwards compatibility with system properties
     private boolean governorOnByDefault = UserPreferences.governorOnByDefault();
+    private boolean legacyGrowthMode = "true".equalsIgnoreCase(System.getProperty("legacygrowth", "false"));
     private boolean autotransport = "true".equalsIgnoreCase(System.getProperty("autotransport", "false"));
     private boolean autotransportXilmi = "true".equalsIgnoreCase(System.getProperty("autotransportXilmi", "false"));
+    private boolean autotransportUngoverned = "true".equalsIgnoreCase(System.getProperty("autotransportUngoverned", "false"));
     private GatesGovernor gates = "false".equalsIgnoreCase(System.getProperty("autogate", "true")) ? GatesGovernor.None : GatesGovernor.Rich;
 
     @Deprecated
@@ -55,6 +57,10 @@ public class GovernorOptions implements Serializable {
     public boolean isGovernorOnByDefault() {
         return governorOnByDefault;
     }
+    
+    public boolean legacyGrowthMode() {
+        return legacyGrowthMode;
+    }
 
     public boolean isAutotransport() {
         return autotransport;
@@ -62,6 +68,10 @@ public class GovernorOptions implements Serializable {
     
     public boolean isAutotransportXilmi() {
         return autotransportXilmi;
+    }
+    
+    public boolean isAutotransportUngoverned() {
+        return autotransportUngoverned;
     }
 
     public GatesGovernor getGates() {
@@ -72,6 +82,10 @@ public class GovernorOptions implements Serializable {
         this.governorOnByDefault = governorOnByDefault;
         UserPreferences.setGovernorOn(governorOnByDefault);
     }
+    
+    public void setLegacyGrowthMode(boolean legacyGrowthMode) {
+        this.legacyGrowthMode = legacyGrowthMode;
+    }
 
     public void setAutotransport(boolean autotransport) {
         this.autotransport = autotransport;
@@ -79,6 +93,10 @@ public class GovernorOptions implements Serializable {
     
     public void setAutotransportXilmi(boolean autotransportXilmi) {
         this.autotransportXilmi = autotransportXilmi;
+    }
+    
+    public void setAutotransportUngoverned(boolean autotransportUngoverned) {
+        this.autotransportUngoverned = autotransportUngoverned;
     }
 
     public void setGates(GatesGovernor gates) {

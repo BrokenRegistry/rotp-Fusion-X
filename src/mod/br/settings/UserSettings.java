@@ -1,4 +1,4 @@
-package rotp.mod.br.settings;
+package mod.br.settings;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -50,6 +50,9 @@ public class UserSettings {
 	// ========================================================================
 	//  Public Methods
 	//
+	/*
+   	 * Check if User Settings are already initialized with gameOptions
+   	 */
 	public static boolean isInitialized () {
 		return !firstInit;
 	}
@@ -75,7 +78,7 @@ public class UserSettings {
     /*
    	 * Load the configuration file and memorize first options
    	 */
-    public static void init(IGameOptions options) {
+    public static void initUserSettings(IGameOptions options) {
     	if (firstInit) {
 	        settingPresetAction = new Setting_PRESET_ACTION(options);
 	        initGroupMap(options);
@@ -94,17 +97,6 @@ public class UserSettings {
     	currentGroup.overrideGameParameters(options, settingKeys);
     }
     /*
-   	 * Load and execute the configuration file
-   	 */
-    public static void loadGlobalGroupSettings(String groupStr, IGameOptions options) {
-    	loadConfigurationFile();
-    	LinkedHashSet<String> settingKeys = getReadableUserKeySet();
-    	for (AbstractGroup<IGameOptions> group : groupMap.values()) {
-//    		group.overrideGameParameters(gameOptions, settingKeys);
-    		group.overrideGameParameters(options, settingKeys);
-		}
-//    	loadLocalGroupSettings(groupStr, options);
-    }    /*
    	 * Load and execute the configuration file
    	 */
     public static void loadGlobalGroupSettings(IGameOptions options) {

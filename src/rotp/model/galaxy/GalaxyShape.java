@@ -20,7 +20,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import rotp.mod.br.settings.BR_Options;
+import rotp.mod.br.alteration.GalaxyOptions;
+import rotp.mod.br.settings.Settings;
 import rotp.model.game.IGameOptions;
 import rotp.util.Base;
 import rotp.ui.UserPreferences; // modnar: add option to start game with additional colonies
@@ -164,11 +165,11 @@ public abstract class GalaxyShape implements Base, Serializable {
         float minOrionBuffer = 5*sysBuffer; // modnar: increase spacing between empires and orion
 
         // BR:
-        if (BR_Options.isSpacingEnabled()) {
-        	BR_Options.initSpacing(maxStars, numOpps, sysBuffer);
-            minEmpireBuffer    = BR_Options.getMinEmpireBuffer();
-            maxMinEmpireBuffer = BR_Options.getMaxMinEmpireBuffer();
-            minOrionBuffer     = BR_Options.getMinOrionBuffer();
+        if (Settings.isSpacingEnabled()) {
+        	GalaxyOptions.initSpacing(maxStars, numOpps, sysBuffer);
+            minEmpireBuffer    = GalaxyOptions.getMinEmpireBuffer();
+            maxMinEmpireBuffer = GalaxyOptions.getMaxMinEmpireBuffer();
+            minOrionBuffer     = GalaxyOptions.getMinOrionBuffer();
         }
         // \BR:
 

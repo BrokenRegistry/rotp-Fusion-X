@@ -1,12 +1,12 @@
 /*
  * Copyright 2015-2020 Ray Fowler
- *
+ * 
  * Licensed under the GNU General Public License, Version 3 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  *     https://www.gnu.org/licenses/gpl-3.0.html
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,10 +34,11 @@ import java.awt.image.BufferedImage;
 import java.awt.RenderingHints; // modnar: needed for adding RenderingHints
 import java.util.List;
 import javax.swing.JTextField;
+
+import rotp.mod.br.settings.Settings;
 import rotp.model.empires.Race;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
-import rotp.mod.br.settings.UserSettings;
 
 public final class SetupRaceUI extends BasePanel implements MouseListener, MouseMotionListener {
     private static final long serialVersionUID = 1L;
@@ -186,7 +187,7 @@ public final class SetupRaceUI extends BasePanel implements MouseListener, Mouse
                 y0 += s18;
             }
         }
-
+        
         // draw race desc #3
         y0 += s12;
         String desc3 = race.description3.replace("[race]", race.setupName());
@@ -524,7 +525,7 @@ public final class SetupRaceUI extends BasePanel implements MouseListener, Mouse
         g.setComposite(prevC);
     }
     @Override
-    public String ambienceSoundKey() {
+    public String ambienceSoundKey() { 
         return GameUI.AMBIENCE_KEY;
     }
     @Override
@@ -539,21 +540,21 @@ public final class SetupRaceUI extends BasePanel implements MouseListener, Mouse
                 goToGalaxySetup();
                 return;
             case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
-                UserSettings.resetFirstOptions(options());
+                Settings.resetFirstOptions(options());
                 refreshAllMenu();
                 refreshThisMenu();
                 return;
             case KeyEvent.VK_G: // BR: "G" = Reload User Presets
-                UserSettings.loadGlobalGroupSettings(options());
+                Settings.loadGlobalGroupSettings(options());
                 refreshAllMenu();
                 refreshThisMenu();
                 return;
             case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
-                UserSettings.loadLocalGroupSettings("Race", options());
+                Settings.loadLocalGroupSettings("Race", options());
                 refreshThisMenu();
                 return;
             case KeyEvent.VK_U: // BR: "U" = Update User Presets
-                UserSettings.saveToUserConfig(options());
+                Settings.saveToUserConfig(options());
                 refreshThisMenu();
                 return;
         }
@@ -602,8 +603,8 @@ public final class SetupRaceUI extends BasePanel implements MouseListener, Mouse
             return;
         if (hoverBox == null)
             return;
-        // int x = e.getX();
-        // int y = e.getY();
+        int x = e.getX();
+        int y = e.getY();
         search:
         if (hoverBox == cancelBox)
             goToMainMenu();

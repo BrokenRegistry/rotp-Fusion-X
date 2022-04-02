@@ -1,6 +1,6 @@
-package rotp.mod.br.settings;
+package mod.br.alteration;
 
-public class BR_Options {
+public class GalaxySpacing {
 
     // ========================================================================
     // MAXIMIZE EMPIRES SPACING
@@ -18,12 +18,6 @@ public class BR_Options {
 	private static float maxMinEmpireBuffer;
 	private static float minOrionBuffer;
 
-	public static boolean isSpacingEnabled() {
-		if (UserSettings.isInitialized()) {
-			return UserSettings.getSetting("MAXIMIZE EMPIRES SPACING").isSectionEnabled();
-		}
-		return false;
-	}
 	public static void initSpacing(int maxStars, int numOpps, float sysBuffer) {
 		int minStarsPerEmpire = getMinStarsPerEmpire();
 		if (isMaximizeEmpiresSpacing())
@@ -70,17 +64,4 @@ public class BR_Options {
 	public static void setMinStarsPerEmpire(Integer i) {
 		minStarsPerEmpire = i;
 	}
-    // ========================================================================
-    // NO PLANET PCT MULTIPLIER
-    //
-	public static final int NO_PLANET_PCT_MULTIPLIER = 100;
-    private static Integer noPlanetPctMultiplier = NO_PLANET_PCT_MULTIPLIER;
-
-    public static Integer getNoPlanetPctMultiplier() {
-		return noPlanetPctMultiplier;
-	}
-	public static void setNoPlanetPctMultiplier(Integer i) {
-		noPlanetPctMultiplier = i;
-	}
-
 }

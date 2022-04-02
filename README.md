@@ -47,6 +47,9 @@ _Value = Random_<br>
 ---
 ---
 ### Additional features / changelog<br>
+- 0.90.1 (2022-04-02)
+  - Updated to Xilmi Fusion 2020.03.29 <br>
+  - Total reconstruction and stabilisation of the mod, now closer to Java's philosophy <br>
 - 0.87.5 (2022-03-22)
   - No code change, but the mini Jar and window .exe should now be OK! <br>
 - 0.87.4 (2022-03-22)

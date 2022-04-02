@@ -1,12 +1,12 @@
 /*
  * Copyright 2015-2020 Ray Fowler
- *
+ * 
  * Licensed under the GNU General Public License, Version 3 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  *     https://www.gnu.org/licenses/gpl-3.0.html
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -60,7 +60,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     private String selectedGalaxyShape;
     private String selectedGalaxyShapeOption1;
     private String selectedGalaxyShapeOption2;
-
+    
     private String selectedGalaxyAge;
 	// modnar: random tech start
     private boolean randomTechStart = UserPreferences.randomTechStart();
@@ -85,7 +85,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     private String selectedOpponentAIOption;
     private final String[] specificOpponentAIOption = new String[MAX_OPPONENTS+1];
     private String selectedAutoplayOption;
-
+    
     private transient GalaxyShape galaxyShape;
 
     public MOO1GameOptions() {
@@ -121,7 +121,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     @Override
     public void selectedGalaxySize(String s)     {
         int prevNumOpp = defaultOpponentsOptions();
-        selectedGalaxySize = s;
+        selectedGalaxySize = s; 
         if (selectedNumberOpponents() == prevNumOpp)
             selectedNumberOpponents(defaultOpponentsOptions());
         generateGalaxy();
@@ -203,14 +203,14 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     @Override
     public void selectedOpponentAIOption(String s) { selectedOpponentAIOption = s; }
     @Override
-    public String specificOpponentAIOption(int n)  {
+    public String specificOpponentAIOption(int n)  { 
             if ((specificOpponentAIOption == null) || (specificOpponentAIOption.length < n))
                 return selectedOpponentAIOption();
             else
                 return specificOpponentAIOption[n];
     }
     @Override
-    public void specificOpponentAIOption(String s, int n) {
+    public void specificOpponentAIOption(String s, int n) { 
         if (n < specificOpponentAIOption.length)
             specificOpponentAIOption[n] = s;
     }
@@ -256,21 +256,21 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     }
     @Override
     public int defaultOpponentsOptions() {
-        int maxEmpires = min((int)Math.ceil(numberStarSystems()/16f), colors.size(), MAX_OPPONENT_TYPE*startingRaceOptions().size());
+        int maxEmpires = min((int)Math.ceil(numberStarSystems()/10f), colors.size(), MAX_OPPONENT_TYPE*startingRaceOptions().size());
         int maxOpponents = min(SetupGalaxyUI.MAX_DISPLAY_OPPS);
         return min(maxOpponents, maxEmpires-1);
     }
     @Override
     public String name()                 { return "SETUP_RULESET_ORION"; }
     @Override
-    public void copyOptions(IGameOptions o) {
+    public void copyOptions(IGameOptions o) { 
         if (!(o instanceof MOO1GameOptions))
             return;
-
+        
         // copy only the options that are immediately visible
         // .. not the advanced options
         MOO1GameOptions opt = (MOO1GameOptions) o;
-
+        
         selectedGalaxySize = opt.selectedGalaxySize;
         selectedGalaxyShape = opt.selectedGalaxyShape;
         selectedGalaxyShapeOption1 = opt.selectedGalaxyShapeOption1;
@@ -294,20 +294,20 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
         selectedAIHostilityOption = opt.selectedAIHostilityOption;
         selectedColonizingOption = opt.selectedColonizingOption;
         selectedOpponentAIOption = opt.selectedOpponentAIOption;
-
+        
         if (opt.specificOpponentAIOption != null) {
             for (int i=0;i<specificOpponentAIOption.length;i++)
                 specificOpponentAIOption[i] = opt.specificOpponentAIOption[i];
         }
-
-        if (opt.player != null)
+        
+        if (opt.player != null) 
             player.copy(opt.player);
-
-        setGalaxyShape();
+        
+        setGalaxyShape(); 
         selectedGalaxyShapeOption1 = opt.selectedGalaxyShapeOption1;
         selectedGalaxyShapeOption2 = opt.selectedGalaxyShapeOption2;
 
-        generateGalaxy();
+        generateGalaxy(); 
     }
     @Override
     public GalaxyShape galaxyShape()   {
@@ -390,7 +390,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     public int numberNebula() {
         if (selectedNebulaeOption().equals(NEBULAE_NONE))
             return 0;
-
+        
         float freq = 1.0f;
         switch(selectedNebulaeOption()) {
             case NEBULAE_RARE:     freq = 0.25f; break;
@@ -412,7 +412,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
         int nStars = numberStarSystems();
         float sizeMult = nebulaSizeMult();
         int nNeb = (int) nStars/20;
-
+        
         return (int) (freq*nNeb/sizeMult/sizeMult);
     }
     @Override
@@ -420,7 +420,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
         int nStars = numberStarSystems();
         if (nStars < 200)
             return 1;
-        else
+        else 
             return min(10,sqrt(nStars/200f));
     }
     @Override
@@ -459,7 +459,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
         return AI.XILMI;
     }
     @Override
-    public float hostileTerraformingPct() {
+    public float hostileTerraformingPct() { 
         switch(selectedTerraformingOption()) {
             case TERRAFORMING_NONE:  return 0.0f;
             case TERRAFORMING_REDUCED: return 0.5f;
@@ -471,9 +471,9 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
         // this is a flat research rate adjustment. The method that calls this to calculate
         // the research cost already factors in the tech level (squared), the map sizes, and
         // the number of opponents.
-
+        
         // the various "slowing" options increase the research cost for higher tech levels
-
+        
         // modnar: adjust research costs to asymptotically reach their original scaling
         // mainly to keep low tech level costs similar to RESEARCH_NORMAL (1.00)
         // also corrects for old_SLOW's cheaper techLevel==2 and same cost techLevel==3
@@ -485,7 +485,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
         // new_SLOWER:   1.20  1.25  1.40  1.58  1.77  1.96  2.14  2.32  2.49   3.97   5.14   6.14   7.03  10.52
         // old_SLOWEST:  3.16  3.87  4.47  5.00  5.48  5.92  6.32  6.71  7.07  10.00  12.25  14.14  15.81  22.36
         // new_SLOWEST:  1.24  1.36  1.75  2.21  2.68  3.15  3.61  4.06  4.49   8.17  11.10  13.60  15.81  24.55
-
+        
         float amt = BASE_RESEARCH_MOD;                  // default adjustment
         switch(selectedResearchRate()) {
             // mondar: add fast research option
@@ -500,12 +500,12 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
             case RESEARCH_SLOWEST:
                 return amt*((3.0f*techLevel*sqrt(techLevel)+5.0f)/techLevel - 5.5f); // mondar: asymptotically similar
                 //return amt*sqrt(techLevel*5); // approx. 16x slower for level 50
-            default:
-                return amt;                   // no additional slowing.
+            default:  
+                return amt;                   // no additional slowing. 
         }
     }
     @Override
-    public  int baseAIRelationsAdj()       {
+    public  int baseAIRelationsAdj()       { 
         switch(selectedAIHostilityOption()) {
             case AI_HOSTILITY_LOWEST:  return 30;
             case AI_HOSTILITY_LOWER:   return 20;
@@ -514,7 +514,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
             case AI_HOSTILITY_HIGHER:  return -20;
             case AI_HOSTILITY_HIGHEST: return -30;
             default: return 0;
-        }
+        } 
     }
 
     @Override
@@ -613,7 +613,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
         }
 
         float r = random();
-
+        
         // modnar: change PLANET_QUALITY settings, comment out poor to great settings
         /*
         switch(selectedPlanetQualityOption()) {
@@ -624,7 +624,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
             case PLANET_QUALITY_GREAT:    r = 0.2f + (random() * 0.8f); break;
         }
         */
-
+        
         for (int i=0;i<pcts.length;i++) {
             if (r <= pcts[i]) {
                 typeIndex = i;
@@ -645,22 +645,22 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     @Override
     public String randomPlayerStarType(Race r)     { return StarType.YELLOW; }
     @Override
-    public String randomRaceStarType(Race r)       {
+    public String randomRaceStarType(Race r)       { 
         List<String> types = new ArrayList<>();
         types.add(StarType.RED);
         types.add(StarType.ORANGE);
         types.add(StarType.YELLOW);
 
-        return random(types);
+        return random(types); 
     }
     @Override
-    public String randomOrionStarType()       {
+    public String randomOrionStarType()       { 
         List<String> types = new ArrayList<>();
         types.add(StarType.RED);
         types.add(StarType.ORANGE);
         types.add(StarType.YELLOW);
 
-        return random(types);
+        return random(types); 
     }
     @Override
     public Planet orionPlanet(StarSystem s) {
@@ -731,7 +731,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
 		list.add(SHAPE_FRACTAL);
         return list;
     }
-
+	
     @Override
     public List<String> galaxyShapeOptions1() { return galaxyShape.options1(); }
     @Override
@@ -994,7 +994,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
 		empireColors.add(new Color(170,255,195)); // modnar: mint*
 		empireColors.add(new Color(128,128,0));   // modnar: olive**
 		//empireColors.add(new Color(255,215,180)); // modnar: apricot*
-
+		
         //empireColors.add(new Color(9,131,214));   // blue
         //empireColors.add(new Color(132,57,20));   // brown
         //empireColors.add(new Color(0,166,81));    // green
@@ -1019,7 +1019,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
         list1.add(7);
         list1.add(8);
         list1.add(9);
-
+		
         //secondary color list
         List<Integer> list1a = new ArrayList<>();
         list1a.add(10);
@@ -1035,7 +1035,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
         List<Integer> list3 = new ArrayList<>(list2);
         List<Integer> list4 = new ArrayList<>(list2);
         List<Integer> list5 = new ArrayList<>(list2);
-
+            
         Collections.shuffle(list1);
         //Collections.shuffle(list1a); // modnar: no need to shuffle list1a
         Collections.shuffle(list2);
@@ -1112,7 +1112,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
             default:
                 throw new RuntimeException(concat("Invalid star type for options: ", s.starType().key()));
         }
-
+        
         // modnar: change PLANET_QUALITY settings, 20% more Poor with LARGER, 20% less Poor with RICHER
         switch(selectedPlanetQualityOption()) {
             case PLANET_QUALITY_LARGER:   r1 *= 1.2f; r2 *= 1.2f; break;
@@ -1120,7 +1120,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
             case PLANET_QUALITY_NORMAL:   break;
             default:    break;
         }
-
+        
         float r = random();
         if (r <= r1)
             p.setResourceUltraPoor();
@@ -1181,7 +1181,7 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
             case PLANET_QUALITY_NORMAL:   break;
             default:    break;
         }
-
+        
         float r = random();
         if (r <= r1)
             p.setResourceRich();

@@ -1,4 +1,4 @@
-package rotp.mod.br.settings;
+package mod.br.settings;
 
 import java.util.List;
 
@@ -6,7 +6,8 @@ import br.config.AbstractSetting;
 import br.config.AbstractGroup;
 import br.config.CfgField;
 import br.config.comment.Comment;
-import rotp.mod.br.settings.BR_Options;
+import mod.br.alteration.GalaxySpacing;
+import mod.br.alteration.StarsOptions;
 import rotp.model.game.IGameOptions;
 
 public class Group_BrokenRegistry extends AbstractGroup <IGameOptions> {
@@ -29,22 +30,22 @@ public class Group_BrokenRegistry extends AbstractGroup <IGameOptions> {
      
     	MaximizeEmpiresSpacing(IGameOptions gO) { super(
             "MAXIMIZE EMPIRES SPACING",
-            BR_Options.DEFAULT_MAXIMIZE_EMPIRES_SPACING);
+            GalaxySpacing.DEFAULT_MAXIMIZE_EMPIRES_SPACING);
         }
         // ------------------------------------------------
         // Overrider
         //
         @Override
         public String getSelectedOption (IGameOptions gO) {
-        	return CfgField.toYesNoString(BR_Options.isMaximizeEmpiresSpacing());
+        	return CfgField.toYesNoString(GalaxySpacing.isMaximizeEmpiresSpacing());
         }
         @Override
         public void setSelectedOption(IGameOptions gO, String userOption) {
-        	BR_Options.setMaximizeEmpiresSpacing(getBooleanOption(userOption));
+        	GalaxySpacing.setMaximizeEmpiresSpacing(getBooleanOption(userOption));
         }
         @Override
         public void setSelectedOptionToInitial(IGameOptions gO) {
-        	BR_Options.setMaximizeEmpiresSpacing(firstValue().getOrDefault(BR_Options.DEFAULT_MAXIMIZE_EMPIRES_SPACING));
+        	GalaxySpacing.setMaximizeEmpiresSpacing(firstValue().getOrDefault(GalaxySpacing.DEFAULT_MAXIMIZE_EMPIRES_SPACING));
         }
         @Override
         public void initComments() {
@@ -67,22 +68,22 @@ public class Group_BrokenRegistry extends AbstractGroup <IGameOptions> {
     	PreferedStarsPerEmpire(IGameOptions gO) { super(
             "PREF STARS PER EMPIRE",
             MIN, MAX, MIN_R, MAX_R,
-            BR_Options.DEFAULT_PREFERED_STARS_PER_EMPIRE);
+            GalaxySpacing.DEFAULT_PREFERED_STARS_PER_EMPIRE);
         }
         // ------------------------------------------------
         // Overrider
         //
         @Override
         public String getSelectedOption (IGameOptions gO) {
-        	return String.valueOf(BR_Options.getPreferedStarsPerEmpire());
+        	return String.valueOf(GalaxySpacing.getPreferedStarsPerEmpire());
         }
         @Override
         public void setSelectedOption(IGameOptions gO, String userOption) {
-        	BR_Options.setPreferedStarsPerEmpire(getIntegerOption(userOption));
+        	GalaxySpacing.setPreferedStarsPerEmpire(getIntegerOption(userOption));
         }
         @Override
         public void setSelectedOptionToInitial(IGameOptions gO) {
-        	BR_Options.setPreferedStarsPerEmpire(firstValue().getOrDefault(BR_Options.DEFAULT_PREFERED_STARS_PER_EMPIRE));
+        	GalaxySpacing.setPreferedStarsPerEmpire(firstValue().getOrDefault(GalaxySpacing.DEFAULT_PREFERED_STARS_PER_EMPIRE));
         }
         @Override
         public void initComments() {}
@@ -100,22 +101,22 @@ public class Group_BrokenRegistry extends AbstractGroup <IGameOptions> {
     	MinStarsPerEmpire(IGameOptions gO) { super(
             "MIN STARS PER EMPIRE",
             MIN, MAX, MIN_R, MAX_R,
-            BR_Options.DEFAULT_MIN_STARS_PER_EMPIRE);
+            GalaxySpacing.DEFAULT_MIN_STARS_PER_EMPIRE);
         }
         // ------------------------------------------------
         // Overrider
         //
         @Override
         public String getSelectedOption (IGameOptions gO) {
-        	return String.valueOf(BR_Options.getMinStarsPerEmpire());
+        	return String.valueOf(GalaxySpacing.getMinStarsPerEmpire());
         }
         @Override
         public void setSelectedOption(IGameOptions gO, String userOption) {
-        	BR_Options.setMinStarsPerEmpire(getIntegerOption(userOption));
+        	GalaxySpacing.setMinStarsPerEmpire(getIntegerOption(userOption));
         }
         @Override
         public void setSelectedOptionToInitial(IGameOptions gO) {
-        	BR_Options.setMinStarsPerEmpire(firstValue().getOrDefault(BR_Options.DEFAULT_MIN_STARS_PER_EMPIRE));
+        	GalaxySpacing.setMinStarsPerEmpire(firstValue().getOrDefault(GalaxySpacing.DEFAULT_MIN_STARS_PER_EMPIRE));
         }
         @Override
         public void initComments() {}
@@ -134,22 +135,22 @@ public class Group_BrokenRegistry extends AbstractGroup <IGameOptions> {
     	NoPlanetPctMultiplier(IGameOptions gO) { super(
             "NO PLANET PCT MULT",
             MIN, MAX, MIN_R, MAX_R,
-            BR_Options.NO_PLANET_PCT_MULTIPLIER);
+            StarsOptions.NO_PLANET_PCT_MULTIPLIER);
         }
         // ------------------------------------------------
         // Overrider
         //
         @Override
         public String getSelectedOption (IGameOptions gO) {
-        	return String.valueOf(BR_Options.getNoPlanetPctMultiplier());
+        	return String.valueOf(StarsOptions.getNoPlanetPctMultiplier());
         }
         @Override
         public void setSelectedOption(IGameOptions gO, String userOption) {
-        	BR_Options.setNoPlanetPctMultiplier(getIntegerOption(userOption));
+        	StarsOptions.setNoPlanetPctMultiplier(getIntegerOption(userOption));
         }
         @Override
         public void setSelectedOptionToInitial(IGameOptions gO) {
-        	BR_Options.setNoPlanetPctMultiplier(firstValue().getOrDefault(BR_Options.NO_PLANET_PCT_MULTIPLIER));
+        	StarsOptions.setNoPlanetPctMultiplier(firstValue().getOrDefault(StarsOptions.NO_PLANET_PCT_MULTIPLIER));
         }
         @Override
         public void initComments() {}
