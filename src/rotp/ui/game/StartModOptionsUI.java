@@ -30,7 +30,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.List;
 
-import rotp.mod.br.settings.Settings;
+import rotp.mod.br.settings.Presets;
 import rotp.ui.BasePanel;
 import rotp.ui.BaseText;
 import rotp.ui.UserPreferences;
@@ -453,21 +453,21 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
                 parent.advanceHelp();
                 break;
                 case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
-                Settings.resetFirstOptions(options());
+                Presets.resetFirstOptions(options());
                 refreshAllMenu();
                 refreshThisMenu();
                 break;
             case KeyEvent.VK_R: // BR: "G" = Reload User Presets
-                Settings.loadGlobalGroupSettings(options());
+                Presets.loadGlobalGroupSettings(options());
                 refreshAllMenu();
                 refreshThisMenu();
                 break;
             case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
-                Settings.loadLocalGroupSettings("Modnar", options());
+                Presets.loadLocalGroupSettings("Modnar", options());
                 refreshThisMenu();
                 break;
             case KeyEvent.VK_U: // BR: "U" = Update User Presets
-                Settings.saveToUserConfig(options());
+                Presets.saveToUserConfig(options());
                 refreshThisMenu();
                 break;
         }

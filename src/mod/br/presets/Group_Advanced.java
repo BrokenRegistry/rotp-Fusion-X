@@ -1,10 +1,10 @@
-package mod.br.settings;
+package mod.br.presets;
 
 import java.util.List;
 
 import br.config.AbstractSetting;
+import br.config.Comment;
 import br.config.AbstractGroup;
-import br.config.comment.Comment;
 import rotp.model.game.IGameOptions;
 
 public class Group_Advanced extends AbstractGroup <IGameOptions> {

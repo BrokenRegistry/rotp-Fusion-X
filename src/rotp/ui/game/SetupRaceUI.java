@@ -35,7 +35,7 @@ import java.awt.RenderingHints; // modnar: needed for adding RenderingHints
 import java.util.List;
 import javax.swing.JTextField;
 
-import rotp.mod.br.settings.Settings;
+import rotp.mod.br.settings.Presets;
 import rotp.model.empires.Race;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
@@ -540,21 +540,21 @@ public final class SetupRaceUI extends BasePanel implements MouseListener, Mouse
                 goToGalaxySetup();
                 return;
             case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
-                Settings.resetFirstOptions(options());
+                Presets.resetFirstOptions(options());
                 refreshAllMenu();
                 refreshThisMenu();
                 return;
             case KeyEvent.VK_G: // BR: "G" = Reload User Presets
-                Settings.loadGlobalGroupSettings(options());
+                Presets.loadGlobalGroupSettings(options());
                 refreshAllMenu();
                 refreshThisMenu();
                 return;
             case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
-                Settings.loadLocalGroupSettings("Race", options());
+                Presets.loadLocalGroupSettings("Race", options());
                 refreshThisMenu();
                 return;
             case KeyEvent.VK_U: // BR: "U" = Update User Presets
-                Settings.saveToUserConfig(options());
+                Presets.saveToUserConfig(options());
                 refreshThisMenu();
                 return;
         }

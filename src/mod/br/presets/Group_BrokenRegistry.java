@@ -1,11 +1,11 @@
-package mod.br.settings;
+package mod.br.presets;
 
 import java.util.List;
 
 import br.config.AbstractSetting;
 import br.config.AbstractGroup;
 import br.config.CfgField;
-import br.config.comment.Comment;
+import br.config.Comment;
 import mod.br.alteration.GalaxySpacing;
 import mod.br.alteration.StarsOptions;
 import rotp.model.game.IGameOptions;

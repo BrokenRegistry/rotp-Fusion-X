@@ -13,12 +13,10 @@
  * limitations under the License.
  */
 
-package br.config.comment;
+package br.config;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import br.config.CfgField;
 
 public class Comment {
     private List<CommentLine> commentList;

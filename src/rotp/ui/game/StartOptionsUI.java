@@ -27,7 +27,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.List;
 
-import rotp.mod.br.settings.Settings;
+import rotp.mod.br.settings.Presets;
 import rotp.ui.BasePanel;
 import rotp.ui.BaseText;
 import rotp.ui.main.SystemPanel;
@@ -681,24 +681,24 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
                 parent.advanceHelp();
                 break;
             case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
-            	Settings.resetFirstOptions(options());
+            	Presets.resetFirstOptions(options());
             	refreshAllMenu();
                 refreshThisMenu();
                 break;
             case KeyEvent.VK_G: // BR: "G" = Reload User Presets
-                Settings.loadGlobalGroupSettings(options());
+                Presets.loadGlobalGroupSettings(options());
                 refreshAllMenu();
                 refreshThisMenu();
                 break;
             case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
-                Settings.loadLocalGroupSettings("Advanced", options());
+                Presets.loadLocalGroupSettings("Advanced", options());
                 refreshThisMenu();
                 break;
             case KeyEvent.VK_M: // BR: "M" = Go to Main Menu
                 goToMainMenu();
                 break;
             case KeyEvent.VK_U: // BR: "U" = Update User Presets
-                Settings.saveToUserConfig(options());
+                Presets.saveToUserConfig(options());
                 refreshThisMenu();
                 break;
         }

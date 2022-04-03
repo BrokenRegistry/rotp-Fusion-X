@@ -18,8 +18,6 @@ package br.config;
 import java.util.List;
 import java.util.Set;
 
-import br.config.comment.CommentLine;
-
 /**
  * The field content will never be null
  * and will be striped

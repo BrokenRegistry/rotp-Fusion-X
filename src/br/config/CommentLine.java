@@ -13,9 +13,7 @@
  * limitations under the License.
  */
 
-package br.config.comment;
-
-import br.config.CfgField;
+package br.config;
 
 public class CommentLine {
     public static final String KEY     = "#";

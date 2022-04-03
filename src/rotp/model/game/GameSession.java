@@ -807,6 +807,9 @@ public final class GameSession implements Base, Serializable {
     private void loadPreviousSession(GameSession gs, boolean startUp) {
         stopCurrentGame();
         instance = gs;
+        // BR: Change game paramete5rs here!
+        // TODO
+        //
         startExecutors();
         RotPUI.instance().mainUI().checkMapInitialized();
         if (!startUp) {

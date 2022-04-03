@@ -1,4 +1,4 @@
-package mod.br.settings;
+package br.config;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,54 +12,57 @@ import java.io.PrintWriter;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import br.config.AbstractGroup;
-import br.config.AbstractSetting;
-import br.config.CfgLine;
-import br.config.comment.Comment;
-import rotp.Rotp;
-import rotp.model.game.IGameOptions;
 
-public class UserSettings {
+public abstract class AbstractCfgFile <T> {
     // ------------------------------------------------------------------------
 	// Constant Properties
     //
     // ------------------------------------------------------------------------
 	// Variables Properties
     //
-    private static final String filePath = Rotp.jarPath();
-    private static final String fileName = "PresetsTest.cfg";
-    private static final LinkedHashSet<String> defaultUserSettingKeys =
-    				new LinkedHashSet<String>(List.of("User", "Last", "Cryslonoid"));
-    private static boolean firstInit = true;
+    private LinkedHashSet<String> defaultUserSettingKeys = new LinkedHashSet<String>(List.of("User", "Last", "Cryslonoid"));
+    private boolean firstInit = true;
 
-    private static LinkedHashMap<String, AbstractSetting<IGameOptions>> keySettingMap;
-    private static LinkedHashMap<String, AbstractGroup<IGameOptions>> keyGroupMap;
-    private static LinkedHashMap<String, AbstractGroup<IGameOptions>> groupMap;
-    private static Setting_PRESET_ACTION settingPresetAction;
-    private static boolean cleanUserKeys = false;
+    private LinkedHashMap<String, AbstractSetting<T>> keySettingMap;
+    private LinkedHashMap<String, AbstractGroup<T>> keyGroupMap;
+    protected LinkedHashMap<String, AbstractGroup<T>> groupMap;
+    private Setting_USER_ACTION settingUserAction;
+    private boolean cleanUserKeys = false;
 
-    private static AbstractSetting<IGameOptions> currentSetting;
-    private static String currentSettingKey;
-    private static AbstractGroup<IGameOptions> currentGroup;
+    private AbstractSetting<T> currentSetting;
+    private String currentSettingKey;
+    private AbstractGroup<T> currentGroup;
     
     // ------------------------------------------------------------------------
     // Constructors
     //
-	public UserSettings() {
+	public AbstractCfgFile() {
     }
+	// ========================================================================
+	//  Abstract Methods
+	//
+    /*
+	 * Add all the groups to the Map with an easy key
+	 */
+	protected abstract void initGroupMap(T options);
+	protected abstract String getFilePath();
+	protected abstract String getFileName();
+	protected abstract String getSettingUserActionName();
+	protected abstract List<String> getSettingUserActionOptions();
+	protected abstract String getSettingUserActionFirst();
 	// ========================================================================
 	//  Public Methods
 	//
 	/*
    	 * Check if User Settings are already initialized with gameOptions
    	 */
-	public static boolean isInitialized () {
+	public boolean isInitialized () {
 		return !firstInit;
 	}
-	public AbstractGroup<IGameOptions> getGroup (String group) {
+	public AbstractGroup<T> getGroup (String group) {
 		return keyGroupMap.get(group.toUpperCase());
 	}
-	public static AbstractSetting<IGameOptions> getSetting (String setting) {
+	public AbstractSetting<T> getSetting (String setting) {
 		return keySettingMap.get(setting.toUpperCase());
 	}
     /*
@@ -67,10 +70,10 @@ public class UserSettings {
    	 * Update with last options values
    	 * Save the new configuration file
    	 */
-    public static void saveToUserConfig(IGameOptions options) {
+    public void saveToUserConfig(T options) {
     	loadConfigurationFile(); // in case the user changed load or save actions
         // Remove the Local Enable parameter where possibly wrongly added 
-        	settingPresetAction.removeLocalEnable();
+        	settingUserAction.removeLocalEnable();
     	updateLastValue(options);
     	doUserUpdateActions();
         saveConfigFile();
@@ -78,10 +81,13 @@ public class UserSettings {
     /*
    	 * Load the configuration file and memorize first options
    	 */
-    public static void initUserSettings(IGameOptions options) {
+    public void initUserSettings(T options) {
     	if (firstInit) {
-	        settingPresetAction = new Setting_PRESET_ACTION(options);
+	        settingUserAction = new Setting_USER_ACTION(getSettingUserActionName()
+	        		, getSettingUserActionOptions(), getSettingUserActionFirst());
 	        initGroupMap(options);
+	        initKeyGroupMap();
+	        initKeySettingMap();
 	        firstInit = false;
     	}
         loadConfigurationFile();
@@ -90,7 +96,7 @@ public class UserSettings {
    	 * Load and execute the configuration file
    	 * only for the selected UI
    	 */
-    public static void loadLocalGroupSettings(String group, IGameOptions options) {
+    public void loadLocalGroupSettings(String group, T options) {
     	loadConfigurationFile();
     	LinkedHashSet<String> settingKeys = getReadableUserKeySet();
     	currentGroup = groupMap.get(group.toUpperCase());
@@ -99,44 +105,30 @@ public class UserSettings {
     /*
    	 * Load and execute the configuration file
    	 */
-    public static void loadGlobalGroupSettings(IGameOptions options) {
+    public void loadGlobalGroupSettings(T options) {
     	loadConfigurationFile();
     	LinkedHashSet<String> settingKeys = getReadableUserKeySet();
-    	for (AbstractGroup<IGameOptions> group : groupMap.values()) {
+    	for (AbstractGroup<T> group : groupMap.values()) {
     		group.overrideGameParameters(options, settingKeys);
 		}
     }
     /*
    	 * Reset the game options as they where at the beginning
    	 */
-    public static void resetFirstOptions(IGameOptions options) {
-    	for (AbstractGroup<IGameOptions> group : groupMap.values()) {
+    public void resetFirstOptions(T options) {
+    	for (AbstractGroup<T> group : groupMap.values()) {
     		group.setGameParametersToFirst(options);
 		}
     }
     // ========================================================================
 	// Initializations Methods
 	//
-    /*
-	 * Add all the groups to the Map with an easy key
-	 */
-    private static void initGroupMap(IGameOptions options) {
-        groupMap = new LinkedHashMap<String, AbstractGroup<IGameOptions>>();
-        groupMap.put("RACE",     new Group_Race(options));
-        groupMap.put("GALAXY",   new Group_Galaxy(options));
-        groupMap.put("ADVANCED", new Group_Advanced(options));
-        groupMap.put("MODNAR",   new Group_Modnar(options));
-        groupMap.put("BR",       new Group_BrokenRegistry(options));
-
-        initKeyGroupMap();
-        initKeySettingMap();
-    }
 	/*
 	 * Key Map the group list 
 	 */
-    private static void initKeyGroupMap() {
-        keyGroupMap = new LinkedHashMap<String, AbstractGroup<IGameOptions>>();
-        for (AbstractGroup<IGameOptions> group : groupMap.values()) {
+    private void initKeyGroupMap() {
+        keyGroupMap = new LinkedHashMap<String, AbstractGroup<T>>();
+        for (AbstractGroup<T> group : groupMap.values()) {
             for (String key : group.keyList()) {
                 keyGroupMap.put(key, group);
             }
@@ -145,9 +137,9 @@ public class UserSettings {
     /*
 	 * Add all the Settings to the Map with an easy key
 	 */
-    private static void initKeySettingMap() {
-    	keySettingMap = new LinkedHashMap<String, AbstractSetting<IGameOptions>>();
-    	for (AbstractGroup<IGameOptions> group : groupMap.values()) {
+    private void initKeySettingMap() {
+    	keySettingMap = new LinkedHashMap<String, AbstractSetting<T>>();
+    	for (AbstractGroup<T> group : groupMap.values()) {
     		for (String settingKey : group.keyList()) {
     			keySettingMap.put(settingKey, group.getSetting(settingKey));
     		}
@@ -156,21 +148,21 @@ public class UserSettings {
     // ========================================================================
 	// Other Methods
 	//
-    private static LinkedHashSet<String> getUserKeySet() {
-    	return settingPresetAction.getUserSettingKeySet();
+    private LinkedHashSet<String> getUserKeySet() {
+    	return settingUserAction.getUserSettingKeySet();
     }
-    private static LinkedHashSet<String> getReadableUserKeySet() {
+    private LinkedHashSet<String> getReadableUserKeySet() {
     	LinkedHashSet<String> keySet = new LinkedHashSet<String>();
-    	for (CfgLine userCfg : settingPresetAction.getSettingMapIterable()) {
+    	for (CfgLine userCfg : settingUserAction.getSettingMapIterable()) {
     		if (userCfg.value().isLoadEnabled()) {
     			keySet.add(userCfg.key().toKey());
     		}
     	}
     	return keySet;
     }
-    private static void loadConfigurationFile() {
+    private void loadConfigurationFile() {
         resetAllUserSettings();
-        File configFile = new File(filePath, fileName);
+        File configFile = new File(getFilePath(), getFileName());
         if ( configFile.exists() ) {
         	try ( BufferedReader in =
                 new BufferedReader(
@@ -182,7 +174,7 @@ public class UserSettings {
         		}
         	}
         	catch (FileNotFoundException e) {
-        		System.err.println(filePath + fileName + " not found.");
+        		System.err.println(getFilePath() + getFileName() + " not found.");
         	}
         	catch (IOException e) {
         		System.err.println("UserPreferences.load -- IOException: "+ e.toString());
@@ -192,7 +184,7 @@ public class UserSettings {
         	saveConfigFile();
         }
     }
-    private static void loadLine(String line) {
+    private void loadLine(String line) {
         // Test for Emptiness and ignore
 		if (line.isEmpty()) return;
 		// test for comment and ignore
@@ -203,8 +195,8 @@ public class UserSettings {
         // Test for New Setting Section
 		if (configLine.key().isSectionKey() ) {
 			currentSettingKey = configLine.value().toKey();
-			if (settingPresetAction.settingKey().keyTest(currentSettingKey)) {
-				currentSetting = settingPresetAction;
+			if (settingUserAction.settingKey().keyTest(currentSettingKey)) {
+				currentSetting = settingUserAction;
 				currentGroup = null;
 				return;
 			}
@@ -221,20 +213,20 @@ public class UserSettings {
 			currentSetting.putCfgLine(configLine);
         }
 	}
-    private static int saveConfigFile() {
+    private int saveConfigFile() {
     	// Remove the Local Enable parameter where possibly wrongly added 
-    	settingPresetAction.removeLocalEnable();
+    	settingUserAction.removeLocalEnable();
     	
         LinkedHashSet<String> settingKeys = getUserKeySet();
         if (settingKeys == null || settingKeys.isEmpty()) {
             settingKeys = defaultUserSettingKeys;
         }
-		try (FileOutputStream fout = new FileOutputStream(new File(filePath, fileName));
+		try (FileOutputStream fout = new FileOutputStream(new File(getFilePath(), getFileName()));
 		PrintWriter out = new PrintWriter(new OutputStreamWriter(fout, "UTF-8")); ) {
 			// SETTING :PRESET ACTIONS
-            out.print(settingPresetAction.toPrint(settingKeys));
+            out.print(settingUserAction.toPrint(settingKeys));
             // Loop thru settings
-	        for (AbstractGroup<IGameOptions> group : groupMap.values()) {
+	        for (AbstractGroup<T> group : groupMap.values()) {
 	    		out.print(group.toPrint(settingKeys, cleanUserKeys));
 			}
             return 0;
@@ -244,38 +236,83 @@ public class UserSettings {
 	        return -1;
 	    }
 	}
-    private static void resetAllUserSettings() {
-        for (AbstractGroup<IGameOptions> group : groupMap.values()) {
+    private void resetAllUserSettings() {
+        for (AbstractGroup<T> group : groupMap.values()) {
             group.resetAllUserSettings();
         }
     }
-    static void doUserUpdateActions() {
+    void doUserUpdateActions() {
     	// Loop Thru User's Keys and perform requested action
-    	LinkedHashSet<String> keySet = settingPresetAction.getUserSettingKeySet();
+    	LinkedHashSet<String> keySet = settingUserAction.getUserSettingKeySet();
 		for (String userKey : keySet) {
 			userKey = userKey.toUpperCase();
-			String action = settingPresetAction.getCfgLine(userKey).value().toKey();
+			String action = settingUserAction.getCfgLine(userKey).value().toKey();
 			if (action.contains("SAVE")) {
-				for (AbstractGroup<IGameOptions> group : groupMap.values()) {
+				for (AbstractGroup<T> group : groupMap.values()) {
 		    		group.actionSave(userKey);
 				}
 			}
 			if (action.contains("UPDATE")) {
-				for (AbstractGroup<IGameOptions> group : groupMap.values()) {
+				for (AbstractGroup<T> group : groupMap.values()) {
 		    		group.actionUpdate(userKey);
 				}
 			}
 			if (action.contains("DEFAULT")) {
-				for (AbstractGroup<IGameOptions> group : groupMap.values()) {
+				for (AbstractGroup<T> group : groupMap.values()) {
 		    		group.actionFirst(userKey);
 				}
 			}
 		}
 		saveConfigFile();
 	}
-    static void updateLastValue(IGameOptions options) {
-    	for (AbstractGroup<IGameOptions> group : groupMap.values()) {
+    void updateLastValue(T options) {
+    	for (AbstractGroup<T> group : groupMap.values()) {
     		group.actionGetLastValue(options);
 		}
     }
+    // ========================================================================
+    // Nested Classes
+    //
+    protected class Setting_USER_ACTION extends AbstractSetting <T> {
+    	// The Class T is not used, but needed for compatibility
+
+    	// ------------------------------------------------------------------------
+        // Constructors
+        //
+    	protected Setting_USER_ACTION() { super(
+			"USER CONFIG ACTION",
+			List.of("-", "LOAD", "SAVE", "UPDATE", "LOAD AND SAVE", "LOAD AND UPDATE", "SAVE DEFAULT", "UPDATE TO DEFAULT"),
+			"SAVE"
+			);
+    	}
+    	protected Setting_USER_ACTION(String Name, List<String> options, String first) {
+    		super(Name, options, first);
+        }
+  	@Override
+  	public
+      String getSelectedOption(T gO) {
+  		return "-";
+  	}
+  	@Override
+  	public
+  	void setSelectedOption(T gO, String userOption) {
+  	}
+  	@Override
+  	public
+  	void setSelectedOptionToInitial(T gO) {
+  	}
+      @Override
+      public void initComments() {
+  		headComments(new Comment(List.of(
+              "            EXTENDED PLAYER'S SETTINGS",
+              "-------------------------------------------------- ",
+              " ",
+              "---- This is where you add your configuration list ",
+              "---- Multiple LOAD will follow their sequence",
+              " " )));
+  		bottomComments(new Comment(
+              "(---- The last loaded Win)" ));
+      }
+  }
+
 }

@@ -1,11 +1,11 @@
-package mod.br.settings;
+package mod.br.postSetup;
 
 import java.util.List;
 
 import br.config.AbstractSetting;
 import br.config.AbstractGroup;
 import br.config.CfgField;
-import br.config.comment.Comment;
+import br.config.Comment;
 import rotp.model.game.IGameOptions;
 import rotp.ui.UserPreferences;
 

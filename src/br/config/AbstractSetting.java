@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import br.config.comment.Comment;
-import br.config.comment.CommentLine;
 
 public abstract class AbstractSetting <T> {
     // ------------------------------------------------------------------------
