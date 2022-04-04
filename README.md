@@ -47,8 +47,9 @@ _Value = Random_<br>
 ---
 ---
 ### Additional features / changelog<br>
-- 0.91.1 (2022-04-02)
-  - Added: Transfert gamefile options to config file
+- 0.91.1beta (2022-04-02)
+  - Added: Player color change in game file
+  - Implemented change in game file -> (Beta)
   - Changed back file name from PresetsTest.cfg to Presets.cfg ... Sorry for the mess
 - 0.90.2 (2022-04-02)
   - Updated to Xilmi Fusion 2020.03.29 <br>

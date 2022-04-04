@@ -6,10 +6,11 @@ import br.config.AbstractSetting;
 import br.config.AbstractGroup;
 import br.config.CfgField;
 import br.config.Comment;
+import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
 import rotp.ui.UserPreferences;
 
-public class Group_Modnar extends AbstractGroup <IGameOptions> {
+public class Group_Modnar extends AbstractGroup <IGameOptions, GameSession> {
 
     Group_Modnar(IGameOptions gO) {
        super(gO);
@@ -29,7 +30,7 @@ public class Group_Modnar extends AbstractGroup <IGameOptions> {
     // ------------------------------------------------------------------------
     // ALWAYS STAR GATES
     //
-    public static class AlwaysStarGates extends AbstractSetting <IGameOptions> {
+    public static class AlwaysStarGates extends AbstractSetting <IGameOptions, GameSession> {
 
         AlwaysStarGates(IGameOptions gO) { super(
             "ALWAYS STAR GATES",
@@ -40,7 +41,7 @@ public class Group_Modnar extends AbstractGroup <IGameOptions> {
         	return CfgField.toYesNoString(UserPreferences.alwaysStarGates());
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
+        public void putToGame(GameSession gO, String userOption) {
 
         }        
         @Override
@@ -61,12 +62,13 @@ public class Group_Modnar extends AbstractGroup <IGameOptions> {
                 " ",
                 "------------- Modnar's Options -------------",
                 " ")));
+//        	bottomComments(new Comment(AVAILABLE_FOR_CHANGE));
         }
     }
     // ------------------------------------------------------------------------
     // ALWAYS THORIUM
     //
-    public static class AlwaysThorium extends AbstractSetting <IGameOptions> {
+    public static class AlwaysThorium extends AbstractSetting <IGameOptions, GameSession> {
 
         AlwaysThorium(IGameOptions gO) { super(
             "ALWAYS THORIUM",
@@ -77,7 +79,7 @@ public class Group_Modnar extends AbstractGroup <IGameOptions> {
         	return CfgField.toYesNoString(UserPreferences.alwaysThorium());
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
+        public void putToGame(GameSession gO, String userOption) {
 
         }        
         @Override
@@ -93,12 +95,14 @@ public class Group_Modnar extends AbstractGroup <IGameOptions> {
 //            gO.(initialOption());
         }
         @Override
-        public void initComments() {}
+        public void initComments() {
+//        	bottomComments(new Comment(AVAILABLE_FOR_CHANGE));
+        }
     }
     // ------------------------------------------------------------------------
     // CHALLENGE MODE
     //
-    public static class ChallengeMode extends AbstractSetting <IGameOptions> {
+    public static class ChallengeMode extends AbstractSetting <IGameOptions, GameSession> {
 
     	ChallengeMode(IGameOptions gO) { super(
             "CHALLENGE MODE",
@@ -109,7 +113,7 @@ public class Group_Modnar extends AbstractGroup <IGameOptions> {
         	return CfgField.toYesNoString(UserPreferences.challengeMode());
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
+        public void putToGame(GameSession gO, String userOption) {
 
         }        
         @Override
@@ -125,12 +129,14 @@ public class Group_Modnar extends AbstractGroup <IGameOptions> {
 //            gO.(initialOption());
         }
         @Override
-        public void initComments() {}
+        public void initComments() {
+//        	bottomComments(new Comment(AVAILABLE_FOR_CHANGE));
+        }
     }
     // ------------------------------------------------------------------------
     // BATTLE SCOUT
     //
-    public static class BattleScouts extends AbstractSetting <IGameOptions> {
+    public static class BattleScouts extends AbstractSetting <IGameOptions, GameSession> {
 
     	BattleScouts(IGameOptions gO) { super(
             "BATTLE SCOUT",
@@ -141,7 +147,7 @@ public class Group_Modnar extends AbstractGroup <IGameOptions> {
         	return CfgField.toYesNoString(UserPreferences.battleScout());
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
+        public void putToGame(GameSession gO, String userOption) {
 
         }        
         @Override
@@ -162,7 +168,7 @@ public class Group_Modnar extends AbstractGroup <IGameOptions> {
     // ------------------------------------------------------------------------
     // COMPANION WORLDS
     //
-    public static class CompanionWorlds extends AbstractSetting <IGameOptions> {
+    public static class CompanionWorlds extends AbstractSetting <IGameOptions, GameSession> {
 
         private static final int MIN   = 0;
         private static final int MAX   = 4;
@@ -179,7 +185,7 @@ public class Group_Modnar extends AbstractGroup <IGameOptions> {
         	return String.valueOf(UserPreferences.companionWorlds());
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
+        public void putToGame(GameSession gO, String userOption) {
 
         }        
         @Override
@@ -200,7 +206,7 @@ public class Group_Modnar extends AbstractGroup <IGameOptions> {
     // ------------------------------------------------------------------------
     // RANDOM TECH START
     //
-    public static class RandomTechStart extends AbstractSetting <IGameOptions> {
+    public static class RandomTechStart extends AbstractSetting <IGameOptions, GameSession> {
 
     	RandomTechStart(IGameOptions gO) { super(
             "RANDOM TECH START",
@@ -211,7 +217,7 @@ public class Group_Modnar extends AbstractGroup <IGameOptions> {
         	return CfgField.toYesNoString(UserPreferences.randomTechStart());
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
+        public void putToGame(GameSession gO, String userOption) {
 
         }        
         @Override
@@ -232,7 +238,7 @@ public class Group_Modnar extends AbstractGroup <IGameOptions> {
     // ------------------------------------------------------------------------
     // CUSTOM DIFFICULTY
     //
-    public static class CustomDifficulty extends AbstractSetting <IGameOptions> {
+    public static class CustomDifficulty extends AbstractSetting <IGameOptions, GameSession> {
 
         private static final int MIN   = 20;
         private static final int MAX   = 500;
@@ -249,7 +255,7 @@ public class Group_Modnar extends AbstractGroup <IGameOptions> {
         	return String.valueOf(UserPreferences.customDifficulty());
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
+        public void putToGame(GameSession gO, String userOption) {
 
         }        
         @Override
@@ -265,12 +271,14 @@ public class Group_Modnar extends AbstractGroup <IGameOptions> {
 //            gO.(initialOption());
         }
         @Override
-        public void initComments() {}
+        public void initComments() {
+//        	bottomComments(new Comment(AVAILABLE_FOR_CHANGE));
+        }
     }
     // ------------------------------------------------------------------------
     // DYNAMIC DIFFICULTY
     //
-    public static class DynamicDifficulty extends AbstractSetting <IGameOptions> {
+    public static class DynamicDifficulty extends AbstractSetting <IGameOptions, GameSession> {
 
     	DynamicDifficulty(IGameOptions gO) { super(
             "DYNAMIC DIFFICULTY",
@@ -281,7 +289,7 @@ public class Group_Modnar extends AbstractGroup <IGameOptions> {
         	return CfgField.toYesNoString(UserPreferences.dynamicDifficulty());
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
+        public void putToGame(GameSession gO, String userOption) {
 
         }        
         @Override
@@ -297,6 +305,8 @@ public class Group_Modnar extends AbstractGroup <IGameOptions> {
 //            gO.(initialOption());
         }
         @Override
-        public void initComments() {}
+        public void initComments() {
+//        	bottomComments(new Comment(AVAILABLE_FOR_CHANGE));
+        }
     }
 }

@@ -5,9 +5,10 @@ import java.util.List;
 import br.config.AbstractSetting;
 import br.config.Comment;
 import br.config.AbstractGroup;
+import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
 
-public class Group_Advanced extends AbstractGroup <IGameOptions> {
+public class Group_Advanced extends AbstractGroup <IGameOptions, GameSession> {
 
     Group_Advanced(IGameOptions gO) {
        super(gO);
@@ -34,7 +35,7 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
     // ------------------------------------------------------------------------
     // GALAXY AGE
     //
-    public static class GalaxyAge extends AbstractSetting <IGameOptions> {
+    public static class GalaxyAge extends AbstractSetting <IGameOptions, GameSession> {
 
         GalaxyAge(IGameOptions gO) { super(
             "GALAXY AGE",
@@ -46,7 +47,7 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
         	return gO.selectedGalaxyAge();
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
+        public void putToGame(GameSession gs, String userOption) {
 
         }    
     	@Override
@@ -72,7 +73,7 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
     // ------------------------------------------------------------------------
     // STAR DENSITY
     //
-    public static class StarDensity extends AbstractSetting <IGameOptions> {
+    public static class StarDensity extends AbstractSetting <IGameOptions, GameSession> {
 
     	StarDensity(IGameOptions gO) { super(
             "STAR DENSITY",
@@ -84,7 +85,7 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
         	return gO.selectedStarDensityOption();
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
+        public void putToGame(GameSession gs, String userOption) {
 
         }    
     	@Override
@@ -105,7 +106,7 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
     // ------------------------------------------------------------------------
     // NEBULAE
     //
-    public static class Nebulae extends AbstractSetting <IGameOptions> {
+    public static class Nebulae extends AbstractSetting <IGameOptions, GameSession> {
 
     	Nebulae(IGameOptions gO) { super(
             "NEBULAE",
@@ -117,7 +118,7 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
         	return gO.selectedNebulaeOption();
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
+        public void putToGame(GameSession gs, String userOption) {
 
         }    
     	@Override
@@ -138,7 +139,7 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
     // ------------------------------------------------------------------------
     // PLANET QUALITY
     //
-    public static class PlanetQuality extends AbstractSetting <IGameOptions> {
+    public static class PlanetQuality extends AbstractSetting <IGameOptions, GameSession> {
 
     	PlanetQuality(IGameOptions gO) { super(
             "PLANET QUALITY",
@@ -150,7 +151,7 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
         	return gO.selectedPlanetQualityOption();
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
+        public void putToGame(GameSession gs, String userOption) {
 
         }    
     	@Override
@@ -171,7 +172,7 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
     // ------------------------------------------------------------------------
     // TERRAFORMING
     //
-    public static class Terraforming extends AbstractSetting <IGameOptions> {
+    public static class Terraforming extends AbstractSetting <IGameOptions, GameSession> {
 
     	Terraforming(IGameOptions gO) { super(
             "TERRAFORMING",
@@ -183,8 +184,8 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
         	return gO.selectedTerraformingOption();
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
-
+        public void putToGame(GameSession gs, String userOption) {
+//        	gs.options().selectedTerraformingOption(userOption);
         }    
     	@Override
         public String getFromUI (IGameOptions gO) {
@@ -199,12 +200,14 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
             gO.selectedTerraformingOption(initialOption());
         }
         @Override
-        public void initComments() {}
+        public void initComments() {
+//        	bottomComments(new Comment(AVAILABLE_FOR_CHANGE));
+       	}
     }
     // ------------------------------------------------------------------------
     // RANDOM EVENTS
     //
-    public static class RandomEvents extends AbstractSetting <IGameOptions> {
+    public static class RandomEvents extends AbstractSetting <IGameOptions, GameSession> {
 
     	RandomEvents(IGameOptions gO) { super(
             "RANDOM EVENTS",
@@ -216,8 +219,8 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
         	return gO.selectedRandomEventOption();
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
-
+        public void putToGame(GameSession gs, String userOption) {
+        	gs.options().selectedRandomEventOption(userOption);
         }    
     	@Override
         public String getFromUI (IGameOptions gO) {
@@ -232,12 +235,14 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
             gO.selectedRandomEventOption(initialOption());
         }
         @Override
-        public void initComments() {}
+        public void initComments() {
+        	bottomComments(new Comment(AVAILABLE_FOR_CHANGE));
+       	}
     }
     // ------------------------------------------------------------------------
     // AI HOSTILITY
     //
-    public static class AIHostility extends AbstractSetting <IGameOptions> {
+    public static class AIHostility extends AbstractSetting <IGameOptions, GameSession> {
 
     	AIHostility(IGameOptions gO) { super(
             "AI HOSTILITY",
@@ -249,8 +254,8 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
         	return gO.selectedAIHostilityOption();
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
-
+        public void putToGame(GameSession gs, String userOption) {
+//            gs.options().selectedAIHostilityOption(userOption);
         }    
     	@Override
         public String getFromUI (IGameOptions gO) {
@@ -265,12 +270,14 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
             gO.selectedAIHostilityOption(initialOption());
         }
         @Override
-        public void initComments() {}
+        public void initComments() {
+//        	bottomComments(new Comment(AVAILABLE_FOR_CHANGE));
+       	}
     }
     // ------------------------------------------------------------------------
     // COUNCIL
     //
-    public static class Council extends AbstractSetting <IGameOptions> {
+    public static class Council extends AbstractSetting <IGameOptions, GameSession> {
 
     	Council(IGameOptions gO) { super(
             "COUNCIL",
@@ -282,8 +289,8 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
         	return gO.selectedCouncilWinOption();
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
-
+        public void putToGame(GameSession gs, String userOption) {
+            gs.options().selectedCouncilWinOption(userOption);
         }    
     	@Override
         public String getFromUI (IGameOptions gO) {
@@ -298,12 +305,14 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
             gO.selectedCouncilWinOption(initialOption());
         }
         @Override
-        public void initComments() {}
+        public void initComments() {
+        	bottomComments(new Comment(AVAILABLE_FOR_CHANGE));
+       	}
     }
     // ------------------------------------------------------------------------
     // RANDOMIZE AI
     //
-    public static class RandomizeAI extends AbstractSetting <IGameOptions> {
+    public static class RandomizeAI extends AbstractSetting <IGameOptions, GameSession> {
 
     	RandomizeAI(IGameOptions gO) { super(
             "RANDOMIZE AI",
@@ -315,7 +324,7 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
         	return gO.selectedRandomizeAIOption();
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
+        public void putToGame(GameSession gs, String userOption) {
 
         }    
     	@Override
@@ -336,7 +345,7 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
     // ------------------------------------------------------------------------
     // AUTOPLAY
     //
-    public static class AutoPlay extends AbstractSetting <IGameOptions> {
+    public static class AutoPlay extends AbstractSetting <IGameOptions, GameSession> {
 
     	AutoPlay(IGameOptions gO) { super(
             "AUTOPLAY",
@@ -348,7 +357,7 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
         	return gO.selectedAutoplayOption();
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
+        public void putToGame(GameSession gs, String userOption) {
 
         }    
     	@Override
@@ -369,7 +378,7 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
     // ------------------------------------------------------------------------
     // RESEARCH
     //
-    public static class Research extends AbstractSetting <IGameOptions> {
+    public static class Research extends AbstractSetting <IGameOptions, GameSession> {
 
     	Research(IGameOptions gO) { super(
             "RESEARCH",
@@ -381,8 +390,8 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
         	return gO.selectedResearchRate();
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
-
+        public void putToGame(GameSession gs, String userOption) {
+//            gs.options().selectedResearchRate(userOption);
         }    
     	@Override
         public String getFromUI (IGameOptions gO) {
@@ -397,12 +406,14 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
             gO.selectedResearchRate(initialOption());
         }
         @Override
-        public void initComments() {}
+        public void initComments() {
+//        	bottomComments(new Comment(AVAILABLE_FOR_CHANGE));
+        	}
     }
     // ------------------------------------------------------------------------
     // WARP SPEED
     //
-    public static class WarpSpeed extends AbstractSetting <IGameOptions> {
+    public static class WarpSpeed extends AbstractSetting <IGameOptions, GameSession> {
 
     	WarpSpeed(IGameOptions gO) { super(
             "WARP SPEED",
@@ -414,8 +425,8 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
         	return gO.selectedWarpSpeedOption();
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
-
+        public void putToGame(GameSession gs, String userOption) {
+//            gs.options().selectedWarpSpeedOption(userOption);
         }    
     	@Override
         public String getFromUI (IGameOptions gO) {
@@ -430,12 +441,14 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
             gO.selectedWarpSpeedOption(initialOption());
         }
         @Override
-        public void initComments() {}
+        public void initComments() {
+//        	bottomComments(new Comment(AVAILABLE_FOR_CHANGE));
+        	}
     }
     // ------------------------------------------------------------------------
     // FUEL RANGE
     //
-    public static class FuelRange extends AbstractSetting <IGameOptions> {
+    public static class FuelRange extends AbstractSetting <IGameOptions, GameSession> {
 
     	FuelRange(IGameOptions gO) { super(
             "FUEL RANGE",
@@ -447,8 +460,8 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
         	return gO.selectedFuelRangeOption();
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
-
+        public void putToGame(GameSession gs, String userOption) {
+//            gs.options().selectedFuelRangeOption(userOption);
         }    
     	@Override
         public String getFromUI (IGameOptions gO) {
@@ -463,12 +476,14 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
             gO.selectedFuelRangeOption(initialOption());
         }
         @Override
-        public void initComments() {}
+        public void initComments() {
+//        	bottomComments(new Comment(AVAILABLE_FOR_CHANGE));
+        }
     }
     // ------------------------------------------------------------------------
     // TECH TRADING
     //
-    public static class TechTrading extends AbstractSetting <IGameOptions> {
+    public static class TechTrading extends AbstractSetting <IGameOptions, GameSession> {
 
     	TechTrading(IGameOptions gO) { super(
             "TECH TRADING",
@@ -480,8 +495,8 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
         	return gO.selectedTechTradeOption();
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
-
+        public void putToGame(GameSession gs, String userOption) {
+            gs.options().selectedTechTradeOption(userOption);
         }    
     	@Override
         public String getFromUI (IGameOptions gO) {
@@ -496,12 +511,14 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
             gO.selectedTechTradeOption(initialOption());
         }
         @Override
-        public void initComments() {}
+        public void initComments() {
+        	bottomComments(new Comment(AVAILABLE_FOR_CHANGE));
+        }
     }
     // ------------------------------------------------------------------------
     // COLONIZING
     //
-    public static class Colonizing extends AbstractSetting <IGameOptions> {
+    public static class Colonizing extends AbstractSetting <IGameOptions, GameSession> {
 
     	Colonizing(IGameOptions gO) { super(
             "COLONIZING",
@@ -513,8 +530,8 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
         	return gO.selectedColonizingOption();
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
-
+        public void putToGame(GameSession gs, String userOption) {
+        	gs.options().selectedColonizingOption(userOption);
         }    
     	@Override
         public String getFromUI (IGameOptions gO) {
@@ -529,6 +546,8 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
             gO.selectedColonizingOption(initialOption());
         }
         @Override
-        public void initComments() {}
+        public void initComments() {
+        	bottomComments(new Comment(AVAILABLE_FOR_CHANGE));
+        	}
     }
 }

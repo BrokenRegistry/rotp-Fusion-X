@@ -5,9 +5,10 @@ import java.util.List;
 import br.config.AbstractSetting;
 import br.config.Comment;
 import br.config.AbstractGroup;
+import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
 
-public class Group_Governor extends AbstractGroup <IGameOptions> {
+public class Group_Governor extends AbstractGroup <IGameOptions, GameSession> {
 	
 	// TODO ALL
 
@@ -25,7 +26,7 @@ public class Group_Governor extends AbstractGroup <IGameOptions> {
     // ------------------------------------------------------------------------
     // GOVERNOR ON BY DEFAULT
     //
-    public static class GovernorOnByDefault extends AbstractSetting <IGameOptions> {
+    public static class GovernorOnByDefault extends AbstractSetting <IGameOptions, GameSession> {
 
     	GovernorOnByDefault(IGameOptions gO) { super(
             "GOVERNOR ON BY DEFAULT",
@@ -37,7 +38,7 @@ public class Group_Governor extends AbstractGroup <IGameOptions> {
         	return gO.selectedGalaxyShape();
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
+        public void putToGame(GameSession gO, String userOption) {
 
         }    
     	@Override
@@ -62,7 +63,7 @@ public class Group_Governor extends AbstractGroup <IGameOptions> {
     // ------------------------------------------------------------------------
     // AUTOSPEND ON BY DEFAULT
     //
-    public static class AutospendOnByDefault extends AbstractSetting <IGameOptions> {
+    public static class AutospendOnByDefault extends AbstractSetting <IGameOptions, GameSession> {
 
     	AutospendOnByDefault(IGameOptions gO) { super(
             "AUTOSPEND ON BY DEFAULT",
@@ -74,7 +75,7 @@ public class Group_Governor extends AbstractGroup <IGameOptions> {
         	return gO.selectedGalaxyShape();
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
+        public void putToGame(GameSession gO, String userOption) {
 
         }    
         @Override
@@ -100,7 +101,7 @@ public class Group_Governor extends AbstractGroup <IGameOptions> {
     // ------------------------------------------------------------------------
     // DEFAULT MAX BASES
     //
-    public static class DefaultMaxBases extends AbstractSetting <IGameOptions> {
+    public static class DefaultMaxBases extends AbstractSetting <IGameOptions, GameSession> {
 
     	DefaultMaxBases(IGameOptions gO) { super(
             "DEFAULT MAX BASES",
@@ -112,7 +113,7 @@ public class Group_Governor extends AbstractGroup <IGameOptions> {
         	return gO.selectedGameDifficulty();
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
+        public void putToGame(GameSession gO, String userOption) {
 
         }    
     	@Override
@@ -133,7 +134,7 @@ public class Group_Governor extends AbstractGroup <IGameOptions> {
     // ------------------------------------------------------------------------
     // DIVERT EXCESS TO RESEARCH
     //
-    public static class DivertExcessToResearch extends AbstractSetting <IGameOptions> {
+    public static class DivertExcessToResearch extends AbstractSetting <IGameOptions, GameSession> {
 
     	DivertExcessToResearch(IGameOptions gO) { super(
             "DIVERT EXCESS TO RESEARCH",
@@ -145,7 +146,7 @@ public class Group_Governor extends AbstractGroup <IGameOptions> {
         	return gO.selectedOpponentAIOption();
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
+        public void putToGame(GameSession gO, String userOption) {
 
         }    
     	@Override

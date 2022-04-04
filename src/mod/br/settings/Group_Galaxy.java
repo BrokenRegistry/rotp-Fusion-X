@@ -5,9 +5,10 @@ import java.util.List;
 import br.config.AbstractSetting;
 import br.config.Comment;
 import br.config.AbstractGroup;
+import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
 
-public class Group_Galaxy extends AbstractGroup <IGameOptions> {
+public class Group_Galaxy extends AbstractGroup <IGameOptions, GameSession> {
 
     Group_Galaxy(IGameOptions gO) {
        super(gO);
@@ -24,7 +25,7 @@ public class Group_Galaxy extends AbstractGroup <IGameOptions> {
     // ------------------------------------------------------------------------
     // GALAXY SHAPE
     //
-    public static class GalaxyShape extends AbstractSetting <IGameOptions> {
+    public static class GalaxyShape extends AbstractSetting <IGameOptions, GameSession> {
 
         GalaxyShape(IGameOptions gO) { super(
             "GALAXY SHAPE",
@@ -36,7 +37,7 @@ public class Group_Galaxy extends AbstractGroup <IGameOptions> {
         	return gO.selectedGalaxyShape();
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
+        public void putToGame(GameSession gO, String userOption) {
 
         }    
     	@Override
@@ -62,7 +63,7 @@ public class Group_Galaxy extends AbstractGroup <IGameOptions> {
     // ------------------------------------------------------------------------
     // GALAXY SIZE
     //
-    public static class GalaxySize extends AbstractSetting <IGameOptions> {
+    public static class GalaxySize extends AbstractSetting <IGameOptions, GameSession> {
 
     	GalaxySize(IGameOptions gO) { super(
             "GALAXY SIZE",
@@ -74,7 +75,7 @@ public class Group_Galaxy extends AbstractGroup <IGameOptions> {
         	return gO.selectedGalaxySize();
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
+        public void putToGame(GameSession gO, String userOption) {
 
         }    
     	@Override
@@ -95,7 +96,7 @@ public class Group_Galaxy extends AbstractGroup <IGameOptions> {
     // ------------------------------------------------------------------------
     // DIFFICULTY
     //
-    public static class Difficulty extends AbstractSetting <IGameOptions> {
+    public static class Difficulty extends AbstractSetting <IGameOptions, GameSession> {
 
     	Difficulty(IGameOptions gO) { super(
             "DIFFICULTY",
@@ -107,8 +108,8 @@ public class Group_Galaxy extends AbstractGroup <IGameOptions> {
         	return gO.selectedGameDifficulty();
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
-
+        public void putToGame(GameSession gO, String userOption) {
+//        	gO.options().selectedGameDifficulty(userOption);
         }    
     	@Override
         public String getFromUI (IGameOptions gO) {
@@ -123,12 +124,14 @@ public class Group_Galaxy extends AbstractGroup <IGameOptions> {
             gO.selectedGameDifficulty(initialOption());
         }
         @Override
-        public void initComments() {}
+        public void initComments() {
+//                	bottomComments(new Comment(AVAILABLE_FOR_CHANGE));
+        	}
     }
     // ------------------------------------------------------------------------
     // OPPONENT AI
     //
-    public static class OpponentAI extends AbstractSetting <IGameOptions> {
+    public static class OpponentAI extends AbstractSetting <IGameOptions, GameSession> {
 
     	OpponentAI(IGameOptions gO) { super(
             "OPPONENT AI",
@@ -140,7 +143,7 @@ public class Group_Galaxy extends AbstractGroup <IGameOptions> {
         	return gO.selectedOpponentAIOption();
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
+        public void putToGame(GameSession gO, String userOption) {
 
         }    
     	@Override
@@ -161,7 +164,7 @@ public class Group_Galaxy extends AbstractGroup <IGameOptions> {
     // ------------------------------------------------------------------------
     // NB OPPONENTS
     //
-    public static class NbOpponent extends AbstractSetting <IGameOptions> {
+    public static class NbOpponent extends AbstractSetting <IGameOptions, GameSession> {
 
     	NbOpponent(IGameOptions gO) { super(
             "NB OPPONENTS",
@@ -173,7 +176,7 @@ public class Group_Galaxy extends AbstractGroup <IGameOptions> {
         	return Integer.toString(gO.selectedNumberOpponents());
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
+        public void putToGame(GameSession gO, String userOption) {
 
         }    
     	@Override

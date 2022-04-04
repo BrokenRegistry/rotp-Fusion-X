@@ -28,8 +28,10 @@ public class CfgField extends UserField{
 	public static final List<String> YES_LIST     = List.of("YES", "TRUE");
 	public static final List<String> NO_LIST      = List.of("NO", "FALSE");
 	public static final List<String> BOOLEAN_LIST = List.of("YES", "NO", "TRUE", "FALSE");
+	public static final List<String> ENABLE_GAME_CHANGE_LIST  = 
+			List.of("FILE TO GAME");
 	public static final List<String> ENABLE_LOAD_LIST  = 
-			List.of("LOAD", "BOTH", "FILE TO UI", "FILE TO GAME");
+			List.of("LOAD", "BOTH", "FILE TO UI");
 	public static final List<String> ENABLE_WRITE_LIST = 
 			List.of("SAVE", "BOTH", "UI TO FILE", "GAME TO FILE", "INITIAL TO FILE",
 					"UI UPDATE FILE", "GAME UPDATE FILE", "INITIAL UPDATE FILE");
@@ -218,6 +220,12 @@ public class CfgField extends UserField{
 	 */
 	public boolean isLoadEnabled() {
 		return isMemberOf(ENABLE_LOAD_LIST);
+	}
+	/**
+	 * check if is member of ENABLE_LOAD_LIST
+	 */
+	public boolean isGameChangingEnabled() {
+		return isMemberOf(ENABLE_GAME_CHANGE_LIST);
 	}
 	/**
 	 * check if is member of ENABLE_WRITE_LIST

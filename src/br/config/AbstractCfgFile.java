@@ -13,7 +13,10 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-public abstract class AbstractCfgFile <T> {
+import rotp.mod.br.settings.Settings;
+import rotp.model.game.GameSession;
+
+public abstract class AbstractCfgFile <T, U> {
     // ------------------------------------------------------------------------
 	// Constant Properties
     //
@@ -23,15 +26,15 @@ public abstract class AbstractCfgFile <T> {
     private LinkedHashSet<String> defaultUserSettingKeys = new LinkedHashSet<String>(List.of("User", "Last", "Cryslonoid"));
     private boolean firstInit = true;
 
-    private LinkedHashMap<String, AbstractSetting<T>> keySettingMap;
-    private LinkedHashMap<String, AbstractGroup<T>> keyGroupMap;
-    protected LinkedHashMap<String, AbstractGroup<T>> groupMap;
+    private LinkedHashMap<String, AbstractSetting<T, U>> keySettingMap;
+    private LinkedHashMap<String, AbstractGroup<T, U>> keyGroupMap;
+    protected LinkedHashMap<String, AbstractGroup<T, U>> groupMap;
     private Setting_USER_ACTION settingUserAction;
-    private boolean cleanUserKeys = false;
+    private boolean cleanUserKeys = true;
 
-    private AbstractSetting<T> currentSetting;
+    private AbstractSetting<T, U> currentSetting;
     private String currentSettingKey;
-    private AbstractGroup<T> currentGroup;
+    private AbstractGroup<T, U> currentGroup;
     
     // ------------------------------------------------------------------------
     // Constructors
@@ -44,7 +47,7 @@ public abstract class AbstractCfgFile <T> {
     /*
 	 * Add all the groups to the Map with an easy key
 	 */
-	protected abstract void initGroupMap(T options);
+	protected abstract void initGroupMap(T tObject);
 	protected abstract String getFilePath();
 	protected abstract String getFileName();
 	protected abstract String getSettingUserActionName();
@@ -59,10 +62,10 @@ public abstract class AbstractCfgFile <T> {
 	public boolean isInitialized () {
 		return !firstInit;
 	}
-	public AbstractGroup<T> getGroup (String group) {
+	public AbstractGroup<T, U> getGroup (String group) {
 		return keyGroupMap.get(group.toUpperCase());
 	}
-	public AbstractSetting<T> getSetting (String setting) {
+	public AbstractSetting<T, U> getSetting (String setting) {
 		return keySettingMap.get(setting.toUpperCase());
 	}
     /*
@@ -70,11 +73,11 @@ public abstract class AbstractCfgFile <T> {
    	 * Update with last options values
    	 * Save the new configuration file
    	 */
-    public void saveGuiToFile(T options) {
+    public void saveGuiToFile(T tObject) {
     	loadConfigurationFile(); // in case the user changed load or save actions
         // Remove the Local Enable parameter where possibly wrongly added 
         	settingUserAction.removeLocalEnable();
-    	updateGuiValue(options);
+    	updateGuiValue(tObject);
     	doUserUpdateActions();
         saveConfigFile();
 	}
@@ -83,22 +86,22 @@ public abstract class AbstractCfgFile <T> {
    	 * Update with last options values
    	 * Save the new configuration file
    	 */
-    public void saveGameToFile(T options) {
+    public void saveGameToFile(T tObject) {
     	loadConfigurationFile(); // in case the user changed load or save actions
         // Remove the Local Enable parameter where possibly wrongly added 
         	settingUserAction.removeLocalEnable();
-    	updateGameValue(options);
+    	updateGameValue(tObject);
     	doUserUpdateActions();
         saveConfigFile();
 	}
     /*
    	 * Load the configuration file and memorize first options
    	 */
-    public void initUserSettings(T options) {
+    public void initUserSettings(T tObject) {
     	if (firstInit) {
 	        settingUserAction = new Setting_USER_ACTION(getSettingUserActionName()
 	        		, getSettingUserActionOptions(), getSettingUserActionFirst());
-	        initGroupMap(options);
+	        initGroupMap(tObject);
 	        initKeyGroupMap();
 	        initKeySettingMap();
 	        firstInit = false;
@@ -109,28 +112,36 @@ public abstract class AbstractCfgFile <T> {
    	 * Load and execute the configuration file
    	 * only for the selected UI
    	 */
-    public void loadLocalGroupSettings(String group, T options) {
+    public void loadLocalGroupSettings(String group, T tObject) {
     	loadConfigurationFile();
     	LinkedHashSet<String> settingKeys = getReadableUserKeySet();
     	currentGroup = groupMap.get(group.toUpperCase());
-    	currentGroup.overrideGameParameters(options, settingKeys);
+    	currentGroup.overrideGuiParameters(tObject, settingKeys);
     }
     /*
    	 * Load and execute the configuration file
    	 */
-    public void loadGlobalGroupSettings(T options) {
+    public void loadGlobalGroupSettings(T tObject) {
     	loadConfigurationFile();
     	LinkedHashSet<String> settingKeys = getReadableUserKeySet();
-    	for (AbstractGroup<T> group : groupMap.values()) {
-    		group.overrideGameParameters(options, settingKeys);
+    	for (AbstractGroup<T, U> group : groupMap.values()) {
+    		group.overrideGuiParameters(tObject, settingKeys);
 		}
+    }
+    public void changeGameSettings(U uObject) {
+    	loadConfigurationFile();
+    	LinkedHashSet<String> settingKeys = getGameChangingUserKeySet();
+    	for (AbstractGroup<T, U> group : groupMap.values()) {
+    		group.changeGameFileParameters(uObject, settingKeys);
+		}
+    	Settings.ChangeGameFile = false;
     }
     /*
    	 * Reset the game options as they where at the beginning
    	 */
-    public void resetFirstOptions(T options) {
-    	for (AbstractGroup<T> group : groupMap.values()) {
-    		group.setGameParametersToFirst(options);
+    public void resetFirstOptions(T tObject) {
+    	for (AbstractGroup<T, U> group : groupMap.values()) {
+    		group.setGuiParametersToInitial(tObject);
 		}
     }
     // ========================================================================
@@ -140,8 +151,8 @@ public abstract class AbstractCfgFile <T> {
 	 * Key Map the group list 
 	 */
     private void initKeyGroupMap() {
-        keyGroupMap = new LinkedHashMap<String, AbstractGroup<T>>();
-        for (AbstractGroup<T> group : groupMap.values()) {
+        keyGroupMap = new LinkedHashMap<String, AbstractGroup<T, U>>();
+        for (AbstractGroup<T, U> group : groupMap.values()) {
             for (String key : group.keyList()) {
                 keyGroupMap.put(key, group);
             }
@@ -151,8 +162,8 @@ public abstract class AbstractCfgFile <T> {
 	 * Add all the Settings to the Map with an easy key
 	 */
     private void initKeySettingMap() {
-    	keySettingMap = new LinkedHashMap<String, AbstractSetting<T>>();
-    	for (AbstractGroup<T> group : groupMap.values()) {
+    	keySettingMap = new LinkedHashMap<String, AbstractSetting<T, U>>();
+    	for (AbstractGroup<T, U> group : groupMap.values()) {
     		for (String settingKey : group.keyList()) {
     			keySettingMap.put(settingKey, group.getSetting(settingKey));
     		}
@@ -173,6 +184,16 @@ public abstract class AbstractCfgFile <T> {
     	}
     	return keySet;
     }
+    private LinkedHashSet<String> getGameChangingUserKeySet() {
+    	LinkedHashSet<String> keySet = new LinkedHashSet<String>();
+    	for (CfgLine userCfg : settingUserAction.getSettingMapIterable()) {
+    		if (userCfg.value().isGameChangingEnabled()) {
+    			keySet.add(userCfg.key().toKey());
+    		}
+    	}
+    	return keySet;
+    }
+    
     private void loadConfigurationFile() {
         resetAllUserSettings();
         File configFile = new File(getFilePath(), getFileName());
@@ -239,7 +260,7 @@ public abstract class AbstractCfgFile <T> {
 			// SETTING :PRESET ACTIONS
             out.print(settingUserAction.toPrint(settingKeys));
             // Loop thru settings
-	        for (AbstractGroup<T> group : groupMap.values()) {
+	        for (AbstractGroup<T, U> group : groupMap.values()) {
 	    		out.print(group.toPrint(settingKeys, cleanUserKeys));
 			}
             return 0;
@@ -250,7 +271,7 @@ public abstract class AbstractCfgFile <T> {
 	    }
 	}
     private void resetAllUserSettings() {
-        for (AbstractGroup<T> group : groupMap.values()) {
+        for (AbstractGroup<T, U> group : groupMap.values()) {
             group.resetAllUserSettings();
         }
     }
@@ -261,52 +282,52 @@ public abstract class AbstractCfgFile <T> {
 			userKey = userKey.toUpperCase();
 			String action = settingUserAction.getCfgLine(userKey).value().toKey();
 			if (action.contains("UI TO FILE")) {
-				for (AbstractGroup<T> group : groupMap.values()) {
+				for (AbstractGroup<T, U> group : groupMap.values()) {
 		    		group.actionGuiToFile(userKey);
 				}
 			}
 			if (action.contains("GAME TO FILE")) {
-				for (AbstractGroup<T> group : groupMap.values()) {
+				for (AbstractGroup<T, U> group : groupMap.values()) {
 		    		group.actionGameToFile(userKey);
 				}
 			}
 			if (action.contains("INITIAL TO FILE")) {
-				for (AbstractGroup<T> group : groupMap.values()) {
+				for (AbstractGroup<T, U> group : groupMap.values()) {
 		    		group.actionInitialToFile(userKey);
 				}
 			}
 			if (action.contains("UI UPDATE FILE")) {
-				for (AbstractGroup<T> group : groupMap.values()) {
+				for (AbstractGroup<T, U> group : groupMap.values()) {
 		    		group.actionGuiUpdateFile(userKey);
 				}
 			}
 			if (action.contains("GAME UPDATE FILE")) {
-				for (AbstractGroup<T> group : groupMap.values()) {
+				for (AbstractGroup<T, U> group : groupMap.values()) {
 		    		group.actionGameUpdateFile(userKey);
 				}
 			}
 			if (action.contains("INITIAL UPDATE FILE")) {
-				for (AbstractGroup<T> group : groupMap.values()) {
+				for (AbstractGroup<T, U> group : groupMap.values()) {
 		    		group.actionInitialUpdateFile(userKey);
 				}
 			}
 		}
 		saveConfigFile();
 	}
-    void updateGuiValue(T options) {
-    	for (AbstractGroup<T> group : groupMap.values()) {
-    		group.actionGetGuiValue(options);
+    void updateGuiValue(T tObject) {
+    	for (AbstractGroup<T, U> group : groupMap.values()) {
+    		group.actionGetGuiValue(tObject);
 		}
     }
-    void updateGameValue(T options) {
-    	for (AbstractGroup<T> group : groupMap.values()) {
-    		group.actionGetGameValue(options);
+    void updateGameValue(T tObject) {
+    	for (AbstractGroup<T, U> group : groupMap.values()) {
+    		group.actionGetGameValue(tObject);
 		}
     }
     // ========================================================================
     // Nested Classes
     //
-    protected class Setting_USER_ACTION extends AbstractSetting <T> {
+    protected class Setting_USER_ACTION extends AbstractSetting<T, U> {
     	// The Class T is not used, but needed for compatibility
 
     	// ------------------------------------------------------------------------
@@ -345,7 +366,7 @@ public abstract class AbstractCfgFile <T> {
     		"(---- The last loaded Win)" ));
       }
 	@Override public String getFromGame(T gameObject) { return "-"; }
-	@Override public void   putToGame(T gameObject, String userOption) {}
+	@Override public void   putToGame(U uObject, String userOption) {}
    	@Override public String getFromUI(T gO) { return "-"; }
   	@Override public void   putToGUI(T gO, String userOption) {}
   	@Override public void   putInitialToGUI(T gO) {}

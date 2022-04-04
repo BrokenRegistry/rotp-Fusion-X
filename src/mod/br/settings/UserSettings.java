@@ -7,8 +7,9 @@ import br.config.AbstractGroup;
 import br.config.AbstractCfgFile;
 import rotp.Rotp;
 import rotp.model.game.IGameOptions;
+import rotp.model.game.GameSession;
 
-public class UserSettings extends AbstractCfgFile<IGameOptions> {
+public class UserSettings extends AbstractCfgFile<IGameOptions, GameSession> {
     
     // ------------------------------------------------------------------------
     // Constructors
@@ -32,7 +33,7 @@ public class UserSettings extends AbstractCfgFile<IGameOptions> {
 	 */
 	@Override
 	protected void initGroupMap(IGameOptions options) {
-      groupMap = new LinkedHashMap<String, AbstractGroup<IGameOptions>>();
+      groupMap = new LinkedHashMap<String, AbstractGroup<IGameOptions, GameSession>>();
       groupMap.put("RACE",     new Group_Race(options));
       groupMap.put("GALAXY",   new Group_Galaxy(options));
       groupMap.put("ADVANCED", new Group_Advanced(options));

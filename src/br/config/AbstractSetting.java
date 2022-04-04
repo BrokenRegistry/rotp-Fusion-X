@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-public abstract class AbstractSetting <T> {
+public abstract class AbstractSetting <T, U> {
     // ------------------------------------------------------------------------
 	// Constant Properties
     //
@@ -14,7 +14,10 @@ public abstract class AbstractSetting <T> {
 	static final String DEFAULT_LOCAL_ENABLE = "Both";
 	static final String LOCAL_ENABLE_LABELS  = 
 		new CommentLine(CfgField.capitalize(CfgField.ENABLE_VALID_LIST.toString())).toPrint();
-    // ------------------------------------------------------------------------
+
+	protected static final String AVAILABLE_FOR_CHANGE = "---- Available for changes in game saves";
+	
+	// ------------------------------------------------------------------------
 	// Variables Properties
     //
 	private Comment headComments;
@@ -120,19 +123,19 @@ public abstract class AbstractSetting <T> {
 	// Abstract Methods
 	//
 	
-	public abstract String getFromUI (T gameObject);
-	public abstract void   putToGUI (T gameObject, String userOption);
-	public abstract String getFromGame (T gameObject);
-	public abstract void   putToGame (T gameObject, String userOption);
-	public abstract void   putInitialToGUI (T gameObject);
+	public abstract String getFromUI (T tObject);
+	public abstract void   putToGUI (T tObject, String userOption);
+	public abstract String getFromGame (T tObject);
+	public abstract void   putToGame (U uObject, String userOption);
+	public abstract void   putInitialToGUI (T tObject);
 	public abstract void   initComments ();
 	// ------------------------------------------------------------------------
 	// Getters and Setters
 	//
 	/**
-	 * Override the Game parameter with winning option 
+	 * Override the Game File parameter with winning option 
 	 */
-    public void overrideGameParameters (T gameObject, LinkedHashSet<String> settingKeys) {
+    public void changeGameFileParameters (U uObject, LinkedHashSet<String> settingKeys) {
     	String userOption = "";
    		// Loop thru user Keys, last valid win
     	for (String userKey : settingKeys) {       
@@ -142,7 +145,23 @@ public abstract class AbstractSetting <T> {
         }
     	// if one valid option is found: set it
     	if (!userOption.isBlank()) {
-    		putToGUI(gameObject, userOption);
+    		putToGame(uObject, userOption);
+    	}
+    }
+	/**
+	 * Override the GUI parameter with winning option 
+	 */
+    public void overrideGuiParameters (T tObject, LinkedHashSet<String> settingKeys) {
+    	String userOption = "";
+   		// Loop thru user Keys, last valid win
+    	for (String userKey : settingKeys) {       
+            if (isSectionReadable(userKey)) {
+            	userOption = getOrDefaultOption(userKey, userOption);
+            }
+        }
+    	// if one valid option is found: set it
+    	if (!userOption.isBlank()) {
+    		putToGUI(tObject, userOption);
     	}
     }
 	/**
@@ -171,8 +190,8 @@ public abstract class AbstractSetting <T> {
 	/**
 	 * Update Last GUI Option (Computer friendly) 
 	 */
-	public void setGuiOption(T gameObject) {
-		setGuiOption(getFromUI(gameObject));
+	public void setGuiOption(T tObject) {
+		setGuiOption(getFromUI(tObject));
 	}
 	private void setGuiOption(String option) {
 		guiOption = option;
@@ -181,8 +200,8 @@ public abstract class AbstractSetting <T> {
 	/**
 	 * Update Last Game Option (Computer friendly) 
 	 */
-	public void setGameOption(T gameObject) {
-		setGameOption(getFromGame(gameObject));
+	public void setGameOption(T tObject) {
+		setGameOption(getFromGame(tObject));
 	}
 	private void setGameOption(String option) {
 		gameOption = option;
@@ -372,7 +391,7 @@ public abstract class AbstractSetting <T> {
     	for (String option : groupOptions) {
     		if (!settingMap.containsKey(option.toUpperCase())) {
     			settingMap.put(option.toUpperCase(), 
-    					new CfgLine(option, initialValue()));
+    					new CfgLine(CfgField.capitalize(option), ""));
     		}
     		out += (settingMap.get(option.toUpperCase()).toPrint() + System.lineSeparator());
     	}

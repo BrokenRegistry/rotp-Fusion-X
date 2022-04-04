@@ -8,9 +8,10 @@ import br.config.CfgField;
 import br.config.Comment;
 import mod.br.alteration.GalaxySpacing;
 import mod.br.alteration.StarsOptions;
+import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
 
-public class Group_BrokenRegistry extends AbstractGroup <IGameOptions> {
+public class Group_BrokenRegistry extends AbstractGroup <IGameOptions, GameSession> {
 	
     Group_BrokenRegistry(IGameOptions gO) {
        super(gO);
@@ -26,7 +27,7 @@ public class Group_BrokenRegistry extends AbstractGroup <IGameOptions> {
     // ========================================================================
     // MAXIMIZE EMPIRES SPACING
     //
-    public static class MaximizeEmpiresSpacing extends AbstractSetting <IGameOptions> {
+    public static class MaximizeEmpiresSpacing extends AbstractSetting <IGameOptions, GameSession> {
      
     	MaximizeEmpiresSpacing(IGameOptions gO) { super(
             "MAXIMIZE EMPIRES SPACING",
@@ -40,7 +41,7 @@ public class Group_BrokenRegistry extends AbstractGroup <IGameOptions> {
         	return CfgField.toYesNoString(GalaxySpacing.isMaximizeEmpiresSpacing());
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
+        public void putToGame(GameSession gO, String userOption) {
 
         }    
     	@Override
@@ -66,7 +67,7 @@ public class Group_BrokenRegistry extends AbstractGroup <IGameOptions> {
     // ========================================================================
     // PREF STARS PER EMPIRE
     //
-    public static class PreferedStarsPerEmpire extends AbstractSetting <IGameOptions> {
+    public static class PreferedStarsPerEmpire extends AbstractSetting <IGameOptions, GameSession> {
 
         private static final int MIN   = 0;
         private static final int MAX   = 1000000;
@@ -86,7 +87,7 @@ public class Group_BrokenRegistry extends AbstractGroup <IGameOptions> {
         	return String.valueOf(GalaxySpacing.getPreferedStarsPerEmpire());
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
+        public void putToGame(GameSession gO, String userOption) {
 
         }    
     	@Override
@@ -107,7 +108,7 @@ public class Group_BrokenRegistry extends AbstractGroup <IGameOptions> {
     // ========================================================================
     // MIN STARS PER EMPIRE
     //
-    public static class MinStarsPerEmpire extends AbstractSetting <IGameOptions> {
+    public static class MinStarsPerEmpire extends AbstractSetting <IGameOptions, GameSession> {
 
         private static final int MIN   = 0;
         private static final int MAX   = 1000000;
@@ -127,7 +128,7 @@ public class Group_BrokenRegistry extends AbstractGroup <IGameOptions> {
         	return String.valueOf(GalaxySpacing.getMinStarsPerEmpire());
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
+        public void putToGame(GameSession gO, String userOption) {
 
         }    
     	@Override
@@ -149,7 +150,7 @@ public class Group_BrokenRegistry extends AbstractGroup <IGameOptions> {
     // ========================================================================
     // NO PLANET PCT MULT
     //
-    public static class NoPlanetPctMultiplier extends AbstractSetting <IGameOptions> {
+    public static class NoPlanetPctMultiplier extends AbstractSetting <IGameOptions, GameSession> {
 
         private static final int MIN   = 0;
         private static final int MAX   = 1000000;
@@ -169,7 +170,7 @@ public class Group_BrokenRegistry extends AbstractGroup <IGameOptions> {
         	return String.valueOf(StarsOptions.getNoPlanetPctMultiplier());
         }
         @Override
-        public void putToGame(IGameOptions gO, String userOption) {
+        public void putToGame(GameSession gO, String userOption) {
 
         }    
     	@Override

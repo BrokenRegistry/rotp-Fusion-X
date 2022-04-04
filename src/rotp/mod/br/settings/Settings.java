@@ -1,9 +1,13 @@
 package rotp.mod.br.settings;
 
 import mod.br.settings.UserSettings;
+import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
 
 public class Settings {
+	
+	public static boolean ChangeGameFile = false;
+	
 	private static UserSettings userSettings = new UserSettings();
 	
 	/*
@@ -61,5 +65,11 @@ public class Settings {
     public static void saveGameOptionsToFile(IGameOptions options) {
     	userSettings.saveGameToFile(options);
 	}
- 
+    /*
+   	 * Load and execute the configuration file to Change the game file
+   	 */
+    public static void changeGameSettings(GameSession instance) {
+    	userSettings.changeGameSettings(instance);
+    }
+
 }

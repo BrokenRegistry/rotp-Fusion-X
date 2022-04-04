@@ -809,10 +809,16 @@ public final class GameSession implements Base, Serializable {
         stopCurrentGame();
         instance = gs;
         
-        // BR: Save the last loaded game parameters
-        Settings.saveGameOptionsToFile(instance.options);
+        // BR:
+        // if asked, Change the game parameters
+        if (Settings.ChangeGameFile) {
+        	Settings.ChangeGameFile = false;
+        	Settings.changeGameSettings(instance);
+        }
+        // Save the last loaded game parameters
+        Settings.saveGameOptionsToFile(instance.options());
         // #BR:
-
+        
         startExecutors();
         RotPUI.instance().mainUI().checkMapInitialized();
         if (!startUp) {
