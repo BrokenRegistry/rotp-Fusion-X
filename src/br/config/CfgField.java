@@ -28,9 +28,15 @@ public class CfgField extends UserField{
 	public static final List<String> YES_LIST     = List.of("YES", "TRUE");
 	public static final List<String> NO_LIST      = List.of("NO", "FALSE");
 	public static final List<String> BOOLEAN_LIST = List.of("YES", "NO", "TRUE", "FALSE");
-	public static final List<String> ENABLE_LOAD_LIST  = List.of("LOAD", "BOTH");
-	public static final List<String> ENABLE_WRITE_LIST = List.of("SAVE", "BOTH");
-	public static final List<String> ENABLE_VALID_LIST = List.of("BOTH", "SAVE", "LOAD", "NO");
+	public static final List<String> ENABLE_LOAD_LIST  = 
+			List.of("LOAD", "BOTH", "FILE TO UI", "FILE TO GAME");
+	public static final List<String> ENABLE_WRITE_LIST = 
+			List.of("SAVE", "BOTH", "UI TO FILE", "GAME TO FILE", "INITIAL TO FILE",
+					"UI UPDATE FILE", "GAME UPDATE FILE", "INITIAL UPDATE FILE");
+	public static final List<String> ENABLE_VALID_LIST = 
+			List.of("BOTH", "SAVE", "LOAD", "NO", "FILE TO UI", "FILE TO GAME", 
+					"UI TO FILE", "GAME TO FILE", "INITIAL TO FILE",
+					"UI UPDATE FILE", "GAME UPDATE FILE", "INITIAL UPDATE FILE");
 	public static final Boolean BOOLEAN_DEFAULT_VALUE = false;
 	public static final String  STRING_DEFAULT_VALUE  = "";
 	public static final char    CHAR_DEFAULT_VALUE    = ' ';

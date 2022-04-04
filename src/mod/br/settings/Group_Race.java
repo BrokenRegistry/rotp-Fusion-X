@@ -1,4 +1,4 @@
-package mod.br.presets;
+package mod.br.settings;
 
 import java.util.List;
 
@@ -29,16 +29,24 @@ public class Group_Race extends AbstractGroup <IGameOptions> {
             gO.selectedPlayerRace());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return gO.selectedPlayerRace();
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }        
+        @Override
+        public String getFromUI (IGameOptions gO) {
+        	return gO.selectedPlayerRace();
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
             gO.selectedPlayerRace(userOption);
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-            gO.selectedPlayerRace(firstOption());
+        public void putInitialToGUI(IGameOptions gO) {
+            gO.selectedPlayerRace(initialOption());
         }
         @Override
         public void initComments() {
@@ -59,21 +67,38 @@ public class Group_Race extends AbstractGroup <IGameOptions> {
         PlayerColor(IGameOptions gO) { super(
             "PLAYER COLOR",
             EMPIRECOLORS,
-            EMPIRECOLORS.get(gO.selectedPlayerColor()));
+            intToColor(gO));
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
-        	return EMPIRECOLORS.get(gO.selectedPlayerColor());
+        public String getFromGame (IGameOptions gO) {
+        	return intToColor(gO);
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
-            gO.selectedPlayerColor(EMPIRECOLORS.indexOf(userOption));
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+        @Override
+        public String getFromUI (IGameOptions gO) {
+        	return intToColor(gO);
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-            gO.selectedPlayerColor(EMPIRECOLORS.indexOf(firstOption()));
+        public void putToGUI(IGameOptions gO, String userOption) {
+            gO.selectedPlayerColor(colorToInt(userOption));
+        }
+        @Override
+        public void putInitialToGUI(IGameOptions gO) {
+            gO.selectedPlayerColor(colorToInt(initialOption()));
         }
         @Override
         public void initComments() {}
+        // -----------------------------------------------------------------
+        // Private Converter Methods
+        //
+        private static String intToColor (IGameOptions gO) {
+        	return EMPIRECOLORS.get(gO.selectedPlayerColor());
+        }        
+        private static int colorToInt (String color) {
+        	return EMPIRECOLORS.indexOf(color);
+        }
     }
 }

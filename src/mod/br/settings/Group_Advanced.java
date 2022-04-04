@@ -1,4 +1,4 @@
-package mod.br.presets;
+package mod.br.settings;
 
 import java.util.List;
 
@@ -42,16 +42,24 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
             gO.selectedGalaxyAge());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return gO.selectedGalaxyAge();
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return gO.selectedGalaxyAge();
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
             gO.selectedGalaxyAge(userOption);
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-            gO.selectedGalaxyAge(firstOption());
+        public void putInitialToGUI(IGameOptions gO) {
+            gO.selectedGalaxyAge(initialOption());
         }
         @Override
         public void initComments() {
@@ -72,16 +80,24 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
             gO.selectedStarDensityOption());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return gO.selectedStarDensityOption();
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return gO.selectedStarDensityOption();
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
             gO.selectedStarDensityOption(userOption);
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-            gO.selectedStarDensityOption(firstOption());
+        public void putInitialToGUI(IGameOptions gO) {
+            gO.selectedStarDensityOption(initialOption());
         }
         @Override
         public void initComments() {}
@@ -97,16 +113,24 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
             gO.selectedNebulaeOption());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return gO.selectedNebulaeOption();
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return gO.selectedNebulaeOption();
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
             gO.selectedNebulaeOption(userOption);
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-            gO.selectedNebulaeOption(firstOption());
+        public void putInitialToGUI(IGameOptions gO) {
+            gO.selectedNebulaeOption(initialOption());
         }
         @Override
         public void initComments() {}
@@ -122,16 +146,24 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
             gO.selectedPlanetQualityOption());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return gO.selectedPlanetQualityOption();
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return gO.selectedPlanetQualityOption();
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
             gO.selectedPlanetQualityOption(userOption);
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-            gO.selectedPlanetQualityOption(firstOption());
+        public void putInitialToGUI(IGameOptions gO) {
+            gO.selectedPlanetQualityOption(initialOption());
         }
         @Override
         public void initComments() {}
@@ -147,16 +179,24 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
             gO.selectedTerraformingOption());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return gO.selectedTerraformingOption();
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return gO.selectedTerraformingOption();
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
             gO.selectedTerraformingOption(userOption);
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-            gO.selectedTerraformingOption(firstOption());
+        public void putInitialToGUI(IGameOptions gO) {
+            gO.selectedTerraformingOption(initialOption());
         }
         @Override
         public void initComments() {}
@@ -172,16 +212,24 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
             gO.selectedRandomEventOption());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return gO.selectedRandomEventOption();
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return gO.selectedRandomEventOption();
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
             gO.selectedRandomEventOption(userOption);
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-            gO.selectedRandomEventOption(firstOption());
+        public void putInitialToGUI(IGameOptions gO) {
+            gO.selectedRandomEventOption(initialOption());
         }
         @Override
         public void initComments() {}
@@ -197,16 +245,24 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
             gO.selectedAIHostilityOption());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return gO.selectedAIHostilityOption();
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return gO.selectedAIHostilityOption();
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
             gO.selectedAIHostilityOption(userOption);
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-            gO.selectedAIHostilityOption(firstOption());
+        public void putInitialToGUI(IGameOptions gO) {
+            gO.selectedAIHostilityOption(initialOption());
         }
         @Override
         public void initComments() {}
@@ -222,16 +278,24 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
             gO.selectedCouncilWinOption());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return gO.selectedCouncilWinOption();
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return gO.selectedCouncilWinOption();
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
             gO.selectedCouncilWinOption(userOption);
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-            gO.selectedCouncilWinOption(firstOption());
+        public void putInitialToGUI(IGameOptions gO) {
+            gO.selectedCouncilWinOption(initialOption());
         }
         @Override
         public void initComments() {}
@@ -247,16 +311,24 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
             gO.selectedRandomizeAIOption());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return gO.selectedRandomizeAIOption();
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return gO.selectedRandomizeAIOption();
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
             gO.selectedRandomizeAIOption(userOption);
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-            gO.selectedRandomizeAIOption(firstOption());
+        public void putInitialToGUI(IGameOptions gO) {
+            gO.selectedRandomizeAIOption(initialOption());
         }
         @Override
         public void initComments() {}
@@ -272,16 +344,24 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
             gO.selectedAutoplayOption());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return gO.selectedAutoplayOption();
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return gO.selectedAutoplayOption();
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
             gO.selectedAutoplayOption(userOption);
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-            gO.selectedAutoplayOption(firstOption());
+        public void putInitialToGUI(IGameOptions gO) {
+            gO.selectedAutoplayOption(initialOption());
         }
         @Override
         public void initComments() {}
@@ -297,16 +377,24 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
             gO.selectedResearchRate());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return gO.selectedResearchRate();
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return gO.selectedResearchRate();
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
             gO.selectedResearchRate(userOption);
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-            gO.selectedResearchRate(firstOption());
+        public void putInitialToGUI(IGameOptions gO) {
+            gO.selectedResearchRate(initialOption());
         }
         @Override
         public void initComments() {}
@@ -322,16 +410,24 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
             gO.selectedWarpSpeedOption());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return gO.selectedWarpSpeedOption();
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return gO.selectedWarpSpeedOption();
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
             gO.selectedWarpSpeedOption(userOption);
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-            gO.selectedWarpSpeedOption(firstOption());
+        public void putInitialToGUI(IGameOptions gO) {
+            gO.selectedWarpSpeedOption(initialOption());
         }
         @Override
         public void initComments() {}
@@ -347,16 +443,24 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
             gO.selectedFuelRangeOption());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return gO.selectedFuelRangeOption();
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return gO.selectedFuelRangeOption();
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
             gO.selectedFuelRangeOption(userOption);
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-            gO.selectedFuelRangeOption(firstOption());
+        public void putInitialToGUI(IGameOptions gO) {
+            gO.selectedFuelRangeOption(initialOption());
         }
         @Override
         public void initComments() {}
@@ -372,16 +476,24 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
             gO.selectedTechTradeOption());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return gO.selectedTechTradeOption();
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return gO.selectedTechTradeOption();
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
             gO.selectedTechTradeOption(userOption);
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-            gO.selectedTechTradeOption(firstOption());
+        public void putInitialToGUI(IGameOptions gO) {
+            gO.selectedTechTradeOption(initialOption());
         }
         @Override
         public void initComments() {}
@@ -397,16 +509,24 @@ public class Group_Advanced extends AbstractGroup <IGameOptions> {
             gO.selectedColonizingOption());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return gO.selectedColonizingOption();
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return gO.selectedColonizingOption();
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
             gO.selectedColonizingOption(userOption);
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-            gO.selectedColonizingOption(firstOption());
+        public void putInitialToGUI(IGameOptions gO) {
+            gO.selectedColonizingOption(initialOption());
         }
         @Override
         public void initComments() {}

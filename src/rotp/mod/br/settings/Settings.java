@@ -1,10 +1,10 @@
 package rotp.mod.br.settings;
 
-import mod.br.presets.UserPresets;
+import mod.br.settings.UserSettings;
 import rotp.model.game.IGameOptions;
 
-public class Presets {
-	private static UserPresets userSettings = new UserPresets();
+public class Settings {
+	private static UserSettings userSettings = new UserSettings();
 	
 	/*
    	 * Load the configuration file and memorize first options
@@ -42,16 +42,24 @@ public class Presets {
     /*
    	 * Reset the game options as they where at the beginning
    	 */
-    public static void resetFirstOptions(IGameOptions options) {
+    public static void resetInitialOptions(IGameOptions options) {
     	userSettings.resetFirstOptions(options);
     }
     /*
    	 * Load the configuration file to update the Action
-   	 * Update with last options values
+   	 * Update with last GUI options values
    	 * Save the new configuration file
    	 */
-    public static void saveToUserConfig(IGameOptions options) {
-    	userSettings.saveToUserConfig(options);
+    public static void saveGuiToFile(IGameOptions options) {
+    	userSettings.saveGuiToFile(options);
+	}
+    /*
+   	 * Load the configuration file to update the Action
+   	 * Update with last Loaded Game options values
+   	 * Save the new configuration file
+   	 */
+    public static void saveGameOptionsToFile(IGameOptions options) {
+    	userSettings.saveGameToFile(options);
 	}
  
 }

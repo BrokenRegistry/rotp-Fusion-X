@@ -9,7 +9,7 @@ public abstract class AbstractSetting <T> {
     // ------------------------------------------------------------------------
 	// Constant Properties
     //
-	static final String HEAD_OF_INFO    = new Comment("FIRST / LAST").toPrint();
+	static final String HEAD_OF_INFO    = new Comment("Initial/GUI/Game").toPrint();
 	static final String HEAD_OF_OPTIONS = new Comment("OPTIONS").toPrint();
 	static final String DEFAULT_LOCAL_ENABLE = "Both";
 	static final String LOCAL_ENABLE_LABELS  = 
@@ -23,10 +23,12 @@ public abstract class AbstractSetting <T> {
 	private Comment bottomComments;
 
 	private CfgField settingKey = new CfgField();
-	private CfgField lastValue  = new CfgField(); // Last saved value (User friendly)
-	private String   lastOption = ""; // Last saved option (Computer friendly)
-	private CfgField firstValue   = new CfgField(); // Value when firstly loaded (User friendly)
-	private String   firstOption  = ""; // Option when firstly loaded (Computer friendly)
+	private CfgField guiValue  = new CfgField(); // Last saved GUI value (User friendly)
+	private String   guiOption = ""; // Last saved GUI option (Computer friendly)
+	private CfgField gameValue  = new CfgField(); // Last saved Game value (User friendly)
+	private String   gameOption = ""; // Last saved Game option (Computer friendly)
+	private CfgField initialValue   = new CfgField(); // Value when firstly loaded (User friendly)
+	private String   initialOption  = ""; // Option when firstly loaded (Computer friendly)
 	private CfgField userOptionList = new CfgField();
 	private CfgField localEnable = new CfgField(DEFAULT_LOCAL_ENABLE);
 	
@@ -65,7 +67,7 @@ public abstract class AbstractSetting <T> {
 	 */
 	public AbstractSetting(String settingKey, List<String> settingOptions, String initialOption) {
 		this(settingKey, settingOptions);
-		setFirstOption(initialOption);
+		setInitialOption(initialOption);
 		initComments();
 	}
 	/**
@@ -83,7 +85,7 @@ public abstract class AbstractSetting <T> {
 	public AbstractSetting(String settingKey, boolean initialOption) {
 		this(settingKey);
 		setSettingOptions(CfgField.BOOLEAN_LIST);
-		setFirstOption(CfgField.toYesNoString(initialOption));
+		setInitialOption(CfgField.toYesNoString(initialOption));
 		initComments();
 		settingIsBoolean = true;
 	}
@@ -108,7 +110,7 @@ public abstract class AbstractSetting <T> {
 	public AbstractSetting(String settingKey, int min, int max, int minR, int maxR, int initialOption) {
 		this(settingKey, min, max, minR, maxR);
 		setSettingOptions(min, max, minR, maxR);
-		setFirstOption(String.valueOf(initialOption));
+		setInitialOption(String.valueOf(initialOption));
 		initComments();
 	}
     public void resetUserSettings() {
@@ -118,9 +120,11 @@ public abstract class AbstractSetting <T> {
 	// Abstract Methods
 	//
 	
-	public abstract String getSelectedOption (T gameObject);
-	public abstract void   setSelectedOption (T gameObject, String userOption);
-	public abstract void   setSelectedOptionToInitial (T gameObject);
+	public abstract String getFromUI (T gameObject);
+	public abstract void   putToGUI (T gameObject, String userOption);
+	public abstract String getFromGame (T gameObject);
+	public abstract void   putToGame (T gameObject, String userOption);
+	public abstract void   putInitialToGUI (T gameObject);
 	public abstract void   initComments ();
 	// ------------------------------------------------------------------------
 	// Getters and Setters
@@ -138,7 +142,7 @@ public abstract class AbstractSetting <T> {
         }
     	// if one valid option is found: set it
     	if (!userOption.isBlank()) {
-    		setSelectedOption(gameObject, userOption);
+    		putToGUI(gameObject, userOption);
     	}
     }
 	/**
@@ -159,20 +163,30 @@ public abstract class AbstractSetting <T> {
 	/**
 	 * Set Initial Option (Computer friendly) 
 	 */
-	private void setFirstOption(String option) {
-		firstOption = option;
-		firstValue.set(settingNameToLabel(option).toUpperCase());
-		setLastOption(option);
+	private void setInitialOption(String option) {
+		initialOption = option;
+		initialValue.set(settingNameToLabel(option).toUpperCase());
+		setGuiOption(option);
 	}
 	/**
-	 * Set Last Option (Computer friendly) 
+	 * Update Last GUI Option (Computer friendly) 
 	 */
-	public void setLastOption(T AllOptions) {
-		setLastOption(getSelectedOption(AllOptions));
+	public void setGuiOption(T gameObject) {
+		setGuiOption(getFromUI(gameObject));
 	}
-	private void setLastOption(String option) {
-		lastOption = option;
-		lastValue.set(settingNameToLabel(lastOption).toUpperCase());
+	private void setGuiOption(String option) {
+		guiOption = option;
+		guiValue.set(settingNameToLabel(guiOption).toUpperCase());
+	}
+	/**
+	 * Update Last Game Option (Computer friendly) 
+	 */
+	public void setGameOption(T gameObject) {
+		setGameOption(getFromGame(gameObject));
+	}
+	private void setGameOption(String option) {
+		gameOption = option;
+		gameValue.set(settingNameToLabel(gameOption).toUpperCase());
 	}
 	/**
 	 * Return Setting's Key as CfgFields 
@@ -183,24 +197,27 @@ public abstract class AbstractSetting <T> {
 	/**
 	 * Return first Value as CfgFields 
 	 */
-	protected CfgField firstValue() {
-		return firstValue;
+	protected CfgField initialValue() {
+		return initialValue;
 	}
 	/**
 	 * Return first Option as CfgFields 
 	 */
-	protected String firstOption() {
-		return firstOption;
+	protected String initialOption() {
+		return initialOption;
 	}
 	/**
-	 * Return last Value as CfgFields 
+	 * Return last GUI Value as CfgFields 
 	 */
-	private CfgField lastValue() {
-		return lastValue;
+	private CfgField guiValue() {
+		return guiValue;
 	}
-//	private CfgField getDefaultValue() {
-//		return new CfgField(getDefaultValueAsString()) ;
-//	}
+	/**
+	 * Return last Game Value as CfgFields 
+	 */
+	private CfgField gameValue() {
+		return gameValue;
+	}
 	/**
 	 * Return Iterator of settingMap
 	 */
@@ -224,8 +241,7 @@ public abstract class AbstractSetting <T> {
 		if (settingMap.containsKey(key)) {
 			return settingMap.get(key);
 		}
-		return new CfgLine(key, firstValue());
-//		return userSettings.getOrDefaultLine(key, new CfgLine(key, initialValue()));
+		return new CfgLine(key, initialValue());
 	}
 	/**
 	 * Return  Setting's selected User Choice as CfgField 
@@ -234,13 +250,13 @@ public abstract class AbstractSetting <T> {
 		if (key != null && settingMap.containsKey(key)) {
 			return settingMap.get(key).value();
 		}
-		return firstValue();
+		return initialValue();
 	}
 	/**
 	 * Return Setting's selected User Choice as boolean 
 	 */
 	protected boolean getBooleanOption(String key) {
-		boolean preset = firstValue().getOrDefault(false);
+		boolean preset = initialValue().getOrDefault(false);
 		CfgField setting = getCfgValue(key);
 		if (setting.isRandom()) {
 			return CfgField.getBooleanRandom();
@@ -251,7 +267,7 @@ public abstract class AbstractSetting <T> {
 	 * Return Setting's selected User Choice as integer 
 	 */
 	protected Integer getIntegerOption(String key) {
-		Integer preset = firstValue().getOrDefault(0);
+		Integer preset = initialValue().getOrDefault(0);
 		CfgField setting = getCfgValue(key);
 		if (setting.isRandom()) {
 			return CfgField.getIntegerRandom(setting
@@ -336,9 +352,11 @@ public abstract class AbstractSetting <T> {
 				.toPrint() + System.lineSeparator();
    		// FIRST / LAST INFO
    		out += new CfgLine(HEAD_OF_INFO
-   						, (settingNameToLabel(firstValue.toString())
-   							+ " / "
-   							+settingNameToLabel(lastValue.toString())
+   						, (settingNameToLabel(initialValue.toString())
+   	  							+ " / "
+   	   							+settingNameToLabel(guiValue.toString())
+   	  							+ " / "
+   	   							+settingNameToLabel(gameValue.toString())
    						)
    					).toPrint() + System.lineSeparator();
    		// OPTIONS COMMENTS
@@ -354,7 +372,7 @@ public abstract class AbstractSetting <T> {
     	for (String option : groupOptions) {
     		if (!settingMap.containsKey(option.toUpperCase())) {
     			settingMap.put(option.toUpperCase(), 
-    					new CfgLine(option, firstValue()));
+    					new CfgLine(option, initialValue()));
     		}
     		out += (settingMap.get(option.toUpperCase()).toPrint() + System.lineSeparator());
     	}
@@ -369,44 +387,88 @@ public abstract class AbstractSetting <T> {
 //    	String Option = getSelectedOption(allOptions);
 //    	setLastOption(Option);
 //    }
+	private void addKeyIfNone(String key) {
+		if (!settingMap.containsKey(key.toUpperCase())) {
+			putCfgLine(new KeyField(key), new CfgField(""));
+		}
+	}
+    /**
+	 * Conditions to set user choice to value:
+	 *     - if Writing is allowed 
+	 *     - if the user choice is absent
+	 * Add key if none
+	 */
+	private void actionToFile(String key, CfgField value) {
+		if (isSectionWritable()) {
+			putCfgLine(new KeyField(key), value);
+		}
+		addKeyIfNone(key);
+	}
+	/**
+	 * Conditions to set user choice to value:
+	 *    - if the key is absent: 
+	 *    - if Writing is allowed and value not blank:
+	 * Add key if none
+	 */	private void actionUpdateFile(String key, CfgField value) {
+		 addKeyIfNone(key);
+			if (isSectionWritable() && !settingMap.get(key.toUpperCase()).value().isBlank()) {
+				putCfgLine(new KeyField(key), value);
+			}
+	}
+
     /**
 	 * Conditions to set user choice to last value:
 	 *     - if Writing is allowed 
 	 *     - if the user choice is absent
+	 * Add key if none
 	 */
-	public void actionSave(String key) {
-		if (isSectionWritable()) {
-			putCfgLine(new KeyField(key), lastValue());
-		}
-		if (!settingMap.containsKey(key.toUpperCase())) {
-			putCfgLine(new KeyField(key), new CfgField(""));
-		}
+	public void actionUiToFile(String key) {
+		actionToFile(key, guiValue());
+	}
+    /**
+	 * Conditions to set user choice to game value:
+	 *     - if Writing is allowed 
+	 *     - if the user choice is absent
+	 * Add key if none
+	 */
+	public void actionGameToFile(String key) {
+		actionToFile(key, gameValue());
+	}
+	/**
+	 * Conditions to set user choice to first value:
+	 *    - if Writing is allowed 
+	 *    - if the user choice is absent
+	 * Add key if none
+	 */
+	public void actionInitialToFile(String key) {
+		actionToFile(key, initialValue());
 	}
 	/**
 	 * Conditions to set user choice to last value:
 	 *    - if the key is absent: 
 	 *    - if Writing is allowed and value not blank:
+	 * Add key if none
 	 */
-	public void actionUpdate(String key) {
-		if (!settingMap.containsKey(key.toUpperCase())) {
-			putCfgLine(new KeyField(key), new CfgField(""));
-		}
-		if (isSectionWritable() && !settingMap.get(key.toUpperCase()).value().isBlank()) {
-			putCfgLine(new KeyField(key), lastValue());
-		}
+	public void actionUiUpdateFile(String key) {
+		actionUpdateFile(key, guiValue());
 	}
 	/**
 	 * Conditions to set user choice to first value:
 	 *    - if the key is absent: 
 	 *    - if Writing is allowed and value not blank:
+	 * Add key if none
 	 */
-	public void actionFirst(String key) {
-		if (!settingMap.containsKey(key.toUpperCase())) {
-			putCfgLine(new KeyField(key), new CfgField(""));
-		}
-		if (isSectionWritable() && !settingMap.get(key.toUpperCase()).value().isBlank()) {
-			putCfgLine(new KeyField(key), firstValue());
-		}
+	public void actionGameUpdateFile(String key) {
+		actionUpdateFile(key, gameValue());
+	}
+	/**
+	 * Conditions to set user choice to first value:
+	 *    - if the key is absent: 
+	 *    - if Writing is allowed and value not blank:
+	 * Add key if none
+	 */
+	public void actionInitialUpdateFile(String key) {
+			actionUpdateFile(key, initialValue());
 	}
 	protected void headComments(Comment comments) {
 		headComments = comments;

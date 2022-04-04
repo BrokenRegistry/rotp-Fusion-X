@@ -138,7 +138,7 @@ public class CfgLine {
 	 * return line as String, ready to be printed
 	 */
 	public String toPrint() {
-		return String.format(KEY_FORMAT, key.toString()) + value.toCapitalized();
+		return String.format(KEY_FORMAT, key.toCapitalized()) + value.toCapitalized();
 	}
 }
 

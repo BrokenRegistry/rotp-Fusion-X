@@ -1,4 +1,4 @@
-package mod.br.presets;
+package mod.br.settings;
 
 import java.util.List;
 
@@ -36,16 +36,24 @@ public class Group_BrokenRegistry extends AbstractGroup <IGameOptions> {
         // Overrider
         //
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return CfgField.toYesNoString(GalaxySpacing.isMaximizeEmpiresSpacing());
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return CfgField.toYesNoString(GalaxySpacing.isMaximizeEmpiresSpacing());
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
         	GalaxySpacing.setMaximizeEmpiresSpacing(getBooleanOption(userOption));
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-        	GalaxySpacing.setMaximizeEmpiresSpacing(firstValue().getOrDefault(GalaxySpacing.DEFAULT_MAXIMIZE_EMPIRES_SPACING));
+        public void putInitialToGUI(IGameOptions gO) {
+        	GalaxySpacing.setMaximizeEmpiresSpacing(initialValue().getOrDefault(GalaxySpacing.DEFAULT_MAXIMIZE_EMPIRES_SPACING));
         }
         @Override
         public void initComments() {
@@ -74,16 +82,24 @@ public class Group_BrokenRegistry extends AbstractGroup <IGameOptions> {
         // Overrider
         //
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return String.valueOf(GalaxySpacing.getPreferedStarsPerEmpire());
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return String.valueOf(GalaxySpacing.getPreferedStarsPerEmpire());
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
         	GalaxySpacing.setPreferedStarsPerEmpire(getIntegerOption(userOption));
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-        	GalaxySpacing.setPreferedStarsPerEmpire(firstValue().getOrDefault(GalaxySpacing.DEFAULT_PREFERED_STARS_PER_EMPIRE));
+        public void putInitialToGUI(IGameOptions gO) {
+        	GalaxySpacing.setPreferedStarsPerEmpire(initialValue().getOrDefault(GalaxySpacing.DEFAULT_PREFERED_STARS_PER_EMPIRE));
         }
         @Override
         public void initComments() {}
@@ -107,16 +123,24 @@ public class Group_BrokenRegistry extends AbstractGroup <IGameOptions> {
         // Overrider
         //
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return String.valueOf(GalaxySpacing.getMinStarsPerEmpire());
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return String.valueOf(GalaxySpacing.getMinStarsPerEmpire());
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
         	GalaxySpacing.setMinStarsPerEmpire(getIntegerOption(userOption));
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-        	GalaxySpacing.setMinStarsPerEmpire(firstValue().getOrDefault(GalaxySpacing.DEFAULT_MIN_STARS_PER_EMPIRE));
+        public void putInitialToGUI(IGameOptions gO) {
+        	GalaxySpacing.setMinStarsPerEmpire(initialValue().getOrDefault(GalaxySpacing.DEFAULT_MIN_STARS_PER_EMPIRE));
         }
         @Override
         public void initComments() {}
@@ -141,16 +165,24 @@ public class Group_BrokenRegistry extends AbstractGroup <IGameOptions> {
         // Overrider
         //
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return String.valueOf(StarsOptions.getNoPlanetPctMultiplier());
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return String.valueOf(StarsOptions.getNoPlanetPctMultiplier());
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
         	StarsOptions.setNoPlanetPctMultiplier(getIntegerOption(userOption));
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-        	StarsOptions.setNoPlanetPctMultiplier(firstValue().getOrDefault(StarsOptions.NO_PLANET_PCT_MULTIPLIER));
+        public void putInitialToGUI(IGameOptions gO) {
+        	StarsOptions.setNoPlanetPctMultiplier(initialValue().getOrDefault(StarsOptions.NO_PLANET_PCT_MULTIPLIER));
         }
         @Override
         public void initComments() {}

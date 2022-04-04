@@ -1,4 +1,4 @@
-package mod.br.postSetup;
+package mod.br.settings;
 
 import java.util.List;
 
@@ -32,16 +32,24 @@ public class Group_Galaxy extends AbstractGroup <IGameOptions> {
             gO.selectedGalaxySize());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
-        	return gO.selectedPlayerRace();
+        public String getFromGame (IGameOptions gO) {
+        	return gO.selectedGalaxyShape();
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return gO.selectedGalaxyShape();
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
             gO.selectedGalaxyShape(userOption);
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-            gO.selectedGalaxyShape(firstOption());
+        public void putInitialToGUI(IGameOptions gO) {
+            gO.selectedGalaxyShape(initialOption());
         }
         @Override
         public void initComments() {
@@ -62,16 +70,24 @@ public class Group_Galaxy extends AbstractGroup <IGameOptions> {
             gO.selectedGalaxySize());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
-        	return gO.selectedPlayerRace();
+        public String getFromGame (IGameOptions gO) {
+        	return gO.selectedGalaxySize();
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return gO.selectedGalaxySize();
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
             gO.selectedGalaxySize(userOption);
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-            gO.selectedGalaxySize(firstOption());
+        public void putInitialToGUI(IGameOptions gO) {
+            gO.selectedGalaxySize(initialOption());
         }
         @Override
         public void initComments() {}
@@ -87,16 +103,24 @@ public class Group_Galaxy extends AbstractGroup <IGameOptions> {
             gO.selectedGameDifficulty());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
-        	return gO.selectedPlayerRace();
+        public String getFromGame (IGameOptions gO) {
+        	return gO.selectedGameDifficulty();
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return gO.selectedGameDifficulty();
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
             gO.selectedGameDifficulty(userOption);
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-            gO.selectedGameDifficulty(firstOption());
+        public void putInitialToGUI(IGameOptions gO) {
+            gO.selectedGameDifficulty(initialOption());
         }
         @Override
         public void initComments() {}
@@ -112,16 +136,24 @@ public class Group_Galaxy extends AbstractGroup <IGameOptions> {
             gO.selectedOpponentAIOption());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
-        	return gO.selectedPlayerRace();
+        public String getFromGame (IGameOptions gO) {
+        	return gO.selectedOpponentAIOption();
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return gO.selectedOpponentAIOption();
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
             gO.selectedOpponentAIOption(userOption);
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-            gO.selectedOpponentAIOption(firstOption());
+        public void putInitialToGUI(IGameOptions gO) {
+            gO.selectedOpponentAIOption(initialOption());
         }
         @Override
         public void initComments() {}
@@ -137,11 +169,19 @@ public class Group_Galaxy extends AbstractGroup <IGameOptions> {
             gO.selectedNumberOpponents());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
-        	return gO.selectedPlayerRace();
+        public String getFromGame (IGameOptions gO) {
+        	return Integer.toString(gO.selectedNumberOpponents());
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return Integer.toString(gO.selectedNumberOpponents());
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
         	// the limits may have changed from previous settings
             int min = 0;
             int max = gO.maximumOpponentsOptions();
@@ -150,11 +190,10 @@ public class Group_Galaxy extends AbstractGroup <IGameOptions> {
                 Math.min(max, getIntegerOption(userOption)));
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-            gO.selectedNumberOpponents(firstValue().toInteger());
+        public void putInitialToGUI(IGameOptions gO) {
+            gO.selectedNumberOpponents(initialValue().toInteger());
         }
         @Override
         public void initComments() {}
     }
-
 }

@@ -1,4 +1,4 @@
-package mod.br.postSetup;
+package mod.br.settings;
 
 import java.util.List;
 
@@ -33,15 +33,23 @@ public class Group_Governor extends AbstractGroup <IGameOptions> {
             gO.selectedGalaxySize());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
-        	return gO.selectedPlayerRace();
+        public String getFromGame (IGameOptions gO) {
+        	return gO.selectedGalaxyShape();
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return gO.selectedGalaxyShape();
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-            gO.selectedGalaxyShape(firstOption());
+        public void putToGUI(IGameOptions gO, String userOption) {
+        }
+        @Override
+        public void putInitialToGUI(IGameOptions gO) {
+            gO.selectedGalaxyShape(initialOption());
         }
         @Override
         public void initComments() {
@@ -62,16 +70,24 @@ public class Group_Governor extends AbstractGroup <IGameOptions> {
             gO.selectedGalaxySize());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
-        	return gO.selectedPlayerRace();
+        public String getFromGame (IGameOptions gO) {
+        	return gO.selectedGalaxyShape();
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+        @Override
+        public String getFromUI (IGameOptions gO) {
+        	return gO.selectedGalaxyShape();
+        }
+    	@Override
+        public void putToGUI(IGameOptions gO, String userOption) {
             gO.selectedGalaxyShape(userOption);
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-            gO.selectedGalaxyShape(firstOption());
+        public void putInitialToGUI(IGameOptions gO) {
+            gO.selectedGalaxyShape(initialOption());
         }
         @Override
         public void initComments() {
@@ -92,16 +108,24 @@ public class Group_Governor extends AbstractGroup <IGameOptions> {
             gO.selectedGameDifficulty());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
-        	return gO.selectedPlayerRace();
+        public String getFromGame (IGameOptions gO) {
+        	return gO.selectedGameDifficulty();
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return gO.selectedGameDifficulty();
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
             gO.selectedGameDifficulty(userOption);
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-            gO.selectedGameDifficulty(firstOption());
+        public void putInitialToGUI(IGameOptions gO) {
+            gO.selectedGameDifficulty(initialOption());
         }
         @Override
         public void initComments() {}
@@ -117,16 +141,24 @@ public class Group_Governor extends AbstractGroup <IGameOptions> {
             gO.selectedOpponentAIOption());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
-        	return gO.selectedPlayerRace();
+        public String getFromGame (IGameOptions gO) {
+        	return gO.selectedOpponentAIOption();
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }    
+    	@Override
+        public String getFromUI (IGameOptions gO) {
+        	return gO.selectedOpponentAIOption();
+        }
+        @Override
+        public void putToGUI(IGameOptions gO, String userOption) {
             gO.selectedOpponentAIOption(userOption);
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-            gO.selectedOpponentAIOption(firstOption());
+        public void putInitialToGUI(IGameOptions gO) {
+            gO.selectedOpponentAIOption(initialOption());
         }
         @Override
         public void initComments() {}

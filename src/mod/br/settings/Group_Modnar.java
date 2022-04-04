@@ -1,4 +1,4 @@
-package mod.br.postSetup;
+package mod.br.settings;
 
 import java.util.List;
 
@@ -36,16 +36,24 @@ public class Group_Modnar extends AbstractGroup <IGameOptions> {
             UserPreferences.alwaysStarGates());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return CfgField.toYesNoString(UserPreferences.alwaysStarGates());
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
-//            gO.selectedPlayerRace(userOption);
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }        
+        @Override
+        public String getFromUI (IGameOptions gO) {
+        	return CfgField.toYesNoString(UserPreferences.alwaysStarGates());
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-//            gO.selectedPlayerRace(initialOption());
+        public void putToGUI(IGameOptions gO, String userOption) {
+//            gO.(userOption);
+        }
+        @Override
+        public void putInitialToGUI(IGameOptions gO) {
+//            gO.(initialOption());
         }
         @Override
         public void initComments() {
@@ -65,16 +73,24 @@ public class Group_Modnar extends AbstractGroup <IGameOptions> {
             UserPreferences.alwaysThorium());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return CfgField.toYesNoString(UserPreferences.alwaysThorium());
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
-//            gO.selectedPlayerRace(userOption);
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }        
+        @Override
+        public String getFromUI (IGameOptions gO) {
+        	return CfgField.toYesNoString(UserPreferences.alwaysThorium());
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-//            gO.selectedPlayerRace(initialOption());
+        public void putToGUI(IGameOptions gO, String userOption) {
+//            gO.(userOption);
+        }
+        @Override
+        public void putInitialToGUI(IGameOptions gO) {
+//            gO.(initialOption());
         }
         @Override
         public void initComments() {}
@@ -89,16 +105,24 @@ public class Group_Modnar extends AbstractGroup <IGameOptions> {
             UserPreferences.challengeMode());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return CfgField.toYesNoString(UserPreferences.challengeMode());
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
-//            gO.selectedPlayerRace(userOption);
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }        
+        @Override
+        public String getFromUI (IGameOptions gO) {
+        	return CfgField.toYesNoString(UserPreferences.challengeMode());
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-//            gO.selectedPlayerRace(initialOption());
+        public void putToGUI(IGameOptions gO, String userOption) {
+//            gO.(userOption);
+        }
+        @Override
+        public void putInitialToGUI(IGameOptions gO) {
+//            gO.(initialOption());
         }
         @Override
         public void initComments() {}
@@ -113,16 +137,24 @@ public class Group_Modnar extends AbstractGroup <IGameOptions> {
             UserPreferences.battleScout());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return CfgField.toYesNoString(UserPreferences.battleScout());
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
-//            gO.selectedPlayerRace(userOption);
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }        
+        @Override
+        public String getFromUI (IGameOptions gO) {
+        	return CfgField.toYesNoString(UserPreferences.battleScout());
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-//            gO.selectedPlayerRace(initialOption());
+        public void putToGUI(IGameOptions gO, String userOption) {
+//            gO.(userOption);
+        }
+        @Override
+        public void putInitialToGUI(IGameOptions gO) {
+//            gO.(initialOption());
         }
         @Override
         public void initComments() {}
@@ -143,16 +175,24 @@ public class Group_Modnar extends AbstractGroup <IGameOptions> {
             UserPreferences.companionWorlds());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return String.valueOf(UserPreferences.companionWorlds());
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
-//            gO.selectedPlayerRace(userOption);
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }        
+        @Override
+        public String getFromUI (IGameOptions gO) {
+        	return String.valueOf(UserPreferences.companionWorlds());
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-//            gO.selectedPlayerRace(initialOption());
+        public void putToGUI(IGameOptions gO, String userOption) {
+//            gO.(userOption);
+        }
+        @Override
+        public void putInitialToGUI(IGameOptions gO) {
+//            gO.(initialOption());
         }
         @Override
         public void initComments() {}
@@ -167,16 +207,24 @@ public class Group_Modnar extends AbstractGroup <IGameOptions> {
             UserPreferences.randomTechStart());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return CfgField.toYesNoString(UserPreferences.randomTechStart());
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
-//            gO.selectedPlayerRace(userOption);
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }        
+        @Override
+        public String getFromUI (IGameOptions gO) {
+        	return CfgField.toYesNoString(UserPreferences.randomTechStart());
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-//            gO.selectedPlayerRace(initialOption());
+        public void putToGUI(IGameOptions gO, String userOption) {
+//            gO.(userOption);
+        }
+        @Override
+        public void putInitialToGUI(IGameOptions gO) {
+//            gO.(initialOption());
         }
         @Override
         public void initComments() {}
@@ -197,16 +245,24 @@ public class Group_Modnar extends AbstractGroup <IGameOptions> {
             UserPreferences.customDifficulty());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return String.valueOf(UserPreferences.customDifficulty());
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
-//            gO.selectedPlayerRace(userOption);
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }        
+        @Override
+        public String getFromUI (IGameOptions gO) {
+        	return String.valueOf(UserPreferences.customDifficulty());
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-//            gO.selectedPlayerRace(initialOption());
+        public void putToGUI(IGameOptions gO, String userOption) {
+//            gO.(userOption);
+        }
+        @Override
+        public void putInitialToGUI(IGameOptions gO) {
+//            gO.(initialOption());
         }
         @Override
         public void initComments() {}
@@ -221,16 +277,24 @@ public class Group_Modnar extends AbstractGroup <IGameOptions> {
             UserPreferences.dynamicDifficulty());
         }
         @Override
-        public String getSelectedOption (IGameOptions gO) {
+        public String getFromGame (IGameOptions gO) {
         	return CfgField.toYesNoString(UserPreferences.dynamicDifficulty());
         }
         @Override
-        public void setSelectedOption(IGameOptions gO, String userOption) {
-//            gO.selectedPlayerRace(userOption);
+        public void putToGame(IGameOptions gO, String userOption) {
+
+        }        
+        @Override
+        public String getFromUI (IGameOptions gO) {
+        	return CfgField.toYesNoString(UserPreferences.dynamicDifficulty());
         }
         @Override
-        public void setSelectedOptionToInitial(IGameOptions gO) {
-//            gO.selectedPlayerRace(initialOption());
+        public void putToGUI(IGameOptions gO, String userOption) {
+//            gO.(userOption);
+        }
+        @Override
+        public void putInitialToGUI(IGameOptions gO) {
+//            gO.(initialOption());
         }
         @Override
         public void initComments() {}

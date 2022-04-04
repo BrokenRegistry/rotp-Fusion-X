@@ -44,6 +44,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 import rotp.Rotp;
+import rotp.mod.br.settings.Settings;
 import rotp.model.empires.Empire;
 import rotp.model.empires.EmpireView;
 import rotp.model.empires.EspionageMission;
@@ -807,9 +808,11 @@ public final class GameSession implements Base, Serializable {
     private void loadPreviousSession(GameSession gs, boolean startUp) {
         stopCurrentGame();
         instance = gs;
-        // BR: Change game paramete5rs here!
-        // TODO
-        //
+        
+        // BR: Save the last loaded game parameters
+        Settings.saveGameOptionsToFile(instance.options);
+        // #BR:
+
         startExecutors();
         RotPUI.instance().mainUI().checkMapInitialized();
         if (!startUp) {

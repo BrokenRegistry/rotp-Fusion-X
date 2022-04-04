@@ -70,11 +70,24 @@ public abstract class AbstractCfgFile <T> {
    	 * Update with last options values
    	 * Save the new configuration file
    	 */
-    public void saveToUserConfig(T options) {
+    public void saveGuiToFile(T options) {
     	loadConfigurationFile(); // in case the user changed load or save actions
         // Remove the Local Enable parameter where possibly wrongly added 
         	settingUserAction.removeLocalEnable();
-    	updateLastValue(options);
+    	updateGuiValue(options);
+    	doUserUpdateActions();
+        saveConfigFile();
+	}
+    /*
+   	 * Load the configuration file to update the Action
+   	 * Update with last options values
+   	 * Save the new configuration file
+   	 */
+    public void saveGameToFile(T options) {
+    	loadConfigurationFile(); // in case the user changed load or save actions
+        // Remove the Local Enable parameter where possibly wrongly added 
+        	settingUserAction.removeLocalEnable();
+    	updateGameValue(options);
     	doUserUpdateActions();
         saveConfigFile();
 	}
@@ -247,27 +260,47 @@ public abstract class AbstractCfgFile <T> {
 		for (String userKey : keySet) {
 			userKey = userKey.toUpperCase();
 			String action = settingUserAction.getCfgLine(userKey).value().toKey();
-			if (action.contains("SAVE")) {
+			if (action.contains("UI TO FILE")) {
 				for (AbstractGroup<T> group : groupMap.values()) {
-		    		group.actionSave(userKey);
+		    		group.actionGuiToFile(userKey);
 				}
 			}
-			if (action.contains("UPDATE")) {
+			if (action.contains("GAME TO FILE")) {
 				for (AbstractGroup<T> group : groupMap.values()) {
-		    		group.actionUpdate(userKey);
+		    		group.actionGameToFile(userKey);
 				}
 			}
-			if (action.contains("DEFAULT")) {
+			if (action.contains("INITIAL TO FILE")) {
 				for (AbstractGroup<T> group : groupMap.values()) {
-		    		group.actionFirst(userKey);
+		    		group.actionInitialToFile(userKey);
+				}
+			}
+			if (action.contains("UI UPDATE FILE")) {
+				for (AbstractGroup<T> group : groupMap.values()) {
+		    		group.actionGuiUpdateFile(userKey);
+				}
+			}
+			if (action.contains("GAME UPDATE FILE")) {
+				for (AbstractGroup<T> group : groupMap.values()) {
+		    		group.actionGameUpdateFile(userKey);
+				}
+			}
+			if (action.contains("INITIAL UPDATE FILE")) {
+				for (AbstractGroup<T> group : groupMap.values()) {
+		    		group.actionInitialUpdateFile(userKey);
 				}
 			}
 		}
 		saveConfigFile();
 	}
-    void updateLastValue(T options) {
+    void updateGuiValue(T options) {
     	for (AbstractGroup<T> group : groupMap.values()) {
-    		group.actionGetLastValue(options);
+    		group.actionGetGuiValue(options);
+		}
+    }
+    void updateGameValue(T options) {
+    	for (AbstractGroup<T> group : groupMap.values()) {
+    		group.actionGetGameValue(options);
 		}
     }
     // ========================================================================
@@ -281,38 +314,41 @@ public abstract class AbstractCfgFile <T> {
         //
     	protected Setting_USER_ACTION() { super(
 			"USER CONFIG ACTION",
-			List.of("-", "LOAD", "SAVE", "UPDATE", "LOAD AND SAVE", "LOAD AND UPDATE", "SAVE DEFAULT", "UPDATE TO DEFAULT"),
-			"SAVE"
+			List.of("File To UI", "File To Game", 
+					"UI To File", "Game To File", "Initial To File",
+					"UI Update File", "Game Update File", "Initial Update File"),
+			"UI To File"
 			);
     	}
     	protected Setting_USER_ACTION(String Name, List<String> options, String first) {
     		super(Name, options, first);
         }
-  	@Override
-  	public
-      String getSelectedOption(T gO) {
-  		return "-";
-  	}
-  	@Override
-  	public
-  	void setSelectedOption(T gO, String userOption) {
-  	}
-  	@Override
-  	public
-  	void setSelectedOptionToInitial(T gO) {
-  	}
-      @Override
-      public void initComments() {
-  		headComments(new Comment(List.of(
-              "            EXTENDED PLAYER'S SETTINGS",
-              "-------------------------------------------------- ",
-              " ",
-              "---- This is where you add your configuration list ",
-              "---- Multiple LOAD will follow their sequence",
-              " " )));
-  		bottomComments(new Comment(
-              "(---- The last loaded Win)" ));
+    @Override public void initComments() {
+    	headComments(new Comment(List.of(
+            "            EXTENDED PLAYER'S SETTINGS",
+            "-------------------------------------------------- ",
+            " ",
+            "---- This is where you add your configuration list ",
+            "- File To UI          = Load from file and update GUI",
+            "- File To Game        = Load from file and update Game at specific LOAD",
+            "- UI To File          = Get from GUI and Save to file",
+            "- Game To File        = Get from Game and Save to file",
+            "- Initial To File     = Get initial value of GUI and Save to file",
+            "- UI Update File      = Get from GUI and Save to file, if field is not Empty",
+            "- Game Update File    = Get from GUI and Save to file, if field is not Empty",
+            "- Initial Update File = Get initial value of GUI and Save to file, if field is not Empty",
+            "---- Multiple LOAD will follow their sequence",
+            "---- Multiple choices are allowed. ex Load save",
+            " " 
+            )));
+    	bottomComments(new Comment(
+    		"(---- The last loaded Win)" ));
       }
-  }
+	@Override public String getFromGame(T gameObject) { return "-"; }
+	@Override public void   putToGame(T gameObject, String userOption) {}
+   	@Override public String getFromUI(T gO) { return "-"; }
+  	@Override public void   putToGUI(T gO, String userOption) {}
+  	@Override public void   putInitialToGUI(T gO) {}
+ }
 
 }

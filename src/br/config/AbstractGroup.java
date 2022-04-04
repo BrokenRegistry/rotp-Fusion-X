@@ -23,24 +23,44 @@ public abstract class AbstractGroup <T> {
     // ========================================================================
 	// Public and packages Methods
 	//
-    public void actionGetLastValue(T gameObject) {
+    public void actionGetGuiValue(T gameObject) {
     	for (AbstractSetting<T> setting : keySettingMap.values() ) {
-            setting.setLastOption(gameObject);
+            setting.setGuiOption(gameObject);
         }
     }
-    public void actionSave(String userSettingKey) {
+    public void actionGetGameValue(T gameObject) {
     	for (AbstractSetting<T> setting : keySettingMap.values() ) {
-            setting.actionSave(userSettingKey);
+            setting.setGameOption(gameObject);
         }
     }
-    public void actionUpdate(String userSettingKey) {
+    public void actionGuiToFile(String userSettingKey) {
     	for (AbstractSetting<T> setting : keySettingMap.values() ) {
-            setting.actionUpdate(userSettingKey);
+            setting.actionUiToFile(userSettingKey);
         }
     }
-    public void actionFirst(String userSettingKey) {
+    public void actionGameToFile(String userSettingKey) {
     	for (AbstractSetting<T> setting : keySettingMap.values() ) {
-            setting.actionFirst(userSettingKey);
+            setting.actionGameToFile(userSettingKey);
+        }
+    }
+    public void actionInitialToFile(String userSettingKey) {
+    	for (AbstractSetting<T> setting : keySettingMap.values() ) {
+            setting.actionInitialToFile(userSettingKey);
+        }
+    }
+    public void actionGuiUpdateFile(String userSettingKey) {
+    	for (AbstractSetting<T> setting : keySettingMap.values() ) {
+            setting.actionUiUpdateFile(userSettingKey);
+        }
+    }
+    public void actionGameUpdateFile(String userSettingKey) {
+    	for (AbstractSetting<T> setting : keySettingMap.values() ) {
+            setting.actionGameUpdateFile(userSettingKey);
+        }
+    }
+    public void actionInitialUpdateFile(String userSettingKey) {
+    	for (AbstractSetting<T> setting : keySettingMap.values() ) {
+            setting.actionInitialUpdateFile(userSettingKey);
         }
     }
     public LinkedHashSet<String> keyList() {
@@ -82,7 +102,7 @@ public abstract class AbstractGroup <T> {
     }
     public void setGameParametersToFirst(T gameObject) {
         for (AbstractSetting<T> setting : keySettingMap.values() ) {
-            setting.setSelectedOptionToInitial(gameObject);
+            setting.putInitialToGUI(gameObject);
         }
     }
 }
