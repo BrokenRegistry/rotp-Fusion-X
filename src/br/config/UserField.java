@@ -63,7 +63,7 @@ public abstract class UserField{
 	/**
 	 * return Upper Case String of value
 	 */
-	public String toKey() { 
+	public String toTest() { 
 		return value.toUpperCase();
 	}
 	/**
@@ -74,7 +74,6 @@ public abstract class UserField{
 		String result = "";
 		if (value.length() > 0) {
 			String[] elements = value.toLowerCase().split("((?<= )|(?<=_)|(?<=-)|(?<=\\[))");
-//			String[] elements = value.toLowerCase().split("((?<= )|(?<=_)|(?<=-)|(?<=[))");
 			for(String s : elements) {
 				result += s.substring(0, 1).toUpperCase();
 				result += s.substring(1);
@@ -127,19 +126,19 @@ public abstract class UserField{
 	 * check if value as Key == string
 	 */
 	public boolean keyTest(String string) {
-		return toKey().equalsIgnoreCase(string);
+		return toTest().equalsIgnoreCase(string);
 	}
 	/**
 	 * check if is valid member of Set
 	 */
 	public boolean isMemberOf(Set<String> set) {
-		return set.contains(toKey());
+		return set.contains(toTest());
 	}
 	/**
 	 * check if is valid member of List
 	 */
 	public boolean isMemberOf(List<String> list) {
-		return list.contains(toKey());
+		return list.contains(toTest());
 	}
 	// ==================================================
     // Other Methods
@@ -164,7 +163,7 @@ public abstract class UserField{
 	 * Remove the comments and clean
 	 */
 	public void removeComments() {
-		set((" " + value).split(CommentLine.KEY, 2)[0]);
+		set((" " + value).split(CommentLine.COMMENT_KEY, 2)[0]);
 	}
 	// ==================================================
     // Public Static Methods

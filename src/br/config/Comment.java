@@ -25,18 +25,19 @@ public class Comment {
     // Constructors
     //
     public Comment() {
-    	set("");
+    	commentList = new ArrayList<CommentLine>();
+//    	set("");
     }
     public Comment(String newComment) {
     	set(newComment);
     }
-    public Comment(CfgField newComment) {
+    public Comment(Cfg_Entry newComment) {
     	set(newComment);
     }
-    public Comment(List<?> newCommentList) {
-        set(newCommentList);
-    }
-    // --------------------------------------------------------------
+    public Comment(List<String> newComment) {
+    	set(newComment);
+	}
+	// --------------------------------------------------------------
     // Getters and Setters
     //
     /**
@@ -58,29 +59,27 @@ public class Comment {
         return this;
     }
     /**
-  	 * Reset comment with a new List of any object
-  	 * that must have .toString() method
+  	 * Reset comment with a new Cfg_Entry
   	 * Return current object to allow chaining
   	 */
-    Comment set(List<?> newCommentList) {
+    Comment set(Cfg_Entry newComment) {
     	commentList = new ArrayList<CommentLine>();
-    	for (Object comment : newCommentList) {
-    		add(comment.toString());
-    	}
+        add(newComment);
         return this;
     }
+
      /**
   	 * Reset comment with a new List of String
   	 * Return current object to allow chaining
   	 */
-//    Comment set(List<CfgField> newCommentList) {
-//    	commentList = new ArrayList<CommentLine>();
-//    	for (String comment : newCommentList) {
-//    		add(comment);
-//    	}
-//        return this;
-//    }
-   // --------------------------------------------------------------
+    Comment set(List<String> newComment) {
+    	commentList = new ArrayList<CommentLine>();
+    	for (String comment : newComment) {
+    		add(comment);
+    	}
+        return this;		
+	}
+    // --------------------------------------------------------------
     // Public Methods
     //
     public boolean isEmpty() {
@@ -115,6 +114,14 @@ public class Comment {
  	 * Return current object to allow chaining
  	 */
      private Comment add(CfgField newComment) {
+         commentList.add(new CommentLine(newComment));
+         return this;
+     }
+     /**
+ 	 * Add new CfgField to the list
+ 	 * Return current object to allow chaining
+ 	 */
+     private Comment add(Cfg_Entry newComment) {
          commentList.add(new CommentLine(newComment));
          return this;
      }

@@ -1,3 +1,18 @@
+
+/*
+ * Licensed under the GNU General Public License, Version 3 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package br.config;
 
 import java.io.BufferedReader;
@@ -12,9 +27,7 @@ import java.io.PrintWriter;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-
 import rotp.mod.br.settings.Settings;
-import rotp.model.game.GameSession;
 
 public abstract class AbstractCfgFile <T, U> {
     // ------------------------------------------------------------------------
@@ -179,7 +192,7 @@ public abstract class AbstractCfgFile <T, U> {
     	LinkedHashSet<String> keySet = new LinkedHashSet<String>();
     	for (CfgLine userCfg : settingUserAction.getSettingMapIterable()) {
     		if (userCfg.value().isLoadEnabled()) {
-    			keySet.add(userCfg.key().toKey());
+    			keySet.add(userCfg.key().toTest());
     		}
     	}
     	return keySet;
@@ -188,7 +201,7 @@ public abstract class AbstractCfgFile <T, U> {
     	LinkedHashSet<String> keySet = new LinkedHashSet<String>();
     	for (CfgLine userCfg : settingUserAction.getSettingMapIterable()) {
     		if (userCfg.value().isGameChangingEnabled()) {
-    			keySet.add(userCfg.key().toKey());
+    			keySet.add(userCfg.key().toTest());
     		}
     	}
     	return keySet;
@@ -228,7 +241,7 @@ public abstract class AbstractCfgFile <T, U> {
 		if (configLine.key().isBlank()) return;
         // Test for New Setting Section
 		if (configLine.key().isSectionKey() ) {
-			currentSettingKey = configLine.value().toKey();
+			currentSettingKey = configLine.value().toTest();
 			if (settingUserAction.settingKey().keyTest(currentSettingKey)) {
 				currentSetting = settingUserAction;
 				currentGroup = null;
@@ -280,7 +293,7 @@ public abstract class AbstractCfgFile <T, U> {
     	LinkedHashSet<String> keySet = settingUserAction.getUserSettingKeySet();
 		for (String userKey : keySet) {
 			userKey = userKey.toUpperCase();
-			String action = settingUserAction.getCfgLine(userKey).value().toKey();
+			String action = settingUserAction.getCfgLine(userKey).value().toTest();
 			if (action.contains("UI TO FILE")) {
 				for (AbstractGroup<T, U> group : groupMap.values()) {
 		    		group.actionGuiToFile(userKey);

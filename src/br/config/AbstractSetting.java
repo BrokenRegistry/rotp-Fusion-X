@@ -1,3 +1,18 @@
+
+/*
+ * Licensed under the GNU General Public License, Version 3 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package br.config;
 
 import java.util.ArrayList;
@@ -175,7 +190,7 @@ public abstract class AbstractSetting <T, U> {
         		int rnd = CfgField.getIntegerRandom(rndParam);
         		return settingOptions.get(rnd);
         	}
-        	return labelToOptionMap.getOrDefault(cfgValue.toKey(), OnWrong);
+        	return labelToOptionMap.getOrDefault(cfgValue.toTest(), OnWrong);
         }
         return OnWrong;
     }
@@ -304,7 +319,7 @@ public abstract class AbstractSetting <T, U> {
 			setLocalEnable(cfgLine.value()); // To force a valid Value
 			return;
 		}
-		settingMap.put(cfgLine.key().toKey(), cfgLine);
+		settingMap.put(cfgLine.key().toTest(), cfgLine);
 	}
 	private void setLocalEnable(CfgField value) {
 		value.removeComments();

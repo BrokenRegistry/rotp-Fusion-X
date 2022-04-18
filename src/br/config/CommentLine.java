@@ -15,10 +15,7 @@
 
 package br.config;
 
-public class CommentLine {
-    public static final String KEY     = "#";
-    private static final String SPACER  = " ";
-    private static final String KEY_PRT = KEY + SPACER;
+public class CommentLine implements I_Prt, I_Comment{
     private String comment = "";
 
     // ------------------------------------------------------------------------
@@ -30,12 +27,15 @@ public class CommentLine {
     CommentLine(CfgField newComment) {
         set(newComment);
     }
+    CommentLine(Cfg_Entry newComment) {
+        set(newComment);
+    }
     // ------------------------------------------------------------------------
     // Getters and Setters
     //
     /**
 	 * set a new String value
-	 * Return current object to allow chaining
+	 * @return current object to allow chaining
 	 */
     CommentLine set(String newComment) {
         comment = CfgField.neverNull(newComment);
@@ -43,9 +43,17 @@ public class CommentLine {
     }
     /**
 	 * set a new CfgField value
-	 * Return current object to allow chaining
+	 * @return current object to allow chaining
 	 */
     CommentLine set(CfgField newComment) {
+        comment = newComment.toString();
+        return this;
+    }
+    /**
+	 * set a new Cfg_Entry value
+	 * @return current object to allow chaining
+	 */
+    CommentLine set(Cfg_Entry newComment) {
         comment = newComment.toString();
         return this;
     }
@@ -58,31 +66,111 @@ public class CommentLine {
     boolean isEmpty() {
         return comment == null || comment.isEmpty();
     }
-    /**
-	 * Return a String ready to be printed
-	 */
-    public String toPrint() {
-        return KEY_PRT + comment;
-    }
-    // ------------------------------------------------------------------------
-    // Overrider
+   // ------------------------------------------------------------------------
+    // Overriders
     //
-    public String toString() {
-        return toPrint();
+    /**
+     * get only the value as {@code String}
+	 * @return the raw {@code String} value
+	 */
+    @Override
+     public String toString() {
+        return comment;
     }    
+    /**
+     * Format the value to be Printed
+	 * @return the {@code String} formated element
+	 */
+    @Override
+    public String toPrint() {
+        return I_Comment.toComment(CfgField.neverNull(comment));
+    }
+    /**
+     * Format the value as Comment
+	 * @return the {@code String} formated element
+	 */
+    @Override
+    public String toComment() {
+        return I_Comment.toComment(comment);
+    }
     // ------------------------------------------------------------------------
     // Package Static Methods
     //
     /**
 	 * Check if the string is a comment
 	 */
-	static boolean isComment(String line) {
-	    return CfgField.clean(line).startsWith(KEY);
+	public static boolean isComment(String line) {
+	    return Cfg_Util.clean(line).startsWith(COMMENT_KEY);
     }
 	/**
 	 * Check if the CfgField is a comment
 	 */
-	static boolean isComment(CfgField line) {
-	    return line.toKey().startsWith(KEY);
+	public static boolean isComment(CfgField line) {
+	    return line.toTest().startsWith(COMMENT_KEY);
     }
+	/**
+	 * Check if the CfgEntry is a comment
+	 */
+	public static boolean isComment(Cfg_Entry line) {
+	    return line.toTest().startsWith(COMMENT_KEY);
+    }
+    /**
+	 * Check if the string contains a comment
+	 */
+	public static boolean hasComment(String line) {
+	    return Cfg_Util.clean(line).contains(COMMENT_KEY);
+    }
+	/**
+	 * Check if the CfgField contains a comment
+	 */
+	public static boolean hasComment(Cfg_Entry line) {
+	    return line.toTest().contains(COMMENT_KEY);
+    }
+	/**
+	 * Return a string without the comments
+	 */
+	public static String removeComment(String entry) {
+		return Cfg_Util.clean((" " + entry).split(CommentLine.COMMENT_KEY, 2)[0]);
+	}
+	/**
+	 * Split and Return the comment while cleaning it from CfgEntry
+	 */
+	public static CommentLine splitComment(Cfg_Entry entry) {
+		if (entry == null || entry.isBlank()) {
+			return null;
+		}
+		if (isComment(entry)) {
+			String result = Cfg_Util.clean(entry.get().split(CommentLine.COMMENT_KEY, 2)[1]);
+			entry.set("");
+			return new CommentLine(result);
+		}
+		if (hasComment(entry)) {
+			String[] s = (" " + entry.toString()).split(CommentLine.COMMENT_KEY, 2);
+			entry.set(s[0]);
+			return new CommentLine(Cfg_Util.clean(s[1]));
+		}
+		// No comment!
+		return null;
+	}
+	/**
+	 * Split and Return both the comment and the content before
+	 */
+	public static String[] splitComment(String entry) {
+		if (entry == null || entry.isBlank()) {
+			return new String[] {"", ""};
+		}
+		if (isComment(entry)) {
+			return new String[] {"", Cfg_Util.clean(entry.split(CommentLine.COMMENT_KEY, 2)[1])};
+		}
+		if (hasComment(entry)) {
+			String[] s = (" " + entry.toString()).split(CommentLine.COMMENT_KEY, 2);
+			s[0] = Cfg_Util.clean(s[0]);
+			s[1] = Cfg_Util.clean(s[1]);
+			return s;
+		}
+		// No comment!
+		return new String[] {Cfg_Util.clean(entry), ""};
+
+	}
+
 }

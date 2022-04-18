@@ -213,7 +213,7 @@ public class CfgField extends UserField{
 	 * check if it contains of RANDOM_ID
 	 */
 	public boolean isRandom() {
-		return toKey().contains(RANDOM_ID);
+		return toTest().contains(RANDOM_ID);
 	}
 	/**
 	 * check if is member of ENABLE_LOAD_LIST
@@ -222,7 +222,7 @@ public class CfgField extends UserField{
 		return isMemberOf(ENABLE_LOAD_LIST);
 	}
 	/**
-	 * check if is member of ENABLE_LOAD_LIST
+	 * check if is member of ENABLE_GAME_CHANGE_LIST
 	 */
 	public boolean isGameChangingEnabled() {
 		return isMemberOf(ENABLE_GAME_CHANGE_LIST);
@@ -246,7 +246,7 @@ public class CfgField extends UserField{
 	 * Extract the parameters following head as String
 	 */
 	public String extractParametersString(String head) {
-		return toKey().replace(head, "").strip();
+		return toTest().replace(head, "").strip();
 	}
 	/**
 	 * Extract the parameters following head as String
@@ -290,8 +290,8 @@ public class CfgField extends UserField{
 	 /**
 	 * return Upper Case of stripped string, never null
 	 */
-	public static String toKey(String string) {
-		return new CfgField(string).toKey();
+	public static String toTest(String string) {
+		return new CfgField(string).toTest();
 	}
 	/**
 	 * Strip and return every word capitalized, never null

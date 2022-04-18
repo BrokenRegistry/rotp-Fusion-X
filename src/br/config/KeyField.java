@@ -40,13 +40,13 @@ public class KeyField extends UserField{
 	 * check if it contains of LABEL_OF_SECTION_KEY
 	 */
  	public boolean isSectionKey() {
-		return toKey().contains(LABEL_OF_SECTION_KEY);
+		return toTest().contains(LABEL_OF_SECTION_KEY);
 	}
 	/**
 	 * check if it contains of LABEL_OF_ENABLE_SECTION_KEY
 	 */
  	public boolean isLocalEnableKey() {
-		return toKey().contains(LABEL_OF_ENABLE_SECTION_KEY);
+		return toTest().contains(LABEL_OF_ENABLE_SECTION_KEY);
 	}
 
 }

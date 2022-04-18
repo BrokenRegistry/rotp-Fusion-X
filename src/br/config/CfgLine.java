@@ -22,7 +22,8 @@ public class CfgLine {
     // ------------------------------------------------------------------------
 	// Constant Properties
     //
-    static final String BASE_KEY_FORMAT     = "%-20s";
+    static final String BASE_KEY_FORMAT     
+    					= "%-" + Cfg_Util.LINE_SPLIT_POSITION.toString() + "s";
 	static final String KEY_VALUE_SEPARATOR = ":";
 	static final String VALUE_SPACER        = " ";
 	static final String KEY_VALUE_SEPARATOR_KEY_SPACER = KEY_VALUE_SEPARATOR + VALUE_SPACER;
