@@ -1,3 +1,18 @@
+
+/*
+ * Licensed under the GNU General Public License, Version 3 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package test.java.TestUtil;
 
 import java.util.EnumMap;
@@ -11,27 +26,6 @@ public class Show {
 	{Error, Warning, Final, Result, Start, Comment, Info}	
 	public static final TestLevel DEFAULT_TEST_LEVEL_SHOWN = TestLevel.ALL;
 	public static Map<InfoLevel, TestLevel> infoMap = initInfoMapDefault ();
-	public static Boolean finalResult = true;
-	
-	public static void initFinalResult() {
-		finalResult = true;
-	}
-	public static void updateFinalResult(Boolean result) {
-		finalResult &= result == null? true : result;
-	}
-	public static void showFinalResult() {
-		System.out.println("========================================");
-		System.out.println( formatInfoLevel("Result")
-							+ formatTestLevel("FINAL")
-							+ statusToString(finalResult));
-	}
-	public static void showFinalResult(String testName) {
-		System.out.println("========================================");
-		System.out.println( formatInfoLevel("Result")
-							+ formatTestLevel("FINAL")
-							+ testName + " = "
-							+ statusToString(finalResult));
-	}
 
 	/**
 	 * Display {@code InfoLevel} message with {@code TestLevel} privilege 
@@ -78,7 +72,7 @@ public class Show {
 		if (verbose.compareTo(testLevel) >= 0) {
 			System.out.println( formatInfoLevel(infoLevel) 
 								+ formatTestLevel(testLevel)
-								+ testName + " = "
+								+ formatTestName(testName)
 								+ statusToString(status));
 		}
 	}
@@ -108,7 +102,7 @@ public class Show {
 		Map<InfoLevel, TestLevel> newMap = new EnumMap<>(InfoLevel.class);
 		newMap.put(InfoLevel.Error,   TestLevel.ALL);
 		newMap.put(InfoLevel.Warning, TestLevel.ALL);
-		newMap.put(InfoLevel.Final,   TestLevel.FINAL);
+		newMap.put(InfoLevel.Final,   TestLevel.ALL);
 		newMap.put(InfoLevel.Result,  TestLevel.METHOD);
 		newMap.put(InfoLevel.Start,   TestLevel.CLASS);
 		newMap.put(InfoLevel.Comment, TestLevel.ALL);
@@ -119,7 +113,7 @@ public class Show {
 		Map<InfoLevel, TestLevel> newMap = new EnumMap<>(InfoLevel.class);
 		newMap.put(InfoLevel.Error,   TestLevel.ALL);
 		newMap.put(InfoLevel.Warning, TestLevel.ALL);
-		newMap.put(InfoLevel.Final,   TestLevel.FINAL);
+		newMap.put(InfoLevel.Final,   TestLevel.ALL);
 		newMap.put(InfoLevel.Result,  TestLevel.CLASS);
 		newMap.put(InfoLevel.Start,   TestLevel.PACKAGE);
 		newMap.put(InfoLevel.Comment, TestLevel.SILENT);
@@ -148,6 +142,9 @@ public class Show {
 	}
 	private static String formatTestLevel(Object testLevel) {
 		return String.format("%-9s", testLevel.toString() + ":");
+	}
+	private static String formatTestName(Object testName) {
+		return String.format("%-16s", testName.toString() + " = ");
 	}
 	// Forbidden constructor
 	private Show() {}
