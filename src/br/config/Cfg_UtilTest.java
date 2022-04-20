@@ -1,9 +1,24 @@
+
 /**
- * 
+ * Licensed under the GNU General Public License, Version 3 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package br.config;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import static br.config.Cfg_Util.*;
 
@@ -12,33 +27,106 @@ import static br.config.Cfg_Util.*;
  *
  */
 class Cfg_UtilTest {
-
 	@Test
-	void testForIntegerBoundariesString() {
+	void template() {
 		assertEquals(true, testIntegerBoundaries("88", 44, 100)
 				, "should have been: true");
-		assertEquals(false, testIntegerBoundaries("88", 44, 66)
-				, "should have been: false");
-		assertEquals(false, testIntegerBoundaries("88", 100, 200)
-				, "should have been: false");
-		assertEquals(false, testIntegerBoundaries("x", 100, 200)
-				, "should have been: false");
+	}
+    // ==================================================
+    // Generic Converters with default values
+    //
+	@Test
+	void getOrDefault_Byte() {
+		assertEquals((byte)-88, getOrDefault("-88", (byte)88)
+				, "This String should have been read correctly");
+		assertEquals((byte)88, getOrDefault("XXX", (byte)88)
+				, "The default value should have been returned");
+		assertEquals((byte)12, getOrDefault("12.3456789", (byte)88)
+				, "The rounded value should have been returned");
+		assertEquals((byte)88, getOrDefault("123456e122", (byte)88)
+				, "The default value should have been returned");
 	}
 	@Test
-	void testForIntegerString() {
-		assertEquals(true, testForInteger("88")
-				, "should have been: true");
-		assertEquals(true, testForInteger("88.8")
-				, "should have been: true");
-		assertEquals(false, testForInteger("x")
-				, "should have been: false");
-		assertEquals(false, testForInteger(Long.toString(Long.MAX_VALUE / 2))
-				, "should have been: false");
-		assertEquals(false, testForInteger("1e21")
-				, "should have been: false");
+	void getOrDefault_Short() {
+		assertEquals((short)88, getOrDefault("123456789", (short)88)
+				, "The default value should have been returned");
+		assertEquals((short)88, getOrDefault("XXX", (short)88)
+				, "The default value should have been returned");
+		assertEquals((short)12346, getOrDefault("12345.6789", (short)88)
+				, "The rounded value should have been returned");
+		assertEquals((short)88, getOrDefault("123456e122", (short)88)
+				, "The default value should have been returned");
 	}
 	@Test
-	void neverNullObject() {
+	void getOrDefault_Integer() {
+		assertEquals(123456789, getOrDefault("123456789", 88)
+				, "This String should have been read correctly");
+		assertEquals(88, getOrDefault("XXX", 88)
+				, "The default value should have been returned");
+		assertEquals(123457, getOrDefault("123456.789", 88)
+				, "The rounded value should have been returned");
+		assertEquals(88, getOrDefault("123456e122", 88)
+				, "The default value should have been returned");
+	}
+	@Test
+	void getOrDefault_Long() {
+		// pure Long reading
+		assertEquals(123456789L, getOrDefault("123456789", 88L)
+				, "This String should have been read correctly");
+		assertEquals(88L, getOrDefault("XXX", 88L)
+				, "The default value should have been returned");
+		// thru Double reading
+		assertEquals(123457, getOrDefault("123456.789", 88L)
+				, "The rounded value should have been returned");
+		assertEquals(88L, getOrDefault("123456e122", 88L)
+				, "The default value should have been returned");
+	}
+	@Test
+	void getOrDefault_Double() {
+		assertEquals(123456789.0, getOrDefault("123456789", 88.8)
+				, "This String should have been read correctly");
+		assertEquals(88.8, getOrDefault("2XXX", 88.8)
+				, "The default value should have been returned");
+		assertEquals(Double.NaN, getOrDefault("NaN", 88.8)
+				, "This String should have been read correctly");
+	}	
+	@Test
+	void getOrDefault_Boolean() {
+		assertEquals(true, getOrDefault("yes", false)
+				, "should have been true");
+		assertEquals(false, getOrDefault("no", true)
+				, "should have been false");
+		assertEquals(true, getOrDefault("True", false)
+				, "should have been true");
+		assertEquals(false, getOrDefault("False", true)
+				, "should have been false");
+		assertEquals(true, getOrDefault("x", true)
+				, "should have been true");
+		assertEquals(false, getOrDefault("x", false)
+				, "should have been false");
+		assertEquals((Boolean)null, getOrDefault("x", (Boolean)null)
+				, "should have been null");
+		assertEquals(true, getOrDefault((String)null, true)
+				, "should have been true");
+		assertEquals(false, getOrDefault((String)null, false)
+				, "should have been false");
+	}
+	@Test
+	void getOrDefault_String() {
+		assertEquals("Source", getOrDefault("Source", "Good")
+				, "should have been Source");
+		assertEquals("Good", getOrDefault("", "Good")
+				, "should have been Good");
+		assertEquals("Good", getOrDefault("  ", "Good")
+				, "should have been Source");
+		assertEquals("Good", getOrDefault((String)null, "Good")
+				, "should have been Source");
+	}
+	// ==================================================
+    // Other String Methods
+    //
+	@Test
+	void neverNull_Object() {
 		assertEquals("Source", neverNull("Source")
 				, "should have been: Source");
 		assertEquals("  source   ", neverNull("  source   ")
@@ -51,7 +139,7 @@ class Cfg_UtilTest {
 				, "should have been: \"Source\""); // Cfg_Entry clean the string
 	}
 	@Test
-	void cleanObject() {
+	void clean_Object() {
 		assertEquals("Source", clean("Source")
 				, "should have been: Source");
 		assertEquals("source", clean("  source   ")
@@ -64,7 +152,7 @@ class Cfg_UtilTest {
 				, "should have been: Source");		
 	}
 	@Test
-	void toKeyString() {
+	void toKey_String() {
 		assertEquals("SOURCE", toKey("Source")
 				, "should have been: SOURCE");
 		assertEquals("SOURCE", toKey("  source   ")
@@ -73,7 +161,7 @@ class Cfg_UtilTest {
 				, "should have been: \"\"");		
 	}
 	@Test
-	void toSentenceString() {
+	void toSentence_String() {
 		assertEquals("Source", toSentence("Source")
 				, "should have been Source");
 		assertEquals("Source", toSentence("source")
@@ -96,7 +184,7 @@ class Cfg_UtilTest {
 				, "should have been \"\"");
 	}
 	@Test
-	void capitalizeString() {
+	void capitalize_String() {
 		assertEquals("Source", capitalize("Source")
 				, "should have been Source");
 		assertEquals("Source", capitalize("source")
@@ -119,14 +207,14 @@ class Cfg_UtilTest {
 				, "should have been \"\"");
 	}
 	@Test
-	void capitalizeBoolean() {
+	void capitalize_Boolean() {
 		assertEquals("Very option source", capitalize("VERY OPTION SOURCE", true)
 				, "should have been: Very option source");
 		assertEquals("Very Option Source", capitalize("VERY OPTION SOURCE", false)
 				, "should have been: Very Option Source");		
 	}
 	@Test
-	void suggestedOptionToLabelString() {
+	void suggestedOptionToLabel_String() {
 		assertEquals("Source", suggestedOptionToLabel("Source")
 				, "should have been Source");
 		assertEquals("Source", suggestedOptionToLabel("source")
@@ -145,7 +233,7 @@ class Cfg_UtilTest {
 				, "should have been Source");
 	}
 	@Test
-	void suggestedOptionToLabelCfg_Entry() {
+	void suggestedOptionToLabel_Cfg_Entry() {
 		assertEquals("Source", suggestedOptionToLabel(new Cfg_Entry("Source").get())
 				, "should have been Source");
 		assertEquals("Source", suggestedOptionToLabel(new Cfg_Entry("source").get())
@@ -163,24 +251,16 @@ class Cfg_UtilTest {
 		assertEquals("Source", suggestedOptionToLabel(new Cfg_Entry("__SOURCE").get())
 				, "should have been Source");
 	}
+	// ==============================================================
+    //Random Generation Methods
+    //
 	@Test
-	void getOrDefaultString() {
-		assertEquals("Source", getOrDefault("Source", "Good")
-				, "should have been Source");
-		assertEquals("Good", getOrDefault("", "Good")
-				, "should have been Good");
-		assertEquals("Good", getOrDefault("  ", "Good")
-				, "should have been Source");
-		assertEquals("Good", getOrDefault((String)null, "Good")
-				, "should have been Source");
-	}
-	@Test
-	void getBooleanRandomBoolean() {
+	void getBooleanRandom_Boolean() {
 		// to validate no errors are thrown
 		assertTrue(getBooleanRandom() || true, "should have been true!");
 	}
 	@Test
-	void nextRandomDoubleDouble() {
+	void nextRandomDouble_Double() {
 		assertEquals(88.8,  nextRandomDouble(88.8, 88.8)
 				, "should have been 88L");
 		assertEquals(true, Math.abs(nextRandomDouble(-88.8, 88.8)) <= 88.8
@@ -189,7 +269,7 @@ class Cfg_UtilTest {
 				, "should have been able to manage min max inversion");
 	}
 	@Test
-	void nextRandomLongLong() {
+	void nextRandomLong_Long() {
 		assertEquals(88L,  nextRandomLong(88L, 88L)
 				, "should have been 88L");
 		assertEquals(true, Math.abs(nextRandomLong(-88L, 88L)) <= 88L
@@ -198,10 +278,206 @@ class Cfg_UtilTest {
 				, "should have been able to manage min max inversion");
 	}
 	// ==============================================================
+    // Test Methods
+    //
+	@Test
+	void anyContainsIgnoreCase_List() {
+		List<String> list;
+		list = null;
+		assertEquals(true, anyContainsIgnoreCase(list, (String)null)
+				, "should have been: true");
+		assertEquals(false, anyContainsIgnoreCase(list, "")
+				, "should have been: false");
+		assertEquals(false, anyContainsIgnoreCase(list, "abc")
+				, "should have been: false");
+		list = List.of("");
+		assertEquals(true, anyContainsIgnoreCase(list, (String)null)
+				, "should have been: true");
+		assertEquals(true, anyContainsIgnoreCase(list, "")
+				, "should have been: true");
+		assertEquals(false, anyContainsIgnoreCase(list, "abc")
+				, "should have been: false");
+		list = List.of("ABC", " xyz", " ");
+		assertEquals(true, anyContainsIgnoreCase(list, (String)null)
+				, "should have been: true");
+		assertEquals(true, anyContainsIgnoreCase(list, "")
+				, "should have been: true");
+		assertEquals(true, anyContainsIgnoreCase(list, "abc")
+				, "should have been: true");
+		assertEquals(true, anyContainsIgnoreCase(list, " XYZ")
+				, "should have been: true");
+		assertEquals(true, anyContainsIgnoreCase(list, " ")
+				, "should have been: true");
+		assertEquals(true, anyContainsIgnoreCase(list, "XYZ")
+				, "should have been: true");
+		assertEquals(false, anyContainsIgnoreCase(list, " abc")
+				, "should have been: false");
+	}	
+	@Test
+	void containsIgnoreCase_List() {
+		List<String> list;
+		list = null;
+		assertEquals(false, containsIgnoreCase(list, (String)null)
+				, "should have been: false");
+		assertEquals(false, containsIgnoreCase(list, "")
+				, "should have been: false");
+		assertEquals(false, containsIgnoreCase(list, "abc")
+				, "should have been: false");
+		list = List.of("");
+		assertEquals(false, containsIgnoreCase(list, (String)null)
+				, "should have been: false");
+		assertEquals(true, containsIgnoreCase(list, "")
+				, "should have been: true");
+		assertEquals(false, containsIgnoreCase(list, "abc")
+				, "should have been: false");
+		list = List.of("ABC", " xyz", " ");
+		assertEquals(false, containsIgnoreCase(list, (String)null)
+				, "should have been: false");
+		assertEquals(false, containsIgnoreCase(list, "")
+				, "should have been: false");
+		assertEquals(true, containsIgnoreCase(list, "abc")
+				, "should have been: true");
+		assertEquals(true, containsIgnoreCase(list, " XYZ")
+				, "should have been: true");
+		assertEquals(true, containsIgnoreCase(list, " ")
+				, "should have been: true");
+		assertEquals(false, containsIgnoreCase(list, "XYZ")
+				, "should have been: false");
+		assertEquals(false, containsIgnoreCase(list, " abc")
+				, "should have been: false");
+	}	
+	@Test
+	void containedIgnoreCase_String() {
+		assertEquals(true, containedIgnoreCase("", "")
+				, "should have been: true");
+		assertEquals(true, containedIgnoreCase((String)null, (String)null)
+				, "should have been: true");
+		assertEquals(true, containedIgnoreCase("", (String)null)
+				, "should have been: true");
+		assertEquals(true, containedIgnoreCase((String)null, "")
+				, "should have been: true");
+		assertEquals(true, containedIgnoreCase("abcde", "ABC")
+				, "should have been: true");
+		assertEquals(true, containedIgnoreCase("ABC", "abcde")
+				, "should have been: true");
+		assertEquals(true, containedIgnoreCase("abc", "ABC")
+				, "should have been: true");
+		assertEquals(false, containedIgnoreCase("abcde", " ABC")
+				, "should have been: false");
+	}
+	@Test
+	void containsIgnoreCase_String() {
+		assertEquals(true, containsIgnoreCase("", "")
+				, "should have been: true");
+		assertEquals(true, containsIgnoreCase((String)null, (String)null)
+				, "should have been: true");
+		assertEquals(true, containsIgnoreCase("", (String)null)
+				, "should have been: true");
+		assertEquals(false, containsIgnoreCase((String)null, "")
+				, "should have been: false");
+		assertEquals(true, containsIgnoreCase("abcde", "ABC")
+				, "should have been: true");
+		assertEquals(false, containsIgnoreCase("ABC", "abcde")
+				, "should have been: false");
+		assertEquals(true, containsIgnoreCase("abc", "ABC")
+				, "should have been: true");
+		assertEquals(false, containsIgnoreCase("abcde", " ABC")
+				, "should have been: false");
+	}
+	@Test
+	void isEmpty_String() {
+		assertEquals(true, isEmpty("")
+				, "should have been: true");
+		assertEquals(false, isEmpty("  ")
+				, "should have been: false");
+		assertEquals(true, isEmpty((String)null)
+				, "should have been: true");
+		assertEquals(false, isEmpty("_")
+				, "should have been: false");
+	}
+	@Test
+	void isBlank_String() {
+		assertEquals(true, isBlank("")
+				, "should have been: true");
+		assertEquals(true, isBlank("  ")
+				, "should have been: true");
+		assertEquals(true, isBlank((String)null)
+				, "should have been: true");
+		assertEquals(false, isBlank("_")
+				, "should have been: false");
+	}
+	@Test
+	void testForBoolean_String() {
+		assertEquals(true, testForBoolean("yes")
+				, "should have been: true");
+		assertEquals(true, testForBoolean(" True ")
+				, "should have been: true");
+		assertEquals(true, testForBoolean("NO")
+				, "should have been: true");
+		assertEquals(true, testForBoolean("false")
+				, "should have been: true");
+		assertEquals(false, testForBoolean("")
+				, "should have been: false");
+		assertEquals(false, testForBoolean((String)null)
+				, "should have been: false");
+	}
+	@Test
+	void testForIntegerBoundaries_String() {
+		assertEquals(true, testIntegerBoundaries("88", 44, 100)
+				, "should have been: true");
+		assertEquals(false, testIntegerBoundaries("88", 44, 66)
+				, "should have been: false");
+		assertEquals(false, testIntegerBoundaries("88", 100, 200)
+				, "should have been: false");
+		assertEquals(false, testIntegerBoundaries("x", 100, 200)
+				, "should have been: false");
+	}
+	@Test
+	void testForInteger_String() {
+		assertEquals(true, testForInteger("88")
+				, "should have been: true");
+		assertEquals(true, testForInteger("88.8")
+				, "should have been: true");
+		assertEquals(false, testForInteger("x")
+				, "should have been: false");
+		assertEquals(false, testForInteger(Long.toString(Long.MAX_VALUE / 2))
+				, "should have been: false");
+		assertEquals(false, testForInteger("1e21")
+				, "should have been: false");
+	}
+
+	@Test
+	void testForNumeric_String() {
+		assertEquals(false, testForNumeric("xx")
+				, "not a Numeric");
+		assertEquals(true,  testForNumeric("NaN")
+				, "NaN is a perfectly valid Numeric");
+		assertEquals(true,  testForNumeric("88.8")
+				, "This Double is a perfectly valid Numeric");
+	}	
+	@Test
+	void testForFiniteNumeric_String() {
+		assertEquals(false, testForFiniteNumeric("xx")
+				, "not a Numeric");
+		assertEquals(false, testForFiniteNumeric("NaN")
+				, "NaN is not finite Numeric");
+		assertEquals(true,  testForFiniteNumeric("88.8")
+				, "This Double is a perfectly valid Numeric");
+	}	
+	@Test
+	void isFiniteDouble_Double() {
+		assertEquals(false, isFiniteDouble(Double.NEGATIVE_INFINITY)
+				, "not an \"Finite\" Double");
+		assertEquals(false, isFiniteDouble(Double.NaN)
+				, "not an \"Finite\" Double");
+		assertEquals(true,  isFiniteDouble(88.8)
+				, "This Double is Finite!");
+	}
+	// ==============================================================
     // String Conversion Tools
     //
 	@Test
-	void toBooleanString() {
+	void toBoolean_String() {
 		assertEquals((Boolean)null, toBoolean("ss")
 				, "should have been null");
 		assertEquals(true,  toBoolean("true")
@@ -214,7 +490,7 @@ class Cfg_UtilTest {
 				, "should have been false");
 	}	
 	@Test
-	void toYesNoStringBoolean() {
+	void toYesNoString_Boolean() {
 		assertEquals("null", toYesNoString((Boolean)null)
 				, "should have been \"null\"");
 		assertEquals("YES",  toYesNoString(true)
@@ -223,34 +499,7 @@ class Cfg_UtilTest {
 				, "should have been \"null\"");
 	}	
 	@Test
-	void isNumericString() {
-		assertEquals(false, testForNumeric("xx")
-				, "not a Numeric");
-		assertEquals(true,  testForNumeric("NaN")
-				, "NaN is a perfectly valid Numeric");
-		assertEquals(true,  testForNumeric("88.8")
-				, "This Double is a perfectly valid Numeric");
-	}	
-	@Test
-	void isFiniteNumericString() {
-		assertEquals(false, testForFiniteNumeric("xx")
-				, "not a Numeric");
-		assertEquals(false, testForFiniteNumeric("NaN")
-				, "NaN is not finite Numeric");
-		assertEquals(true,  testForFiniteNumeric("88.8")
-				, "This Double is a perfectly valid Numeric");
-	}	
-	@Test
-	void isFiniteDoubleDouble() {
-		assertEquals(false, isFiniteDouble(Double.NEGATIVE_INFINITY)
-				, "not an \"Finite\" Double");
-		assertEquals(false, isFiniteDouble(Double.NaN)
-				, "not an \"Finite\" Double");
-		assertEquals(true,  isFiniteDouble(88.8)
-				, "This Double is Finite!");
-	}	
-	@Test
-	void toFiniteDoubleDouble() {
+	void toFiniteDouble_Double() {
 		Long longNull = null;
 		assertEquals(longNull, toFiniteDouble(Double.NEGATIVE_INFINITY)
 				, "The default value should have been returned");
@@ -258,7 +507,7 @@ class Cfg_UtilTest {
 				, "This String should have been read correctly");
 	}	
 	@Test
-	void toUsableDoubleString() {
+	void toUsableDouble_String() {
 		Double doubleNull = null;
 		assertEquals(doubleNull, toFiniteDouble("NaN")
 				, "null should have been returned");
@@ -266,7 +515,7 @@ class Cfg_UtilTest {
 				, "null should have been returned");
 	}	
 	@Test
-	void toDoubleString() {
+	void toDouble_String() {
 		Double doubleNull = null;
 		assertEquals(123456789.0, toDouble("123456789")
 				, "This String should have been read correctly");
@@ -276,7 +525,7 @@ class Cfg_UtilTest {
 				, "null should have been returned");
 	}
 	@Test
-	void toDoubleOrDefaultString() {
+	void toDoubleOrDefault_String() {
 		assertEquals(123456789.0, toDoubleOrDefault("123456789", 88.8)
 				, "This String should have been read correctly");
 		assertEquals(88.8, toDoubleOrDefault("2XXX", 88.8)
@@ -285,7 +534,30 @@ class Cfg_UtilTest {
 				, "This String should have been read correctly");
 	}
 	@Test
-	void toLongDouble() {
+	void toFloat_String() {
+		Float floatNull = null;
+		assertEquals(123456789.0f, toFloat("123456789")
+				, "This String should have been read correctly");
+		assertEquals(floatNull, toFloat("1e122")
+				, "null should have been returned");
+		assertEquals(floatNull, toFloat("2XXX")
+				, "null should have been returned");
+		assertEquals(floatNull, toFloat("10H")
+				, "null should have been returned");
+	}
+	@Test
+	void toFloatOrDefault_String() {
+		assertEquals(123456789.0f, toFloatOrDefault("123456789", 88.8f)
+				, "This String should have been read correctly");
+		assertEquals(88.8f, toFloatOrDefault("-1e122", 88.8f)
+				, "The default value should have been returned");
+		assertEquals(88.8f, toFloatOrDefault("2XXX", 88.8f)
+				, "The default value should have been returned");
+		assertEquals(88.8f, toFloatOrDefault("NaN", 88.8f)
+				, "The default value should have been returned NaN not managed!");
+	}
+	@Test
+	void toLong_Double() {
 		Long longNull = null;
 		assertEquals(123456789L, toLong(123456789.1, 88L)
 				, "This String should have been converted correctly");
@@ -297,7 +569,7 @@ class Cfg_UtilTest {
 				, "The default value should have been returned");
 	}
 	@Test
-	void toLongString() {
+	void toLong_String() {
 		// pure Long reading
 		Long longNull = null;
 		assertEquals(123456789L, toLong("123456789")
@@ -311,7 +583,7 @@ class Cfg_UtilTest {
 				, "The default value should have been returned");
 	}
 	@Test
-	void toLongOrDefaultString() {
+	void toLongOrDefault_String() {
 		// pure Long reading
 		assertEquals(123456789L, toLongOrDefault("123456789", 88L)
 				, "This String should have been read correctly");
@@ -324,7 +596,7 @@ class Cfg_UtilTest {
 				, "The default value should have been returned");
 	}
 	@Test
-	void toIntegerString() {
+	void toInteger_String() {
 		Integer integerNull = null;
 		assertEquals(123456789, toInteger("123456789")
 				, "This String should have been read correctly");
@@ -336,7 +608,7 @@ class Cfg_UtilTest {
 				, "The default value should have been returned");
 	}
 	@Test
-	void toIntegerOrDefaultString() {
+	void toIntegerOrDefault_String() {
 		assertEquals(123456789, toIntegerOrDefault("123456789", 88)
 				, "This String should have been read correctly");
 		assertEquals(88, toIntegerOrDefault("XXX", 88)
@@ -344,6 +616,50 @@ class Cfg_UtilTest {
 		assertEquals(123457, toIntegerOrDefault("123456.789", 88)
 				, "The rounded value should have been returned");
 		assertEquals(88, toIntegerOrDefault("123456e122", 88)
+				, "The default value should have been returned");
+	}
+	@Test
+	void toShort_String() {
+		assertEquals((short)1234, toShort("1234")
+				, "This String should have been read correctly");
+		assertEquals((Short)null, toShort("XXX")
+				, "The default value should have been returned");
+		assertEquals((short)1235, toShort("1234.56789")
+				, "The rounded value should have been returned");
+		assertEquals((Short)null, toShort("123456e122")
+				, "The default value should have been returned");
+	}
+	@Test
+	void toShortOrDefault_String() {
+		assertEquals((short)88, toShortOrDefault("123456789", (short)88)
+				, "The default value should have been returned");
+		assertEquals((short)88, toShortOrDefault("XXX", (short)88)
+				, "The default value should have been returned");
+		assertEquals((short)12346, toShortOrDefault("12345.6789", (short)88)
+				, "The rounded value should have been returned");
+		assertEquals((short)88, toShortOrDefault("123456e122", (short)88)
+				, "The default value should have been returned");
+	}
+	@Test
+	void toByte_String() {
+		assertEquals((Byte)null, toByte("123456789")
+				, "The default value should have been returned");
+		assertEquals((Byte)null, toByte("XXX")
+				, "The default value should have been returned");
+		assertEquals((byte)123, toByte("123.456789")
+				, "The rounded value should have been returned");
+		assertEquals((Byte)null, toByte("123456e122")
+				, "The default value should have been returned");
+	}
+	@Test
+	void toByteOrDefault_String() {
+		assertEquals((byte)-88, toByteOrDefault("-88", (byte)88)
+				, "This String should have been read correctly");
+		assertEquals((byte)88, toByteOrDefault("XXX", (byte)88)
+				, "The default value should have been returned");
+		assertEquals((byte)12, toByteOrDefault("12.3456789", (byte)88)
+				, "The rounded value should have been returned");
+		assertEquals((byte)88, toByteOrDefault("123456e122", (byte)88)
 				, "The default value should have been returned");
 	}
 }

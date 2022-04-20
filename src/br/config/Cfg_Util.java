@@ -1,5 +1,5 @@
 
-/*
+/**
  * Licensed under the GNU General Public License, Version 3 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,39 +17,106 @@ package br.config;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-//import jdk.internal.math.DoubleConsts;
-//import jdk.internal.math.FDBigInteger;
-
+/**
+ * @author BrokenRegistry
+ *
+ */
 public class Cfg_Util {
 	
+	/**
+	 * Upper case value accepted as true entry
+	 */
 	public static final List<String> YES_LIST     = List.of("YES", "TRUE");
+	/**
+	 * Upper case value accepted as false entry
+	 */
 	public static final List<String> NO_LIST      = List.of("NO", "FALSE");
+	/**
+	 * All Upper case value accepted as {@code Boolean} entry
+	 */
 	public static final List<String> BOOLEAN_LIST = List.of("YES", "NO", "TRUE", "FALSE");
+	/**
+	 * Word Splitter REGEX
+	 */
 	public static final String  CAPITALIZE_REGEX  = "((?<= )|(?<=_)|(?<=-)|(?<=/)|(?<=\\[))";
-//	public static final String  PARAMETERS_SEPARATOR  = ",";
-//	public static final String  RANDOM_ID             = "RANDOM";	
+	/**
+	 * Will be removed soon
+	 */
+	@Deprecated
 	public static final Boolean BOOLEAN_DEFAULT_VALUE = false;
+	/**
+	 * Will be removed soon
+	 */
+	@Deprecated
 	public static final String  STRING_DEFAULT_VALUE  = "";
+	/**
+	 * Will be removed soon
+	 */
+	@Deprecated
 	public static final char    CHAR_DEFAULT_VALUE    = ' ';
+	/**
+	 * Will be removed soon
+	 */
+	@Deprecated
 	public static final Byte    BYTE_DEFAULT_VALUE    = 0;
+	/**
+	 * Will be removed soon
+	 */
+	@Deprecated
 	public static final Short   SHORT_DEFAULT_VALUE   = 0;
+	/**
+	 * Will be removed soon
+	 */
+	@Deprecated
 	public static final Integer INTEGER_DEFAULT_VALUE = 0;
+	/**
+	 * Will be removed soon
+	 */
+	@Deprecated
 	public static final Long    LONG_DEFAULT_VALUE    = 0L;
+	/**
+	 * Will be removed soon
+	 */
+	@Deprecated
 	public static final Float   FLOAT_DEFAULT_VALUE   = 0.0F;
+	/**
+	 * Will be removed soon
+	 */
+	@Deprecated
 	public static final Double  DOUBLE_DEFAULT_VALUE  = 0.0D;	
-	public static final Integer LINE_SPLIT_POSITION   = 20; // Label - Value Separator Position	
-	public static final Integer END_COMMENT_POSITION  = 30; // End of line comment position
-	
+	/**
+	 * Label - Value Separator Position
+	 */
+	public static final Integer LINE_SPLIT_POSITION   = 20;
+	/**
+	 * End of line comment position
+	 */
+	public static final Integer END_COMMENT_POSITION  = 30;
+
+	/**
+	 * Will be removed soon
+	 */
+	@Deprecated
 	public static final List<String> ENABLE_GAME_CHANGE_LIST  = 
 			List.of("FILE TO GAME");
+	/**
+	 * Will be removed soon
+	 */
+	@Deprecated
 	public static final List<String> ENABLE_LOAD_LIST  = 
 			List.of("LOAD", "BOTH", "FILE TO UI");
+	/**
+	 * Will be removed soon
+	 */
+	@Deprecated
 	public static final List<String> ENABLE_WRITE_LIST = 
 			List.of("SAVE", "BOTH", "UI TO FILE", "GAME TO FILE", "INITIAL TO FILE",
 					"UI UPDATE FILE", "GAME UPDATE FILE", "INITIAL UPDATE FILE");
+	/**
+	 * Will be removed soon
+	 */
+	@Deprecated
 	public static final List<String> ENABLE_VALID_LIST = 
 			List.of("BOTH", "SAVE", "LOAD", "NO", "FILE TO UI", "FILE TO GAME", 
 					"UI TO FILE", "GAME TO FILE", "INITIAL TO FILE",
@@ -58,165 +125,130 @@ public class Cfg_Util {
 	private static Boolean defaultCaseSensitivity = false;
 	
     // ==================================================
-    // Constructors
+    // Constructors (blocked)
     //
-	protected Cfg_Util() {}
+	private Cfg_Util() {}
 	
     // ==================================================
     // Setters and Getters
     //
+	/**
+	 * Set the global Case Sensitivity
+	 * @param newValue the new {@code Boolean} defaultCaseSensitivity
+	 */
 	public static void setDefaultCaseSensitivity(Boolean newValue) {
 		defaultCaseSensitivity = newValue;
 	}
+	/**
+	 * Get the global Case Sensitivity
+	 * @return defaultCaseSensitivity
+	 */
 	public static Boolean getDefaultCaseSensitivity() {
 		return defaultCaseSensitivity;
 	}
     // ==================================================
-    // Simple Converters
-    //
-//	/**
-//	 * @return the Byte value, BYTE_DEFAULT_VALUE if none
-//	 */
-//	public static Byte toByte(String source) {
-//        return getOrDefault(source, BYTE_DEFAULT_VALUE);
-//	}
-//	/**
-//	 * @return the Short value, SHORT_DEFAULT_VALUE if none
-//	 */
-//	public static Short toShort(String source) {
-//        return getOrDefault(source, SHORT_DEFAULT_VALUE);
-//	}
-//	/**
-//	 * @return the Integer value, INTEGER_DEFAULT_VALUE if none
-//	 */
-//	public static Integer toInteger(String source) {
-//        return getOrDefault(source, INTEGER_DEFAULT_VALUE);
-//	}
-//	/**
-//	 * @return the Float value, FLOAT_DEFAULT_VALUE if none
-//	 */
-//	public static Float toFloat(String source) {
-//        return getOrDefault(source, FLOAT_DEFAULT_VALUE);
-//	}
-
-    // ==================================================
-    // Converters with default values
+    // Generic Converters with default values
     //
 	/**
-	 * @param source 
-	 * @param defaultValue 
-	 * @return the Byte value, defaultValue if none
+	 * Convert String to {@code Byte} without throwing errors
+	 * they are replaced by returning a default value
+     * @param source the {@code String} containing 
+     *               the {@code Byte} representation to be parsed.
+     * @param defaultValue the {@code Byte} containing return on error value.
+     * @return the {@code Byte} found in the string
+     *  or the on error value if no {@code Byte} was found
 	 */
 	public static Byte getOrDefault(String source, Byte defaultValue) {
-		if (testForNumeric(source)) {
-			return Byte.valueOf(source);
-		}
-        return defaultValue;
+		return toByteOrDefault(source, defaultValue);
 	}
 	/**
-	 * @return the Short value, defaultValue if none
+	 * Convert String to {@code Short} without throwing errors
+	 * they are replaced by returning a default value
+     * @param source the {@code String} containing 
+     *               the {@code Short} representation to be parsed.
+     * @param defaultValue the {@code Short} containing return on error value.
+     * @return the {@code Short} found in the string
+     *  or the on error value if no {@code Short} was found
 	 */
 	public static Short getOrDefault(String source, Short defaultValue) {
-		if (testForNumeric(source)) {
-			return Short.valueOf(source);
-		}
-        return defaultValue;
+		return toShortOrDefault(source, defaultValue);
 	}
 	/**
-	 * @return the Integer value, defaultValue if none
+	 * Convert String to {@code Integer} without throwing errors
+	 * they are replaced by returning a default value
+     * @param source the {@code String} containing 
+     *               the {@code Integer} representation to be parsed.
+     * @param defaultValue the {@code Integer} containing return on error value.
+     * @return the {@code Integer} found in the string
+     *  or the on error value if no {@code Integer} was found
 	 */
 	public static Integer getOrDefault(String source, Integer defaultValue) {
-		if (testForNumeric(source) && testForInteger(source)) {
-			return Integer.valueOf(source);
-		}
-        return defaultValue;
+		return toIntegerOrDefault(source, defaultValue);
 	}
 	/**
-	 * @return the Long value, defaultValue if none
+	 * Convert String to {@code Long} without throwing errors
+	 * they are replaced by returning a default value
+     * @param source the {@code String} containing 
+     *               the {@code Long} representation to be parsed.
+     * @param defaultValue the {@code Long} containing return on error value.
+     * @return the {@code Long} found in the string
+     *  or the on error value if no {@code Long} was found
 	 */
 	public static Long getOrDefault(String source, Long defaultValue) {
-		if (testForNumeric(source)) {
-			return Long.valueOf(source);
-		}
-        return defaultValue;
+		return toLongOrDefault(source, defaultValue);
 	}
 	/**
-	 * @return the Float value, defaultValue if none
+	 * Convert String to {@code Float} without throwing errors
+	 * they are replaced by returning a default value
+     * @param source the {@code String} containing 
+     *               the {@code Float} representation to be parsed.
+     * @param defaultValue the {@code Float} containing return on error value.
+     * @return the {@code Float} found in the string
+     *  or the on error value if no {@code Float} was found
 	 */
 	public static Float getOrDefault(String source, Float defaultValue) {
-		if (testForNumeric(source)) {
-			return Float.valueOf(source);
-		}
-        return defaultValue;
+		return toFloatOrDefault(source, defaultValue);
 	}
 	/**
-	 * @return the Double value, defaultValue if none
+	 * Convert the source {@code String} to {@code Double}
+	 * and return defaultValue if none was found
+	 * @param source the {@code String} to convert
+	 * @param defaultValue the {@code Double} to return if none in source 
+	 * @return the converted {@code Double} value, defaultValue if none
 	 */
 	public static Double getOrDefault(String source, Double defaultValue) {
-		if (testForNumeric(source)) {
-			return Double.valueOf(source);
-		}
-        return defaultValue;
+		return toDoubleOrDefault(source, defaultValue);
 	}
 	/**
-	 * @return the boolean value, defaultValue if none
+	 * Convert the source {@code String} to {@code Boolean}
+	 * and return defaultValue if none was found
+	 * @param source the {@code String} to convert
+	 * @param defaultValue the {@code Boolean} to return if none in source 
+	 * @return the converted {@code Boolean} value, defaultValue if none
 	 */
-	public static boolean getOrDefault(String source, Boolean defaultValue) {
-    	if (YES_LIST.contains(toKey(source))) {
+	public static Boolean getOrDefault(String source, Boolean defaultValue) {
+    	if (containsIgnoreCase(YES_LIST, source)) {
     		return true;
     	}
-    	if (NO_LIST.contains(toKey(source))) {
+    	if (containsIgnoreCase(NO_LIST, source)) {
     		return false;
     	}
         return defaultValue;
 	}
-    // ==================================================
-    // Tests Methods
-    //
 	/**
-	 * @return true if Empty or null
+	 * Check the validity of the source and return a valid one
+	 * @param source the {@code String} to validate
+	 * @param defaultValue the {@code String} to return if none in source 
+	 * @return the source or the default value
 	 */
-	public static boolean isEmpty(String source) {
-	    return (source == null || source.isEmpty());
-    }
-	/**
-	 * @return true if Blank, Empty or null
-	 */
-	public static boolean isBlank(String source) {
-	    return (source == null || source.isBlank());
-    }
-	/**
-	 * check if is member of BOOLEAN_LIST
-	 */
-	public static boolean testForBoolean(String source) {
-        return BOOLEAN_LIST.contains(clean(source));
-    }
-	/**
-	 * Validate if {@code String} could be converted or rounded
-	 * to {@code Integer} then validate if the result is
-	 * inside the boundaries
-	 * @param source the {@code String} to analyze
-	 * @param min    the lower boundary
-	 * @param max    the upper boundary
-	 * @return       is Valid
-	 */
-	public static boolean testIntegerBoundaries(String source, int min, int max) {
-		Integer value = toInteger(source);
-		return (value != null
-				&& value >= min
-				&& value <= max);
-	}
-	/**
-	 * Validate if {@code String} could be converted 
-	 * or rounded to Integer
-	 * @param source the {@code String} to analyze
-	 * @return {@code Boolean} may be converted
-	 */
-	public static boolean testForInteger(String source) {
-		return toInteger(source) != null;
+	public static String getOrDefault(String source, String defaultValue) {
+    	if (isBlank(source)) {
+    		return defaultValue;
+    	}
+        return source;
 	}
 	// ==================================================
-    // Other Methods
+    // Other String Methods
     //
 	/**
 	 * Remove first Space if one. 
@@ -332,18 +364,6 @@ public class Cfg_Util {
 	public static Cfg_Entry suggestedOptionToLabel (Cfg_Entry option) {
 		return new Cfg_Entry(suggestedOptionToLabel (option).toString());
 	}
-	/**
-	 * Check the validity of the source and return a valid one
-	 * @param source the {@code String} to validate
-	 * @param defaultValue the {@code String} to return 
-	 * @return the source or the default value
-	 */
-	public static String getOrDefault(String source, String defaultValue) {
-    	if (isBlank(source)) {
-    		return defaultValue;
-    	}
-        return source;
-	}
 	// ==================================================
     // Random Generation Methods
     //
@@ -393,6 +413,155 @@ public class Cfg_Util {
 			? ThreadLocalRandom.current().nextLong(max, min)
 			: ThreadLocalRandom.current().nextLong(min, max);
 	}
+    // ==================================================
+    // Tests Methods
+    //
+    /**
+     * Test if a {@code String} in {@code List<String>} contains a {@code String}
+     * the case not being important
+     * <br> null contains null and {@code String} contains null
+     * @param list      the containing {@code List<String>}
+     * @param element   the contained {@code String}
+     * @return true if the conditions are verified
+     */
+	public static Boolean anyContainsIgnoreCase(List<String> list, String element) {
+		if (element == null) {
+			return true;
+		}
+		if (list == null) {
+			return false;
+		}
+		for (String entry : list) {
+			if (containsIgnoreCase(entry, element)) {
+				return true;
+			}
+		}
+		return false;
+	}
+    /**
+     * Test if a {@code List<String>} contains a {@code String}
+     * the case not being important
+     * @param list      the containing {@code List<String>}
+     * @param element   the contained {@code String}
+     * @return true if the conditions are verified
+     */
+	public static Boolean containsIgnoreCase(List<String> list, String element) {
+		if (list == null || element == null) {
+			return false;
+		}
+		for (String entry : list) {
+			if (entry.equalsIgnoreCase(element)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	/**
+     * Test if the longest {@code String} contains the other
+     * the case not being important
+     * <br> null contains null and {@code String} contains null
+	 * @param str1 first {@code String} to test
+	 * @param str2 second {@code String} to test
+     * @return true if the conditions are verified
+     */
+	public static Boolean containedIgnoreCase(String str1, String str2) {
+		if (str1 == null || str2 == null) {
+			return true;
+		}
+		if (str2.length() < str1.length()) {
+			return containsIgnoreCase(str1, str2);
+		}
+		return containsIgnoreCase(str2, str1);
+	}
+    /**
+     * Test if a {@code String} contains another {@code String} 
+     * the case not being important
+     * <br> null contains null and {@code String} contains null
+     * @param container the containing {@code String}
+     * @param element   the contained {@code String}
+     * @return true if the conditions are verified
+     */
+	public static Boolean containsIgnoreCase(String container, String element) {
+		if (element == null) {
+			return true;
+		}
+		if (container == null) {
+			return false;
+		}
+		return container.toUpperCase().contains(element.toUpperCase());
+	}
+	/**
+	 * Check for Empty or null
+	 * @param source The {@code String} to analyze  
+	 * @return true if Empty or null
+	 */
+	public static boolean isEmpty(String source) {
+	    return (source == null || source.isEmpty());
+    }
+	/**
+	 * Check for Blank, Empty or null
+	 * @param source The {@code String} to analyze  
+	 * @return true if Blank, Empty or null
+	 */
+	public static boolean isBlank(String source) {
+	    return (source == null || source.isBlank());
+    }
+	/**
+	 * check if is member of BOOLEAN_LIST
+	 * @param source The {@code String} to analyze
+	 * @return true if one valid {@code Boolean} word is found 
+	 */
+	public static boolean testForBoolean(String source) {
+        return BOOLEAN_LIST.contains(clean(source).toUpperCase());
+    }
+	/**
+	 * Validate if {@code String} could be converted or rounded
+	 * to {@code Integer} then validate if the result is
+	 * inside the boundaries
+	 * @param source the {@code String} to analyze
+	 * @param min    the lower boundary
+	 * @param max    the upper boundary
+	 * @return       is Valid
+	 */
+	public static boolean testIntegerBoundaries(String source, int min, int max) {
+		Integer value = toInteger(source);
+		return (value != null
+				&& value >= min
+				&& value <= max);
+	}
+	/**
+	 * Validate if {@code String} could be converted 
+	 * or rounded to Integer
+	 * @param source the {@code String} to analyze
+	 * @return {@code Boolean} may be converted
+	 */
+	public static boolean testForInteger(String source) {
+		return toInteger(source) != null;
+	}
+	/**
+	 * Test if String is Numeric Value
+	 * @param string the {@code String} to be tested.
+     * @return true if {@code Double} compatible value was found
+	 */
+	public static boolean testForNumeric(String string) {
+		return toDouble(string) != null;
+    }
+	/**
+	 * Test if String is usable Numeric Value: Not NAN nor Infinity
+	 * @param string the {@code String} to be tested.
+	 * @return true if Finite {@code Double} was found
+	 */
+	public static boolean testForFiniteNumeric(String string) {
+		return isFiniteDouble(toDouble(string));
+    }
+	/**
+	 * Check {@code Double} for null NaN or Infinity
+	 * @param value the {@code Double} to be checked
+     * @return the {@code Boolean} result
+	 */
+	public static Boolean isFiniteDouble(Double value) {
+		return (value != null && Double.isFinite(value));
+	}
 	// ==============================================================
     // String Conversion Tools
     //
@@ -425,30 +594,6 @@ public class Cfg_Util {
 			return "null";
 		}
 		return value ? "YES" : "NO";
-	}
-	/**
-	 * Test if String is Numeric Value
-	 * @param string the {@code String} to be tested.
-     * @return true if {@code Double} compatible value was found
-	 */
-	public static boolean testForNumeric(String string) {
-		return toDouble(string) != null;
-    }
-	/**
-	 * Test if String is usable Numeric Value: Not NAN nor Infinity
-	 * @param string the {@code String} to be tested.
-	 * @return true if Finite {@code Double} was found
-	 */
-	public static boolean testForFiniteNumeric(String string) {
-		return isFiniteDouble(toDouble(string));
-    }
-	/**
-	 * Check {@code Double} for null NaN or Infinity
-	 * @param value the {@code Double} to be checked
-     * @return the {@code Boolean} result
-	 */
-	public static Boolean isFiniteDouble(Double value) {
-		return (value != null && Double.isFinite(value));
 	}
 	/**
 	 * Convert NaN and Infinity are converted to Null
@@ -498,6 +643,34 @@ public class Cfg_Util {
 		}
 	}
 	/**
+	 * Convert String to {@code Integer} without throwing errors
+	 * they are replaced by returning a {@code null} value
+     * @param string the {@code String} containing the 
+     *               {@code Integer} representation to be parsed.
+     * @return       the {@code Integer} found in the string
+     *                or {@code null} if no {@code Integer} was found
+	 */
+	public static Float toFloat(String string) {
+		return toFloatOrDefault(string, (Float) null);
+	}
+	/**
+	 * Convert String to {@code Float} without throwing errors
+	 * they are replaced by returning a default value
+     * @param string the {@code String} containing 
+     *               the {@code Float} representation to be parsed.
+     * @param onWrong the {@code Float} containing return on error value.
+     * @return the {@code Float} found in the string
+     *  or the on error value if no {@code Float} was found
+	 */
+	public static Float toFloatOrDefault(String string, Float onWrong) {
+		Double dbl = toDouble(string);
+		if (dbl != null 
+				&& dbl <= Float.MAX_VALUE 
+				&& dbl >= -Float.MAX_VALUE) { 
+			return dbl.floatValue();
+		}
+		return onWrong;
+	}	/**
 	 * Convert (round) {@code Double} to {@code Long} or return a default value 
 	 * @param value   the {@code Double} to be converted
 	 * @param onWrong the value to return if the conversion fail
@@ -567,6 +740,63 @@ public class Cfg_Util {
 				&& lg <= Integer.MAX_VALUE 
 				&& lg >= Integer.MIN_VALUE) { 
 			return lg.intValue();
+		}
+		return onWrong;
+	}
+	/**
+	 * Convert String to {@code Short} without throwing errors
+	 * they are replaced by returning a {@code null} value
+     * @param string the {@code String} containing the 
+     *               {@code Short} representation to be parsed.
+     * @return       the {@code Short} found in the string
+     *                or {@code null} if no {@code Short} was found
+	 */
+	public static Short toShort(String string) {
+		return toShortOrDefault(string, (Short) null);
+	}
+	/**
+	 * Convert String to {@code Short} without throwing errors
+	 * they are replaced by returning a default value
+     * @param string the {@code String} containing 
+     *               the {@code Short} representation to be parsed.
+     * @param onWrong the {@code Short} containing return on error value.
+     * @return the {@code Short} found in the string
+     *  or the on error value if no {@code Short} was found
+	 */
+	public static Short toShortOrDefault(String string, Short onWrong) {
+		Long lg = toLong(string);
+		if (lg != null 
+				&& lg <= Short.MAX_VALUE 
+				&& lg >= Short.MIN_VALUE) { 
+			return lg.shortValue();
+		}
+		return onWrong;
+	}	/**
+	 * Convert String to {@code Byte} without throwing errors
+	 * they are replaced by returning a {@code null} value
+     * @param string the {@code String} containing the 
+     *               {@code Byte} representation to be parsed.
+     * @return       the {@code Byte} found in the string
+     *                or {@code null} if no {@code Byte} was found
+	 */
+	public static Byte toByte(String string) {
+		return toByteOrDefault(string, (Byte) null);
+	}
+	/**
+	 * Convert String to {@code Byte} without throwing errors
+	 * they are replaced by returning a default value
+     * @param string the {@code String} containing 
+     *               the {@code Byte} representation to be parsed.
+     * @param onWrong the {@code Byte} containing return on error value.
+     * @return the {@code Byte} found in the string
+     *  or the on error value if no {@code Byte} was found
+	 */
+	public static Byte toByteOrDefault(String string, Byte onWrong) {
+		Long lg = toLong(string);
+		if (lg != null 
+				&& lg <= Byte.MAX_VALUE 
+				&& lg >= Byte.MIN_VALUE) { 
+			return lg.byteValue();
 		}
 		return onWrong;
 	}
