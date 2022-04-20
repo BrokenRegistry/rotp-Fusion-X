@@ -287,7 +287,7 @@ public class Cfg_Value extends Cfg_Entry{
 		// if (bool != null) {
 		// 	return bool ? 1.0 : 0.0; 
 		// }
-		floating = toUsableDouble(super.get());
+		floating = toFiniteDouble(super.get());
 		return floating == null ? onEmpty : floating;
 	}
 	/**
@@ -675,7 +675,7 @@ public class Cfg_Value extends Cfg_Entry{
 		super.set(source, caseSensitive);
 	}
 	private void init(Double value) {
-		floating = toUsableDouble(value);
+		floating = toFiniteDouble(value);
 	}
 	private void init(Float value) {
 		init(Double.valueOf(value));

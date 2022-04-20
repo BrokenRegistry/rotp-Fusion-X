@@ -59,11 +59,11 @@ public class Cfg_ValueValidation extends Cfg_Value{
 		String value = getStringOption();
 		if(!value.isBlank()) {
 			if(validationData.isBooleanDataType() 
-					&& Cfg_Util.isBoolean(value)) {
+					&& Cfg_Util.testForBoolean(value)) {
 				return true;
 			}
 			if(validationData.isNumericDataType() 
-					&& Cfg_Value.isNumeric(value)) {
+					&& Cfg_Value.testForNumeric(value)) {
 				return true;
 			}				
 		}

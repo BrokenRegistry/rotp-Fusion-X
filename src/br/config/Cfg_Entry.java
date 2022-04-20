@@ -239,7 +239,7 @@ public class Cfg_Entry extends Cfg_Util {
 	 * check for the presence of "[0-9.]+"
 	 */
 	public boolean isNumeric() {
-		return isNumeric(entry);
+		return testForNumeric(entry);
 	}
 
 	// ==================================================
