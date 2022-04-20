@@ -15,11 +15,13 @@
 
 package br.config;
 
+import static br.config.Cfg_Util.*;
+
 /**
  * The internal parameter will never be null
  * and will be striped
  */
-public class Cfg_Entry extends Cfg_Util {
+public class Cfg_Entry {
 
 	
 	private String entry = "";
@@ -131,8 +133,8 @@ public class Cfg_Entry extends Cfg_Util {
 	/**
 	 * Strip and return in lower case with first char to upper case, never null
 	 */
-	public String toSentence() { 
-		return toSentence(entry);
+	public String toSentence() {
+		return Cfg_Util.toSentence(entry);
 	}
     // ==================================================
     // Getters with default values

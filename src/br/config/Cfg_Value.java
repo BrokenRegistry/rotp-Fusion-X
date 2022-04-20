@@ -16,6 +16,7 @@
 package br.config;
 
 import java.util.concurrent.ThreadLocalRandom;
+import static br.config.Cfg_Util.*;
 
 /**
  * Numeric Conversion without the need to throws and catch errors
@@ -337,7 +338,7 @@ public class Cfg_Value extends Cfg_Entry{
 		// if (bool != null) {
 		// 	return bool ? 1L : 0; 
 		// }
-		whole = toLong(super.get());
+		whole = Cfg_Util.toLong(super.get());
 		return whole == null ? onEmpty : whole;
 		}
 	/**

@@ -63,7 +63,7 @@ public class Cfg_ValueValidation extends Cfg_Value{
 				return true;
 			}
 			if(validationData.isNumericDataType() 
-					&& Cfg_Value.testForNumeric(value)) {
+					&& Cfg_Util.testForNumeric(value)) {
 				return true;
 			}				
 		}
