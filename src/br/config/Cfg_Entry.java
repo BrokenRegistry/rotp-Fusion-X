@@ -72,41 +72,51 @@ public class Cfg_Entry implements I_Prt{
 	/**
 	 * Set a new {@code String} entry
 	 * @param newValue the new {@code String} entry
+	 * @return this for chaining purpose 
 	 */
-	public void set(String newValue) {
+	public Cfg_Entry set(String newValue) {
 		entry = clean(newValue);
+		return this;
 	}
 	/**
 	 * Set a new {@code String} entry and new case Sensitivity
 	 * @param newValue  the new {@code String} entry
 	 * @param caseSensitive  the new {@code Boolean} sensitivity
+	 * @return this for chaining purpose 
 	 */
-	public void set(String newValue, Boolean caseSensitive) {
+	public Cfg_Entry set(String newValue, Boolean caseSensitive) {
 		entry = clean(newValue);
 		setCaseSensitive(caseSensitive);
+		return this;
 	}
 	/**
 	 * Set new value {@code CfgEntry} (clone)
 	 * @param newValue the {@code CfgEntry}
+	 * @return this for chaining purpose 
 	 */
-	public void set(Cfg_Entry newValue) {
+	public Cfg_Entry set(Cfg_Entry newValue) {
 		set(newValue.get(), newValue.getCaseSensitive());
+		return this;
 	}
 	/**
 	 * Set new {@code CfgEntry} value and new {@code Boolean} case sensitivity
 	 * @param newValue the new {@code CfgEntry} value
 	 * @param caseSensitive the new {@code Boolean} sensitivity this value
 	 *        override the one in {@code CfgEntry} newValue
+	 * @return this for chaining purpose 
 	 */
-	public void set(Cfg_Entry newValue, Boolean caseSensitive) {
+	public Cfg_Entry set(Cfg_Entry newValue, Boolean caseSensitive) {
 		set(newValue.get(), caseSensitive);
+		return this;
 	}
 	/**
 	 * Set new case sensitivity
 	 * @param newValue the new {@code Boolean} sensitivity
+	 * @return this for chaining purpose 
 	 */
-	public void setCaseSensitive(Boolean newValue) {
+	public Cfg_Entry setCaseSensitive(Boolean newValue) {
 		caseSensitive = newValue;
+		return this;
 	}
     // ==================================================
     // Getters simple
@@ -230,7 +240,7 @@ public class Cfg_Entry implements I_Prt{
 	 * Test if Empty or null
 	 * @return true if Empty or null
 	 */
-	public Boolean isEmpty() {
+	public boolean isEmpty() {
 	    return (entry.isEmpty());
     }
 	/**
