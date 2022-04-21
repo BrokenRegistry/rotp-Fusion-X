@@ -1,5 +1,5 @@
 
-/*
+/**
  * Licensed under the GNU General Public License, Version 3 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,63 +19,118 @@ import static br.config.Cfg_Util.*;
 
 /**
  * The internal parameter will never be null
- * and will be striped
+ * and will be stripped
  */
-public class Cfg_Entry {
+public class Cfg_Entry implements I_Prt{
 
 	
 	private String entry = "";
-	private Boolean caseSensitive;
+	private Boolean caseSensitive = null;
 		// false = tested as UpperCase
 		// null = default Value
 	
     // ==================================================
     // Constructors
     //
+	/**
+	 * create a new empty {@code CfgEntry}
+	 */
 	public Cfg_Entry() {}
+	/**
+	 * create and initialize a new empty {@code CfgEntry}
+	 * @param entry the {@code CfgEntry} value and case sensitivity
+	 */
 	public Cfg_Entry(Cfg_Entry entry) {
 		set(entry);
 	}
+	/**
+	 * create and initialize a new empty {@code CfgEntry}
+	 * @param entry the {@code String} value
+	 */
 	public Cfg_Entry(String entry) {
 		set(entry);
 	}
-	public Cfg_Entry(Cfg_Entry entry, boolean caseSensitive) {
+	/**
+	 * create and initialize a new empty {@code CfgEntry}
+	 * @param entry the {@code CfgEntry} value
+	 * @param caseSensitive the {@code Boolean} case sensitivity, this value
+	 *        override the one in {@code CfgEntry} value
+	 */
+	public Cfg_Entry(Cfg_Entry entry, Boolean caseSensitive) {
 		set(entry, caseSensitive);
 	}
-	public Cfg_Entry(String entry, boolean caseSensitive) {
+	/**
+	 * @param entry the {@code String} value
+	 * @param caseSensitive the {@code Boolean} case sensitivity
+	 */
+	public Cfg_Entry(String entry, Boolean caseSensitive) {
 		set(entry, caseSensitive);
 	}
     // ==================================================
     // Setters
     //
 	/**
-	 * Set a new String entry
+	 * Set a new {@code String} entry
+	 * @param newValue the new {@code String} entry
 	 */
 	public void set(String newValue) {
 		entry = clean(newValue);
 	}
 	/**
-	 * Set a new String entry and new case Sensitivity
+	 * Set a new {@code String} entry and new case Sensitivity
+	 * @param newValue  the new {@code String} entry
+	 * @param caseSensitive  the new {@code Boolean} sensitivity
 	 */
-	public void set(String newValue, boolean caseSensitive) {
+	public void set(String newValue, Boolean caseSensitive) {
 		entry = clean(newValue);
 		setCaseSensitive(caseSensitive);
 	}
+	/**
+	 * Set new value {@code CfgEntry} (clone)
+	 * @param newValue the {@code CfgEntry}
+	 */
 	public void set(Cfg_Entry newValue) {
-		set(newValue.get(), newValue.isCaseSensitive());
-	}
-	public void set(Cfg_Entry newValue, boolean caseSensitive) {
-		set(newValue.get(), isCaseSensitive());
+		set(newValue.get(), newValue.getCaseSensitive());
 	}
 	/**
-	 * Set case sensitivity
+	 * Set new {@code CfgEntry} value and new {@code Boolean} case sensitivity
+	 * @param newValue the new {@code CfgEntry} value
+	 * @param caseSensitive the new {@code Boolean} sensitivity this value
+	 *        override the one in {@code CfgEntry} newValue
 	 */
-	public void setCaseSensitive(boolean newValue) {
+	public void set(Cfg_Entry newValue, Boolean caseSensitive) {
+		set(newValue.get(), caseSensitive);
+	}
+	/**
+	 * Set new case sensitivity
+	 * @param newValue the new {@code Boolean} sensitivity
+	 */
+	public void setCaseSensitive(Boolean newValue) {
 		caseSensitive = newValue;
 	}
     // ==================================================
     // Getters simple
     //
+	/**
+	 * Ask for a clone of {@code CfgEntry}
+	 * @return the cloned {@code CfgEntry}
+	 */
+	@Override
+	public Cfg_Entry clone() { 
+		return new Cfg_Entry(entry, caseSensitive);
+	}
+	/**
+	 * {@code Boolean} getter for case sensitivity
+	 * @return {@code Boolean} the sensitivity
+	 */
+	public Boolean getCaseSensitive() {
+		return caseSensitive;
+	}
+	/**
+	 * {@code boolean} getter for case sensitivity
+	 * null value is replaced by Cfg_Util.defaultCaseSensitivity
+	 * @return {@code boolean} the sensitivity
+	 */
 	public boolean isCaseSensitive() {
 		if (caseSensitive == null) {
 			return getDefaultCaseSensitivity();
@@ -83,31 +138,38 @@ public class Cfg_Entry {
 		return caseSensitive;
 	}
 	/**
-	 * return entry as String
+	 * return entry as {@code String}
+	 * @return the original value
 	 */
 	public String get() { 
 		return entry;
 	}
 	/**
-	 * return entry as Cfg_Entry
+	 * Ask for this as {@code CfgEntry} (used by sub classes)
+	 * @return this
 	 */
 	public Cfg_Entry getCfg_Entry() { 
 		return this;
 	}
 	/**
-	 * return entry as String
+	 * Ask for entry as {@code String}
+	 * @return the {@code String}
 	 */
+	@Override
 	public String toString() { 
 		return entry;
 	}
 	/**
-	 * return entry as String, ready to be printed
+	 * Ask for String, ready to be printed
+	 * @return entry as {@code String}, ready to be printed
 	 */
+	@Override
 	public String toPrint() { 
 		return entry;
 	}
 	/**
-	 * Test case sensitivity and return value
+	 * Ask for value ready to be tested depending
+	 * on case sensitivity (upper case if not case sensitive)
 	 * @return toUpperCase if not case sensitive
 	 */
 	public String toTest() {
@@ -117,21 +179,32 @@ public class Cfg_Entry {
 		return toKey();
 	}
 	/**
-	 * return value ready to be tested as not case sensitive
+	 * Ask for value ready to be tested as not case sensitive
 	 * @return value toUpperCase
 	 */
 	public String toKey() {
 		return entry.toUpperCase();
 	}
 	/**
-	 * return entry in lower case, with first char to upper case,
+	 * ask for entry in lower case, with first char to upper case,
 	 * with every word capitalized if eachWord is true
+	 * @param onlyFirstWord if true only the first word is capitalized
+	 * @return a {@code String} as requested
+	 */
+	public String toCapitalized(Boolean onlyFirstWord) { 
+		return capitalize(entry, onlyFirstWord);
+	}
+	/**
+	 * ask for entry in lower case, with first char to upper case,
+	 * with every word capitalized
+	 * @return a {@code String} as requested
 	 */
 	public String toCapitalized() { 
 		return capitalize(entry);
 	}
 	/**
-	 * Strip and return in lower case with first char to upper case, never null
+	 * ask for a stripped in lower case with first char to upper case, never null
+	 * @return a {@code String} as requested
 	 */
 	public String toSentence() {
 		return Cfg_Util.toSentence(entry);
@@ -140,7 +213,9 @@ public class Cfg_Entry {
     // Getters with default values
     //
 	/**
-	 * return the entry, defaultValue if blank
+	 * Ask for a non blank value
+	 * @param defaultValue Value if Blank
+	 * @return the entry, defaultValue if blank
 	 */
 	public String getOrDefault(String defaultValue) {
 	   	if (entry.isBlank()) {
@@ -152,21 +227,25 @@ public class Cfg_Entry {
     // Tests Methods
     //
 	/**
-	 * true if Empty or null
+	 * Test if Empty or null
+	 * @return true if Empty or null
 	 */
-	public boolean isEmpty() {
+	public Boolean isEmpty() {
 	    return (entry.isEmpty());
     }
 	/**
-	 * true if Blank, Empty or null
+	 * Test if Blank, Empty or null
+	 * @return true if Blank, Empty or null
 	 */
-	public boolean isBlank() {
+	public Boolean isBlank() {
 	    return (entry.isBlank());
     }
 	/**
 	 * check if entry == value taking account of case sensitivity
+	 * @param value the {@code String} to be tested
+	 * @return  the {@code Boolean} test result
 	 */
-	public boolean equals(String value) {
+	public Boolean equals(String value) {
 		if (value == null) {
 			return false;
 		}
@@ -176,9 +255,13 @@ public class Cfg_Entry {
 		return entry.equalsIgnoreCase(value);
 	}
 	/**
-	 * check if entry == value taking account of both case sensitivity
+	 * check if entry == value taking account of case sensitivity.
+	 * Both case sensitivity should be true for the test 
+	 * to be case sensitive
+	 * @param value the {@code CfgEntry} to be tested
+	 * @return the {@code Boolean} test result
 	 */
-	public boolean equals(Cfg_Entry value) {
+	public Boolean equals(Cfg_Entry value) {
 		if (value == null) {
 			return false;
 		}
@@ -188,60 +271,79 @@ public class Cfg_Entry {
 		return entry.equalsIgnoreCase(value.toString());
 	}
 	/**
-	 * check if entry contains value taking account of case sensitivity
+	 * check if entry contains the {@code String} subString 
+	 * taking account of case sensitivity
+	 * <br> if subString is null, its contained
+	 * @param subString the contained {@code String}
+	 * @return the {@code Boolean} test result
 	 */
-	public boolean contains(String value) {
-		if (value == null) {
+	public Boolean contains(String subString) {
+		if (subString == null) {
+			return true;
+		}
+		if (isCaseSensitive()) {
+			return entry.contains(subString);
+		}
+		return entry.toUpperCase().contains(subString.toUpperCase());
+	}
+	/**
+	 * check if entry contains the {@code CfgEntry} subString 
+	 * taking account of case sensitivity.
+	 * Both case sensitivity should be true for the test 
+	 * to be case sensitive
+	 * <br> if subString is null, its contained
+	 * @param subString the contained {@code CfgEntry}
+	 * @return the {@code Boolean} test result
+	 */
+	public Boolean contains(Cfg_Entry subString) {
+		if (subString == null) {
+			return true;
+		}
+		if (isCaseSensitive() && subString.isCaseSensitive()) {
+			return entry.contains(subString.toString());
+		}
+		// at least one is not case sensitive
+		return entry.toUpperCase().contains(subString.toString().toUpperCase());
+	}
+	/**
+	 * Check if {@code String} container contains this.entry 
+	 * taking account of case sensitivity
+	 * @param container the containing {@code String}
+	 * @return the {@code Boolean} test result
+	 */
+	public Boolean isContained(String container) {
+		if (container == null) {
 			return false;
 		}
 		if (isCaseSensitive()) {
-			return entry.contains(value);
+			return container.contains(entry);
 		}
-		return entry.toUpperCase().contains(value.toUpperCase());
+		return container.toUpperCase().contains(entry.toUpperCase());
 	}
 	/**
-	 * check if entry contains value taking account of both case sensitivity
+	 * Check if {@code CfgEntry} container contains this.entry 
+	 * taking account of case sensitivity.
+	 * Both case sensitivity should be true for the test 
+	 * to be case sensitive
+	 * @param container the containing {@code CfgEntry}
+	 * @return the {@code Boolean} test result
 	 */
-	public boolean contains(Cfg_Entry value) {
-		if (value == null) {
+	public Boolean isContained(Cfg_Entry container) {
+		if (container == null) {
 			return false;
 		}
-		if (isCaseSensitive() && value.isCaseSensitive()) {
-			return entry.contains(value.toString());
+		if (isCaseSensitive() && container.isCaseSensitive()) {
+			return container.toString().contains(entry);
 		}
 		// at least one is not case sensitive
-		return entry.toUpperCase().contains(value.toString().toUpperCase());
+		return container.toString().toUpperCase().contains(entry.toUpperCase());
 	}
 	/**
-	 * check if value contains entry taking account of case sensitivity
+	 * check if a valid numeric value may be extracted
+	 * @return true if is Numeric
 	 */
-	public boolean isContained(String value) {
-		if (value == null) {
-			return false;
-		}
-		if (isCaseSensitive()) {
-			return value.contains(entry);
-		}
-		return value.toUpperCase().contains(entry.toUpperCase());
-	}
-	/**
-	 * check if value contains entry taking account of both case sensitivity
-	 */
-	public boolean isContained(Cfg_Entry value) {
-		if (value == null) {
-			return false;
-		}
-		if (isCaseSensitive() && value.isCaseSensitive()) {
-			return value.toString().contains(entry);
-		}
-		// at least one is not case sensitive
-		return value.toString().toUpperCase().contains(entry.toUpperCase());
-	}
-	/**
-	 * check for the presence of "[0-9.]+"
-	 */
-	public boolean isNumeric() {
-		return testForNumeric(entry);
+	public Boolean testForNumeric() {
+		return Cfg_Util.testForNumeric(entry);
 	}
 
 	// ==================================================
@@ -249,8 +351,10 @@ public class Cfg_Entry {
     //
 	/**
 	 * Remove the comments and clean
+	 * @return this for chaining purpose
 	 */
-	public void removeComment() {
+	public Cfg_Entry removeComment() {
 		set(CommentLine.removeComment(entry));
+		return this;
 	}
 }
