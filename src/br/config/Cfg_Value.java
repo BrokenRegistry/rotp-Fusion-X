@@ -183,7 +183,7 @@ public class Cfg_Value extends Cfg_Entry{
 	 * {@code Whole number} or {@code Floating Point} 
 	 * @return  boolean
 	 */
-	public boolean isNumeric() { 
+	public Boolean testForNumeric() { 
 		return isDouble(); 
 	}
 	/**
@@ -247,7 +247,7 @@ public class Cfg_Value extends Cfg_Entry{
 	 * @return  boolean
 	 */	
 	@Override
-	public boolean isEmpty() {
+	public Boolean isEmpty() {
 		return(super.isEmpty() 
 				&& whole    == null 
 				&& floating == null 
@@ -508,7 +508,7 @@ public class Cfg_Value extends Cfg_Entry{
 					? value1 : value2.setDataType(value1.getDataType());
 		}
 		// favor FLOATING otherwise
-		if (value1.isNumeric() && value2.isNumeric()) {
+		if (value1.testForNumeric() && value2.testForNumeric()) {
 			return value1.toDouble() >= value2.toDouble()
 					? value1 : value2.setDataType(value1.getDataType());
 		}
@@ -541,7 +541,7 @@ public class Cfg_Value extends Cfg_Entry{
 					? value1 : value2.setDataType(value1.getDataType());
 		}
 		// favor FLOATING otherwise
-		if (value1.isNumeric() && value2.isNumeric()) {
+		if (value1.testForNumeric() && value2.testForNumeric()) {
 			return value1.toDouble() <= value2.toDouble()
 					? value1 : value2.setDataType(value1.getDataType());
 		}
@@ -566,7 +566,7 @@ public class Cfg_Value extends Cfg_Entry{
 	 * @param  caseSensitive  the new case sensitivity value value
 	 */
 	@Override
-	public void set(String entry, boolean caseSensitive) {
+	public void set(String entry, Boolean caseSensitive) {
 		reset();
 		init(entry, caseSensitive);
 	}
@@ -585,7 +585,7 @@ public class Cfg_Value extends Cfg_Entry{
 	 * @param  caseSensitive  the new case sensitivity value value
 	 */
 	@Override
-	public void set(Cfg_Entry entry, boolean caseSensitive) {
+	public void set(Cfg_Entry entry, Boolean caseSensitive) {
 		reset();
 		init(entry, caseSensitive);
 	}

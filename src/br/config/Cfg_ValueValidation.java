@@ -282,7 +282,7 @@ public class Cfg_ValueValidation extends Cfg_Value{
 				isNumeric = true; // all parameters must be numeric
 				for ( int i = 0; i < NbRandomParameters; i++) {
 					numericList[i] = new Cfg_Value(randomParameterList[i]);
-					isNumeric &= numericList[i].isNumeric();
+					isNumeric &= numericList[i].testForNumeric();
 				}
 			}
 		}
