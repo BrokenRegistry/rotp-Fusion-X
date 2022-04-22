@@ -28,10 +28,9 @@ import static br.config.Cfg_Util.*;
  *
  */
 class Cfg_UtilTest {
-	@Test
 	void template() {
 		assertEquals(true, true
-				, "should have been: true");
+				, "should have been: «true»");
 	}
     // ==================================================
     // Generic Converters with default values
