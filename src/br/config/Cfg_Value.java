@@ -15,29 +15,58 @@
 
 package br.config;
 
-import java.util.concurrent.ThreadLocalRandom;
 import static br.config.Cfg_Util.*;
 
 /**
- * Numeric Conversion without the need to throws and catch errors
+ * String, Boolean and Numeric management and conversion.
+ * No exceptions are thrown, if a problem happen: null will be returned.
  * not the type then null.
  */	
 public class Cfg_Value extends Cfg_Entry{
-	public static enum DataType {STRING, BOOLEAN, WHOLE, FLOATING, UNKNOWN};
-	private Long    whole;
-	private Double  floating;
-	private Boolean bool;
+	/**
+	 * The most probable type of this value 
+	 * Could be used by toString and to Print methods
+	 * Could be useful to optimize random generation 
+	 */
+	public static enum DataType {/**
+	 * Probably only a simple string
+	 */
+	STRING, /**
+	 * Probably a binary type YES/NO true/false Pass/Fail
+	 */
+	BOOLEAN, /**
+	 * Probably a whole number (managed as Long)
+	 */
+	WHOLE, /**
+	 * Probably a Floating point number (managed as Double)
+	 */
+	FLOATING, /**
+	 * ... Do your best!
+	 */
+	UNKNOWN};
+	
+	// from Cfg_Entry: 	
+	// private String entry = "";
+	// private Boolean caseSensitive = null;
+	// extended with:
+	private Long    whole = null;
+	private Double  floating = null;
+	private Boolean bool = null;
 	private DataType dataType = DataType.UNKNOWN;
+	private DataType origin = DataType.UNKNOWN;
 
 	// ==================================================
     // Constructors
     //
+	/**
+	 * Create new empty {@code CfgValue}
+	 */
 	public Cfg_Value() {}
 	/**
 	 * Create new {@code CfgValue} with specified {@code DataType}
 	 * and set a new {@code String} entry
 	 * @param  entry  original {@code String} value
-	 * @param  datatype specified {@code DataType}
+	 * @param  dataType specified {@code DataType}
 	 */
 	public Cfg_Value(String entry, DataType dataType) {
 		init(entry);
@@ -47,9 +76,9 @@ public class Cfg_Value extends Cfg_Entry{
 	 * Create new {@code CfgValue} with specified {@code DataType}
 	 * and set a new {@code double} value
 	 * @param  value  original {@code double} value
-	 * @param  datatype specified {@code DataType}
+	 * @param  dataType specified {@code DataType}
 	 */
-	public Cfg_Value(double value, DataType dataType) {
+	public Cfg_Value(Double value, DataType dataType) {
 		init(value);
 		setDataType(dataType);
 	}
@@ -57,9 +86,9 @@ public class Cfg_Value extends Cfg_Entry{
 	 * Create new {@code CfgValue} with specified {@code DataType} 
 	 * and set a new {@code float} value
 	 * @param  value  original {@code float} value
-	 * @param  datatype specified {@code DataType}
+	 * @param  dataType specified {@code DataType}
 	 */
-	public Cfg_Value(float value, DataType dataType) {
+	public Cfg_Value(Float value, DataType dataType) {
 		init(value);
 		setDataType(dataType);
 	}
@@ -67,9 +96,9 @@ public class Cfg_Value extends Cfg_Entry{
 	 * Create new {@code CfgValue}  with specified {@code DataType} 
 	 * and set a new {@code long} value
 	 * @param  value  original {@code long} value
-	 * @param  datatype specified {@code DataType}
+	 * @param  dataType specified {@code DataType}
 	 */
-	public Cfg_Value(long value, DataType dataType) {
+	public Cfg_Value(Long value, DataType dataType) {
 		init(value);
 		setDataType(dataType);
 	}
@@ -77,9 +106,9 @@ public class Cfg_Value extends Cfg_Entry{
 	 * Create new {@code CfgValue} with specified {@code DataType} 
 	 * and set a new {@code int} value
 	 * @param  value  original {@code int} value
-	 * @param  datatype specified {@code DataType}
+	 * @param  dataType specified {@code DataType}
 	 */
-	public Cfg_Value(int value, DataType dataType) {
+	public Cfg_Value(Integer value, DataType dataType) {
 		init(value);
 		setDataType(dataType);
 	}
@@ -87,9 +116,9 @@ public class Cfg_Value extends Cfg_Entry{
 	 * Create new {@code CfgValue} with specified {@code DataType} 
 	 * and set a new {@code short} value
 	 * @param  value  original {@code short} value
-	 * @param  datatype specified {@code DataType}
+	 * @param  dataType specified {@code DataType}
 	 */
-	public Cfg_Value(short value, DataType dataType) {
+	public Cfg_Value(Short value, DataType dataType) {
 		init(value);
 		setDataType(dataType);
 	}
@@ -97,9 +126,9 @@ public class Cfg_Value extends Cfg_Entry{
 	 * Create new {@code CfgValue} with specified {@code DataType}
 	 * and set a new {@code byte} value
 	 * @param  value  original {@code byte} value
-	 * @param  datatype specified {@code DataType}
+	 * @param  dataType specified {@code DataType}
 	 */
-	public Cfg_Value(byte value, DataType dataType) {
+	public Cfg_Value(Byte value, DataType dataType) {
 		init(value);
 		setDataType(dataType);
 	}
@@ -107,9 +136,11 @@ public class Cfg_Value extends Cfg_Entry{
 	 * Create new {@code CfgValue} with specified {@code DataType} 
 	 * and set a new {@code boolean} value
 	 * @param  value  original {@code boolean} value
-	 * @param  datatype specified {@code DataType}
+	 * @param  dataType specified {@code DataType}
 	 */
-	public Cfg_Value(boolean value, DataType dataType) {
+	public Cfg_Value(Boolean value, DataType dataType) {
+		init(value);
+		setDataType(dataType);
 	}
 	/**
 	 * Create new {@code CfgValue} with specified {@code DataType}
@@ -124,7 +155,7 @@ public class Cfg_Value extends Cfg_Entry{
 	 * and set a new {@code double} value
 	 * @param  value  original {@code double} value
 	 */
-	public Cfg_Value(double value) {
+	public Cfg_Value(Double value) {
 		init(value);
 	}
 	/**
@@ -132,7 +163,7 @@ public class Cfg_Value extends Cfg_Entry{
 	 * and set a new {@code float} value
 	 * @param  value  original {@code float} value
 	 */
-	public Cfg_Value(float value) {
+	public Cfg_Value(Float value) {
 		init(value);
 	}
 	/**
@@ -140,7 +171,7 @@ public class Cfg_Value extends Cfg_Entry{
 	 * and set a new {@code long} value
 	 * @param  value  original {@code long} value
 	 */
-	public Cfg_Value(long value) {
+	public Cfg_Value(Long value) {
 		init(value);
 	}
 	/**
@@ -148,7 +179,7 @@ public class Cfg_Value extends Cfg_Entry{
 	 * and set a new {@code int} value
 	 * @param  value  original {@code int} value
 	 */
-	public Cfg_Value(int value) {
+	public Cfg_Value(Integer value) {
 		init(value);
 	}
 	/**
@@ -156,7 +187,7 @@ public class Cfg_Value extends Cfg_Entry{
 	 * and set a new {@code short} value
 	 * @param  value  original {@code short} value
 	 */
-	public Cfg_Value(short value) {
+	public Cfg_Value(Short value) {
 		init(value);
 	}
 	/**
@@ -164,7 +195,7 @@ public class Cfg_Value extends Cfg_Entry{
 	 * and set a new {@code byte} value
 	 * @param  value  original {@code byte} value
 	 */
-	public Cfg_Value(byte value) {
+	public Cfg_Value(Byte value) {
 		init(value);
 	}
 	/**
@@ -172,82 +203,84 @@ public class Cfg_Value extends Cfg_Entry{
 	 * and set a new {@code boolean} value
 	 * @param  value  original {@code boolean} value
 	 */
-	public Cfg_Value(boolean value) {
+	public Cfg_Value(Boolean value) {
 		init(value);
 	}
     // ==================================================
     // Testers
     //
 	/**
-	 * Check if the value returned as numeric 
+	 * Check if the value may be returned as numeric 
 	 * {@code Whole number} or {@code Floating Point} 
-	 * @return  boolean
+	 * @return  true if {@code double} compatible
 	 */
+	@Override
 	public Boolean testForNumeric() { 
 		return isDouble(); 
 	}
 	/**
 	 * Check if the value may be returned as {@code Whole Number}
-	 * @return  boolean
+	 * @return  true if {@code long} compatible
 	 */
 	public boolean isWhole() { 
 		return isLong(); 
 	}
 	/**
 	 * Check if the value may be returned as {@code double}
-	 * @return  boolean
+	 * @return  true if {@code double} compatible
 	 */
 	public boolean isDouble() {
 		return toDouble() != null;
 	}
 	/**
 	 * Check if the value may be returned as {@code float}
-	 * @return  boolean
+	 * @return  true if {@code float} compatible
 	 */
 	public boolean isFloat() {
 		return toFloat() != null;
 	}
 	/**
 	 * Check if the value may be returned as {@code long}
-	 * @return  boolean
+	 * @return  true if {@code long} compatible
 	 */
 	public boolean isLong() { 
 		return toLong() != null; 
 	}
 	/**
 	 * Check if the value may be returned as {@code int}
-	 * @return  boolean
+	 * @return  true if {@code int} compatible
 	 */
 	public boolean isInteger() { 
 		return toInteger() != null; 
 	}
 	/**
 	 * Check if the value may be returned as {@code short}
-	 * @return  boolean
+	 * @return  true if {@code short} compatible
 	 */
 	public boolean isShort() {
 		return toShort() != null; 
 	}
 	/**
 	 * Check if the value may be returned as {@code byte}
-	 * @return  boolean
+	 * @return  true if {@code byte} compatible
 	 */
 	public boolean isByte() { 
 		return toByte() != null;
 	}
 	/**
-	 * Check if the value may be returned as {@code boolean}
-	 * @return  boolean
+	 * Check if the value may be returned as true if {@code long} compatible
+	 * @return  true if {@code boolean} compatible
 	 */
 	public boolean isBoolean() { 
 		return toBoolean() != null;
 	}
 	/**
 	 * Check if any value may be returned
-	 * @return  boolean
+	 * @return  true if no values have been set,
+	 *  only empty {@code String} may be returned
 	 */	
 	@Override
-	public Boolean isEmpty() {
+	public boolean isEmpty() {
 		return(super.isEmpty() 
 				&& whole    == null 
 				&& floating == null 
@@ -257,16 +290,132 @@ public class Cfg_Value extends Cfg_Entry{
     // Getters
     //
 	/**
-	 * return value as Cfg_Value
+	 * Constructor for cloning purpose
+	 * @param e this.Cfg_Entry
+	 * @param w this.whole
+	 * @param f this.floating
+	 * @param b this.bool
+	 * @param t this.dataType
+	 * @param o this.origin
 	 */
-	protected Cfg_Value getCfg_Value() { 
+	private Cfg_Value(
+			Cfg_Entry e, Long w, Double f, Boolean b
+			, DataType t, DataType o) {
+		set(e);
+		whole = w;
+		floating = f;
+		bool = b;
+		dataType = t;
+		origin = o;
+	}
+	/**
+	 * Ask for a cloned {@code Cfg_Value}
+	 * @return the clone {@code Cfg_Value}
+	 */
+	@Override
+	public Cfg_Value clone() { 
+		return new Cfg_Value(
+				getCfg_Value(), whole, floating, bool, dataType, origin);
+	}
+	/**
+	 * Ask for a copy of superclass
+	 * @return value as  {@code Cfg_Value} (used by subclasses)
+	 */
+	public Cfg_Value getCfg_Value() { 
 		return this;
+	}
+	/**
+	 * get the entry as String
+	 * @return  {@code String}
+	 */
+	@Override
+	public String get() { 
+		return toString(""); // never null
+	}
+	/**
+	 * Convert the value to {@code String} ready to be printed
+	 * @return  {@code String}
+	 */
+	@Override
+	public String toPrint() { 
+		return toString(""); // never null
+	}
+	/**
+	 * Convert the value to {@code String}
+	 * @return  {@code String}
+	 */
+	@Override
+	public String toString() { 
+		return toString(""); // never null
+	}
+	/**
+	 * Convert the value to {@code String}
+	 * @param onEmpty value to return if empty
+	 * @return  {@code String} or onEmpty if none
+	 */
+	public String toString(String onEmpty) { 
+		if (isEmpty()) {
+			return onEmpty;
+		}
+		// Go for User preference if possible
+		switch(dataType) {
+		case STRING:
+			if (!super.isEmpty()) {
+				return super.get();
+			}
+			break;
+		case BOOLEAN:
+			if (isBoolean()) {
+				return toYesNoString(bool);
+			}
+			break;
+		case FLOATING:
+				if (isDouble()) {
+					return floating.toString();
+				}
+				break;
+		case WHOLE:
+			if (isLong()) {
+				return whole.toString();
+			}
+			break;
+		default:
+			break;
+		}
+		// No valid DataType... Go for Origin
+		switch(origin) {
+		case STRING:
+			if (!super.isEmpty()) {
+				return super.get();
+			}
+			break;
+		case BOOLEAN:
+			if (isBoolean()) {
+				return toYesNoString(bool);
+			}
+			break;
+		case FLOATING:
+				if (isDouble()) {
+					return floating.toString();
+				}
+				break;
+		case WHOLE:
+			if (isLong()) {
+				return whole.toString();
+			}
+			break;
+		default:
+			break;
+		}
+		// This should not happen !!!
+		// But let the game continue...
+		return onEmpty; 
 	}
 	/**
 	 * Convert the value to {@code double}
 	 * @return  value or null if none or not compatible
 	 */
-	public Double toDouble()  { 
+	public Double toDouble() { 
 		return toDouble((Double)null); 
 	}
 	/**
@@ -285,11 +434,11 @@ public class Cfg_Value extends Cfg_Entry{
 			floating = Double.valueOf(whole);
 			return floating; 
 		}
-		// if (bool != null) {
-		// 	return bool ? 1.0 : 0.0; 
-		// }
 		floating = toFiniteDouble(super.get());
-		return floating == null ? onEmpty : floating;
+		if (floating == null) {
+			return onEmpty;
+		}
+		return  floating;
 	}
 	/**
 	 * Convert the value to {@code float}
@@ -305,10 +454,12 @@ public class Cfg_Value extends Cfg_Entry{
 	 */
 	public Float toFloat(Float onEmpty) {
 		Double dbl = toDouble((Double)null);
-		return (dbl != null 
+		if(dbl != null 
 				&& dbl <= Float.MAX_VALUE 
-				&& dbl >= -Float.MAX_VALUE)
-				? dbl.floatValue() : onEmpty;
+				&& dbl >= -Float.MAX_VALUE ) {
+			return dbl.floatValue();
+		}
+		return onEmpty;
 	}
 	/**
 	 * Convert the value to {@code Long}
@@ -335,12 +486,12 @@ public class Cfg_Value extends Cfg_Entry{
 			whole = Math.round(floating);
 			return whole; 
 		}
-		// if (bool != null) {
-		// 	return bool ? 1L : 0; 
-		// }
 		whole = Cfg_Util.toLong(super.get());
-		return whole == null ? onEmpty : whole;
+		if (whole == null) {
+			return onEmpty;
 		}
+		return  whole;
+	}
 	/**
 	 * Convert the value to {@code int}
 	 * @return  value or null if none or not compatible
@@ -410,7 +561,8 @@ public class Cfg_Value extends Cfg_Entry{
 	}
 	/**
 	 * Convert the value to {@code boolean}
-	 * @return  value or null if none or not compatible
+	 * @param onEmpty default value to return
+	 * @return  value or onEmpty if none or not compatible
 	 */
 	public Boolean toBoolean(Boolean onEmpty) {
 		if (isEmpty()) {
@@ -420,8 +572,11 @@ public class Cfg_Value extends Cfg_Entry{
 			return bool; 
 		}
 		bool = Cfg_Util.toBoolean(super.get());
-		return bool == null ? onEmpty : bool;
+		if (bool == null) {
+			return onEmpty;
 		}
+		return bool;
+	}
 	/**
 	 * get the {@code DataType} value
 	 * @return dataType
@@ -453,34 +608,35 @@ public class Cfg_Value extends Cfg_Entry{
 												, max.toDouble()))
 								.setDataType(DataType.FLOATING);
 		}
-		return null;
+		return new Cfg_Value();
 	}
 	/**
-	 * Compare the two numerical value and return the smallest one
+	 * Compare the two numerical value and keep the smallest one
 	 * Favor the {@code DataType} if one
 	 * @param  min the value to compare
 	 * @return the smallest value or this if equal
 	 */
 	public Cfg_Value validateMin(Cfg_Value min) {
-		return min(this, min);
+		return set(min(this, min));
 	}
 	/**
-	 * Compare the two numerical value and return the biggest one
+	 * Compare the two numerical value and keep the biggest one
 	 * Favor the {@code DataType} if one
-	 * @param  min the value to compare
+	 * @param  max the value to compare
 	 * @return the biggest value or this if equal
 	 */
 	public Cfg_Value validateMax(Cfg_Value max) {
-		return max(this, max);
+		return set(max(this, max));
 	}
 	/**
 	 * Compare this value with the two other and keep it inside the range
 	 * Favor the {@code DataType} if one
 	 * @param  min the value to compare
+	 * @param  max the value to compare
 	 * @return the biggest value or this if equal
 	 */
 	public  Cfg_Value validateMinMax(Cfg_Value min, Cfg_Value max) {
-		return validateMin(min).validateMax(max);
+		return validateMin(max).validateMax(min);
 	}
 	/**
 	 * Compare the two numerical value and return the biggest one
@@ -493,27 +649,32 @@ public class Cfg_Value extends Cfg_Entry{
 	public static Cfg_Value max(Cfg_Value value1, Cfg_Value value2) {
 		// If one is null, return the other, return null if both are null
 		if (value1 == null) {
-			return value2;
+			return value2.clone();
 		}
 		if (value2 == null) {
-			return value1;
+			return value1.clone();
 		}
 		// favor WHOLE dataType if selected so
-		if ((value1.getDataType() == DataType.WHOLE
-				|| value1.getDataType() == DataType.WHOLE
-				)
+		if (value1.getDataType() == DataType.WHOLE
 				&& value1.isWhole()
 				&& value2.isWhole()) {
-			return value1.toLong() >= value2.toLong()
-					? value1 : value2.setDataType(value1.getDataType());
+			if (value1.toLong() >= value2.toLong()) {
+				return value1.clone();
+			}
+			return value2.clone().setDataType(value1.getDataType());
 		}
 		// favor FLOATING otherwise
 		if (value1.testForNumeric() && value2.testForNumeric()) {
-			return value1.toDouble() >= value2.toDouble()
-					? value1 : value2.setDataType(value1.getDataType());
+			if (value1.toDouble() >= value2.toDouble()) {
+				return value1.clone();
+			}
+			return value2.clone().setDataType(value1.getDataType());
+		}
+		if (value2.testForNumeric()) {
+			return value2.clone().setDataType(value1.getDataType());
 		}
 		// Not Numeric... Return the first one!
-		return value1;
+		return value1.clone();
 	}
 	/**
 	 * Compare the two numerical value and return the smallest one
@@ -526,37 +687,48 @@ public class Cfg_Value extends Cfg_Entry{
 	public static Cfg_Value min(Cfg_Value value1, Cfg_Value value2) {
 		// If one is null, return the other, return null if both are null
 		if (value1 == null) {
-			return value2;
+			return value2.clone();
 		}
 		if (value2 == null) {
-			return value1;
+			return value1.clone();
 		}
 		// favor WHOLE dataType if selected so
-		if ((value1.getDataType() == DataType.WHOLE
-				|| value1.getDataType() == DataType.WHOLE
-				)
+		if (value1.getDataType() == DataType.WHOLE
 				&& value1.isWhole()
 				&& value2.isWhole()) {
-			return value1.toLong() <= value2.toLong()
-					? value1 : value2.setDataType(value1.getDataType());
+			if (value1.toLong() <= value2.toLong()) {
+				return value1.clone();
+			}
+			return value2.clone().setDataType(value1.getDataType());
 		}
 		// favor FLOATING otherwise
 		if (value1.testForNumeric() && value2.testForNumeric()) {
-			return value1.toDouble() <= value2.toDouble()
-					? value1 : value2.setDataType(value1.getDataType());
+			if(value1.toDouble() <= value2.toDouble()) {
+				return value1.clone();
+			}
+			return value2.clone().setDataType(value1.getDataType());
+		}
+		if (value2.testForNumeric()) {
+			return value2.clone().setDataType(value1.getDataType());
 		}
 		// Not Numeric... Return the first one!
-		return value1;
+		return value1.clone();
 	}
 	// ==================================================
     // Setters
     //
+	private void setOrigin(DataType origin){
+		this.origin = origin;
+	}
 	/**
 	 * Set new {@code DataType} value
 	 * @param  dataType  the new {@code DataType} value
 	 * @return this for chaining purpose
 	 */
-	public Cfg_Value setDataType(DataType dataType) {
+ 	public Cfg_Value setDataType(DataType dataType) {
+ 		if (dataType == null) {
+ 			dataType = DataType.UNKNOWN;
+ 		}
 		this.dataType = dataType;
 		return this;
 	}
@@ -564,95 +736,116 @@ public class Cfg_Value extends Cfg_Entry{
 	 * Set new {@code String} value for {@code CfgValue}
 	 * @param  entry  the new {@code String} value
 	 * @param  caseSensitive  the new case sensitivity value value
+	 * @return this for chaining purpose
 	 */
 	@Override
-	public void set(String entry, Boolean caseSensitive) {
+	public Cfg_Value set(String entry, Boolean caseSensitive) {
 		reset();
 		init(entry, caseSensitive);
+		return this;
 	}
 	/**
 	 * Set new {@code String} value for {@code CfgValue}
 	 * @param  entry  the new {@code String} value
-	 */
+	 * @return this for chaining purpose	 */
 	@Override
-	public void set(String entry) {
+	public Cfg_Value set(String entry) {
 		reset();
 		init(entry);
+		return this;
 	}
 	/**
 	 * Set new {@code Cfg_Entry} value for {@code CfgValue}
 	 * @param  entry  the new {@code Cfg_Entry} value
 	 * @param  caseSensitive  the new case sensitivity value value
+	 * @return this for chaining purpose
 	 */
 	@Override
-	public void set(Cfg_Entry entry, Boolean caseSensitive) {
+	public Cfg_Value set(Cfg_Entry entry, Boolean caseSensitive) {
 		reset();
 		init(entry, caseSensitive);
+		return this;
 	}
 	/**
 	 * Set new {@code Cfg_Entry} value for {@code CfgValue}
 	 * @param  entry  the new {@code Cfg_Entry} value
+	 * @return this for chaining purpose
 	 */
 	@Override
-	public void set(Cfg_Entry entry) {
+	public Cfg_Value set(Cfg_Entry entry) {
 		reset();
 		init(entry);
+		return this;
 	}
 	/**
 	 * Set new {@code Double} value for {@code CfgValue}
 	 * @param  value  the new {@code Double} value
+	 * @return this for chaining purpose
 	 */
-	public void set(Double value) {
+	public Cfg_Value set(Double value) {
 		reset();
 		init(value);
+		return this;
 	}
 	/**
 	 * Set new {@code Float} value for {@code CfgValue}
 	 * @param  value  the new {@code Float} value
+	 * @return this for chaining purpose
 	 */
-	public void set(Float value) {
+	public Cfg_Value set(Float value) {
 		reset();
 		init(value);
+		return this;
 	}
 	/**
 	 * Set new {@code Long} value for {@code CfgValue}
 	 * @param  value  the new {@code Long} value
+	 * @return this for chaining purpose
 	 */
-	public void set(Long value) {
+	public Cfg_Value set(Long value) {
 		reset();
 		init(value);
+		return this;
 	}
 	/**
 	 * Set new {@code Integer} value for {@code CfgValue}
 	 * @param  value  the new {@code Integer} value
+	 * @return this for chaining purpose
 	 */
-	public void set(Integer value) {
+	public Cfg_Value set(Integer value) {
 		reset();
 		init(value);
+		return this;
 	}
 	/**
 	 * Set new {@code Short} value for {@code CfgValue}
 	 * @param  value  the new {@code Short} value
+	 * @return this for chaining purpose
 	 */
-	public void set(Short value) {
+	public Cfg_Value set(Short value) {
 		reset();
 		init(value);
+		return this;
 	}
 	/**
 	 * Set new {@code Byte} value for {@code CfgValue}
 	 * @param  value  the new {@code Byte} value
+	 * @return this for chaining purpose
 	 */
-	public void set(Byte value) {
+	public Cfg_Value set(Byte value) {
 		reset();
 		init(value);
+		return this;
 	}
 	/**
 	 * Set new {@code Boolean} value for {@code CfgValue}
 	 * @param  value  the new {@code Boolean} value
+	 * @return this for chaining purpose
 	 */
-	public void set(Boolean value) {
+	public Cfg_Value set(Boolean value) {
 		reset();
 		init(value);
+		return this;
 	}
 	// ==================================================
     // Initialization Methods
@@ -665,35 +858,46 @@ public class Cfg_Value extends Cfg_Entry{
 	}
 	private void init(String source) {
 		super.set(source);
+		setOrigin(DataType.STRING);
 	}
-	private void init(String source, boolean caseSensitive) {
+	private void init(String source, Boolean caseSensitive) {
 		super.set(source, caseSensitive);
+		setOrigin(DataType.STRING);
 	}
 	private void init(Cfg_Entry source) {
 		super.set(source);
+		setOrigin(DataType.STRING);
 	}
-	private void init(Cfg_Entry source, boolean caseSensitive) {
+	private void init(Cfg_Entry source, Boolean caseSensitive) {
 		super.set(source, caseSensitive);
+		setOrigin(DataType.STRING);
 	}
 	private void init(Double value) {
 		floating = toFiniteDouble(value);
+		setOrigin(DataType.FLOATING);
 	}
 	private void init(Float value) {
 		init(Double.valueOf(value));
+		setOrigin(DataType.FLOATING);
 	}
 	private void init(Long value) {
 		whole = value;
+		setOrigin(DataType.WHOLE);
 	}
 	private void init(Integer value) {
 		init(Long.valueOf(value));
+		setOrigin(DataType.WHOLE);
 	}
 	private void init(Short value) {
 		init(Long.valueOf(value));
+		setOrigin(DataType.WHOLE);
 	}
 	private void init(Byte value) {
 		init(Long.valueOf(value));
+		setOrigin(DataType.WHOLE);
 	}
-	private void init(boolean value) {
+	private void init(Boolean value) {
 		bool = value;
+		setOrigin(DataType.BOOLEAN);
 	}
 }
