@@ -328,6 +328,14 @@ public class Cfg_Value extends Cfg_Entry{
 	 * get the entry as String
 	 * @return  {@code String}
 	 */
+	/**
+	 * Ask for entry as {@code Comment String}
+	 * @return the {@code String}
+	 */
+	@Override
+	public String toComment() { 
+		return I_Comment.toComment(this);
+	}
 	@Override
 	public String get() { 
 		return toString(""); // never null

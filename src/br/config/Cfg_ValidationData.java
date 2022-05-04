@@ -20,6 +20,10 @@ import java.util.List;
 
 import br.config.Cfg_Value.DataType;
 
+/**
+ * @author BrokenRegistry
+ *
+ */
 public class Cfg_ValidationData {
 	
 	private List<ValidationElement> validationList = new ArrayList<ValidationElement>();

@@ -21,7 +21,7 @@ import static br.config.Cfg_Util.*;
  * The internal parameter will never be null
  * and will be stripped
  */
-public class Cfg_Entry implements I_Prt{
+public class Cfg_Entry implements I_Prt, I_Comment{
 
 	
 	private String entry = "";
@@ -158,8 +158,16 @@ public class Cfg_Entry implements I_Prt{
 	 * Ask for this as {@code CfgEntry} (used by sub classes)
 	 * @return this
 	 */
-	public Cfg_Entry getCfg_Entry() { 
+	protected Cfg_Entry getCfg_Entry() { 
 		return this;
+	}
+	/**
+	 * Ask for entry as {@code Comment String}
+	 * @return the {@code String}
+	 */
+	@Override
+	public String toComment() { 
+		return I_Comment.toComment(this);
 	}
 	/**
 	 * Ask for entry as {@code String}
