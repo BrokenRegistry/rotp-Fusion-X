@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class Abstract_Entry_ValidTest {
+class Abstract_EntryValidTest {
 
 	Valid_ConfigAction vd = new Valid_ConfigAction();
 	Entry_Test_Valid_String entry  = new Entry_Test_Valid_String(vd);
@@ -138,7 +138,7 @@ class Abstract_Entry_ValidTest {
 				, "should have been «abc»");
 	}
 	
-	class Entry_Test_Valid_String extends Abstract_Entry_Valid<String> {
+	class Entry_Test_Valid_String extends Abstract_EntryValid<String> {
 	    // ==================================================
 	    // Constructors
 	    //
@@ -153,7 +153,7 @@ class Abstract_Entry_ValidTest {
 		 * @param value the {@code String} value
 		 */
 
-		public Entry_Test_Valid_String(Abstract_ValidData<String> validationData, String value) {
+		Entry_Test_Valid_String(Abstract_ValidData<String> validationData, String value) {
 			super(validationData, value);
 		}
 
@@ -169,15 +169,7 @@ class Abstract_Entry_ValidTest {
 			return getUserEntry();
 		}
 		@Override
-		String entryValidation() {
-			return getUserEntry();
-		}
-		@Override
-		String randomWithoutParameters() {
-			return getUserEntry();
-		}
-		@Override
-		String randomWithParameters(String[] parameters) {
+		public String toString() {
 			return getUserEntry();
 		}
 	}

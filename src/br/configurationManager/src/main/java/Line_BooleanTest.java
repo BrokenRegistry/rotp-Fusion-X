@@ -143,11 +143,4 @@ class Line_BooleanTest {
 				.getValueAsEntry().getValue()
 				, "should have been true");
 	}
-	
-	@Test
-	void getCommentAsEntry_None() {
-		assertEquals("comment", new Line_Boolean("key : YES # comment")
-				.getCommentAsEntry().getValue()
-				, "should have been «comment»");
-	}
 }

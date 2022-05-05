@@ -23,28 +23,41 @@ class Line_Integer extends Abstract_Line<Integer>{
    	// --------------------------------------------------------------
     // Constructors
     //
-	Line_Integer() {}
+	Line_Integer() {
+		super(new Valid_Integer());
+	}
+
+	/**
+	 * @param validationData {@code Valid_Integer} validation parameters
+	 */
+	Line_Integer(Valid_Integer validationData) {
+		super(validationData);
+	}
 
 	/**
 	 * @param line {@code String} new Setting Line from config file
 	 */
 	Line_Integer(String line) {
-		super(line);
+		super(new Valid_Integer(), line);
+	}
+	/**
+	 * @param validationData {@code Valid_Integer} validation parameters
+	 * @param line {@code String} new Setting Line from config file
+	 */
+	Line_Integer(Valid_Integer validationData, String line) {
+		super(validationData, line);
 	}
 
 	// ==================================================
     // Abstract Methods Declaration
     //
 	/**
-	 * ask for value as {@code ValueClass}
+	 * Value Initialization with Validation Parameters 
 	 * @return the value
 	 */
-	@Override Entry_Integer stringToEntry(String entryValue) {
-		return new Entry_Integer(entryValue);
-	}
-
-	@Override Entry_Integer valueToEntry(Integer entryValue) {
-		return new Entry_Integer(entryValue);
+	@Override EntryValid_Integer InitValidationData(
+			Abstract_ValidData<Integer> validationData) {
+		return new EntryValid_Integer(validationData);
 	}
 
 	// ==================================================

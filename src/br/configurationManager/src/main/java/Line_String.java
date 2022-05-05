@@ -20,31 +20,47 @@ package br.configurationManager.src.main.java;
  */
 class Line_String extends Abstract_Line<String>{
 
-	// ==================================================
-    // Abstract Methods Declaration
-    //
-	/**
-	 * ask for value as {@code ValueClass}
-	 * @return the value
-	 */
-	@Override Entry_String stringToEntry(String entryValue) {
-		return new Entry_String(entryValue);
-	}
-
-	@Override Entry_String valueToEntry(String entryValue) {
-		return new Entry_String(entryValue);
-	}
-
    	// --------------------------------------------------------------
     // Constructors
     //
-	Line_String() {}
+	Line_String() {
+		super(new Valid_String());
+		setValue("");
+	}
+
+	/**
+	 * @param validationData {@code Valid_String} validation parameters
+	 */
+	Line_String(Valid_String validationData) {
+		super(validationData);
+		setValue("");
+	}
 
 	/**
 	 * @param line {@code String} new Setting Line from config file
 	 */
 	Line_String(String line) {
-		super(line);
+		super(new Valid_String(), line);
+	}
+	
+	/**
+	 * @param validationData {@code Valid_String} validation parameters
+	 * @param line {@code String} new Setting Line from config file
+	 */
+	Line_String(Valid_String validationData, String line) {
+		super(validationData, line);
+	}
+
+	// ==================================================
+    // Abstract Methods Declaration
+    //
+	/**
+	 * Value Initialization with Validation Parameters 
+	 * @return the value
+	 */
+	@Override EntryValid_String InitValidationData(
+			Abstract_ValidData<String> validationData) {
+		return new EntryValid_String(validationData);
 	}
 
 	// ==================================================

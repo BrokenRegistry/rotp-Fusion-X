@@ -37,18 +37,35 @@ abstract class Abstract_Line <ValueClass> extends Abstract_ToPrint {
     // ------------------------------------------------------------------------
 	// Variables Properties
     //
-	private Entry_String entryKey = new Entry_String();
-	private Abstract_Entry<ValueClass> entryValue;
-	private Entry_String entryComment = new Entry_String();
+	private EntryValid_String entryKey = new EntryValid_String(new Valid_String());
+	private Abstract_EntryValid<ValueClass> entryValue;
+	private String comment = null;
 
 	// --------------------------------------------------------------
     // Constructors
     //
-	Abstract_Line() {
-		initValue("");
+	Abstract_Line(Abstract_ValidData<ValueClass> validationData) {
+		entryValue = InitValidationData(validationData);
+		entryKey   = new EntryValid_String(new Valid_String());
+	}
+	
+	Abstract_Line(Abstract_ValidData<ValueClass> validationData,
+			Valid_String keyValidation) {
+		entryValue = InitValidationData(validationData);
+		entryKey   = new EntryValid_String(keyValidation);
 	}
 
-	Abstract_Line(String line) {
+	Abstract_Line(Abstract_ValidData<ValueClass> validationData, String line) {
+		entryValue = InitValidationData(validationData);
+		entryKey   = new EntryValid_String(new Valid_String());
+		newLine(line);
+	}
+
+	Abstract_Line(Abstract_ValidData<ValueClass> validationData,
+			Valid_String keyValidation,
+			String line) {
+		entryValue = InitValidationData(validationData);
+		entryKey   = new EntryValid_String(keyValidation);
 		newLine(line);
 	}
 
@@ -56,22 +73,17 @@ abstract class Abstract_Line <ValueClass> extends Abstract_ToPrint {
     // Abstract Methods Declaration
     //
 	/**
-	 * ask for value as {@code ValueClass}
+	 * Initialize value as {@code EntryValid<ValueClass>}
 	 * @return the value
 	 */
-	abstract Abstract_Entry<ValueClass> stringToEntry(String entryValue);
-
-	/**
-	 * ask for value as {@code ValueClass}
-	 * @return the value
-	 */
-	abstract Abstract_Entry<ValueClass> valueToEntry(ValueClass entryValue);
+	abstract Abstract_EntryValid<ValueClass> InitValidationData(
+			Abstract_ValidData<ValueClass> validationData);
 
 	// --------------------------------------------------------------
 	// Setters
 	//
 	private void initValue(String newValue) {
-		entryValue = stringToEntry(newValue);
+		entryValue.set(newValue);
 	}
 
 	Abstract_Line<ValueClass> newLine(String line) {
@@ -106,7 +118,7 @@ abstract class Abstract_Line <ValueClass> extends Abstract_ToPrint {
 	 * @return current object to allow chaining
 	 */
 	Abstract_Line<ValueClass> setValue(ValueClass newValue) {
-		entryValue = valueToEntry(newValue);
+		entryValue.setValue(newValue);
 		return this;
 	}
 
@@ -116,7 +128,7 @@ abstract class Abstract_Line <ValueClass> extends Abstract_ToPrint {
 	 * @return current object to allow chaining
 	 */
 	Abstract_Line<ValueClass> setComment(String newComment) {
-		entryComment.set(newComment);
+		comment = newComment;
 		return this;
 	}
 	
@@ -154,31 +166,24 @@ abstract class Abstract_Line <ValueClass> extends Abstract_ToPrint {
 	}
 
 	/**
-	 * @return the entryComment value as {@code String}
+	 * @return the comment value as {@code String}
 	 */
 	String getComment() {
-		return entryComment.getValue();
+		return comment;
 	}
 
 	/**
 	 * @return the entryKey value as {@code Entry_String}
 	 */
-	Entry_String getKeyAsEntry() {
+	EntryValid_String getKeyAsEntry() {
 		return entryKey;
 	}
 
 	/**
-	 * Return the entryValue as {@code Entry_Value}
+	 * Return the entryValue as {@code EntryValid}
 	 */
-	Abstract_Entry <ValueClass> getValueAsEntry() {
+	Abstract_EntryValid<ValueClass> getValueAsEntry() {
 		return entryValue;
-	}
-
-	/**
-	 * @return the entryComment value as {@code Entry_String}
-	 */
-	Entry_String getCommentAsEntry() {
-		return entryComment;
 	}
 
 	// ==================================================
@@ -191,7 +196,7 @@ abstract class Abstract_Line <ValueClass> extends Abstract_ToPrint {
 		out += String.format(KEY_FORMAT, entryKey.toString());
 		out += entryValue.toString();
 		out = String.format(KEY_VALUE_FORMAT, out);
-		out += entryComment.toComment();
+		out += toComment(comment);
 		return out;
 	}
 }

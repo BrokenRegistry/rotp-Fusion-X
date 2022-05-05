@@ -23,28 +23,41 @@ class Line_Boolean extends Abstract_Line<Boolean>{
    	// --------------------------------------------------------------
     // Constructors
     //
-	Line_Boolean() {}
+	Line_Boolean() {
+		super(new Valid_Boolean());
+	}
+
+	/**
+	 * @param validationData {@code Valid_Boolean} validation parameters
+	 */
+	Line_Boolean(Valid_Boolean validationData) {
+		super(validationData);
+	}
 
 	/**
 	 * @param line {@code String} new Setting Line from config file
 	 */
 	Line_Boolean(String line) {
-		super(line);
+		super(new Valid_Boolean(), line);
+	}
+	/**
+	 * @param validationData {@code Valid_Boolean} validation parameters
+	 * @param line {@code String} new Setting Line from config file
+	 */
+	Line_Boolean(Valid_Boolean validationData, String line) {
+		super(validationData, line);
 	}
 
 	// ==================================================
     // Abstract Methods Declaration
     //
 	/**
-	 * ask for value as {@code ValueClass}
+	 * Value Initialization with Validation Parameters 
 	 * @return the value
 	 */
-	@Override Entry_Boolean stringToEntry(String entryValue) {
-		return new Entry_Boolean(entryValue);
-	}
-
-	@Override Entry_Boolean valueToEntry(Boolean entryValue) {
-		return new Entry_Boolean(entryValue);
+	@Override EntryValid_Boolean InitValidationData(
+			Abstract_ValidData<Boolean> validationData) {
+		return new EntryValid_Boolean(validationData);
 	}
 
 	// ==================================================

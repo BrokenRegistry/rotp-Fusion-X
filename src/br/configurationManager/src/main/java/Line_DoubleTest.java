@@ -143,11 +143,4 @@ class Line_DoubleTest {
 				.getValueAsEntry().getValue()
 				, "should have been 88.8");
 	}
-	
-	@Test
-	void getCommentAsEntry_None() {
-		assertEquals("comment", new Line_Double("key : 88.8 # comment")
-				.getCommentAsEntry().getValue()
-				, "should have been «comment»");
-	}
 }

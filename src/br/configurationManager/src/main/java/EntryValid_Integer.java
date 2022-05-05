@@ -15,23 +15,19 @@
 
 package br.configurationManager.src.main.java;
 
-import static br.configurationManager.src.main.java.CMutil.*;
-
-import br.configurationManager.src.main.java.Abstract_ToPrint.PrintFormat;
-
 /**
  * The internal parameter will never be null
  * and will be stripped
  */
-class Entry_Valid_String extends Abstract_Entry_Valid<String> {
+class EntryValid_Integer extends Abstract_EntryValid<Integer> {
 
 	// From Abstract_Entry:
 	// private String userEntry  // what we get from the file
 	// private String outputStr  // what will be the outputStr
 	//                           // To make the common code easier to manage
-	// From Abstract_Entry_Valid:
-	//	private ValueClass value =  null;
-	//	private Abstract_ValidData<ValueClass> validationData;
+	// From Abstract_EntryValid:
+	//	private Integer value =  null;
+	//	private Valid_Integer validationData;
 	
 	// outputStr := User View
 	// value     := Code View
@@ -40,33 +36,33 @@ class Entry_Valid_String extends Abstract_Entry_Valid<String> {
     // Constructors
     //
 	/**
-	 * create and initialize {@code Entry_Valid_String}
-	 * @param validationData the {@code Abstract_ValidData<ValueClass>} validationData
+	 * create and initialize {@code EntryValid_Integer}
+	 * @param validationData the {@code Valid_Integer} validationData
 	 */
-	Entry_Valid_String(
-			Abstract_ValidData<String> validationData) {
+	EntryValid_Integer(
+			Abstract_ValidData<Integer> validationData) {
 		super(validationData);
 	}
 	
 	/**
-	 * create and initialize {@code Entry_Valid_String}
-	 * @param validationData the {@code Abstract_ValidData<ValueClass>} validationData
-	 * @param value the {@code String} value
+	 * create and initialize {@code EntryValid_Integer}
+	 * @param validationData the {@code Valid_Integer} validationData
+	 * @param value the {@code Integer} value
 	 */
-	Entry_Valid_String(
-			Abstract_ValidData<String> validationData,
+	EntryValid_Integer(
+			Abstract_ValidData<Integer> validationData,
 			String value) {
 		super(validationData, value);
 	}
 	
 	/**
-	 * create and initialize {@code Entry_Valid_String}
-	 * @param validationData the {@code Abstract_ValidData<ValueClass>} validationData
+	 * create and initialize {@code EntryValid_Integer}
+	 * @param validationData the {@code Valid_Integer} validationData
 	 * @param value the {@code String} value
 	 * @param printFormat the default {@code PrintFormat}
 	 */
-	Entry_Valid_String(
-			Abstract_ValidData<String> validationData,
+	EntryValid_Integer(
+			Abstract_ValidData<Integer> validationData,
 			String value,
 			PrintFormat printFormat) {
 		super(validationData, value, printFormat);
@@ -80,11 +76,10 @@ class Entry_Valid_String extends Abstract_Entry_Valid<String> {
 	 * @return the original value
 	 */
 	@Override public String toString() {
-		
-		return getValue();
+		return getValue().toString();
 	}
 	
-	@Override protected Entry_Valid_String reset() {
+	@Override protected EntryValid_Integer reset() {
 		super.reset();
 		return this;
 	}
@@ -94,17 +89,17 @@ class Entry_Valid_String extends Abstract_Entry_Valid<String> {
 	 * @param newValue the new {@code String} value
 	 * @return this for chaining purpose 
 	 */
-	@Override Entry_Valid_String set(String newValue) {
+	@Override EntryValid_Integer set(String newValue) {
 		super.set(newValue);
 		return this;
 	}
 	
 	/**
-	 * Ask for a clone of {@code Entry_String}
-	 * @return the cloned {@code Entry_String}
+	 * Ask for a clone of {@code EntryValid_Integer}
+	 * @return the cloned {@code EntryValid_Integer}
 	 */
-	@Override protected Entry_Valid_String clone() { 
-		return new Entry_Valid_String(
+	@Override protected EntryValid_Integer clone() { 
+		return new EntryValid_Integer(
 				getValidationData(), getUserEntry(), getPrintFormat());
 	}
 	
@@ -112,18 +107,8 @@ class Entry_Valid_String extends Abstract_Entry_Valid<String> {
 	 * may be used by child class, returns the instance of this object.
 	 * @return a copy of this object.
 	 */
-	@Override Entry_Valid_String copy() { 
+	@Override EntryValid_Integer copy() { 
 		return this;
-	}
-
-	@Override String randomWithoutParameters() {
-		// TODO
-		return getUserEntry();
-	}
-
-	@Override String randomWithParameters(String[] parameters) {
-		// TODO
-		return getUserEntry();
 	}
 
     // ==================================================

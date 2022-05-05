@@ -23,28 +23,42 @@ class Line_Double extends Abstract_Line<Double>{
    	// --------------------------------------------------------------
     // Constructors
     //
-	Line_Double() {}
+	Line_Double() {
+		super(new Valid_Double());
+	}
+	
+	/**
+	 * @param validationData {@code Valid_Double} validation parameters
+	 */
+	Line_Double(Valid_Double validationData) {
+		super(validationData);
+	}
 
 	/**
 	 * @param line {@code String} new Setting Line from config file
 	 */
 	Line_Double(String line) {
-		super(line);
+		super(new Valid_Double(), line);
+	}
+
+	/**
+	 * @param validationData {@code Valid_Double} validation parameters
+	 * @param line {@code String} new Setting Line from config file
+	 */
+	Line_Double(Valid_Double validationData, String line) {
+		super(validationData, line);
 	}
 
 	// ==================================================
     // Abstract Methods Declaration
     //
 	/**
-	 * ask for value as {@code ValueClass}
+	 * Value Initialization with Validation Parameters 
 	 * @return the value
 	 */
-	@Override Entry_Double stringToEntry(String entryValue) {
-		return new Entry_Double(entryValue);
-	}
-
-	@Override Entry_Double valueToEntry(Double entryValue) {
-		return new Entry_Double(entryValue);
+	@Override EntryValid_Double InitValidationData(
+			Abstract_ValidData<Double> validationData) {
+		return new EntryValid_Double(validationData);
 	}
 
 	// ==================================================

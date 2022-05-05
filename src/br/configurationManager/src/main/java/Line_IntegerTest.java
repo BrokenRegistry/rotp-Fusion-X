@@ -143,11 +143,4 @@ class Line_IntegerTest {
 				.getValueAsEntry().getValue()
 				, "should have been 88");
 	}
-	
-	@Test
-	void getCommentAsEntry_None() {
-		assertEquals("comment", new Line_Integer("key : 88 # comment")
-				.getCommentAsEntry().getValue()
-				, "should have been «comment»");
-	}
 }

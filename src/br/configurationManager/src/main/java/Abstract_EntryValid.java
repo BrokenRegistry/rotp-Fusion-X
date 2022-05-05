@@ -15,20 +15,22 @@
 
 package br.configurationManager.src.main.java;
 
+import static br.configurationManager.src.main.java.CMutil.capitalize;
+import static br.configurationManager.src.main.java.CMutil.clean;
+
 /**
- * The internal parameter will never be null
- * and will be stripped
  * @param <ValueClass> The class of Values
  */
-abstract class Abstract_Entry_Valid <ValueClass> extends Abstract_Entry <ValueClass> {
+abstract class Abstract_EntryValid<ValueClass> extends Abstract_ToPrint {
 
 	private static final String RANDOM_ID = "RANDOM";
 	private static final String PARAMETERS_SEPARATOR  = ",";
 
 	// From Abstract_Entry:
-	// private String userEntry  // what we get from the file
-	// private String outputStr  // what will be the outputStr
-	//                           // To make the common code easier to manage
+	private String userEntry;  // what we get from the file
+	private String outputStr;  // what will be the outputStr
+	                           // To make the common code easier to manage
+	private PrintFormat printFormat = PrintFormat.HOLD; // The default format for outputStr
 	// extended with:
 	private ValueClass value =  null;
 	private Abstract_ValidData<ValueClass> validationData;
@@ -40,22 +42,22 @@ abstract class Abstract_Entry_Valid <ValueClass> extends Abstract_Entry <ValueCl
 	 * No empty class creation allowed!
 	 */
 	@SuppressWarnings("unused")
-	private  Abstract_Entry_Valid() {}
+	private  Abstract_EntryValid() {}
 
 	/**
-	 * create and initialize a new {@code Entry_Valid}
+	 * create and initialize a new {@code EntryValid}
 	 * @param validationData the {@code Abstract_ValidData<ValueClass>} validationData
 	 */
-	Abstract_Entry_Valid(Abstract_ValidData<ValueClass> validationData) {
+	Abstract_EntryValid(Abstract_ValidData<ValueClass> validationData) {
 		setValidationData(validationData);
 	}
 
 	/**
-	 * create and initialize a new {@code Entry_Valid}
+	 * create and initialize a new {@code EntryValid}
 	 * @param validationData the {@code Abstract_ValidData<ValueClass>} validationData
 	 * @param userEntry the {@code String} userEntry
 	 */
-	Abstract_Entry_Valid(
+	Abstract_EntryValid(
 			Abstract_ValidData<ValueClass> validationData,
 			String userEntry) {
 		setValidationData(validationData);
@@ -63,47 +65,42 @@ abstract class Abstract_Entry_Valid <ValueClass> extends Abstract_Entry <ValueCl
 	}
 
 	/**
-	 * create and initialize a new {@code Entry_Valid}
+	 * create and initialize a new {@code EntryValid}
 	 * @param validationData the {@code Abstract_ValidData<ValueClass>} validationData
 	 * @param userEntry the {@code String} userEntry
 	 * @param printFormat the default {@code PrintFormat}
 	 */
-	Abstract_Entry_Valid(
+	Abstract_EntryValid(
 			Abstract_ValidData<ValueClass> validationData,
 			String userEntry,
 			PrintFormat printFormat) {
 		setValidationData(validationData);
 		setPrintFormat(printFormat);
 		set(userEntry);
-}
+	}
 	// ==================================================
     // Abstract Methods Request
     //
 	
-	@Override public abstract String toString();
-
 	// ==================================================
     // Abstract Methods Overriders
     //
-	/**
-	 * ask for value as {@code ValueClass}
-	 * @return the value
-	 */
-	@Override ValueClass getValue() {
-		return value;
+	@Override
+	public String toString() { 
+		return getOutputStr();
 	}
 
 	// ==================================================
-    // Other Overriders
+    // Methods to be Overridden
     //
-
 	/**
 	 * Set a new {@code String} userEntry and analyze it
 	 * @param newValue the new {@code String} userEntry
 	 * @return this for chaining purpose 
 	 */
-	@Override Abstract_Entry_Valid<ValueClass> set(String newValue) {
-		super.set(newValue);
+	Abstract_EntryValid<ValueClass> set(String newValue) {
+		userEntry = clean(newValue);
+		outputStr = clean(newValue);
 		entryAnalysis();
 		return this;
 	}
@@ -113,8 +110,10 @@ abstract class Abstract_Entry_Valid <ValueClass> extends Abstract_Entry <ValueCl
 	 * But not the {@code PrintFormat} neither the {@code validationData}
 	 * @return this for chaining purpose
 	 */
-	@Override Abstract_Entry_Valid<ValueClass> reset() {
-		super.reset();
+	Abstract_EntryValid<ValueClass> reset() {
+		userEntry = "";
+		outputStr = "";
+		value = null;
 		return this;
 	}
 
@@ -122,14 +121,16 @@ abstract class Abstract_Entry_Valid <ValueClass> extends Abstract_Entry <ValueCl
 	 * may be used by child class, returns the instance of this object.
 	 * @return a copy of this object.
 	 */
-	@Override Abstract_Entry_Valid<ValueClass> copy() { 
+	Abstract_EntryValid<ValueClass> copy() { 
 		return this;
 	}
 
-    // ========== Overriders for chaining purpose ==========
-	@Override Abstract_Entry<ValueClass> removeComment() {
-		super.removeComment();
-		return this;
+	/**
+	 * Ask if there is something usable in the element
+	 * @return {@code boolean}
+	 */
+	boolean isBlank() { 
+		return userEntry == null || userEntry.isBlank();
 	}
 
 	// ==================================================
@@ -141,14 +142,93 @@ abstract class Abstract_Entry_Valid <ValueClass> extends Abstract_Entry <ValueCl
 
 	void setValue(ValueClass newValue) {
 		value = newValue;
-		setOutputStr(value.toString());
+		if (value != null) {
+			setOutputStr(value.toString());
+		} else {
+			setOutputStr(getUserEntry());
+		}
+	}
+
+	/**
+	 * Set the new preformatted output {@code String}
+	 * @param newOutputStr the new value
+	 */
+	void setOutputStr(String newOutputStr) {
+		outputStr = newOutputStr;
+	}
+
+	/**
+	 * Set the new preformatted output {@code String}
+	 * @param newFormat the new {@code PrintFormat}
+	 */
+	void setPrintFormat(PrintFormat newFormat) {
+		printFormat = newFormat;
 	}
 
 	// ==================================================
     // Getters simple
     //
+	/**
+	 * ask for value as {@code ValueClass}
+	 * @return the value
+	 */
+	ValueClass getValue() {
+		return value;
+	}
+
 	Abstract_ValidData<ValueClass> getValidationData() {
 		return validationData;
+	}
+
+	/**
+	 * Ask for userEntry as {@code String}
+	 * @return the {@code String}
+	 */
+	String getUserEntry() { 
+		return userEntry;
+	}	
+
+	/**
+	 * Ask for preformatted outputStr as {@code String}
+	 * @return the {@code String}
+	 */
+	String getOutputStr() { 
+		return outputStr;
+	}	
+
+	/**
+	 * Ask for Printing Format as {@code PrintFormat}
+	 * @return the  {@code PrintFormat}
+	 */
+	PrintFormat getPrintFormat() { 
+		return printFormat;
+	}	
+
+	/**
+	 * ask for value in lower case, with first char to upper case,
+	 * with every word capitalized if eachWord is true
+	 * @param onlyFirstWord if true only the first word is capitalized
+	 * @return a {@code String} as requested
+	 */
+	String toCapitalized(Boolean onlyFirstWord) { 
+		return capitalize(getOutputStr(), onlyFirstWord);
+	}
+
+	/**
+	 * ask for value in lower case, with first char to upper case,
+	 * with every word capitalized
+	 * @return a {@code String} as requested
+	 */
+	String toCapitalized() { 
+		return capitalize(getOutputStr());
+	}
+
+	/**
+	 * ask for a stripped in lower case with first char to upper case, never null
+	 * @return a {@code String} as requested
+	 */
+	String toSentence() {
+		return CMutil.toSentence(getOutputStr());
 	}
 
 	// ==================================================
@@ -217,5 +297,64 @@ abstract class Abstract_Entry_Valid <ValueClass> extends Abstract_Entry <ValueCl
 	private static String[] splitParameters(String parameters) {
 		// parameters should already be tested
 		return parameters.split(PARAMETERS_SEPARATOR);
+	}
+
+	// ==================================================
+    // Tests Methods
+    //
+	/**
+	 * check if a valid numeric value may be extracted
+	 * @return true if is Numeric
+	 */
+	Boolean testForNumeric() {
+		return CMutil.testForNumeric(getUserEntry());
+	}
+
+	// ==================================================
+    // Other Methods
+    //
+	/**
+	 * Remove the comments and clean
+	 * @return this for chaining purpose
+	 */
+	Abstract_EntryValid<ValueClass> removeComment() {
+		set(Abstract_ToComment.removeComment(getUserEntry()));
+		return this;
+	}
+	
+	// ==================================================
+	// Methods using the Abstract methods
+	// Just copy and paste in child classes
+	// They should work even if not overridden
+    //
+	/**
+	 * Ask for a non <b>null</b> nor <i>empty</i> nor <i>blank</i> value
+	 * @param defaultValue value to <b>return</b if <b>null</b>, <i>empty</i> or <i>blank</i> 
+	 * @return the value, following the conditions
+	 */
+	ValueClass getValue(ValueClass defaultValue) {
+		if (isBlank()) {
+			return defaultValue;
+		}
+		return getValue();
+	}
+
+	// Other name for compatibility
+	/**
+	 * Ask for a non <b>null</b> nor <i>empty</i> nor <i>blank</i> value
+	 * @param defaultValue value to <b>return</b if <b>null</b>, <i>empty</i> or <i>blank</i> 
+	 * @return the value, following the conditions
+	 */
+	ValueClass getOrDefault(ValueClass defaultValue) {
+			return getValue(defaultValue);
+	}
+
+	/**
+	 * Ask for a non <b>null</b> nor <i>empty</i> nor <i>blank</i> value
+	 * @param defaultValue class object to <b>return</b if <b>null</b>, <i>empty</i> or <i>blank</i> 
+	 * @return the class object, following the conditions
+	 */
+	ValueClass getOrDefault(Abstract_EntryValid<ValueClass> defaultValue) {
+		return getValue(defaultValue.getValue());
 	}
 }

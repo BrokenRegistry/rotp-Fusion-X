@@ -103,12 +103,4 @@ class Line_StringTest {
 				.getValueAsEntry().getValue()
 				, "should have been «value»");
 	}
-
-	@Test
-	void getCommentAsEntry_None() {
-		assertEquals("comment", new Line_String()
-				.newLine("key : value # comment")
-				.getCommentAsEntry().getValue()
-				, "should have been «comment»");
-	}
 }
