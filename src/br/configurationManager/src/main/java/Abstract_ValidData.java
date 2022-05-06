@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Common methods for data validation
  */
-abstract class Abstract_ValidData <ValueClass> extends Abstract_ToPrint{
+abstract class Abstract_ValidData<ValueClass> extends ToPrint{
 	
 	private List<ValidationElement> validationList = new ArrayList<ValidationElement>();
 	private ValidationCriteria criteria = new ValidationCriteria();

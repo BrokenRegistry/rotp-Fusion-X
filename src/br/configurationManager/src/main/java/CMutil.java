@@ -45,7 +45,8 @@ class CMutil {
 	static final String  
 	CAPITALIZE_REGEX  = "((?<= )|(?<=_)|(?<=-)|(?<=/)|(?<=\\[))";
 
-	private static Boolean defaultCaseSensitivity = false;
+	private static boolean defaultCaseSensitivity = false;
+	private static boolean forceCreationMissingConfig = true;
 	
     // ==================================================
     // Constructors (blocked)
@@ -59,7 +60,7 @@ class CMutil {
 	 * Set the global Case Sensitivity
 	 * @param newValue the new {@code Boolean} defaultCaseSensitivity
 	 */
-	static void setDefaultCaseSensitivity(Boolean newValue) {
+	static void setDefaultCaseSensitivity(boolean newValue) {
 		defaultCaseSensitivity = newValue;
 	}
 
@@ -67,8 +68,24 @@ class CMutil {
 	 * Get the global Case Sensitivity
 	 * @return defaultCaseSensitivity
 	 */
-	static Boolean getDefaultCaseSensitivity() {
+	static boolean getDefaultCaseSensitivity() {
 		return defaultCaseSensitivity;
+	}
+
+	/**
+	 * Set if missing configurations must be added
+	 * @param newValue the new {@code Boolean} forceCreationMissingConfig
+	 */
+	static void setForceCreationMissingConfig(boolean newValue) {
+		forceCreationMissingConfig = newValue;
+	}
+
+	/**
+	 * Get  if missing configurations must be added
+	 * @return forceCreationMissingConfig
+	 */
+	static boolean getForceCreationMissingConfig() {
+		return forceCreationMissingConfig;
 	}
 
 	// ==================================================

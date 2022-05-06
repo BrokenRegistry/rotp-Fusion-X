@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class Abstract_EntryValidTest {
+class Generic_ValidTest {
 
 	Valid_ConfigAction vd = new Valid_ConfigAction();
 	Entry_Test_Valid_String entry  = new Entry_Test_Valid_String(vd);
@@ -138,7 +138,7 @@ class Abstract_EntryValidTest {
 				, "should have been «abc»");
 	}
 	
-	class Entry_Test_Valid_String extends Abstract_EntryValid<String> {
+	class Entry_Test_Valid_String extends Generic_Valid<String> {
 	    // ==================================================
 	    // Constructors
 	    //

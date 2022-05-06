@@ -21,7 +21,7 @@ import static br.configurationManager.src.main.java.CMutil.clean;
 /**
  * @param <ValueClass> The class of Values
  */
-abstract class Abstract_EntryValid<ValueClass> extends Abstract_ToPrint {
+class Generic_Valid<ValueClass> extends ToPrint {
 
 	private static final String RANDOM_ID = "RANDOM";
 	private static final String PARAMETERS_SEPARATOR  = ",";
@@ -42,13 +42,13 @@ abstract class Abstract_EntryValid<ValueClass> extends Abstract_ToPrint {
 	 * No empty class creation allowed!
 	 */
 	@SuppressWarnings("unused")
-	private  Abstract_EntryValid() {}
+	private  Generic_Valid() {}
 
 	/**
 	 * create and initialize a new {@code EntryValid}
 	 * @param validationData the {@code Abstract_ValidData<ValueClass>} validationData
 	 */
-	Abstract_EntryValid(Abstract_ValidData<ValueClass> validationData) {
+	Generic_Valid(Abstract_ValidData<ValueClass> validationData) {
 		setValidationData(validationData);
 	}
 
@@ -57,7 +57,7 @@ abstract class Abstract_EntryValid<ValueClass> extends Abstract_ToPrint {
 	 * @param validationData the {@code Abstract_ValidData<ValueClass>} validationData
 	 * @param userEntry the {@code String} userEntry
 	 */
-	Abstract_EntryValid(
+	Generic_Valid(
 			Abstract_ValidData<ValueClass> validationData,
 			String userEntry) {
 		setValidationData(validationData);
@@ -70,7 +70,7 @@ abstract class Abstract_EntryValid<ValueClass> extends Abstract_ToPrint {
 	 * @param userEntry the {@code String} userEntry
 	 * @param printFormat the default {@code PrintFormat}
 	 */
-	Abstract_EntryValid(
+	Generic_Valid(
 			Abstract_ValidData<ValueClass> validationData,
 			String userEntry,
 			PrintFormat printFormat) {
@@ -78,10 +78,7 @@ abstract class Abstract_EntryValid<ValueClass> extends Abstract_ToPrint {
 		setPrintFormat(printFormat);
 		set(userEntry);
 	}
-	// ==================================================
-    // Abstract Methods Request
-    //
-	
+
 	// ==================================================
     // Abstract Methods Overriders
     //
@@ -98,7 +95,7 @@ abstract class Abstract_EntryValid<ValueClass> extends Abstract_ToPrint {
 	 * @param newValue the new {@code String} userEntry
 	 * @return this for chaining purpose 
 	 */
-	Abstract_EntryValid<ValueClass> set(String newValue) {
+	Generic_Valid<ValueClass> set(String newValue) {
 		userEntry = clean(newValue);
 		outputStr = clean(newValue);
 		entryAnalysis();
@@ -110,7 +107,7 @@ abstract class Abstract_EntryValid<ValueClass> extends Abstract_ToPrint {
 	 * But not the {@code PrintFormat} neither the {@code validationData}
 	 * @return this for chaining purpose
 	 */
-	Abstract_EntryValid<ValueClass> reset() {
+	Generic_Valid<ValueClass> reset() {
 		userEntry = "";
 		outputStr = "";
 		value = null;
@@ -121,7 +118,7 @@ abstract class Abstract_EntryValid<ValueClass> extends Abstract_ToPrint {
 	 * may be used by child class, returns the instance of this object.
 	 * @return a copy of this object.
 	 */
-	Abstract_EntryValid<ValueClass> copy() { 
+	Generic_Valid<ValueClass> copy() { 
 		return this;
 	}
 
@@ -317,8 +314,8 @@ abstract class Abstract_EntryValid<ValueClass> extends Abstract_ToPrint {
 	 * Remove the comments and clean
 	 * @return this for chaining purpose
 	 */
-	Abstract_EntryValid<ValueClass> removeComment() {
-		set(Abstract_ToComment.removeComment(getUserEntry()));
+	Generic_Valid<ValueClass> removeComment() {
+		set(ToComment.removeComment(getUserEntry()));
 		return this;
 	}
 	
@@ -354,7 +351,7 @@ abstract class Abstract_EntryValid<ValueClass> extends Abstract_ToPrint {
 	 * @param defaultValue class object to <b>return</b if <b>null</b>, <i>empty</i> or <i>blank</i> 
 	 * @return the class object, following the conditions
 	 */
-	ValueClass getOrDefault(Abstract_EntryValid<ValueClass> defaultValue) {
+	ValueClass getOrDefault(Generic_Valid<ValueClass> defaultValue) {
 		return getValue(defaultValue.getValue());
 	}
 }

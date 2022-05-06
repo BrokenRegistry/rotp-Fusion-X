@@ -18,7 +18,7 @@ package br.configurationManager.src.main.java;
 /**
  * Base for every User Entry Lines
  */
-class Line_Double extends Abstract_Line<Double>{
+class Line_Double extends Generic_Line<Double>{
 
    	// --------------------------------------------------------------
     // Constructors
@@ -30,7 +30,7 @@ class Line_Double extends Abstract_Line<Double>{
 	/**
 	 * @param validationData {@code Valid_Double} validation parameters
 	 */
-	Line_Double(Valid_Double validationData) {
+	Line_Double(Abstract_ValidData<Double> validationData) {
 		super(validationData);
 	}
 
@@ -45,25 +45,38 @@ class Line_Double extends Abstract_Line<Double>{
 	 * @param validationData {@code Valid_Double} validation parameters
 	 * @param line {@code String} new Setting Line from config file
 	 */
-	Line_Double(Valid_Double validationData, String line) {
+	Line_Double(Abstract_ValidData<Double> validationData, String line) {
 		super(validationData, line);
 	}
 
-	// ==================================================
-    // Abstract Methods Declaration
-    //
 	/**
-	 * Value Initialization with Validation Parameters 
-	 * @return the value
+	 * @param validationData {@code Valid_Double} value validation parameters
+	 * @param validationKey {@code Valid_String} key validation parameters
+	 * @param line {@code String} new Setting Line from config file
 	 */
-	@Override EntryValid_Double InitValidationData(
-			Abstract_ValidData<Double> validationData) {
-		return new EntryValid_Double(validationData);
+	Line_Double(
+			Abstract_ValidData<Double> validationData,
+			Abstract_ValidData<String> validationKey,
+			String line) {
+		super(validationData, validationKey, line);
 	}
 
 	// ==================================================
     // Overriders for chaining purpose
-    //
+    //	
+	@Override protected Generic_Line<Double> clone() {
+		return new Line_Double(
+				getValueAsEntry().getValidationData(),
+				getKeyAsEntry().getValidationData(),
+				this.toString());
+	}
+
+	@Override Generic_Line<Double> clone(String newKey) {
+		return new Line_Double(
+				getValueAsEntry().getValidationData(),
+				getKeyAsEntry().getValidationData(),
+				newKey);		
+	}
 
 	@Override Line_Double newLine(String line) {
 		super.newLine(line);
@@ -98,6 +111,5 @@ class Line_Double extends Abstract_Line<Double>{
 	Double toDouble() {
 		return getValue();
 	}
-
 }
 

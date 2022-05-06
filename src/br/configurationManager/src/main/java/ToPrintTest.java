@@ -1,13 +1,13 @@
 package br.configurationManager.src.main.java;
 
-import static br.configurationManager.src.main.java.Abstract_ToPrint.*;
+import static br.configurationManager.src.main.java.ToPrint.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import br.configurationManager.src.main.java.Abstract_ToPrint.PrintFormat;
+import br.configurationManager.src.main.java.ToPrint.PrintFormat;
 
-class Abstract_ToPrintTest {
+class ToPrintTest {
 
 	@Test
 	void toPrint_Object() {

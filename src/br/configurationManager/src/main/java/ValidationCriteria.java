@@ -1,6 +1,6 @@
 package br.configurationManager.src.main.java;
 
-import br.configurationManager.src.main.java.Abstract_ToPrint.PrintFormat;
+import br.configurationManager.src.main.java.ToPrint.PrintFormat;
 
 /**
  * All boolean conditions for parameters validations

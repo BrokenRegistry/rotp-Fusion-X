@@ -18,7 +18,7 @@ package br.configurationManager.src.main.java;
 /**
  * Base for every User Entry Lines
  */
-class Line_String extends Abstract_Line<String>{
+class Line_String extends Generic_Line<String>{
 
    	// --------------------------------------------------------------
     // Constructors
@@ -51,21 +51,34 @@ class Line_String extends Abstract_Line<String>{
 		super(validationData, line);
 	}
 
-	// ==================================================
-    // Abstract Methods Declaration
-    //
 	/**
-	 * Value Initialization with Validation Parameters 
-	 * @return the value
+	 * @param validationData {@code Valid_String} value validation parameters
+	 * @param validationKey {@code Valid_String} key validation parameters
+	 * @param line {@code String} new Setting Line from config file
 	 */
-	@Override EntryValid_String InitValidationData(
-			Abstract_ValidData<String> validationData) {
-		return new EntryValid_String(validationData);
+	Line_String(
+			Abstract_ValidData<String> validationData,
+			Abstract_ValidData<String> validationKey,
+			String line) {
+		super(validationData, validationKey, line);
 	}
 
 	// ==================================================
     // Overriders for chaining purpose
     //
+	@Override protected Generic_Line<String> clone() {
+		return new Line_String(
+				getValueAsEntry().getValidationData(),
+				getKeyAsEntry().getValidationData(),
+				this.toString());
+	}
+
+	@Override Generic_Line<String> clone(String newKey) {
+		return new Line_String(
+				getValueAsEntry().getValidationData(),
+				getKeyAsEntry().getValidationData(),
+				newKey);		
+	}
 
 	@Override Line_String newLine(String line) {
 		super.newLine(line);
@@ -90,8 +103,6 @@ class Line_String extends Abstract_Line<String>{
 	// --------------------------------------------------------------
 	// Setters
 	//
-
-
 
 	// --------------------------------------------------------------
 	// Getters

@@ -19,13 +19,14 @@ package br.configurationManager.src.main.java;
  * Base for every User Entry Lines
  * @param <ValueClass> The class of Values
  */
-abstract class Abstract_Line <ValueClass> extends Abstract_ToPrint {
-    // ------------------------------------------------------------------------
+class Generic_Line<ValueClass> extends ToPrint {
+	
+    // ==================================================
 	// Constant Properties
     //
     private static final String 
     		BASE_KEY_FORMAT = "%-" + LINE_SPLIT_POSITION.toString() + "s";
-    private static final String KEY_VALUE_SEPARATOR = ":";
+    public  static final String KEY_VALUE_SEPARATOR = ":";
     private static final String VALUE_SPACER        = " ";
     private static final String
     		KEY_VALUE_SEPARATOR_PRT = KEY_VALUE_SEPARATOR + VALUE_SPACER;
@@ -34,67 +35,66 @@ abstract class Abstract_Line <ValueClass> extends Abstract_ToPrint {
     private static final String 
     		KEY_VALUE_FORMAT = "%-" + END_COMMENT_POSITION.toString() + "s";
  
-    // ------------------------------------------------------------------------
+    // ==================================================
 	// Variables Properties
     //
 	private EntryValid_String entryKey = new EntryValid_String(new Valid_String());
-	private Abstract_EntryValid<ValueClass> entryValue;
+	private Generic_Valid<ValueClass> entryValue;
 	private String comment = null;
 
-	// --------------------------------------------------------------
+	// ==================================================
     // Constructors
     //
-	Abstract_Line(Abstract_ValidData<ValueClass> validationData) {
-		entryValue = InitValidationData(validationData);
+	Generic_Line(
+			Abstract_ValidData<ValueClass> validationData) {
+		
+		entryValue = new Generic_Valid<ValueClass>(validationData);
 		entryKey   = new EntryValid_String(new Valid_String());
 	}
 	
-	Abstract_Line(Abstract_ValidData<ValueClass> validationData,
-			Valid_String keyValidation) {
-		entryValue = InitValidationData(validationData);
+	Generic_Line(
+			Abstract_ValidData<ValueClass> validationData,
+			Abstract_ValidData<String> keyValidation) {
+		
+		entryValue = new Generic_Valid<ValueClass>(validationData);
 		entryKey   = new EntryValid_String(keyValidation);
 	}
 
-	Abstract_Line(Abstract_ValidData<ValueClass> validationData, String line) {
-		entryValue = InitValidationData(validationData);
+	Generic_Line(
+			Abstract_ValidData<ValueClass> validationData,
+			String line) {
+		
+		entryValue = new Generic_Valid<ValueClass>(validationData);
 		entryKey   = new EntryValid_String(new Valid_String());
 		newLine(line);
 	}
 
-	Abstract_Line(Abstract_ValidData<ValueClass> validationData,
-			Valid_String keyValidation,
+	Generic_Line(
+			Abstract_ValidData<ValueClass> validationData,
+			Abstract_ValidData<String> keyValidation,
 			String line) {
-		entryValue = InitValidationData(validationData);
+		
+		entryValue = new Generic_Valid<ValueClass>(validationData);
 		entryKey   = new EntryValid_String(keyValidation);
 		newLine(line);
 	}
 
 	// ==================================================
-    // Abstract Methods Declaration
-    //
-	/**
-	 * Initialize value as {@code EntryValid<ValueClass>}
-	 * @return the value
-	 */
-	abstract Abstract_EntryValid<ValueClass> InitValidationData(
-			Abstract_ValidData<ValueClass> validationData);
-
-	// --------------------------------------------------------------
 	// Setters
 	//
 	private void initValue(String newValue) {
 		entryValue.set(newValue);
 	}
 
-	Abstract_Line<ValueClass> newLine(String line) {
+	Generic_Line<ValueClass> newLine(String line) {
  		if (CMutil.isBlank(line)) {
  			initValue("");
  			return this;
  			}
  		// Get the comment if one
- 		setComment(Abstract_ToComment.extractComment(line));
+ 		setComment(ToComment.extractComment(line));
  		// Split the Key and the value
-		String[] list = Abstract_ToComment.removeComment(line).split(KEY_VALUE_SEPARATOR, 2);
+		String[] list = ToComment.removeComment(line).split(KEY_VALUE_SEPARATOR, 2);
 		setKey(list[0]);
 		if (list.length == 2) {
 			initValue(list[1]);
@@ -107,7 +107,7 @@ abstract class Abstract_Line <ValueClass> extends Abstract_ToPrint {
 	 * @param newKey the new {@code String} key
 	 * @return current object to allow chaining
 	 */
-	Abstract_Line<ValueClass> setKey(String newKey) {
+	Generic_Line<ValueClass> setKey(String newKey) {
 		entryKey.set(newKey);
 		return this;
 	}
@@ -117,7 +117,7 @@ abstract class Abstract_Line <ValueClass> extends Abstract_ToPrint {
 	 * @param newValue the new {@code ValueClass} Value
 	 * @return current object to allow chaining
 	 */
-	Abstract_Line<ValueClass> setValue(ValueClass newValue) {
+	Generic_Line<ValueClass> setValue(ValueClass newValue) {
 		entryValue.setValue(newValue);
 		return this;
 	}
@@ -127,12 +127,12 @@ abstract class Abstract_Line <ValueClass> extends Abstract_ToPrint {
 	 * @param newComment the new {@code String} Comment
 	 * @return current object to allow chaining
 	 */
-	Abstract_Line<ValueClass> setComment(String newComment) {
+	Generic_Line<ValueClass> setComment(String newComment) {
 		comment = newComment;
 		return this;
 	}
 	
-	// --------------------------------------------------------------
+	// ==================================================
 	// Getters
 	//
 	/**
@@ -182,22 +182,93 @@ abstract class Abstract_Line <ValueClass> extends Abstract_ToPrint {
 	/**
 	 * Return the entryValue as {@code EntryValid}
 	 */
-	Abstract_EntryValid<ValueClass> getValueAsEntry() {
+	Generic_Valid<ValueClass> getValueAsEntry() {
 		return entryValue;
+	}
+
+	// ==================================================
+	// Testers
+	//
+	/**
+	 * Test if the value is part of the category
+	 * @param category the {@code String} category to filter with
+	 * @return as {@code boolean} never null
+	 */
+	boolean isValueFromCategory(String category) {
+		if (getValueAsEntry() == null) {
+			return false;
+		}
+		String userEntry = getValueAsEntry().getUserEntry();
+		Abstract_ValidData<ValueClass> vd = getValueAsEntry().getValidationData();
+		return vd.isValidUserEntry(userEntry, category);
+	}
+
+	/**
+	 * Test if the Filter contains the value
+	 * @param filter the {@code String} containing filter
+	 * @return as {@code boolean} never null
+	 */
+	boolean isValueInFilter(String filter) {
+		if (getValueAsEntry() == null) {
+			return false;
+		}
+		String userEntry = getValueAsEntry().getUserEntry();
+		return CMutil.containsIgnoreCase(filter, userEntry);
+	}
+
+	/**
+	 * Test if the value contains the filter
+	 * @param filter the {@code String} filter to be contained
+	 * @return as {@code boolean} never null
+	 */
+	boolean isFilterInValue(String filter) {
+		if (getValueAsEntry() == null) {
+			return false;
+		}
+		String userEntry = getValueAsEntry().getUserEntry();
+		return CMutil.containsIgnoreCase(userEntry, filter);
+	}
+
+	/**
+	 * Test if the value equals the filter
+	 * @param filter the {@code String} filter to test
+	 * @return as {@code boolean} never null
+	 */
+	boolean isValueAsFilter(String filter) {
+		if (getValueAsEntry() != null
+				&& filter != null) {
+			String userEntry = getValueAsEntry().getUserEntry();
+			if (userEntry != null) {
+				return userEntry.equalsIgnoreCase(filter);
+			}
+		}
+		return false;
 	}
 
 	// ==================================================
     // Overriders
     //
-	@Override
-	public
-	String toString() {
+	@Override public String toString() {
 		String out = "";
 		out += String.format(KEY_FORMAT, entryKey.toString());
 		out += entryValue.toString();
 		out = String.format(KEY_VALUE_FORMAT, out);
 		out += toComment(comment);
 		return out;
+	}
+
+	@Override protected Generic_Line<ValueClass> clone() {
+		return new Generic_Line<ValueClass>(
+				getValueAsEntry().getValidationData(),
+				getKeyAsEntry().getValidationData(),
+				this.toString());
+	}
+
+	Generic_Line<ValueClass> clone(String newKey) {
+		return new Generic_Line<ValueClass>(
+				getValueAsEntry().getValidationData(),
+				getKeyAsEntry().getValidationData(),
+				newKey);		
 	}
 }
 

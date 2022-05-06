@@ -19,7 +19,7 @@ package br.configurationManager.src.main.java;
  * The internal parameter will never be null
  * and will be stripped
  */
-class EntryValid_String extends Abstract_EntryValid<String> {
+class EntryValid_String extends Generic_Valid<String> {
 
 	// From Abstract_Entry:
 	// private String userEntry  // what we get from the file

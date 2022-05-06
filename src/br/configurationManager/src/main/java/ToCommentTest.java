@@ -1,11 +1,11 @@
 package br.configurationManager.src.main.java;
 
-import static br.configurationManager.src.main.java.Abstract_ToComment.*;
+import static br.configurationManager.src.main.java.ToComment.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class Abstract_ToCommentTest {
+class ToCommentTest {
 
 	@Test
 	void toComment_Object() {

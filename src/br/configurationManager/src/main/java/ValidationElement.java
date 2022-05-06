@@ -3,7 +3,7 @@ package br.configurationManager.src.main.java;
 /**
  *Single element for validation list
  */
-public class ValidationElement extends Abstract_ToPrint {
+public class ValidationElement extends ToPrint {
 
 	// ------------------------------------------------------------------------
 	// Constant Properties

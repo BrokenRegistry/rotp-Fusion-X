@@ -18,7 +18,7 @@ package br.configurationManager.src.main.java;
 /**
  * Contains the interface and the tools for toComment Methods
  */
-abstract class Abstract_ToComment {
+class ToComment {
 	
 	/**
 	 * The {@code String} to be recognized as Comment starter
@@ -47,8 +47,7 @@ abstract class Abstract_ToComment {
      * Format the element as String
 	 * @return the {@code String} formated element
 	 */
-	@Override
-	public abstract String toString();
+//	@Override public abstract String toString();
 
 	//===============================================================
 	// Methods using the Abstract methods

@@ -19,7 +19,7 @@ package br.configurationManager.src.main.java;
  * @author BrokenRegistry
  * Give tools and a common Interface for toPrint methods
  */
-abstract class Abstract_ToPrint extends Abstract_ToComment {
+class ToPrint extends ToComment {
 	/**
 	 * The way this String should be printed
 	 */
