@@ -27,7 +27,8 @@ import java.io.PrintWriter;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import rotp.mod.br.settings.Settings;
+
+import rotp.mod.br.profiles.Profiles;
 
 public abstract class AbstractCfgFile <T, U> {
     // ------------------------------------------------------------------------
@@ -147,7 +148,7 @@ public abstract class AbstractCfgFile <T, U> {
     	for (AbstractGroup<T, U> group : groupMap.values()) {
     		group.changeGameFileParameters(uObject, settingKeys);
 		}
-    	Settings.ChangeGameFile = false;
+    	Profiles.ChangeGameFile = false;
     }
     /*
    	 * Reset the game options as they where at the beginning

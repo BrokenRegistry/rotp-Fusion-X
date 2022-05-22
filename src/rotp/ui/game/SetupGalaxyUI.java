@@ -39,7 +39,7 @@ import java.awt.RenderingHints; // modnar: needed for adding RenderingHints
 import java.util.List;
 import javax.swing.SwingUtilities;
 
-import rotp.mod.br.settings.Settings;
+import rotp.mod.br.profiles.Profiles;
 import rotp.model.empires.Race;
 import rotp.model.galaxy.GalaxyShape;
 import rotp.model.game.GameSession;
@@ -922,24 +922,24 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
                 startGame();
                 return;
             case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
-                Settings.resetInitialOptions(options());
+                Profiles.resetGlobalInitialOptions(options());
                 refreshAllMenu();
                 refreshThisMenu();
                 break;
             case KeyEvent.VK_G: // BR: "G" = Reload Global User Presets
-            	Settings.loadGlobalGroupSettings(options());
+            	Profiles.loadGlobalGroupSettings(options());
             	refreshAllMenu();
                 refreshThisMenu();
                 break;
             case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
-            	Settings.loadLocalGroupSettings("Galaxy", options());
+            	Profiles.loadLocalGroupSettings("Galaxy", options());
                 refreshThisMenu();
                 break;
             case KeyEvent.VK_M: // BR: "M" = Go to Main Menu
                 goToMainMenu();
                 break;
             case KeyEvent.VK_U: // BR: "U" = Update User Presets
-                Settings.saveGuiToFile(options());
+                Profiles.saveGuiToFile(options());
                 refreshThisMenu();
                 break;
         }

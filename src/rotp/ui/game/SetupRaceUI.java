@@ -35,7 +35,7 @@ import java.awt.RenderingHints; // modnar: needed for adding RenderingHints
 import java.util.List;
 import javax.swing.JTextField;
 
-import rotp.mod.br.settings.Settings;
+import rotp.mod.br.profiles.Profiles;
 import rotp.model.empires.Race;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
@@ -539,22 +539,39 @@ public final class SetupRaceUI extends BasePanel implements MouseListener, Mouse
             case KeyEvent.VK_ENTER:
                 goToGalaxySetup();
                 return;
-            case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
-                Settings.resetInitialOptions(options());
+            case KeyEvent.VK_I: // BR: "I" = Reload Initial Presets
+            	if(e.isShiftDown()) {
+            		// BR: "SHIFT-I" = Reload GUI Global Initial Presets
+            		Profiles.resetGlobalInitialOptions(options());
+                    refreshAllMenu();
+                    refreshThisMenu();
+                    return;
+            	} else {
+            		// BR: "I" = Reload Local Initial Presets
+            		Profiles.resetLocalInitialOptions("Race", options());
+	                refreshThisMenu();
+	                return;            		
+            	}
+           case KeyEvent.VK_G: // BR: "G" = Reload User Presets
+                Profiles.loadGlobalGroupSettings(options());
                 refreshAllMenu();
                 refreshThisMenu();
                 return;
-            case KeyEvent.VK_G: // BR: "G" = Reload User Presets
-                Settings.loadGlobalGroupSettings(options());
-                refreshAllMenu();
-                refreshThisMenu();
-                return;
-            case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
-                Settings.loadLocalGroupSettings("Race", options());
-                refreshThisMenu();
-                return;
+            case KeyEvent.VK_L: // BR: "L" = Load GUI User Presets
+            	if(e.isShiftDown()) {
+            		// BR: "SHIFT-L" = Load GUI Global User Presets
+            		Profiles.loadGlobalGroupSettings(options());
+                    refreshAllMenu();
+                    refreshThisMenu();
+                    return;
+            	} else {
+            		// BR: "L" = Load GUI Local User Presets
+	                Profiles.loadLocalGroupSettings("Race", options());
+	                refreshThisMenu();
+	                return;            		
+            	}
             case KeyEvent.VK_U: // BR: "U" = Update User Presets
-                Settings.saveGuiToFile(options());
+                Profiles.saveGuiToFile(options());
                 refreshThisMenu();
                 return;
         }

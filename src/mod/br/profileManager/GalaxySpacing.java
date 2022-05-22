@@ -6,7 +6,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *	 https://www.gnu.org/licenses/gpl-3.0.html
+ *     https://www.gnu.org/licenses/gpl-3.0.html
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package mod.br.alteration;
+package mod.br.profileManager;
 
 /**
  * @author BrokenRegistry
@@ -23,16 +23,15 @@ package mod.br.alteration;
  */
 public class GalaxySpacing {
 
-	// ========================================================================
-	// MAXIMIZE EMPIRES SPACING
-	//
+    // ========================================================================
+    // MAXIMIZE EMPIRES SPACING
+    //
 	/**
 	 * Default value for "MAXIMIZE EMPIRES SPACING" Mod
 	 */
 	public static final boolean DEFAULT_MAXIMIZE_EMPIRES_SPACING = false;
-
-	private static boolean maximizeEmpiresSpacing = DEFAULT_MAXIMIZE_EMPIRES_SPACING;
-	
+    private static boolean maximizeEmpiresSpacing = DEFAULT_MAXIMIZE_EMPIRES_SPACING;
+    
 	/**
 	 * @return maximizeEmpiresSpacing
 	 */
@@ -61,13 +60,13 @@ public class GalaxySpacing {
 		if (isMaximizeEmpiresSpacing())
 			minStarsPerEmpire = maxStars/numOpps;
 		float maxMinEmpireFactor = 15f; // To avoid problems with strange galaxy shapes
-										// Maybe To-Do Make this a new setting
+		                                // Maybe To-Do Make this a new setting
 		float minEmpireFactor = (minStarsPerEmpire + 1) / 3; // 8 spe -> 3; 12 spe -> 4;
 		if (minEmpireFactor >= (maxMinEmpireFactor - 2))
 			minEmpireFactor = maxMinEmpireFactor - 2;
-		minEmpireBuffer	= sysBuffer * minEmpireFactor;
+		minEmpireBuffer    = sysBuffer * minEmpireFactor;
 		maxMinEmpireBuffer = sysBuffer * maxMinEmpireFactor;
-		minOrionBuffer	 = sysBuffer * minEmpireFactor + 1;
+		minOrionBuffer     = sysBuffer * minEmpireFactor + 1;
 	}
 
 	/**
@@ -90,10 +89,9 @@ public class GalaxySpacing {
 	public static float getMinOrionBuffer() {
 		return minOrionBuffer;
 	}	
-
 	// ========================================================================
-	// PREFERED STARS PER EMPIRE
-	//
+    // PREFERED STARS PER EMPIRE
+    //
 	/**
 	 * Default value for "PREFERED STARS PER EMPIRE" Mod
 	 */
@@ -115,9 +113,9 @@ public class GalaxySpacing {
 		preferedStarsPerEmpire = newValue;
 	}
 
-	// ========================================================================
-	// MIN STARS PER EMPIRE
-	//
+    // ========================================================================
+    // MIN STARS PER EMPIRE
+    //
 	/**
 	 * Default value for "MIN STARS PER EMPIRE" Mod
 	 */

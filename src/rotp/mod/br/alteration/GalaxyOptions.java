@@ -17,19 +17,42 @@
 
 package rotp.mod.br.alteration;
 
-import mod.br.alteration.GalaxySpacing;
+import mod.br.profileManager.GalaxySpacing;
 
+//import mod.br.alteration.GalaxySpacing;
+
+/**
+ * @author BrokenRegistry
+ * Some tools to optimize empires spacing
+ */
 public class GalaxyOptions {
 	
+	/**
+	 * @param maxStars the {@code Integer} maximum number of stars per empire
+	 * @param numOpps the {@code Integer} number of opponents
+	 * @param sysBuffer the {@code float} some space reserve factor
+	 */
 	public static void initSpacing(int maxStars, int numOpps, float sysBuffer) {
 		GalaxySpacing.initSpacing(maxStars, numOpps, sysBuffer);
 	}
-     public static float getMinEmpireBuffer() {
+
+	/**
+	 * @return minEmpireBuffer {@code float} value
+	 */
+    public static float getMinEmpireBuffer() {
          return GalaxySpacing.getMinEmpireBuffer();
     }
+
+    /**
+	 * @return maxMinEmpireBuffer {@code float} value
+	 */
 	public static float getMaxMinEmpireBuffer() {
          return GalaxySpacing.getMaxMinEmpireBuffer();
     }
+
+	/**
+	 * @return minOrionBuffer {@code float} value
+	 */
 	public static float getMinOrionBuffer() {
 		return GalaxySpacing.getMinOrionBuffer();
     }	

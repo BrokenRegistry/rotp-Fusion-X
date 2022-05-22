@@ -44,7 +44,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 import rotp.Rotp;
-import rotp.mod.br.settings.Settings;
+import rotp.mod.br.profiles.Profiles;
 import rotp.model.empires.Empire;
 import rotp.model.empires.EmpireView;
 import rotp.model.empires.EspionageMission;
@@ -811,12 +811,12 @@ public final class GameSession implements Base, Serializable {
         
         // BR:
         // if asked, Change the game parameters
-        if (Settings.ChangeGameFile) {
-        	Settings.ChangeGameFile = false;
-        	Settings.changeGameSettings(instance);
+        if (Profiles.ChangeGameFile) {
+        	Profiles.ChangeGameFile = false;
+        	Profiles.changeGameSettings(instance);
         }
         // Save the last loaded game parameters
-        Settings.saveGameOptionsToFile(instance.options());
+        Profiles.saveGameOptionsToFile(instance.options());
         // #BR:
         
         startExecutors();
