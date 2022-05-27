@@ -15,6 +15,8 @@
 
 package br.profileManager.src.main.java;
 
+import static br.profileManager.src.main.java.WriteUtil.History.*;
+
 /**
  * For the validation of the configurations Action
  */
@@ -32,18 +34,14 @@ class Valid_LocalEnable extends Valid_ProfileAction {
 
 	Valid_LocalEnable() {
 		setDefaultName(PARAMETER_NAME);
-		setDefaultValue(DEFAULT_VALUE);
+		setHistoryUserView(Default, DEFAULT_VALUE);
+		setHistoryUserView(Current, DEFAULT_VALUE);
+//		setDefaultValue(DEFAULT_VALUE);
 		
 		setValidationCriteria(new ValidationCriteria()
-				.isNullAllowed(false)
-				.isBlankAllowed(true)
 				.isRandomAllowed(false)
 				.userViewEquals(false)
-				.categoryEquals(false)
-				.userViewIsCaseSensitive(false)
-				.codeViewIsCaseSensitive(false)
-				.categoryIsCaseSensitive(false)
-				.printFormat(PrintFormat.CAPITALIZE));
+				.codeViewEquals(false));
 
 		addElement("NONE",
 				"No actions are allowed in this Setting" ,
@@ -75,6 +73,7 @@ class Valid_LocalEnable extends Valid_ProfileAction {
 		 */
 		Line_LocalEnable() {
 			super(new Valid_LocalEnable());
+			setValue(DEFAULT_VALUE);
 		}
 
 		/**
@@ -100,5 +99,18 @@ class Valid_LocalEnable extends Valid_ProfileAction {
 			return isValueFromCategory(LOCAL_ENABLED);
 		}
 
+		/**
+		 * Check if this entry line is dedicated for LocalEnable,
+		 * if true, set new parameters
+		 * @param line the {@code String to analyze}
+		 * @return <b>true</b> if line was used
+		 */
+		boolean isLineForMe(String line) {
+			if (getName().equalsIgnoreCase(getKey(line))) {
+				newLine(line);
+				return true;
+			}
+			return false;
+		}
 	}
 }

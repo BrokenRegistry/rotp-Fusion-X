@@ -22,10 +22,11 @@ import java.util.List;
 import br.profileManager.src.main.java.Abstract_Group;
 import br.profileManager.src.main.java.Abstract_Parameter;
 import br.profileManager.src.main.java.ValidationCriteria;
-
+import mod.br.Galaxy.StarsOptions;
 import br.profileManager.src.main.java.Valid_Boolean;
 import br.profileManager.src.main.java.Valid_Double;
 import br.profileManager.src.main.java.Valid_Integer;
+import static br.profileManager.src.main.java.WriteUtil.History.*;
 
 
 /**
@@ -53,7 +54,8 @@ public class Group_BrokenRegistry extends  Abstract_Group <ClientClasses> {
 	 
 		MaximizeEmpiresSpacing(ClientClasses go) {
 			super( "MAXIMIZE EMPIRES SPACING", new Valid_Boolean());
-			setInitialValue(GalaxySpacing.DEFAULT_MAXIMIZE_EMPIRES_SPACING);
+			setHistoryCodeView(Initial, GalaxySpacing.DEFAULT_MAXIMIZE_EMPIRES_SPACING);
+			setHistoryCodeView(Default, false); // BR
 		}
 		// ------------------------------------------------
 		// Overrider
@@ -72,10 +74,6 @@ public class Group_BrokenRegistry extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, Boolean codeView) {
 			GalaxySpacing.setMaximizeEmpiresSpacing(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-			GalaxySpacing.setMaximizeEmpiresSpacing(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {
@@ -102,21 +100,13 @@ public class Group_BrokenRegistry extends  Abstract_Group <ClientClasses> {
 			
 		private void initCriteria() {
 			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+					.isNullAllowed(false));
 		}
 		
 		private void init() {
 			initCriteria();
-			setLimits(new Integer[] {0 , 1000000});
-			setDefaultRandomLimits(new Integer[] {16 , 24});
+			setLimits(0 , 1000000);
+			setDefaultRandomLimits(16 , 24);
 		}
 	}
 	
@@ -125,7 +115,8 @@ public class Group_BrokenRegistry extends  Abstract_Group <ClientClasses> {
 
 		PreferedStarsPerEmpire(ClientClasses go) { 
 			super( "PREF STARS PER EMPIRE", new Valid_PreferedStarsPerEmpire());
-			setInitialValue(GalaxySpacing.DEFAULT_PREFERED_STARS_PER_EMPIRE);
+			setHistoryCodeView(Initial, GalaxySpacing.DEFAULT_PREFERED_STARS_PER_EMPIRE);
+			setHistoryCodeView(Default, 16); // BR
 		}
 		// ------------------------------------------------
 		// Overrider
@@ -144,10 +135,6 @@ public class Group_BrokenRegistry extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, Integer codeView) {
 			GalaxySpacing.setPreferedStarsPerEmpire(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-			GalaxySpacing.setPreferedStarsPerEmpire(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {}
@@ -170,21 +157,13 @@ public class Group_BrokenRegistry extends  Abstract_Group <ClientClasses> {
 			
 		private void initCriteria() {
 			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+					.isNullAllowed(false));
 		}
 		
 		private void init() {
 			initCriteria();
-			setLimits(new Integer[] {0 , 1000000});
-			setDefaultRandomLimits(new Integer[] {4 , 16});
+			setLimits(0 , 1000000);
+			setDefaultRandomLimits(4 , 16);
 		}
 	}
 	
@@ -193,7 +172,8 @@ public class Group_BrokenRegistry extends  Abstract_Group <ClientClasses> {
 
 		MinStarsPerEmpire(ClientClasses go) {
 			super( "MIN STARS PER EMPIRE", new Valid_MinStarsPerEmpire());
-			setInitialValue(GalaxySpacing.DEFAULT_MIN_STARS_PER_EMPIRE);
+			setHistoryCodeView(Initial, GalaxySpacing.DEFAULT_MIN_STARS_PER_EMPIRE);
+			setHistoryCodeView(Default, 8); // BR
 		}
 		// ------------------------------------------------
 		// Overrider
@@ -212,10 +192,6 @@ public class Group_BrokenRegistry extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, Integer codeView) {
 			GalaxySpacing.setMinStarsPerEmpire(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-			GalaxySpacing.setMinStarsPerEmpire(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {}
@@ -238,21 +214,13 @@ public class Group_BrokenRegistry extends  Abstract_Group <ClientClasses> {
 		
 		private void initCriteria() {
 			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+					.isNullAllowed(false));
 		}
 		
 		private void init() {
 			initCriteria();
-			setLimits(new Double[] {0.0 , 1000000.0});
-			setDefaultRandomLimits(new Double[] {0.0 , 2.0});
+			setLimits(0.0 , 1000000.0);
+			setDefaultRandomLimits(0.0 , 2.0);
 		}
 	}
 	
@@ -261,7 +229,8 @@ public class Group_BrokenRegistry extends  Abstract_Group <ClientClasses> {
 
 		NoPlanetMultiplier(ClientClasses go) { 
 			super( "NO PLANET PCT MULT", new Valid_NoPlanetMultiplier());
-			setInitialValue(StarsOptions.NO_PLANET_MULTIPLIER);
+			setHistoryCodeView(Initial, StarsOptions.NO_PLANET_MULTIPLIER);
+			setHistoryCodeView(Default, 1.0); // BR
 		}
 		
 		// ------------------------------------------------
@@ -281,10 +250,6 @@ public class Group_BrokenRegistry extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, Double codeView) {
 			StarsOptions.setNoPlanetMultiplier(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-			StarsOptions.setNoPlanetMultiplier(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {}

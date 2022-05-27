@@ -16,27 +16,71 @@
 package br.profileManager.src.main.java;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
+import static br.profileManager.src.main.java.WriteUtil.History.*;
 
 /**
  * Common methods for data validation
  * @param <ValueClass> the Value's Code View Class
  */
-public abstract class Abstract_ValidData<ValueClass> extends ToPrint{
+public abstract class Abstract_ValidData<ValueClass> extends WriteUtil{
 	
-	private List<ValidationElement<ValueClass>> 
-			validationList = new ArrayList<ValidationElement<ValueClass>>();
+	private List<ValidationElement<ValueClass>> validationList =
+			new ArrayList<ValidationElement<ValueClass>>();
 	private ValidationCriteria criteria = new ValidationCriteria();
 
-	private ValueClass[] defaultRandomLimits = null;
-	private ValueClass[] limits     = null;
-	private ValueClass defaultValue = null;
-	private ValueClass initialValue = null;
-	private ValueClass lastValue    = null;
-	private ValueClass gameValue    = null;
-	private ValueClass currentValue = null;
-	private ValueClass blankValue   = null;
+	private List<ValueClass> defaultRandomLimits = new ArrayList<ValueClass>();
+	private List<ValueClass> limits = new ArrayList<ValueClass>();
+	private Map<History, ValueClass> historyMap = new EnumMap<>(History.class);
+	
 	private String     defaultName  = "none";
+//	private boolean showHistory     = true;
+//	private boolean showLocalEnable = true;
+	
+	/**
+	 * Set the "history" Code View
+	 * @param history  Field to be filled
+	 * @param newValue the new "history" Value
+	 */
+	protected void setHistoryCodeView(History history, ValueClass newValue) {
+		if (history == Last 
+				&&!PMutil.neverNull(historyMap.get(Last)).isBlank()) {
+			return; // Last was already assigned
+		}
+		historyMap.put(history, newValue);
+		if (history == Initial) {
+			historyMap.put(Current, newValue);
+		}
+	}
+
+	/**
+	 * Set the "history" User View
+	 * @param history  Field to be filled
+	 * @param newValue the new "history" Value
+	 */
+	protected void setHistoryUserView(History history, String newValue) {
+		setHistoryCodeView(history, toCodeView(newValue));
+	}
+
+	/**
+	 * Get the "history" Code View
+	 * @param history  Field to be retrieved
+	 * @return the "history" Code View
+	 */
+	protected ValueClass getHistoryCodeView(History history) {
+		return historyMap.get(history);
+	}
+
+	/**
+	 * Get the "history" User View
+	 * @param history  Field to be retrieved
+	 * @return the "history" Code View
+	 */
+	protected String getHistoryUserView(History history) {
+		return toUserView(historyMap.get(history));
+	}
 
     // ==================================================
     // Constructors and initializers
@@ -102,80 +146,53 @@ public abstract class Abstract_ValidData<ValueClass> extends ToPrint{
 	 * Set the {@code Code View} limits
 	 * @param newLimits
 	 */
-	protected void setLimits (ValueClass[] newLimits) {
+	protected void setLimits(List<ValueClass> newLimits) {
 		limits = newLimits;
+	}
+
+	/**
+	 * Set the {@code Code View} limits
+	 * @param Limit1
+	 * @param Limit2
+	 */
+	protected void setLimits(ValueClass Limit1, ValueClass Limit2) {
+		limits = new ArrayList<ValueClass>();
+		limits.add(Limit1);
+		limits.add(Limit2);
 	}
 
 	/**
 	 * Set the {@code Code View} defaultRandomLimits
 	 * @param newLimits
 	 */
-	protected void setDefaultRandomLimits (ValueClass[] newLimits) {
+	protected void setDefaultRandomLimits(List<ValueClass> newLimits) {
 		defaultRandomLimits = newLimits;
+	}
+
+	/**
+	 * Set the {@code Code View} defaultRandomLimits
+	 * @param Limit1
+	 * @param Limit2
+	 */
+	protected void setDefaultRandomLimits(ValueClass Limit1, ValueClass Limit2) {
+		defaultRandomLimits = new ArrayList<ValueClass>();
+		defaultRandomLimits.add(Limit1);
+		defaultRandomLimits.add(Limit2);
 	}
 
 	/**
 	 * Set the {@code ValidationCriteria} criteria
 	 * @param newCriteria
 	 */
-	protected void setValidationCriteria (ValidationCriteria newCriteria) {
+	protected void setValidationCriteria(ValidationCriteria newCriteria) {
 		criteria = newCriteria;
-	}
-
-	/**
-	 * Set the default {@code Code View} value to be assigned
-	 * @param newValue the new default Value
-	 */
-	protected void setDefaultValue (ValueClass newValue) {
-		defaultValue = newValue;
-	}
-
-	/**
-	 * Set the initial {@code Code View} value at the loading
-	 * @param newValue the new initial Value
-	 */
-	protected void setInitialValue (ValueClass newValue) {
-		initialValue = newValue;
-	}
-
-	/**
-	 * Set the last known {@code Code View} value
-	 * @param newValue the new last Value
-	 */
-	protected void setLastValue (ValueClass newValue) {
-		lastValue = newValue;
-		currentValue = newValue;
-	}
-
-	/**
-	 * Set the last game {@code Code View} value (at game load)
-	 * @param newValue the new game Value
-	 */
-	protected void setGameValue (ValueClass newValue) {
-		gameValue = newValue;
-	}
-
-	/**
-	 * Set the current {@code Code View} value 
-	 * @param newValue the new current Value
-	 */
-	protected void setCurrentValue (ValueClass newValue) {
-		currentValue = newValue;
-	}
-
-	/**
-	 * Set the blank {@code Code View} value 
-	 * @param newValue the new blank Value
-	 */
-	protected void setBlankValue (ValueClass newValue) {
-		blankValue = newValue;
 	}
 
 	/**
 	 * Set the default parameter Name 
 	 * @param newValue the new default Parameter
 	 */
-	protected void setDefaultName (String newName) {
+	protected void setDefaultName(String newName) {
 		defaultName = newName;
 	}
 
@@ -186,79 +203,74 @@ public abstract class Abstract_ValidData<ValueClass> extends ToPrint{
 	 * Get the {@code Code View} limits
 	 * @return the limits
 	 */
-	protected ValueClass[] getLimits () {
+	protected List<ValidationElement<ValueClass>> getValidationList() {
+		return validationList;
+	}
+
+	/**
+	 * Get the {@code Code View} limits
+	 * @return the limits
+	 */
+	protected List<ValueClass> getLimits() {
 		return limits;
+	}
+
+	/**
+	 * Get the {@code Code View} limits
+	 * @return the limits
+	 */
+	protected ValueClass getLimits(int index) {
+		if (limits.isEmpty()) {
+			return getHistoryCodeView(Default);
+		}
+		if (index < 0) {
+			return limits.get(0);
+		}
+		if (index > limits.size()-1) {
+			return limits.get(limits.size()-1);
+		}
+		return limits.get(index);
 	}
 
 	/**
 	 * Get the {@code Code View} defaultRandomLimits
 	 * @return the limits
 	 */
-	protected ValueClass[] getDefaultRandomLimits () {
+	protected List<ValueClass> getDefaultRandomLimits() {
 		return defaultRandomLimits;
+	}
+
+	/**
+	 * Get the {@code Code View} defaultRandomLimits
+	 * index the limit index
+	 * @return the limit
+	 */
+	protected ValueClass getDefaultRandomLimits(int index) {
+		if (defaultRandomLimits.isEmpty()) {
+			return getHistoryCodeView(Default);
+		}
+		if (index < 0) {
+			return defaultRandomLimits.get(0);
+		}
+		if (index > defaultRandomLimits.size()-1) {
+			return defaultRandomLimits.get(defaultRandomLimits.size()-1);
+		}
+		return defaultRandomLimits.get(index);
 	}
 
 	/**
 	 * Get the {@code ValidationCriteria} limits
 	 * @return the limits
 	 */
-	protected ValidationCriteria getValidationCriteria () {
+	protected ValidationCriteria getValidationCriteria() {
 		return criteria;
-	}
-
-	/**
-	 * Get the default {@code Code View} value
-	 * @return the default value
-	 */
-	protected ValueClass getDefaultValue () {
-		return defaultValue;
-	}
-
-	/**
-	 * Get the initial {@code Code View} value
-	 * @return the initial value
-	 */
-	protected ValueClass getInitialValue () {
-		return initialValue;
-	}
-
-	/**
-	 * Get the last {@code Code View} value
-	 * @return the last value
-	 */
-	protected ValueClass getLastValue () {
-		return lastValue;
-	}
-
-	/**
-	 * Get the last game loaded {@code Code View} value
-	 * @return the game value
-	 */
-	protected ValueClass getGameValue () {
-		return gameValue;
-	}
-
-	/**
-	 * Get the current {@code Code View} value
-	 * @return the current value
-	 */
-	protected ValueClass getCurrentValue () {
-		return currentValue;
-	}
-
-	/**
-	 * Get the blank {@code Code View} value
-	 * @return the current value
-	 */
-	protected ValueClass getBlankValue () {
-		return blankValue;
 	}
 
 	/**
 	 * Get the default parameter name
 	 * @return the current value
 	 */
-	protected String getDefaultName () {
+	protected String getDefaultName() {
 		return defaultName;
 	}
 
@@ -300,13 +312,13 @@ public abstract class Abstract_ValidData<ValueClass> extends ToPrint{
 	 */
  	protected ValueClass getCodeView(String userEntry) {
  		if (userEntry != null) {
-			for (ValidationElement<ValueClass> element : validationList) {
-					if (element.isValidUserEntry(userEntry, criteria)) {
+ 			for (ValidationElement<ValueClass> element : validationList) {
+				if (element.isValidUserEntry(userEntry, criteria)) {
 					return element.getCodeView();
 				}
 			}
  		}
-		return blankValue;
+		return getHistoryCodeView(Blank);
 	}
 	
 	/**
@@ -383,7 +395,7 @@ public abstract class Abstract_ValidData<ValueClass> extends ToPrint{
 				}
 			}
  		}
-		return blankValue;
+		return getHistoryCodeView(Blank);
 	}
 	
 	/**
@@ -439,7 +451,7 @@ public abstract class Abstract_ValidData<ValueClass> extends ToPrint{
 	 */
 	protected boolean isValidCodeView(ValueClass codeView) {
 		if (codeView != null) {
-			if (criteria.isBlankAllowed && codeView.toString().isBlank()) {
+			if (criteria.isBlankAllowed() && codeView.toString().isBlank()) {
 				return true;
 			}
 			for (ValidationElement<ValueClass> element : validationList) {
@@ -463,48 +475,24 @@ public abstract class Abstract_ValidData<ValueClass> extends ToPrint{
 	}
 	
 	/**
-	 * Generate UserViewList and convert it to capitalized String
+	 * Generate UserViewList as String
 	 * @return UserView List in capitalized String
 	 */
-	@Override public String toString() {
+	public String getOptionsRange() {
 		return PMutil.capitalize(getUserViewList().toString());
 	}
 
 	/**
-	 * @return String with formated list of key = description as comment
+	 * Generate String with all Options and their = description
+	 * @return the String, never null
 	 */
-	@Override protected String toPrint() {
+	public String getOptionsDescription() {
 		String result = "";
-		for (ValidationElement<ValueClass> line : validationList) {
-			result += line.toPrint() + System.lineSeparator();
-		}
-		return result;
-	}
-	
-	/**
-	 * to String for selected Category:
-	 * @param category the filtering Category
-	 * @return string with formated list of key = description
-	 */
-	protected String toString(String category) {
-		String result = "";
+		String line;
 		for (ValidationElement<ValueClass> element : validationList) {
-			if (element.isMember(category, criteria)) {
-				result += element.toString() + System.lineSeparator();
-			}
-		}
-		return result;
-	}
-	
-	/**
-	 * For selected Category:
-	 * @return string with formated list of key = description as comment
-	 */
-	protected String toPrint(String category) {
-		String result = "";
-		for (ValidationElement<ValueClass> element : validationList) {
-			if (element.isMember(category, criteria)) {
-				result += element.toPrint() + System.lineSeparator();
+			line = element.toString();
+			if (!line.isBlank()) {
+				result += line + NL;
 			}
 		}
 		return result;
@@ -513,27 +501,38 @@ public abstract class Abstract_ValidData<ValueClass> extends ToPrint{
 	// ------------------------------------------------
     // Validation List Setters & Getters
     //	
+	protected void autoUpdateLimits() {
+		setLimits(getCodeView(0), getCodeView(validationList.size()-1));
+		setDefaultRandomLimits(getCodeView(0), getCodeView(validationList.size()-1));
+	}
+	
+	protected void addElement(ValidationElement<ValueClass> element) {
+		validationList.add(element);
+		autoUpdateLimits();
+	}
+	
 	protected void addElement(ValueClass codeView) {
-		validationList.add(new ValidationElement<ValueClass>(codeView));
+		addElement(new ValidationElement<ValueClass>(codeView));
 	}
 	
 	protected void addElement(ValueClass codeView, String userView) {
-		validationList.add(new ValidationElement<ValueClass>(
+		addElement(new ValidationElement<ValueClass>(
 									codeView, userView));
 	}
 	
 	protected void addElement(ValueClass codeView, String userView, 
 					String description, String category) {
-		validationList.add(new ValidationElement<ValueClass>(
+		addElement(new ValidationElement<ValueClass>(
 								codeView, userView, description, category));
 	}
 	
 	protected void addElement(ValueClass codeView, String description, String category) {
-		validationList.add(new ValidationElement<ValueClass>(
+		addElement(new ValidationElement<ValueClass>(
 									codeView, description, category));
 	}
 	
 	protected void setValidationList(List<ValidationElement<ValueClass>> list) {
 		validationList = list;
+		autoUpdateLimits();
 	}    
 }

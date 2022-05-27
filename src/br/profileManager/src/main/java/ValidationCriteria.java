@@ -1,6 +1,19 @@
-package br.profileManager.src.main.java;
 
-import br.profileManager.src.main.java.ToPrint.PrintFormat;
+/*
+ * Licensed under the GNU General License, Version 3 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *	 https://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package br.profileManager.src.main.java;
 
 /**
  * All boolean conditions for parameters validations
@@ -10,23 +23,15 @@ import br.profileManager.src.main.java.ToPrint.PrintFormat;
  */
 public class ValidationCriteria {
 
-	boolean isNullAllowed   = false;
-	boolean isBlankAllowed  = true;
-	boolean isRandomAllowed = true;
-	/**
-	 * <b>true</b>: user View equals 
-	 * <b>false</b>: user View isContained
-	 */
-	boolean userViewEquals = true ;
-	/**
-	 * <b>true</b>: category equals 
-	 * <b>false</b>: category Contains
-	 */
-	boolean categoryEquals = false;
-	boolean userViewIsCaseSensitive  = false;
-	boolean categoryIsCaseSensitive  = false;
-	boolean codeViewIsCaseSensitive  = true;
-	PrintFormat printFormat = PrintFormat.CAPITALIZE;
+	private boolean isNullAllowed   = false;
+	private boolean isBlankAllowed  = true;
+	private boolean isRandomAllowed = true;
+	private boolean userViewEquals  = true ;
+	private boolean codeViewEquals  = true ;
+	private boolean categoryEquals  = false;
+	private boolean userViewIsCaseSensitive  = false;
+	private boolean codeViewIsCaseSensitive  = false;
+	private boolean categoryIsCaseSensitive  = false;
 	
 	// ==================================================
     // getters
@@ -43,7 +48,7 @@ public class ValidationCriteria {
 	}
 	
 	/**
-	 * <b>true</b>: user View equals 
+	 * @return <b>true</b>: user View equals 
 	 * <b>false</b>: user View isContained
 	 */
 	boolean userViewEquals() { 
@@ -51,7 +56,15 @@ public class ValidationCriteria {
 	}
 	
 	/**
-	 * <b>true</b>: category equals 
+	 * @return <b>true</b>: code View equals 
+	 * <b>false</b>: code View isContained
+	 */
+	boolean codeViewEquals() { 
+		return codeViewEquals; 
+	}
+	
+	/**
+	 * @return <b>true</b>: category equals 
 	 * <b>false</b>: category Contains
 	 */
 	boolean categoryEquals() { 
@@ -68,10 +81,6 @@ public class ValidationCriteria {
 	
 	boolean codeViewIsCaseSensitive() { 
 		return codeViewIsCaseSensitive; 
-	}
-	
-	PrintFormat printFormat() { 
-		return printFormat; 
 	}
 	
 	// ==================================================
@@ -117,6 +126,17 @@ public class ValidationCriteria {
 	}
 	
 	/**
+	 * <b>true</b>: code View equals 
+	 * <b>false</b>: code View isContained
+	 * @param equals the new value
+	 * @return this for chaining purpose
+	 */
+	public ValidationCriteria codeViewEquals(boolean equals) { 
+		codeViewEquals = equals;
+		return this; 
+	}
+	
+	/**
 	 * <b>true</b>: category equals 
 	 * <b>false</b>: category Contains
 	 * @param equals the new value
@@ -151,15 +171,6 @@ public class ValidationCriteria {
 	 */
 	public ValidationCriteria codeViewIsCaseSensitive(boolean caseSensitive) { 
 		codeViewIsCaseSensitive = caseSensitive;
-		return this; 
-	}
-	
-	/**
-	 * @param format the new value
-	 * @return this for chaining purpose
-	 */
-	public ValidationCriteria printFormat(PrintFormat format) { 
-		printFormat = format;
 		return this; 
 	}
 }

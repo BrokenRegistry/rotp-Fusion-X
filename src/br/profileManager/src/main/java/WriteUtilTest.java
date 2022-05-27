@@ -1,6 +1,6 @@
 package br.profileManager.src.main.java;
 
-import static br.profileManager.src.main.java.ToComment.*;
+import static br.profileManager.src.main.java.WriteUtil.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-class ToCommentTest {
+class WriteUtilTest {
 
 	@Test
 	void toComment_Object() {

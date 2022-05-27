@@ -49,30 +49,26 @@ class Group_Governor extends Abstract_Group <ClientClasses> {
 
 		GovernorOnByDefault(ClientClasses go) { 
 			super("GOVERNOR ON BY DEFAULT", new Valid_Boolean());
-//			setInitialValue(go.getGuiObject().selectedPlayerColor());
 		}
+		
 		@Override public Boolean getFromGame (ClientClasses go) {
 			return null;
 //			return go.getGuiObject().selectedGalaxyShape();
 		}
-		@Override
-		public void putToGame(ClientClasses go, Boolean userOption) {
+		
+		@Override public void putToGame(ClientClasses go, Boolean userOption) {
 
 		}	
-		@Override
-		public Boolean getFromUI (ClientClasses go) {
+
+		@Override public Boolean getFromUI (ClientClasses go) {
 			return null;
 //			return go.getGuiObject().selectedGalaxyShape();
 		}
-		@Override
-		public void putToGUI(ClientClasses go, Boolean userOption) {
+
+		@Override public void putToGUI(ClientClasses go, Boolean userOption) {
 		}
-		@Override
-		public void putInitialToGUI(ClientClasses go) {
-//			go.getGuiObject().selectedGalaxyShape(getInitialCodeView());
-		}
-		@Override
-		public void initComments() {
+		
+		@Override public void initComments() {
 			setHeadComments(
 				" " + NL +
 				"------------- Gouvernor Options -------------" + NL +
@@ -87,30 +83,26 @@ class Group_Governor extends Abstract_Group <ClientClasses> {
 
 		AutospendOnByDefault(ClientClasses go) {
 			super("AUTOSPEND ON BY DEFAULT", new Valid_Boolean());
-//			setInitialValue(go.getGuiObject().selectedPlayerColor());
 		}
+
 		@Override public Boolean getFromGame (ClientClasses go) {
 			return null;
 //			return go.getGuiObject().selectedGalaxyShape();
 		}
-		@Override
-		public void putToGame(ClientClasses go, Boolean userOption) {
+
+		@Override public void putToGame(ClientClasses go, Boolean userOption) {
 
 		}	
-		@Override
-		public Boolean getFromUI (ClientClasses go) {
+
+		@Override public Boolean getFromUI (ClientClasses go) {
 			return null;
 //			return go.getGuiObject().selectedGalaxyShape();
 		}
-		@Override
-		public void putToGUI(ClientClasses go, Boolean userOption) {
+
+		@Override public void putToGUI(ClientClasses go, Boolean userOption) {
 		}
-		@Override
-		public void putInitialToGUI(ClientClasses go) {
-//			go.getGuiObject().selectedGalaxyShape(getInitialCodeView());
-		}
-		@Override
-		public void initComments() {}
+
+		@Override public void initComments() {}
 	}
 	// ==============================================================
 	// DEFAULT MAX BASES
@@ -131,15 +123,7 @@ class Group_Governor extends Abstract_Group <ClientClasses> {
 		
 		private void initCriteria() {
 			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+					.isNullAllowed(false));
 		}
 		
 		private void init() {
@@ -154,30 +138,26 @@ class Group_Governor extends Abstract_Group <ClientClasses> {
 
 		DefaultMaxBases(ClientClasses go) { 
 			super("DEFAULT MAX BASES", new Valid_DefaultMaxBases());
-//			setInitialValue(go.getGuiObject().selectedPlayerColor());
 		}
+
 		@Override public Integer getFromGame (ClientClasses go) {
 			return null;
 //			return go.getGuiObject().selectedGalaxyShape();
 		}
-		@Override
-		public void putToGame(ClientClasses go, Integer userOption) {
+
+		@Override public void putToGame(ClientClasses go, Integer userOption) {
 
 		}	
-		@Override
-		public Integer getFromUI (ClientClasses go) {
+
+		@Override public Integer getFromUI (ClientClasses go) {
 			return null;
 //			return go.getGuiObject().selectedGalaxyShape();
 		}
-		@Override
-		public void putToGUI(ClientClasses go, Integer userOption) {
+
+		@Override public void putToGUI(ClientClasses go, Integer userOption) {
 		}
-		@Override
-		public void putInitialToGUI(ClientClasses go) {
-//			go.getGuiObject().selectedGalaxyShape(getInitialCodeView());
-		}
-		@Override
-		public void initComments() {}
+
+		@Override public void initComments() {}
 	}
 	// ==============================================================
 	// DIVERT EXCESS TO RESEARCH
@@ -187,29 +167,25 @@ class Group_Governor extends Abstract_Group <ClientClasses> {
 
 		DivertExcessToResearch(ClientClasses go) {
 			super("DIVERT EXCESS TO RESEARCH", new Valid_Boolean());
-//			setInitialValue(go.getGuiObject().selectedPlayerColor());
 		}
+
 		@Override public Boolean getFromGame (ClientClasses go) {
 			return null;
 //			return go.getGuiObject().selectedGalaxyShape();
 		}
-		@Override
-		public void putToGame(ClientClasses go, Boolean userOption) {
+
+		@Override public void putToGame(ClientClasses go, Boolean userOption) {
 
 		}	
-		@Override
-		public Boolean getFromUI (ClientClasses go) {
+
+		@Override public Boolean getFromUI (ClientClasses go) {
 			return null;
 //			return go.getGuiObject().selectedGalaxyShape();
 		}
-		@Override
-		public void putToGUI(ClientClasses go, Boolean userOption) {
+
+		@Override public void putToGUI(ClientClasses go, Boolean userOption) {
 		}
-		@Override
-		public void putInitialToGUI(ClientClasses go) {
-//			go.getGuiObject().selectedGalaxyShape(getInitialCodeView());
-		}
-		@Override
-		public void initComments() {}
+
+		@Override public void initComments() {}
 	}
 }

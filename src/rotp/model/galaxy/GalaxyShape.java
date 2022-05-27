@@ -20,7 +20,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import rotp.mod.br.alteration.GalaxyOptions;
+import mod.br.Galaxy.GalaxyOptions;
 import rotp.mod.br.profiles.Profiles;
 import rotp.model.game.IGameOptions;
 import rotp.util.Base;

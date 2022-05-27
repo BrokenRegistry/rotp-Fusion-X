@@ -17,13 +17,14 @@ package br.profileManager.src.main.java;
 
 import static br.profileManager.src.main.java.PMutil.capitalize;
 import static br.profileManager.src.main.java.PMutil.clean;
+import static br.profileManager.src.main.java.WriteUtil.History.Default;
 
 /**
  * @param <ValueClass> The class of Values
  */
 class Generic_Entry<
 		ValueClass,
-		ValidClass extends Abstract_ValidData<ValueClass>> extends ToPrint {
+		ValidClass extends Abstract_ValidData<ValueClass>> extends WriteUtil {
 
 	private static final String RANDOM_ID = "RANDOM";
 	private static final String PARAMETERS_SEPARATOR  = ",";
@@ -32,7 +33,7 @@ class Generic_Entry<
 	private String outputStr = "";  // what will be the outputStr
 	                                // To make the common code easier to manage
 
-	private PrintFormat printFormat = PrintFormat.HOLD; // The default format for outputStr
+//	private PrintFormat printFormat = PrintFormat.HOLD; // The default format for outputStr
 	private ValueClass value = null;
 	private Abstract_ValidData<ValueClass> validationData;
 	
@@ -51,7 +52,7 @@ class Generic_Entry<
 	 */
 	Generic_Entry(Abstract_ValidData<ValueClass> validationData) {
 		setValidationData(validationData);
-		setValue(validationData.getDefaultValue());
+		setValue(validationData.getHistoryCodeView(Default));
 	}
 
 	/**
@@ -74,20 +75,6 @@ class Generic_Entry<
 			ValueClass value) {
 		setValidationData(validationData);
 		setValue(value);
-	}
-
-	/**
-	 * create and initialize a new {@code EntryValid}
-	 * @param validationData the {@code Abstract_ValidData<ValueClass>} validationData
-	 * @param userEntry the {@code String} userEntry
-	 * @param printFormat the default {@code PrintFormat}
-	 */
-	Generic_Entry(Abstract_ValidData<ValueClass> validationData,
-			  String userEntry,
-			  PrintFormat printFormat) {
-		setValidationData(validationData);
-		setPrintFormat(printFormat);
-		set(userEntry);
 	}
 
 	// ==================================================
@@ -158,7 +145,6 @@ class Generic_Entry<
 	void setValue(ValueClass newValue) {
 		value = newValue;
 		if (value != null) {
-//			setOutputStr(PMutil.neverNull(newValue));
 			setOutputStr(validationData.getUserView(newValue));
 		} else {
 			setOutputStr(getUserEntry());
@@ -171,14 +157,6 @@ class Generic_Entry<
 	 */
 	void setOutputStr(String newOutputStr) {
 		outputStr = PMutil.neverNull(newOutputStr);
-	}
-
-	/**
-	 * Set the new preformatted output {@code String}
-	 * @param newFormat the new {@code PrintFormat}
-	 */
-	void setPrintFormat(PrintFormat newFormat) {
-		printFormat = newFormat;
 	}
 
 	// ==================================================
@@ -210,14 +188,6 @@ class Generic_Entry<
 	 */
 	String getOutputStr() { 
 		return outputStr;
-	}	
-
-	/**
-	 * Ask for Printing Format as {@code PrintFormat}
-	 * @return the  {@code PrintFormat}
-	 */
-	PrintFormat getPrintFormat() { 
-		return printFormat;
 	}	
 
 	/**
@@ -254,13 +224,17 @@ class Generic_Entry<
 	 * Analyze user Entry content
 	 */
 	private void entryAnalysis() {
-		if ( validationData.getValidationCriteria().isRandomAllowed
+		if ( validationData.getValidationCriteria().isRandomAllowed()
 				&& isRandom(getUserEntry())) {
 			if (hasExtraParameters(getUserEntry())) {
 				setValue(validationData.randomWithParameters(
 						splitParameters(removeRandomId(getUserEntry()))));
+				setOutputStr(getUserEntry());
+				return;
 			}
 			setValue(validationData.randomWithoutParameters());
+			setOutputStr(getUserEntry());
+			return;
 		}
 		setValue(validationData.entryValidation(getUserEntry()));
 	}
@@ -299,7 +273,8 @@ class Generic_Entry<
 		userEntry = PMutil.clean(userEntry);
 		userEntry = userEntry.substring(RANDOM_ID.length()).strip();
 		// Check for misplaced PARAMETERS_SEPARATOR
-		if (userEntry.charAt(0) == PARAMETERS_SEPARATOR.charAt(0)) {
+		if (!userEntry.isEmpty() &&
+				userEntry.charAt(0) == PARAMETERS_SEPARATOR.charAt(0)) {
 			userEntry = userEntry.substring(1).strip();
 		}
 		return userEntry;
@@ -334,7 +309,7 @@ class Generic_Entry<
 	 * @return this for chaining purpose
 	 */
 	Generic_Entry<ValueClass, ValidClass> removeComment() {
-		set(ToComment.removeComment(getUserEntry()));
+		set(WriteUtil.removeComment(getUserEntry()));
 		return this;
 	}
 	

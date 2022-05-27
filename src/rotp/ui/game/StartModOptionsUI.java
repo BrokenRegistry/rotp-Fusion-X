@@ -406,45 +406,10 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
         dynamicDifficultyText.repaint(dynamicDifficultyStr());
     }
 
-    // BR:
-    public void refreshAllMenu() {
-        buttonClick();
-        // Race
-        newGameOptions().selectedPlayerRace(options().selectedPlayerRace());
-        newGameOptions().selectedPlayerColor(options().selectedPlayerColor());
-        // Galaxy
-        newGameOptions().selectedPlayerRace(options().selectedPlayerRace());
-        newGameOptions().selectedGameDifficulty(options().selectedGameDifficulty());
-        newGameOptions().selectedOpponentAIOption(options().selectedOpponentAIOption());
-        newGameOptions().selectedOpponentAIOption(options().selectedOpponentAIOption());
-        newGameOptions().selectedGalaxySize(options().selectedGalaxySize());
-        newGameOptions().selectedGalaxyShape(options().selectedGalaxyShape());
-        newGameOptions().galaxyShape().quickGenerate();
-        newGameOptions().selectedNumberOpponents(
-            min(newGameOptions().maximumOpponentsOptions(), options().selectedNumberOpponents()));
-        // Advanced
-        newGameOptions().selectedGalaxyAge(options().selectedGalaxyAge());
-        newGameOptions().selectedStarDensityOption(options().selectedStarDensityOption());
-        newGameOptions().selectedAIHostilityOption(options().selectedAIHostilityOption());
-        newGameOptions().selectedNebulaeOption(options().selectedNebulaeOption());
-        newGameOptions().selectedRandomEventOption(options().selectedRandomEventOption());
-        newGameOptions().selectedPlanetQualityOption(options().selectedPlanetQualityOption());
-        newGameOptions().selectedTerraformingOption(options().selectedTerraformingOption());
-        newGameOptions().selectedColonizingOption(options().selectedColonizingOption());
-        newGameOptions().selectedCouncilWinOption(options().selectedCouncilWinOption());
-        newGameOptions().selectedRandomizeAIOption(options().selectedRandomizeAIOption());
-        newGameOptions().selectedAutoplayOption(options().selectedAutoplayOption());
-        newGameOptions().selectedResearchRate(options().selectedResearchRate());
-        newGameOptions().selectedWarpSpeedOption(options().selectedWarpSpeedOption());
-        newGameOptions().selectedFuelRangeOption(options().selectedFuelRangeOption());
-        newGameOptions().selectedTechTradeOption(options().selectedTechTradeOption());
-    }
-    private void refreshThisMenu() {
-        buttonClick();
-    } // \ BR:
     @Override
     public void keyPressed(KeyEvent e) {
-        switch(e.getKeyCode()) {
+        int k = e.getKeyCode();
+        switch(k) {
             case KeyEvent.VK_ESCAPE:
                 close();
                 break;
@@ -452,24 +417,10 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
             case KeyEvent.VK_ENTER:
                 parent.advanceHelp();
                 break;
-                case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
-                Profiles.resetGlobalInitialOptions(options());
-                refreshAllMenu();
-                refreshThisMenu();
-                break;
-            case KeyEvent.VK_R: // BR: "G" = Reload User Presets
-                Profiles.loadGlobalGroupSettings(options());
-                refreshAllMenu();
-                refreshThisMenu();
-                break;
-            case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
-                Profiles.loadLocalGroupSettings("Modnar", options());
-                refreshThisMenu();
-                break;
-            case KeyEvent.VK_U: // BR: "U" = Update User Presets
-                Profiles.saveGuiToFile(options());
-                refreshThisMenu();
-                break;
+            default: // BR:
+            	Profiles.processKey(k, e.isShiftDown(), "Modnar", newGameOptions());
+                buttonClick();
+                return;
         }
     }
     @Override

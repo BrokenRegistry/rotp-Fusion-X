@@ -1,22 +1,42 @@
+
+/*
+ * Licensed under the GNU General License, Version 3 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *	 https://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package br.profileManager.src.main.java;
 
 /**
  * Single element for validation list
  * @param <ValueClass> the Value's Code View Class
  */
-public class ValidationElement<ValueClass> extends ToPrint {
+public class ValidationElement<ValueClass> extends WriteUtil {
 
 	// ------------------------------------------------------------------------
 	// Constant Properties
     //
-	private final Integer SEPARATOR_POSITION = LINE_SPLIT_POSITION - COMMENT_PRT.length();
+	private final Integer SEPARATOR_POSITION = lineSplitPosition() - commentPrt().length();
 	private final String  SEPARATOR_SYMBOL   = "=";
 	private final String  SEPARATOR_SPACER   = " ";
-	private final String  KEY_FORMAT         = "%-" 
-	                                        + SEPARATOR_POSITION.toString()
-	                                        + "s"
-	                                        + SEPARATOR_SYMBOL 
-	                                        + SEPARATOR_SPACER;
+	private final String  KEY_FORMAT = "%-" 
+                                    + SEPARATOR_POSITION.toString()
+                                    + "s"
+                                    + SEPARATOR_SYMBOL 
+                                    + SEPARATOR_SPACER;
+	private final String  EXT_FORMAT = "%-" 
+						            + SEPARATOR_POSITION.toString()
+						            + "s"
+						            + SEPARATOR_SPACER 
+						            + SEPARATOR_SPACER;
 	
 	private String description;
 	private String category ;
@@ -65,10 +85,10 @@ public class ValidationElement<ValueClass> extends ToPrint {
 	 */
 	boolean isValidCodeView(ValueClass codeViewToTest,
 							ValidationCriteria criteria) {
-		return PMutil.genericTest(codeView.toString(),
-								  codeViewToTest.toString(),
-								  criteria.codeViewIsCaseSensitive,
-								  true);
+		return PMutil.genericTest(codeViewToTest.toString(),
+								  codeView.toString(),
+								  criteria.codeViewIsCaseSensitive(),
+								  criteria.codeViewEquals());
 	}
 
 	/**
@@ -95,8 +115,8 @@ public class ValidationElement<ValueClass> extends ToPrint {
 							 ValidationCriteria criteria) {
 		return PMutil.genericTest(userEntry,
 								  userView,
-								  criteria.userViewIsCaseSensitive,
-								  criteria.userViewEquals);
+								  criteria.userViewIsCaseSensitive(),
+								  criteria.userViewEquals());
 	}
 
 	/**
@@ -123,8 +143,8 @@ public class ValidationElement<ValueClass> extends ToPrint {
 							ValidationCriteria criteria) {
 		return PMutil.genericTest(category,
 								  categoryToTest,
-								  criteria.categoryIsCaseSensitive,
-								  criteria.categoryEquals);
+								  criteria.categoryIsCaseSensitive(),
+								  criteria.categoryEquals());
 	}
 
 	/**
@@ -137,23 +157,21 @@ public class ValidationElement<ValueClass> extends ToPrint {
 					 ValidationCriteria criteria) {
 		return PMutil.genericTest(category,
 								  categoryToTest,
-								  criteria.categoryIsCaseSensitive,
+								  criteria.categoryIsCaseSensitive(),
 								  false);
 	}
 	
 	/**
-	 * @return string with formated userView = description
+	 * @return string with formated userView = description,
+	 * or empty if no description
 	 */
-	@Override
-	public String toString() {
-		return String.format(KEY_FORMAT, userView) + description;
-	}
-	/**
-	 * Return string with formated userView = description as comment
-	 */
-	@Override
-	String toPrint() {
-		return toComment();
+	@Override public String toString() {
+		if (description.isBlank()) {
+			return "";
+		}
+		return multiLines(description,
+				String.format(KEY_FORMAT, userView),
+				String.format(EXT_FORMAT, " ".repeat(userView.length())));
 	}
 	// ------------------------------------------------
     // Getters

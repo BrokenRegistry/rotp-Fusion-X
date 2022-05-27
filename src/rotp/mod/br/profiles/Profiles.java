@@ -65,54 +65,92 @@ public class Profiles {
 				userProfiles.getParameter("MAXIMIZE EMPIRES SPACING").isLoadEnabled();
 	}
 
-	/**
-   	 * Load and execute the configuration file,
-   	 * only for the selected GUI
-	 * @param group 
-	 * @param options 
-   	 */
-	public static void loadLocalGroupSettings(String group, IGameOptions options) {
-		userProfiles.loadLocalGroupSettings(group, new ClientClasses(options));
-	}
-
-	/**
-   	 * Load and execute the configuration file,
-   	 * for All GUI
-	 * @param options 
-   	 */
-	public static void loadGlobalGroupSettings(IGameOptions options) {
-		userProfiles.loadGlobalGroupSettings(new ClientClasses(options));
-	}
-
-	/**
-   	 * Reset the game options as they where at the beginning,
-   	 * for all GUI
-	 * @param options 
-   	 */
-	public static void resetGlobalInitialOptions(IGameOptions options) {
-		userProfiles.resetGlobalInitialOptions(new ClientClasses(options));
-	}
-
-	/**
-   	 * Reset the game options as they where at the beginning,
-   	 * for the selected GUI
-	 * @param group group name
-	 * @param options 
-   	 */
-	public static void resetLocalInitialOptions(String group, IGameOptions options) {
-		userProfiles.resetLocalInitialOptions(group, new ClientClasses(options));
-	}
-
-	/**
-   	 * Load the configuration file to update the Action
-   	 * Update with last GUI options values
-   	 * Save the new configuration file
-	 * @param options 
-   	 */
-	public static void saveGuiToFile(IGameOptions options) {
-		userProfiles.saveGuiToFile(new ClientClasses(options));
-	}
-
+//	/**
+//   	 * Load and execute the configuration file,
+//   	 * only for the selected GUI
+//	 * @param group 
+//	 * @param options 
+//   	 */
+//	public static void loadLocalGroupSettings(String group, IGameOptions options) {
+//		userProfiles.loadLocalGroupSettings(group, new ClientClasses(options));
+//	}
+//
+//	/**
+//   	 * Load and execute "Surprise" configuration file,
+//   	 * only for the selected GUI
+//	 * @param group 
+//	 * @param options 
+//   	 */
+//	public static void loadSurpriseLocalGroupSettings(String group, IGameOptions options) {
+//		userProfiles.loadSurpriseLocalGroupSettings(group, new ClientClasses(options));
+//	}
+//
+//	/**
+//   	 * Load and execute the configuration file,
+//   	 * for All GUI
+//	 * @param options 
+//   	 */
+//	public static void loadGlobalGroupSettings(IGameOptions options) {
+//		userProfiles.loadGlobalGroupSettings(new ClientClasses(options));
+//	}
+//
+//	/**
+//   	 * Load and execute "Surprise" configuration file,
+//   	 * for All GUI
+//	 * @param options 
+//   	 */
+//	public static void loadSurpriseGlobalGroupSettings(IGameOptions options) {
+//		userProfiles.loadSurpriseGlobalGroupSettings(new ClientClasses(options));
+//	}
+//
+//	/**
+//   	 * Reset the game options as they where at the beginning,
+//   	 * for all GUI
+//	 * @param options 
+//   	 */
+//	public static void resetGlobalInitialOptions(IGameOptions options) {
+//		userProfiles.resetGlobalInitialOptions(new ClientClasses(options));
+//	}
+//
+//	/**
+//   	 * Reset the game options to their very default values,
+//   	 * for all GUI
+//	 * @param options 
+//   	 */
+//	public static void resetGlobalDefaultOptions(IGameOptions options) {
+//		userProfiles.resetGlobalDefaultOptions(new ClientClasses(options));
+//	}
+//
+//	/**
+//   	 * Reset the game options as they where at the beginning,
+//   	 * for the selected GUI
+//	 * @param group group name
+//	 * @param options 
+//   	 */
+//	public static void resetLocalInitialOptions(String group, IGameOptions options) {
+//		userProfiles.resetLocalInitialOptions(group, new ClientClasses(options));
+//	}
+//
+//	/**
+//   	 * Reset the game options their very default values,
+//   	 * for the selected GUI
+//	 * @param group group name
+//	 * @param options 
+//   	 */
+//	public static void resetLocalDefaultOptions(String group, IGameOptions options) {
+//		userProfiles.resetLocalDefaultOptions(group, new ClientClasses(options));
+//	}
+//
+//	/**
+//   	 * Load the configuration file to update the Action
+//   	 * Update with last GUI options values
+//   	 * Save the new configuration file
+//	 * @param options 
+//   	 */
+//	public static void saveGuiToFile(IGameOptions options) {
+//		userProfiles.saveGuiToFile(new ClientClasses(options));
+//	}
+//
 	/**
    	 * Load the configuration file to update the Action
    	 * Update with last Loaded Game options values
@@ -129,5 +167,20 @@ public class Profiles {
    	 */
 	public static void changeGameSettings(GameSession instance) {
 		userProfiles.changeGameSettings(new ClientClasses(instance));
+	}
+
+	/**
+   	 * Load the configuration file to update the Action
+   	 * Update with last Loaded Game options values
+   	 * Save the new configuration file
+	 * @param key the key to process
+	 * @param global Global or Local ?
+	 * @param group group name
+	 * @param options class containing info
+	 * @return <b>true</b> if something has been changed
+   	 */
+	public static boolean processKey(int key, boolean global,
+			String group, IGameOptions options) {
+		return userProfiles.processKey(key, global, group, new ClientClasses(options));
 	}
 }

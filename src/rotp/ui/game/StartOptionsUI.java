@@ -604,75 +604,11 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
         buttonClick();
         close();
         rotp.ui.RotPUI.instance().selectGamePanel();
-    }
-    public void refreshAllMenu() {
-        buttonClick();
-        // Race
-        newGameOptions().selectedPlayerRace(options().selectedPlayerRace());
-        newGameOptions().selectedPlayerColor(options().selectedPlayerColor());
-        // Galaxy
-        newGameOptions().selectedPlayerRace(options().selectedPlayerRace());
-        newGameOptions().selectedGameDifficulty(options().selectedGameDifficulty());
-        newGameOptions().selectedOpponentAIOption(options().selectedOpponentAIOption());
-        newGameOptions().selectedOpponentAIOption(options().selectedOpponentAIOption());
-        newGameOptions().selectedGalaxySize(options().selectedGalaxySize());
-        newGameOptions().selectedGalaxyShape(options().selectedGalaxyShape());
-        newGameOptions().galaxyShape().quickGenerate();
-        newGameOptions().selectedNumberOpponents(
-            min(newGameOptions().maximumOpponentsOptions(), options().selectedNumberOpponents()));
-        // Advanced
-//        newGameOptions().selectedGalaxyAge(options().selectedGalaxyAge());
-//        newGameOptions().selectedStarDensityOption(options().selectedStarDensityOption());
-//        newGameOptions().selectedAIHostilityOption(options().selectedAIHostilityOption());
-//        newGameOptions().selectedNebulaeOption(options().selectedNebulaeOption());
-//        newGameOptions().selectedRandomEventOption(options().selectedRandomEventOption());
-//        newGameOptions().selectedPlanetQualityOption(options().selectedPlanetQualityOption());
-//        newGameOptions().selectedTerraformingOption(options().selectedTerraformingOption());
-//        newGameOptions().selectedColonizingOption(options().selectedColonizingOption());
-//        newGameOptions().selectedCouncilWinOption(options().selectedCouncilWinOption());
-//        newGameOptions().selectedRandomizeAIOption(options().selectedRandomizeAIOption());
-//        newGameOptions().selectedAutoplayOption(options().selectedAutoplayOption());
-//        newGameOptions().selectedResearchRate(options().selectedResearchRate());
-//        newGameOptions().selectedWarpSpeedOption(options().selectedWarpSpeedOption());
-//        newGameOptions().selectedFuelRangeOption(options().selectedFuelRangeOption());
-//        newGameOptions().selectedTechTradeOption(options().selectedTechTradeOption());
-    }
-    private void refreshThisMenu() {
-        buttonClick();
-        newGameOptions().selectedGalaxyAge(options().selectedGalaxyAge());
-        galaxyAgeText.repaint(galaxyAgeStr());
-        newGameOptions().selectedStarDensityOption(options().selectedStarDensityOption());
-        starDensityText.repaint(starDensityStr());
-        newGameOptions().selectedAIHostilityOption(options().selectedAIHostilityOption());
-        aiHostilityText.repaint(aiHostilityStr());
-        newGameOptions().selectedNebulaeOption(options().selectedNebulaeOption());
-        nebulaeText.repaint(nebulaeStr());
-        newGameOptions().selectedRandomEventOption(options().selectedRandomEventOption());
-        randomEventsText.repaint(randomEventsStr());
-        newGameOptions().selectedPlanetQualityOption(options().selectedPlanetQualityOption());
-        planetQualityText.repaint(planetQualityStr());
-        newGameOptions().selectedTerraformingOption(options().selectedTerraformingOption());
-        terraformingText.repaint(terraformingStr());
-        newGameOptions().selectedColonizingOption(options().selectedColonizingOption());
-        colonizingText.repaint(colonizingStr());
-        newGameOptions().selectedCouncilWinOption(options().selectedCouncilWinOption());
-        councilWinText.repaint(councilWinStr());
-        newGameOptions().selectedRandomizeAIOption(options().selectedRandomizeAIOption());
-        randomizeAIText.repaint(randomizeAIStr());
-        newGameOptions().selectedAutoplayOption(options().selectedAutoplayOption());
-        autoplayText.repaint(autoplayStr());
-        newGameOptions().selectedResearchRate(options().selectedResearchRate());
-        researchRateText.repaint(researchRateStr());
-        newGameOptions().selectedWarpSpeedOption(options().selectedWarpSpeedOption());
-        warpSpeedText.repaint(warpSpeedStr());
-        newGameOptions().selectedFuelRangeOption(options().selectedFuelRangeOption());
-        fuelRangeText.repaint(fuelRangeStr());
-        newGameOptions().selectedTechTradeOption(options().selectedTechTradeOption());
-        techTradingText.repaint(techTradingStr());
     } // \ BR:
     @Override
     public void keyPressed(KeyEvent e) {
-        switch(e.getKeyCode()) {
+        int k = e.getKeyCode();
+        switch(k) {
             case KeyEvent.VK_ESCAPE:
                 close();
                 break;
@@ -680,28 +616,30 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
             case KeyEvent.VK_ENTER:
                 parent.advanceHelp();
                 break;
-            case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
-            	Profiles.resetGlobalInitialOptions(options());
-            	refreshAllMenu();
-                refreshThisMenu();
-                break;
-            case KeyEvent.VK_G: // BR: "G" = Reload User Presets
-                Profiles.loadGlobalGroupSettings(options());
-                refreshAllMenu();
-                refreshThisMenu();
-                break;
-            case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
-                Profiles.loadLocalGroupSettings("Advanced", options());
-                refreshThisMenu();
-                break;
             case KeyEvent.VK_M: // BR: "M" = Go to Main Menu
                 goToMainMenu();
                 break;
-            case KeyEvent.VK_U: // BR: "U" = Update User Presets
-                Profiles.saveGuiToFile(options());
-                refreshThisMenu();
-                break;
-        }
+            default: // BR:
+            	if (Profiles.processKey(k, e.isShiftDown(), "Advanced", newGameOptions())) {
+                    buttonClick();
+                    galaxyAgeText.repaint(galaxyAgeStr());
+                    starDensityText.repaint(starDensityStr());
+                    aiHostilityText.repaint(aiHostilityStr());
+                    nebulaeText.repaint(nebulaeStr());
+                    randomEventsText.repaint(randomEventsStr());
+                    planetQualityText.repaint(planetQualityStr());
+                    terraformingText.repaint(terraformingStr());
+                    colonizingText.repaint(colonizingStr());
+                    councilWinText.repaint(councilWinStr());
+                    randomizeAIText.repaint(randomizeAIStr());
+                    autoplayText.repaint(autoplayStr());
+                    researchRateText.repaint(researchRateStr());
+                    warpSpeedText.repaint(warpSpeedStr());
+                    fuelRangeText.repaint(fuelRangeStr());
+                    techTradingText.repaint(techTradingStr());           		
+            	}
+               return;
+       }
     }
     @Override
     public void mouseDragged(MouseEvent e) {  }

@@ -73,12 +73,4 @@ class Valid_LocalEnableTest {
 				new Line_LocalEnable().toString()
 				, "should have been \"¦ LOCAL ENABLE      : ALL\"");
 	}
-
-	@Test
-	void toPrint_None() {
-		assertEquals("¦ LOCAL ENABLE      : ALL", 
-				new Line_LocalEnable().toPrint()
-				, "should have been \"¦ LOCAL ENABLE      : ALL\"");
-	}
-
 }

@@ -25,6 +25,7 @@ import br.profileManager.src.main.java.PMutil;
 import br.profileManager.src.main.java.Valid_Integer;
 import br.profileManager.src.main.java.Valid_String;
 import br.profileManager.src.main.java.ValidationCriteria;
+import static br.profileManager.src.main.java.WriteUtil.History.*;
 
 /**
  * @author BrokenRegistry
@@ -59,16 +60,7 @@ public class Group_Race extends Abstract_Group <ClientClasses> {
 		}
 		
 		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+			setValidationCriteria(new ValidationCriteria());
 		}
 		
 		private void init() {
@@ -86,7 +78,9 @@ public class Group_Race extends Abstract_Group <ClientClasses> {
 		PlayerRace(ClientClasses go) { 
 			super("PLAYER RACE",
 				  new Valid_Race(go.getGuiObject().startingRaceOptions()));
-			setInitialValue(go.getGuiObject().selectedPlayerRace());
+			setHistoryCodeView(Initial, go.getGuiObject().selectedPlayerRace());
+			// No default (Random) ... So Initial!
+			setHistoryCodeView(Default, go.getGuiObject().selectedPlayerRace());
 		}
 		
 	    // ========== Overriders ==========
@@ -107,10 +101,6 @@ public class Group_Race extends Abstract_Group <ClientClasses> {
 			go.getGuiObject().selectedPlayerRace(userOption);
 		}
 		
-		@Override public void putInitialToGUI(ClientClasses go) {
-			go.getGuiObject().selectedPlayerRace(getInitialCodeView());
-		}
-		
 		@Override public void initComments() {
 			setHeadComments(
 				" " + NL +
@@ -125,9 +115,21 @@ public class Group_Race extends Abstract_Group <ClientClasses> {
 	//
 	static class Valid_Color extends Valid_Integer {
 
-		static final List<String> EMPIRECOLORS  =
-		List.of("Red", "Green", "Yellow", "Blue", "Orange", "Purple", "Aqua", "Fuchsia",
-				"Brown", "White", "Lime", "Grey", "Plum", "Light Blue", "Mint", "Olive");
+		static final List<String> EMPIRECOLORS = getEmpireColors();
+
+		private static List<String> getEmpireColors() {
+			switch(UserProfiles.baseMod) {
+			case BrokenRegistry:
+			case Modnar:
+			case Xilmi:
+				return List.of ("Red", "Green", "Yellow", "Blue", "Orange", "Purple",
+								"Aqua", "Fuchsia", "Brown", "White", "Lime", "Grey",
+								"Plum", "Light Blue", "Mint", "Olive");
+			default:
+				return List.of ("Blue", "Brown", "Green",  "Orange", "Pink",
+								"Purple", "Red", "Teal", "Yellow", "White");
+			}
+		}
 
 		Valid_Color() {
 			super();
@@ -136,15 +138,7 @@ public class Group_Race extends Abstract_Group <ClientClasses> {
 
 		private void initCriteria() {
 			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+					.isNullAllowed(false));
 		}
 		
 		private void init() {
@@ -152,10 +146,21 @@ public class Group_Race extends Abstract_Group <ClientClasses> {
 			for (String color : EMPIRECOLORS) {
 				addElement(EMPIRECOLORS.indexOf(color), color);
 			}
-			setLimits(new Integer[] {0 , EMPIRECOLORS.size()});
-			setDefaultRandomLimits(new Integer[] {0 , EMPIRECOLORS.size()});
+			setLimits(0 , EMPIRECOLORS.size());
+			setDefaultRandomLimits(0 , EMPIRECOLORS.size());
+			setHistoryUserView(Default, getDefaultColor());
 		}
 
+		private String getDefaultColor() {
+			switch(UserProfiles.baseMod) {
+			case Modnar:
+			case Xilmi:
+				return "Red";
+			default:
+				return "Blue";
+			}
+		}
+				
 		@Override protected String toUserView(Integer codeView) {
 			if (codeView == null) {
 				return "";
@@ -163,11 +168,18 @@ public class Group_Race extends Abstract_Group <ClientClasses> {
 			return EMPIRECOLORS.get(codeView);
 		}
 
+		@Override protected Integer toCodeView(String userView) {
+			if (userView == null) {
+				userView = getDefaultColor();
+			}
+			return EMPIRECOLORS.indexOf(userView);
+		}
+
 		/**
 		 * Generate UserViewList and convert it to capitalized String
 		 * @return UserView List in capitalized String
 		 */
-		@Override public String toString() {
+		@Override public String getOptionsRange() {
 			return PMutil.capitalize(getUserViewList().toString());
 		}
 	}
@@ -181,7 +193,7 @@ public class Group_Race extends Abstract_Group <ClientClasses> {
 	    //
 		PlayerColor(ClientClasses go) {
 			super("PLAYER COLOR", new Valid_Color());
-			setInitialValue(go.getGuiObject().selectedPlayerColor());
+			setHistoryCodeView(Initial, go.getGuiObject().selectedPlayerColor());
 		}
 		
 	    // ========== Overriders ==========
@@ -201,10 +213,6 @@ public class Group_Race extends Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, Integer codeView) {
 			go.getGuiObject().selectedPlayerColor(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-			go.getGuiObject().selectedPlayerColor(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {

@@ -4,7 +4,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.gnu.org/licenses/gpl-3.0.html
+ *	 https://www.gnu.org/licenses/gpl-3.0.html
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,6 +19,7 @@ import java.util.List;
 
 import br.profileManager.src.main.java.Valid_LocalEnable.Line_LocalEnable;
 import br.profileManager.src.main.java.Valid_String.Line_String;
+import static br.profileManager.src.main.java.WriteUtil.History.*;
 
 /**
  * @param <ValueClass>  the Value's Code View Class
@@ -28,20 +29,24 @@ import br.profileManager.src.main.java.Valid_String.Line_String;
 public abstract class Abstract_Parameter<
 		ValueClass,
 		ValidClass extends Abstract_ValidData<ValueClass>,
-		ClientClass> extends ToPrint {
+		ClientClass> extends WriteUtil {
 
-    // ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	// Constant Properties
-    //
-	static final String HEAD_OF_PARAMETER = "¦ PARAMETER";
-	static final String HEAD_OF_INFO      = toComment("Initial/GUI/Game");
-	static final String HEAD_OF_OPTIONS   = toComment("OPTIONS");
-	static final String DEFAULT_LOCAL_ENABLE = "Both";
+	//
+	private static final String HEAD_OF_PARAMETER = "¦ Parameter";
+	private static final String HEAD_OF_HISTORY	  = "¦ History";
+	private static final String HDEF = " : ";
+	private static final String HSEP = " / ";
+	private static final String HEAD_OF_OPTIONS = new Line_String(
+								toComment("Options"), "", null).toString();
+	private static final String OPTIONS_NEWLINE   = new Line_String(
+								toComment("  \" \" "), "", null).toString();
 	protected static final String AVAILABLE_FOR_CHANGE = "---- Available for changes in game saves";
 
 	// ------------------------------------------------------------------------
 	// Variables Properties
-    //
+	//
 	private String headComments;
 	private String settingComments;
 	private String optionsComments;
@@ -53,12 +58,12 @@ public abstract class Abstract_Parameter<
 	private Generic_Block<ValueClass, ValidClass> userProfiles;
 	// from Generic_Block
 	//	private List<Gen_Line<ValidClass>> lineList;
-	//	private Abstract_ValidData<?>      valueValidation;
+	//	private Abstract_ValidData<?>	  valueValidation;
 	//	private Abstract_ValidData<String> profileValidation;
 	
 	// ==================================================
-    // Constructors and helpers
-    //
+	// Constructors and helpers
+	//
 	protected Abstract_Parameter(String parameterName,
 				  Abstract_ValidData<ValueClass> valueValidationData) {
 		setParameterName(parameterName);
@@ -67,129 +72,182 @@ public abstract class Abstract_Parameter<
 		initComments ();
 	}
 	
-    void resetUserProfiles() {
-    	userProfiles = new Generic_Block<ValueClass, ValidClass>(dataValidation);
-    }
+	void resetUserProfiles() {
+ 	userProfiles = new Generic_Block<ValueClass, ValidClass>(dataValidation);
+	}
 
 	// ========================================================================
 	// Abstract Methods
 	//
 	
-    protected abstract ValueClass getFromUI (ClientClass clientObject);
+	protected abstract ValueClass getFromUI (ClientClass clientObject);
 
-    protected abstract void putToGUI (ClientClass clientObject, ValueClass value);
+	protected abstract void putToGUI (ClientClass clientObject, ValueClass value);
 
-    protected abstract ValueClass getFromGame (ClientClass clientObject);
+	protected abstract ValueClass getFromGame (ClientClass clientObject);
 
-    protected abstract void putToGame (ClientClass clientObject, ValueClass value);
+	protected abstract void putToGame (ClientClass clientObject, ValueClass value);
 
-    protected abstract void putInitialToGUI (ClientClass clientObject);
-
-    protected abstract void initComments ();
+	protected abstract void initComments ();
 
 	// ------------------------------------------------------------------------
 	// Getters and Setters
 	//
-    /**
-     * @return the value validation class
-     */
-    public Abstract_ValidData<ValueClass> getDataValidation() {
-    	return dataValidation;
-    }
-    
 	/**
-     * Search for the winning code View
-     * @param profileNames  List of names to check
-     * @return The Value, if one.
+	 * @return the value validation class
 	 */
-    private ValueClass getWinningCodeView (List<String> profileNames) {
-    	ValueClass value = null;
-    	if (localEnable.isLoadEnabled()) {
-       		// Loop thru profiles, last valid win
-        	for (String profile : profileNames) {       
-        		value = userProfiles.getValue(profile, value);
-            }
-     	}
+	public Abstract_ValidData<ValueClass> getDataValidation() {
+ 	return dataValidation;
+	}
+	
+	/**
+	 * Search for the winning code View
+	 * @param profileNames  List of names to check
+	 * @return The Value, if one.
+	 */
+	private ValueClass getWinningCodeView (List<String> profileNames) {
+ 	ValueClass value = null;
+ 	if (localEnable.isLoadEnabled()) {
+			// Loop thru profiles, last valid win
+	 	for (String profile : profileNames) {	   
+	 		value = userProfiles.getValue(profile, value);
+			}
+  	}
 		return value;
-    }
+	}
 
-    /**
-     * Search for the winning code View and
+	/**
+	 * Search for the winning code View and
 	 * Override the Game File parameter with it
-     * @param clientObject   the {@code ClientClass Object}
-     * @param profileNames  List of names to check
+	 * @param clientObject   the {@code ClientClass Object}
+	 * @param profileNames  List of names to check
 	 */
-    public void changeGameFileParameters (
-    		ClientClass clientObject, List<String> profileNames) {
-    	ValueClass value = getWinningCodeView (profileNames);
-    	// if one valid code View is found: set it
-    	if (value != null) {
-    		putToGame(clientObject, value);
-    	}
-    }
+	public void changeGameFileParameters(
+ 		ClientClass clientObject, List<String> profileNames) {
+	 	ValueClass value = getWinningCodeView (profileNames);
+	 	// if one valid code View is found: set it
+	 	if (value != null) {
+	 		putToGame(clientObject, value);
+	 	}
+	}
 
-    /**
-     * Search for the winning Value and
+	private void overrideGuiParameters(
+	 		ClientClass clientObject, ValueClass value) {
+	 	// if one valid value is found: set it
+	 	if (!PMutil.neverNull(value).isBlank()) {
+	 		putToGUI(clientObject, value);
+	 	}
+	}
+
+	/**
+	 * Search for the winning Value and
 	 * Override the GUI parameter with it 
-     * @param clientObject   the {@code ClientClass Object}
-     * @param profileNames  List of names to check
+	 * @param clientObject   the {@code ClientClass Object}
+	 * @param profileNames  List of names to check
 	 */
-    public void overrideGuiParameters (
-    		ClientClass clientObject, List<String> profileNames) {
-    	ValueClass value = getWinningCodeView (profileNames);
-    	// if one valid value is found: set it
-    	if (value != null) {
-    		putToGUI(clientObject, value);
-    	}
-    }
-    
-    /**
-	 * Set Initial Value
+	public void overrideGuiParameters(
+	 		ClientClass clientObject, List<String> profileNames) {
+		overrideGuiParameters(clientObject, getWinningCodeView (profileNames));
+	}
+
+	protected void putHistoryToGUI(History history, ClientClass clientObject) {
+		overrideGuiParameters (clientObject, getHistoryCodeView(history));
+	}
+
+	/**
+	 * Set "history" Code View
 	 * @param value the new value
 	 */
-	protected void setInitialValue(ValueClass value) {
-		dataValidation.setInitialValue(value);
-		setGuiValue(value);
+	protected void setHistoryCodeView(History history, ValueClass newValue) {
+		dataValidation.setHistoryCodeView(history, newValue);
+	}
+
+	/**
+	 * Set "history" User View
+	 * @param value the new value
+	 */
+	protected void setHistoryUserView(History history, String newValue) {
+		dataValidation.setHistoryUserView(history, newValue);
+	}
+	
+	/**
+	 * Get "history" Code View
+	 * @return The "history" Code View
+	 */
+	protected ValueClass getHistoryCodeView(History history) {
+		return dataValidation.getHistoryCodeView(history);
+	}
+
+	/**
+	 * Get "history" User View
+	 * @return The "history" User View
+	 */
+	protected String getHistoryUserView(History history) {
+		return dataValidation.getHistoryUserView(history);
+	}
+
+	/**
+	 * Conditions to set user choice to "history" value:
+	 *	- if the key is absent: 
+	 *	- if Writing is allowed and value not blank:
+	 * Add profile if none
+	 * @param history the target Field
+	 * @param profile the profile to set
+	 */
+	public void actionToFile(History history, String profile) {
+			actionToFile(profile, dataValidation.getHistoryUserView(history));
+	}
+
+	/**
+	 * Conditions to set user choice to "history" value:
+	 *	- if the key is absent: 
+	 *	- if Writing is allowed and value not blank:
+	 * Add profile if none
+	 * @param history the target Field
+	 * @param profile the profile to set
+	 */
+	public void actionUpdateFile(History history, String profile) {
+			actionUpdateFile(profile, dataValidation.getHistoryUserView(history));
 	}
 
 	/**
 	 * Set Limits Value
 	 * @param value the new values
 	 */
-	protected void setLimits(ValueClass[] value) {
-		dataValidation.setLimits(value);
+	protected void setLimits(ValueClass Limit1, ValueClass Limit2) {
+		dataValidation.setLimits(Limit1, Limit2);
 	}
 
 	/**
 	 * Set Default Random Limits Value
 	 * @param value the new values
 	 */
-	protected void setDefaultRandomLimits(ValueClass[] value) {
-		dataValidation.setDefaultRandomLimits(value);
+	protected void setDefaultRandomLimits(ValueClass Limit1, ValueClass Limit2) {
+		dataValidation.setDefaultRandomLimits(Limit1, Limit2);
 	}
 
 	/**
 	 * Update Last GUI code View 
-     * @param clientObject   the {@code ClientClass Object}
+	 * @param clientObject   the {@code ClientClass Object}
  	 */
 	public void setGuiCodeView(ClientClass clientObject) {
 		setGuiValue(getFromUI(clientObject));
 	}
 	
 	private void setGuiValue(ValueClass value) {
-		dataValidation.setLastValue(value);
+		dataValidation.setHistoryCodeView(Current, value);
 	}
 	
 	/**
 	 * Update Last Game CodeView (Computer friendly) 
-     * @param clientObject   the {@code ClientClass Object}
+	 * @param clientObject   the {@code ClientClass Object}
  	 */
 	public void setGameCodeView(ClientClass clientObject) {
 		setGameValue(getFromGame(clientObject));
 	}
 
 	private void setGameValue(ValueClass value) {
-		dataValidation.setGameValue(value);
+		dataValidation.setHistoryCodeView(Game, value);
 	}
 
 	/**
@@ -204,48 +262,6 @@ public abstract class Abstract_Parameter<
 	 */
 	private void setParameterName(String name) {
 		parameterName = name;
-	}
-	
-	/**
-	 * @return first User View 
-	 */
-	protected String getInitialUserView() {
-		return dataValidation.toUserView(getInitialCodeView());
-	}
-	
-	/**
-	 * @return first Code View 
-	 */
-	protected ValueClass getInitialCodeView() {
-		return dataValidation.getInitialValue();
-	}
-
-	/**
-	 * @return GUI User View 
-	 */
-	protected String getGuiUserView() {
-		return dataValidation.toUserView(getGuiCodeView());
-	}
-	
-	/**
-	 * @return last GUI Code View 
-	 */
-	protected ValueClass getGuiCodeView() {
-		return dataValidation.getLastValue();
-	}
-
-	/**
-	 * @return first User View 
-	 */
-	protected String getGameUserView() {
-		return dataValidation.toUserView(getGameValue());
-	}
-	
-	/**
-	 * @return last Game Code View 
-	 */
-	protected ValueClass getGameValue() {
-		return dataValidation.getGameValue();
 	}
 	
 	/**
@@ -288,17 +304,53 @@ public abstract class Abstract_Parameter<
 		return new Generic_Line<ValueClass, Abstract_ValidData<ValueClass>>(
 				dataValidation)
 				.setName(profile)
-				.setValue(getInitialCodeView());
+				.setValue(getHistoryCodeView(Initial));
 	}
 
-	private void addLine (String name, String value) {
+	// for default parameters and internal use
+	void addLine (String name, String value) {
 		userProfiles.add(name, value);
 	}
 
-	void addLine (String newline) {
-		userProfiles.add(newline);
+	// for default parameters and internal use
+	void addLine (String name, String value, String comment) {
+		userProfiles.add(name, value, comment);
 	}
 
+	void addLine (String newLine) { // from config files
+		if (localEnable.isLineForMe(newLine)) {
+			return; // the line has been taken
+		}
+		if (isHistory(newLine)) {
+			return; // the line has been taken
+		}
+		userProfiles.add(newLine);
+	}
+
+	/**
+	 * Find "Current" value and assign to "Last" 
+	 * @param line the {@code String to process}
+	 * @return isHistory?
+	 */
+	private boolean isHistory(String line) {
+		if (HEAD_OF_HISTORY.equalsIgnoreCase(Generic_Line.getKey(line))) {
+			for (String element : 
+					Generic_Line.getValueAsString(line).split(HSEP)) {
+				String[] param = element.split(HDEF);
+				if (param[0].strip().equalsIgnoreCase(Current.toString())) {
+					if (param.length >= 2) {
+						setHistoryUserView(Last, param[1].strip());
+						return true;
+					}
+					return true;
+				}
+				// loop
+			}
+			return true;
+		}
+		return false;
+	}
+	
 	/**
 	 * Remove the Local Enable parameter where possibly wrongly added 
 	 */
@@ -324,7 +376,7 @@ public abstract class Abstract_Parameter<
 
 	// ==========================================================
 	// Other Methods
-	//
+	//		
 	/**
 	 * @param groupCodeViews 
 	 * @return parameter as String, ready to be printed
@@ -336,44 +388,56 @@ public abstract class Abstract_Parameter<
 		out += toCommentLine(headComments) ;
 
 		// SETTING NAME
-   		out += new Line_String(HEAD_OF_PARAMETER, parameterName, (String)null)
+		out += new Line_String(HEAD_OF_PARAMETER, parameterName, (String)null)
 				.toString() + NL;
 
 		// SETTING COMMENTS
 		out += toCommentLine(settingComments) ;
 
 		// OPTIONS LIST
-   		out += new Line_String(HEAD_OF_OPTIONS, 
-   								dataValidation.toString(),
-   								(String)null)
-				.toString() + NL;
+		out += multiLines(dataValidation.getOptionsRange(),
+				HEAD_OF_OPTIONS, OPTIONS_NEWLINE) + NL;
 
-		// FIRST / LAST INFO
-   		out += new Line_String(HEAD_OF_INFO,
-   				getInitialUserView()
-   					+ " / "
-   					+ getGuiUserView()
-   					+ " / "
-   					+ getGameUserView(),
-   				(String)null)
-				.toString() + NL;
-
+		// OPTIONS DESCRIPTION
+		out += toCommentLine(dataValidation.getOptionsDescription(), 1, 1);
+		
 		// OPTIONS COMMENTS
 		out += toCommentLine(optionsComments) ;
 
-		// LOCAL ENABLE
-   		if (!localEnable.isBlankValue()) {
-	   		out += localEnable.toString() + NL;
-   		}
+		// FIRST / LAST INFO
+		if (!localEnable.isBlankValue()) {
+			out += new Line_String(HEAD_OF_HISTORY,
+					Current.toString() + HDEF
+					+ getHistoryUserView(Current)
+					+ HSEP
+					+ Last.toString() + HDEF
+					+ getHistoryUserView(Last)
+					+ HSEP
+					+ Initial.toString() + HDEF
+					+ getHistoryUserView(Initial)
+					+ HSEP
+					+ Default.toString() + HDEF
+					+ getHistoryUserView(Default)
+					+ HSEP
+					+ Game.toString() + HDEF
+					+ getHistoryUserView(Game),
+					(String)null)
+					.toString() + NL;
+		}
 
-   		// USER SETTINGS BLOCK
-   		out += userProfiles.toString(groupCodeViews) + NL;
+		// LOCAL ENABLE
+			if (!localEnable.isBlankValue()) {
+			out += localEnable.toString() + NL;
+		}
+
+		// USER SETTINGS BLOCK
+		out += userProfiles.toString(groupCodeViews) + NL;
 
 		// BOTTOM COMMENTS
 		out += toCommentLine(bottomComments) ;
 
 		out += NL;
-    	return out;
+ 	return out;
 	}
 	
 	private void addProfileIfNone(String profile) {
@@ -382,8 +446,8 @@ public abstract class Abstract_Parameter<
 
   /**
 	 * Conditions to set user choice to value:
-	 *     - if Writing is allowed 
-	 *     - if the user choice is absent
+	 *	 - if Writing is allowed 
+	 *	 - if the user choice is absent
 	 * Add profile if none
 	 * @param profile the profile to set
 	 * @param value  the value to set
@@ -396,8 +460,8 @@ public abstract class Abstract_Parameter<
 
 	/**
 	 * Conditions to set user choice to value:
-	 *    - if the key is absent: 
-	 *    - if Writing is allowed and value not blank:
+	 *	- if the key is absent: 
+	 *	- if Writing is allowed and value not blank:
 	 * Add profile if none
 	 * @param profile the profile to set
 	 * @param value  the value to set
@@ -411,72 +475,6 @@ public abstract class Abstract_Parameter<
 		}
 	}
 
-	/**
-	 * Conditions to set user choice to last value:
-	 *     - if Writing is allowed 
-	 *     - if the user choice is absent
-	 * Add profile if none
-	 * @param profile the profile to set
-	 */
-	public void actionUiToFile(String profile) {
-		actionToFile(profile, getGuiUserView());
-	}
-
-	/**
-	 * Conditions to set user choice to game value:
-	 *     - if Writing is allowed 
-	 *     - if the user choice is absent
-	 * Add profile if none
-	 * @param profile the profile to set
-	 */
-	public void actionGameToFile(String profile) {
-		actionToFile(profile, getGameUserView());
-	}
-
-	/**
-	 * Conditions to set user choice to first value:
-	 *    - if Writing is allowed 
-	 *    - if the user choice is absent
-	 * Add profile if none
-	 * @param profile the profile to set
-	 */
-	public void actionInitialToFile(String profile) {
-		actionToFile(profile, getInitialUserView());
-	}
-
-	/**
-	 * Conditions to set user choice to last value:
-	 *    - if the key is absent: 
-	 *    - if Writing is allowed and value not blank:
-	 * Add profile if none
-	 * @param profile the profile to set
-	 */
-	public void actionUiUpdateFile(String profile) {
-		actionUpdateFile(profile,  getGuiUserView());
-	}
-	
-	/**
-	 * Conditions to set user choice to first value:
-	 *    - if the key is absent: 
-	 *    - if Writing is allowed and value not blank:
-	 * Add profile if none
-	 * @param profile the profile to set
-	 */
-	public void actionGameUpdateFile(String profile) {
-		actionUpdateFile(profile, getGameUserView());
-	}
-
-	/**
-	 * Conditions to set user choice to first value:
-	 *    - if the key is absent: 
-	 *    - if Writing is allowed and value not blank:
-	 * Add profile if none
-	 * @param profile the profile to set
-	 */
-	public void actionInitialUpdateFile(String profile) {
-			actionUpdateFile(profile, getInitialUserView());
-	}
-	
 	protected void setHeadComments(String comments) {
 		headComments = comments;
 	}
@@ -494,8 +492,8 @@ public abstract class Abstract_Parameter<
 	}
 
 	// ==================================================
-    // Static Methods
-    //
+	// Static Methods
+	//
 	/**
 	 * Test if the {@code String} announce a new parameter section
 	 * @param key the {@code String} to analyze

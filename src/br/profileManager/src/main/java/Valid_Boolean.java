@@ -1,4 +1,21 @@
+
+/*
+ * Licensed under the GNU General License, Version 3 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *	 https://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package br.profileManager.src.main.java;
+
+import static br.profileManager.src.main.java.WriteUtil.History.*;
 
 /**
  * For the validation of the {@code Boolean}
@@ -8,17 +25,11 @@ public class Valid_Boolean extends Abstract_ValidData<Boolean> {
 	// ==================================================
     // Constructors
     //
+	/**
+	 * Base validation for Boolean parameters
+	 */
 	public Valid_Boolean() {
-		setValidationCriteria(new ValidationCriteria()
-				.isNullAllowed(true)
-				.isBlankAllowed(true)
-				.isRandomAllowed(true)
-				.userViewEquals(false)
-				.categoryEquals(false)
-				.userViewIsCaseSensitive(false)
-				.codeViewIsCaseSensitive(false)
-				.categoryIsCaseSensitive(false)
-				.printFormat(PrintFormat.CAPITALIZE));
+		setValidationCriteria(new ValidationCriteria());
 	}
 
 	// ==================================================
@@ -32,18 +43,18 @@ public class Valid_Boolean extends Abstract_ValidData<Boolean> {
 		userEntry = PMutil.clean(userEntry);
 		// First Check for blank values
 		if (userEntry.isBlank()) {
-			if (getValidationCriteria().isBlankAllowed) {
+			if (getValidationCriteria().isBlankAllowed()) {
 				return null;
 			}
-			return getDefaultValue();
+			return getHistoryCodeView(Default);
 		}
 		// Then Check if value is valid
 		Boolean value = PMutil.toBoolean(userEntry);
 		if (value == null) {
-			if (getValidationCriteria().isBlankAllowed) {
+			if (getValidationCriteria().isBlankAllowed()) {
 				return null;
 			}
-			return getDefaultValue();
+			return getHistoryCodeView(Default);
 		}
 		return value;
 	}

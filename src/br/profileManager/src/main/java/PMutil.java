@@ -15,6 +15,7 @@
 
 package br.profileManager.src.main.java;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -201,6 +202,56 @@ public class PMutil {
     // Other String Methods
     //
 	/**
+	 * Split string to not be longer than maxLineLength,
+	 * the splitting can only be done at splitter positions.
+	 * @param input the {@code String} to process
+	 * @param splitter the {@code String} delimiter
+	 * @param maxLineLength  the {@code int} max line length
+	 * @param keepSplitters  the {@code boolean} 
+	 * <b>true</b> keep all delimiters 
+	 * <b>false</b> trim and remove duplicates 
+	 * @return the new split lines
+	 */
+	static String addLinebreaks(String input, String splitter,
+								int maxLineLength, boolean keepSplitters) {
+	    List<String> lines = new ArrayList<String>();
+	    String[] elements;
+		String line = "";
+
+		if (keepSplitters) {
+			String regex = "((?<=" + splitter + ")|(?=" + splitter + "))";
+			elements = input.split(regex);
+			for (String element : elements) {
+		        if (line.length() + element.length() > maxLineLength) {
+		        	lines.add(line);
+		        	line = element;
+		        } else {
+		        	line += element;
+		        }
+			}
+		} else { // keepSplitters = false 
+			elements = input.split(splitter);
+			int slen = splitter.length();
+			for (String element : elements) {
+				if (line.length() + slen + element.length() > maxLineLength) {
+		        	lines.add(line);
+		        	line = element;
+		        } else {
+		        	if (line.isEmpty()) {
+		        		line = element;
+		        	} else {
+		        		line += splitter + element;
+		        	}
+		        }
+			}
+		}
+		if (!line.isEmpty()) {
+			lines.add(line);
+		}
+		return String.join(System.lineSeparator(), lines);
+	}
+	
+	/**
 	 * Remove first Space if one. 
 	 * Originally done to restore original comment
 	 * after removing the comment key, as one space
@@ -219,6 +270,33 @@ public class PMutil {
 			return string.substring(1);
 		}
 		return string;
+	}
+
+	/**
+	 * Remove last Space if one. Never null.
+	 * @param string the {@code String} to process
+	 * @return the processed  {@code String}
+	 */
+	static String removeLastSpace (String string) {
+		if (string == null || string.isEmpty() ) {
+			return "";
+		}
+		if (string.charAt(string.length()-1) == ' ') {
+			return string.substring(0, string.length()-1);
+		}
+		return string;
+	}
+
+	/**
+	 * Get the last char of the {@code String}  
+	 * @param string the {@code String} to process
+	 * @return the last char as {@code String} to allow <b>null</b>
+	 */
+	static String getLastChar(String string) {
+		if (string == null || string.isEmpty()) {
+			return null;
+		}
+		return string.substring(string.length() - 1);
 	}
 
 	/**

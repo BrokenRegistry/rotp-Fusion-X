@@ -11,6 +11,7 @@ import rotp.model.game.IGameOptions;
 public class ClientClasses {
 	private IGameOptions guiObject;
 	private GameSession  gameObject;
+	private boolean Initial = false;
 
 	/**
 	 * Just a new empty class!
@@ -31,7 +32,6 @@ public class ClientClasses {
 	public ClientClasses(GameSession gameObject) {
 		this.gameObject = gameObject;
 	}
-
 
 	/**
 	 * @return the guiObject
@@ -63,5 +63,21 @@ public class ClientClasses {
 	public ClientClasses setGameObject(GameSession gameObject) {
 		this.gameObject = gameObject;
 		return this;
+	}
+
+
+	/**
+	 * @return the initial
+	 */
+	public boolean isInitial() {
+		return Initial;
+	}
+
+
+	/**
+	 * @param initial the initial to set
+	 */
+	public void setInitial(boolean initial) {
+		Initial = initial;
 	}
 }

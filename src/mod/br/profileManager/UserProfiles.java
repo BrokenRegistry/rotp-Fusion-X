@@ -16,8 +16,6 @@
 package mod.br.profileManager;
 
 import java.util.LinkedHashMap;
-import java.util.List;
-
 import br.profileManager.src.main.java.Abstract_Group;
 import br.profileManager.src.main.java.Abstract_Profiles;
 import rotp.Rotp;
@@ -27,6 +25,12 @@ import rotp.Rotp;
  */
 public class UserProfiles extends Abstract_Profiles<ClientClasses> {
     
+	static enum BaseMod {
+		Original, Governor, Modnar, Xilmi, BrokenRegistry
+	}
+	
+	static BaseMod baseMod = BaseMod.Xilmi;
+	
 	// ========================================================================
 	//  Abstract Methods
 	//
@@ -37,7 +41,6 @@ public class UserProfiles extends Abstract_Profiles<ClientClasses> {
 	@Override protected String getFileName () {
 		return "Profiles.cfg";
 	}
-
 
 	/*
 	 * Add all the groups to the Map with an easy key

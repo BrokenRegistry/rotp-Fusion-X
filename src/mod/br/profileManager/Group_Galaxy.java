@@ -24,6 +24,7 @@ import br.profileManager.src.main.java.Abstract_Parameter;
 import br.profileManager.src.main.java.Valid_Integer;
 import br.profileManager.src.main.java.Valid_String;
 import br.profileManager.src.main.java.ValidationCriteria;
+import static br.profileManager.src.main.java.WriteUtil.History.*;
 
 /**
  * @author BrokenRegistry
@@ -59,16 +60,7 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 		}
 		
 		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+			setValidationCriteria(new ValidationCriteria());
 		}
 		
 		private void init() {
@@ -86,7 +78,8 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 		GalaxyShape(ClientClasses go) { 
 			super("GALAXY SHAPE",
 					new Valid_GalaxyShape(go.getGuiObject().galaxyShapeOptions()));
-			setInitialValue(go.getGuiObject().selectedGalaxyShape());
+			setHistoryCodeView(Initial, go.getGuiObject().selectedGalaxyShape());
+			setHistoryUserView(Default, "Rectangle"); // Ray
 		}
 		
 	    // ========== Overriders ==========
@@ -105,10 +98,6 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
 			go.getGuiObject().selectedGalaxyShape(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-			go.getGuiObject().selectedGalaxyShape(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {
@@ -134,16 +123,7 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 		}
 		
 		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+			setValidationCriteria(new ValidationCriteria());
 		}
 		
 		private void init() {
@@ -161,7 +141,8 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 		GalaxySize(ClientClasses go) {
 			super("GALAXY SIZE",
 					new Valid_GalaxySize(go.getGuiObject().galaxySizeOptions()));
-		setInitialValue(go.getGuiObject().selectedGalaxySize());
+		setHistoryCodeView(Initial, go.getGuiObject().selectedGalaxySize());
+		setHistoryUserView(Default, "Small"); // Ray
 		}
 		
 	    // ========== Overriders ==========
@@ -180,10 +161,6 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 		@Override
 		public void putToGUI(ClientClasses go, String codeView) {
 			go.getGuiObject().selectedGalaxySize(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-			go.getGuiObject().selectedGalaxySize(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {}
@@ -205,16 +182,7 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 		}
 		
 		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+			setValidationCriteria(new ValidationCriteria());
 		}
 		
 		private void init() {
@@ -232,7 +200,8 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 		Difficulty(ClientClasses go) {
 			super("DIFFICULTY",
 				  new Valid_Difficulty(go.getGuiObject().gameDifficultyOptions()));
-		setInitialValue(go.getGuiObject().selectedGameDifficulty());
+		setHistoryCodeView(Initial, go.getGuiObject().selectedGameDifficulty());
+		setHistoryUserView(Default, "Easy"); // Ray
 		}
 		
 	    // ========== Overriders ==========
@@ -251,10 +220,6 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
 			go.getGuiObject().selectedGameDifficulty(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-			go.getGuiObject().selectedGameDifficulty(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {
@@ -277,16 +242,7 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 		}
 		
 		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+			setValidationCriteria(new ValidationCriteria());
 		}
 		
 		private void init() {
@@ -304,7 +260,8 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 		OpponentAI(ClientClasses go) {
 			super("OPPONENT AI", 
 					new Valid_OpponentAI(go.getGuiObject().opponentAIOptions()));
-			setInitialValue(go.getGuiObject().selectedOpponentAIOption());
+			setHistoryCodeView(Initial, go.getGuiObject().selectedOpponentAIOption());
+			setHistoryUserView(Default, "Base"); // Ray
 		}
 		
 	    // ========== Overriders ==========
@@ -325,10 +282,6 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 			go.getGuiObject().selectedOpponentAIOption(codeView);
 		}
 		
-		@Override public void putInitialToGUI(ClientClasses go) {
-			go.getGuiObject().selectedOpponentAIOption(getInitialCodeView());
-		}
-		
 		@Override public void initComments() {}
 	}
 	
@@ -345,15 +298,7 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 		
 		private void initCriteria() {
 			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+					.isNullAllowed(false));
 		}
 		
 		private void initNbOpponent() {
@@ -369,11 +314,12 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 	    //
 		NbOpponent(ClientClasses go) {
 			super("NB OPPONENTS", new Valid_NbOpponent());
-			setInitialValue(go.getGuiObject().selectedNumberOpponents());
-			int min = 0;
-			int max = go.getGuiObject().maximumOpponentsOptions();
-			setLimits(new Integer[] {min, max});
-			setDefaultRandomLimits(new Integer[] {1, max});
+			setHistoryCodeView(Initial, go.getGuiObject().selectedNumberOpponents());
+			setHistoryCodeView(Default, 3); // Ray
+			Integer min = 0;
+			Integer max = go.getGuiObject().maximumOpponentsOptions();
+			setLimits(min, max);
+			setDefaultRandomLimits(1, max);
 		}
 
 	    // ========== Overriders ==========
@@ -392,17 +338,13 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, Integer codeView) {
 			// the limits may have changed from previous settings
-			int min = 0;
-			int max = go.getGuiObject().maximumOpponentsOptions();
-			setLimits(new Integer[] {min, max});
-			setDefaultRandomLimits(new Integer[] {1, max});
+			Integer min = 0;
+			Integer max = go.getGuiObject().maximumOpponentsOptions();
+			setLimits(min, max);
+			setDefaultRandomLimits(1, max);
 			go.getGuiObject().selectedNumberOpponents(Math.min(max, codeView));
 		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-			go.getGuiObject().selectedNumberOpponents(getInitialCodeView());
-		}
-		
+
 		@Override public void initComments() {}
 	}
 }

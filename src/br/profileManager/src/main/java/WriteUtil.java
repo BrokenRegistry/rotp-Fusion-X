@@ -15,35 +15,112 @@
 
 package br.profileManager.src.main.java;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Contains the interface and the tools for toComment Methods
  */
-class ToComment {
+public class WriteUtil {
+	/**
+	 * List of memorized Values
+	 */
+	public enum History {
+	    /**
+	     * The very default settings, whit new installation 
+	     */
+	    Default,
+	    /**
+	     * GUI settings from the last time the program was launched
+	     */
+	    Last,
+	    /**
+	     * GUI settings at the current launch
+	     */
+	    Initial,
+	    /**
+	     * The current GUI settings
+	     */
+	    Current,
+	    /**
+	     * Settings from the last time a game was launched
+	     */
+	    Game,
+	    /**
+	     * Bank value! (Type dependent)
+	     */
+	    Blank
+	}
 	
+	/**
+	 * a condensed access to System.lineSeparator()
+	 */
+	protected static final String NL = System.lineSeparator();
+
+	private static final String COMMENT_KEY = ";";
+
+	private static final String COMMENT_SPACER = " ";
+
+	private static final String COMMENT_PRT = COMMENT_KEY + COMMENT_SPACER;
+	
+	private static final String EMPTY_COMMENT_LINE = COMMENT_KEY + COMMENT_SPACER + NL;
+
+	private static final int LINE_SPLIT_POSITION = 16;
+
+	private static final int COMMENT_END_POSITION = 30;
+
+	private static final int MAX_LINE_LENGTH = 80;
+
 	/**
 	 * The {@code String} to be recognized as Comment starter
 	 */
-	static final String COMMENT_KEY = "#";
-
+	protected static String commentKey() {
+		return COMMENT_KEY;
+	}
+	
 	/**
-	 * The {@code String} to be added after the key for esthetic purpose
+	 * @return The {@code String} to be added to the toString
 	 */
-	static final String COMMENT_SPACER = " ";
-
+	protected static String commentPrt() {
+		return COMMENT_PRT;
+	}
+	
 	/**
-	 * The final {@code String} to be added to the toString
+	 * @param quantity the number of empty comment lines
+	 * @return a batch of empty comment lines
 	 */
-	static final String COMMENT_PRT = COMMENT_KEY + COMMENT_SPACER;
-
+	protected static String emptyCommentLines(int quantity) {
+		return EMPTY_COMMENT_LINE.repeat(quantity);
+	}
+	
 	/**
-	 * End of line comment position
+	 * @return an empty comment lines
 	 */
-	static final Integer END_COMMENT_POSITION = 30;
-
-	protected static final String NL = System.lineSeparator();
-
+	protected static String emptyCommentLines() {
+		return EMPTY_COMMENT_LINE;
+	}
+	
+	/**
+	 * @return Label - Value Separator Position
+	 */
+	protected static int lineSplitPosition() {
+		return LINE_SPLIT_POSITION;
+	}
+	
+	/**
+	 * @return End of line comment position
+	 */
+	protected static int commentEndPosition() {
+		return COMMENT_END_POSITION;
+	}
+	
+	/**
+	 * @return Default maximum line length
+	 */
+	protected static int maxLineLength() {
+		return MAX_LINE_LENGTH;
+	}
+	
 	//===============================================================
 	// Methods using the Abstract methods
 	//
@@ -73,6 +150,67 @@ class ToComment {
 	// Static Methods
 	//
 	/**
+     * split the string over several lines, using firstHeader
+     * on the first line then otherHeader on the following ones
+ 	 * @param string the {@code String} to be formated
+ 	 * @param splitter the {@code String} where the line could be cut
+	 * @param firstHeader the Header for the first line
+	 * @param otherHeader the Header for the other lines
+	 * @return the {@code String} formated object, never null
+	 */
+	static String multiLines(String string, String splitter,
+							String firstHeader, String otherHeader) {
+		firstHeader = PMutil.neverNull(firstHeader);
+		otherHeader = PMutil.neverNull(otherHeader);
+		splitter = PMutil.neverNull(splitter);
+		if (splitter.isEmpty()) {
+			splitter = " ";
+		}
+		int slen = splitter.length();
+		List<String> lines = new ArrayList<String>();
+		String[] elements;
+		String line = firstHeader;
+		boolean firstLineElement = true;
+		
+		elements = PMutil.neverNull(string)
+						 .replace(NL, splitter + NL + splitter)
+						 .split(splitter);
+		for (String element : elements) {
+			if (element.contains(NL)) {
+				lines.add(line);
+				line = otherHeader;
+				firstLineElement = true;
+			} 
+			else if (line.length() + slen + element.length() > maxLineLength()) {
+				lines.add(line);
+				line = otherHeader + element;
+				firstLineElement = false;
+			} 
+			else if (firstLineElement) {
+					line += element;
+					firstLineElement = false;
+			} else {
+				line += splitter + element;
+			}
+		}
+		lines.add(line);
+		return String.join(NL, lines);
+	}
+
+	/**
+     * split the string over several lines, using firstHeader
+     * on the first line then otherHeader on the following ones,
+     * String is only split on " "
+ 	 * @param string the {@code String} to be formated
+	 * @param firstHeader the Header for the first line
+	 * @param otherHeader the Header for the other lines
+	 * @return the {@code String} formated object, never null
+	 */
+	static String multiLines(String string, String firstHeader, String otherHeader) {
+		return multiLines(string, " ", firstHeader, otherHeader);
+	}
+
+	/**
      * Format the object.toString() as Comment
      * Split with {@code System.lineSeparator()} and comment each lines
 	 * @param object {@code Object} to be formated
@@ -90,22 +228,42 @@ class ToComment {
  		String out = "";
  		for (String line : lines) {
 			if (out.isBlank()) {
- 				out = COMMENT_PRT + line;
+ 				out = commentPrt() + line;
  			} else {
- 				out += NL + COMMENT_PRT + line;
+ 				out += NL + commentPrt() + line;
  			}
  		}
 		return out;
 	}
 
 	/**
-     * Format the object.toString() as Comment and terminate by new line
-     * Split with {@code System.lineSeparator()} and comment each lines
+     * Format the object.toString() as Comment,
+     * with leading and following empty comment lines.
+     * Split with {@code System.lineSeparator()} and comment each lines.
 	 * @param object {@code Object} to be formated
-	 * @return the {@code String} formated object, <i>empty</i> if <b>null</b>
+	 * @return the {@code String} formated object, <i>empty</i> if <b>null</b> or empty
+	 */
+ 	static String toCommentLine(Object object, int before, int after) {
+ 		if (object == null 
+ 				|| object.toString() == null 
+ 				|| object.toString().isEmpty()) {
+ 			return "";
+ 		}
+ 		return emptyCommentLines(before)
+ 				+ toComment(object) + NL
+ 				+ emptyCommentLines(after);
+ 	}
+
+	/**
+     * Format the object.toString() as Comment and terminate by new line.
+     * Split with {@code System.lineSeparator()} and comment each lines.
+	 * @param object {@code Object} to be formated
+	 * @return the {@code String} formated object, <i>empty</i> if <b>null</b> or empty
 	 */
  	static String toCommentLine(Object object) {
- 		if (object == null) {
+ 		if (object == null 
+ 				|| object.toString() == null 
+ 				|| object.toString().isEmpty()) {
  			return "";
  		}
  		return toComment(object) + NL;
@@ -152,7 +310,7 @@ class ToComment {
   				return null;
   			}
   			if (onEmpty == true) {
-  				return COMMENT_PRT;
+  				return commentPrt();
   			}
   			if (onEmpty == false) {
   				return "";
@@ -174,13 +332,13 @@ class ToComment {
  		if (element == null) {
  			return false;
  		}
- 	    return element.strip().startsWith(COMMENT_KEY);
+ 	    return element.strip().startsWith(commentKey());
  	}
 
 	/**
  	 * Check if the object.toString() contains a comment
      * @param object the {@code Object} to be analyzed
- 	 * @return true if the {@code Object} contains at least one COMMENT_KEY
+ 	 * @return true if the {@code Object} contains at least one commentKey()
  	 */
  	static boolean containsComment(Object object) {
  		if (object == null) {
@@ -190,7 +348,7 @@ class ToComment {
  		if (element == null) {
  			return false;
  		}
-	    return element.contains(COMMENT_KEY);
+	    return element.contains(commentKey());
  	}
 
  	/**
@@ -206,11 +364,11 @@ class ToComment {
  		if (element == null) {
  			return null;
  		}
-  		return (" " + element).split(COMMENT_KEY, 2)[0].strip();
+  		return (" " + element).split(commentKey(), 2)[0].strip();
 	}
 
 	/**
-	 * Remove the beginning of the {@code Object} and the COMMENT_KEY.
+	 * Remove the beginning of the {@code Object} and the commentKey().
 	 * @param object the {@code Object} to be analyzed
  	 * @return a stripped {@code String} with only the comment element
 	 */
@@ -223,7 +381,7 @@ class ToComment {
 			return null;
 		}
 		if (containsComment(element)) {
-			return element.strip().split(COMMENT_KEY, 2)[1].strip();
+			return element.strip().split(commentKey(), 2)[1].strip();
 		}
 		// No comment!
 		return "";
@@ -246,10 +404,10 @@ class ToComment {
 		}
 		if (isComment(element)) {
 			return new String[] { "", PMutil.removeFirstSpace(
-					element.strip().split(COMMENT_KEY, 2)[1]) };
+					element.strip().split(commentKey(), 2)[1]) };
 		}
 		if (containsComment(element)) {
-			String[] s = (" " + element).split(COMMENT_KEY, 2);
+			String[] s = (" " + element).split(commentKey(), 2);
 			s[0] = s[0].strip();
 			s[1] = PMutil.removeFirstSpace(s[1]);
 			return s;
@@ -265,7 +423,7 @@ class ToComment {
 	 * @return Return a {@code String Array} with both part
 	 * <br> null for null {@code Object}, null {@code String}
 	 * <br> {@code String[0]} The part from the left
-	 * <br> {@code String[1]} The part from the right, null for no COMMENT_KEY
+	 * <br> {@code String[1]} The part from the right, null for no commentKey()
 	 */
 	static String[] rawSplitComment(Object object) {
 		// Null management
@@ -280,6 +438,6 @@ class ToComment {
  		if (!containsComment(element)) {
  			return new String[] {element, null};
  		}
-		return element.split(COMMENT_KEY, 2);
+		return element.split(commentKey(), 2);
 	}
 }

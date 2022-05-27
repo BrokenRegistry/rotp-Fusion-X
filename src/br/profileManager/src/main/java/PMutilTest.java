@@ -130,6 +130,63 @@ class PMutilTest {
     // Other String Methods
     //
 	@Test
+	void addLinebreaks_String() {
+		String NL = System.lineSeparator();
+		String src = "  34 67 90 23456 8901234";
+		String out =  "  34 67 90" + NL
+					+ " 23456 " + NL
+					+ "8901234";
+		assertEquals(out, addLinebreaks(src, " ", 10, true)
+				, "should have been: 3 lines");		
+		src = "  34 67 90 23456 8901234  ";
+		out = "  34 67 90" + NL
+			+ " 23456 " + NL
+			+ "8901234  ";
+		assertEquals(out, addLinebreaks(src, " ", 10, true)
+				, "should have been: 3 lines");		
+		src = "  34 67 90 23456 8901234";
+		out =  "34 67 90" + NL
+					+ "23456" + NL
+					+ "8901234";
+		assertEquals(out, addLinebreaks(src, " ", 10, false)
+				, "should have been: 3 lines");		
+		src = "1234 67 90 23456 8901234  ";
+		out = "1234 67 90" + NL
+			+ "23456" + NL
+			+ "8901234";
+		assertEquals(out, addLinebreaks(src, " ", 10, false)
+				, "should have been: 3 lines");		
+	}
+	
+	@Test
+	void removeFirstSpace_String() {
+		assertEquals("Source", removeFirstSpace("Source")
+				, "should have been: \"Source\"");
+		assertEquals("Source", removeFirstSpace(" Source")
+				, "should have been: \"Source\"");
+		assertEquals(" Source", removeFirstSpace("  Source")
+				, "should have been: \" Source\"");
+		assertEquals("", removeFirstSpace("")
+				, "should have been: \"\"");
+		assertEquals(null, removeFirstSpace(null)
+				, "should have been: «null»");
+	}
+	
+	@Test
+	void getLastChar_String() {
+		assertEquals("e", getLastChar("Source")
+				, "should have been: \"e\"");
+		assertEquals(" ", getLastChar("Source ")
+				, "should have been: \" \"");
+		assertEquals(" ", getLastChar(" ")
+				, "should have been: \" \"");
+		assertEquals(null, getLastChar("")
+				, "should have been: «null»");
+		assertEquals(null, getLastChar(null)
+				, "should have been: «null»");
+	}
+	
+	@Test
 	void neverNull_Object() {
 		assertEquals("Source", neverNull("Source")
 				, "should have been: «Source»");

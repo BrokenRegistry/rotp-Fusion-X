@@ -1,4 +1,21 @@
+
+/*
+ * Licensed under the GNU General License, Version 3 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *	 https://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package br.profileManager.src.main.java;
+
+import static br.profileManager.src.main.java.WriteUtil.History.Default;
 
 import java.util.List;
 
@@ -21,23 +38,14 @@ public class Valid_Integer extends Abstract_ValidData<Integer> {
 	}
 	
 	private void initCriteria() {
-		setValidationCriteria(new ValidationCriteria()
-				.isNullAllowed(true)
-				.isBlankAllowed(true)
-				.isRandomAllowed(true)
-				.userViewEquals(false)
-				.categoryEquals(false)
-				.userViewIsCaseSensitive(false)
-				.codeViewIsCaseSensitive(false)
-				.categoryIsCaseSensitive(false)
-				.printFormat(PrintFormat.CAPITALIZE));
+		setValidationCriteria(new ValidationCriteria());
 	}
 
 	private void init() {
 		initCriteria();
 		// Some arbitrary values to simplify the code
-		setLimits(new Integer[] {0, 1000000});
-		setDefaultRandomLimits(new Integer[] {0, 101});
+		setLimits(0, 1000000);
+		setDefaultRandomLimits(0, 101);
 	}
 	
 	// ==================================================
@@ -51,20 +59,20 @@ public class Valid_Integer extends Abstract_ValidData<Integer> {
 		userEntry = PMutil.clean(userEntry);
 		// First Check for blank values
 		if (userEntry.isBlank()) {
-			if (getValidationCriteria().isBlankAllowed) {
+			if (getValidationCriteria().isBlankAllowed()) {
 				return null;
 			}
-			return getDefaultValue();
+			return getHistoryCodeView(Default);
 		}
 		// Then Check if value is valid
 		Integer value = PMutil.toInteger(userEntry);
 		if (value == null) {
-			if (getValidationCriteria().isBlankAllowed) {
+			if (getValidationCriteria().isBlankAllowed()) {
 				return null;
 			}
-			return getDefaultValue();
+			return getHistoryCodeView(Default);
 		}
-		return PMutil.validateLimits(value, getLimits()[0], getLimits()[1]);
+		return PMutil.validateLimits(value, getLimits(0), getLimits(1));
 	}
 	
 	/**
@@ -72,7 +80,7 @@ public class Valid_Integer extends Abstract_ValidData<Integer> {
 	 * @return {@code Integer} OutputString
 	 */
 	@Override Integer randomWithoutParameters() {
-		return PMutil.getRandom(getDefaultRandomLimits()[0], getDefaultRandomLimits()[1]);
+		return PMutil.getRandom(getDefaultRandomLimits(0), getDefaultRandomLimits(1));
 	}
 	
 	/**
@@ -91,19 +99,19 @@ public class Valid_Integer extends Abstract_ValidData<Integer> {
 		return PMutil.neverNull(codeView);
 	}
 	
-	@Override Integer toCodeView(String userView) {
+	@Override protected Integer toCodeView(String userView) {
 		return PMutil.toInteger(userView);
 	}
 
 	/**
-	 * Generate UserViewList and convert it to capitalized String
-	 * @return UserView List in capitalized String
+	 * Generate option Range for limit and random
+	 * @return the range
 	 */
-	@Override public String toString() {
-		return ("[Min=" + this.getLimits()[0].toString()
-				+ ", Max=" + this.getLimits()[1].toString()
-				+ ", Rnd Low=" + this.getDefaultRandomLimits()[0].toString()
-				+ ", Rnd Up=" + this.getDefaultRandomLimits()[1].toString()
+	@Override public String getOptionsRange() {
+		return ("[Min=" + this.getLimits(0).toString()
+				+ ", Max=" + this.getLimits(1).toString()
+				+ ", Rnd Low=" + this.getDefaultRandomLimits(0).toString()
+				+ ", Rnd Up=" + this.getDefaultRandomLimits(1).toString()
 				+ "]");
 	}
 
@@ -116,8 +124,8 @@ public class Valid_Integer extends Abstract_ValidData<Integer> {
 	 * @return {@code Integer} Random Value
 	 */
 	Integer randomWithLimit(String[] parameters) {
-		int lim1 = getLimits()[0];
-		int lim2 = getLimits()[1];
+		int lim1 = getLimits(0);
+		int lim2 = getLimits(1);
 		int min = Math.min(lim1, lim2);
 		int max = Math.max(lim1, lim2);
 		// First Limit

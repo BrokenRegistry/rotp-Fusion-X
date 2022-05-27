@@ -19,6 +19,7 @@ package mod.br.profileManager;
 
 import java.util.List;
 
+import static br.profileManager.src.main.java.WriteUtil.History.*;
 import br.profileManager.src.main.java.Abstract_Group;
 import br.profileManager.src.main.java.Abstract_Parameter;
 import br.profileManager.src.main.java.ValidationCriteria;
@@ -59,15 +60,7 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		
 		private void initCriteria() {
 			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+					.isNullAllowed(false));
 		}
 		
 		private void init() {
@@ -80,7 +73,8 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 
 		AlwaysStarGates(ClientClasses go) {
 			super( "ALWAYS STAR GATES", new Valid_AlwaysStarGates());
-			setInitialValue(UserPreferences.alwaysStarGates());
+			setHistoryCodeView(Initial, UserPreferences.alwaysStarGates());
+			setHistoryCodeView(Default, false); // MODNAR
 		}
 		
 		@Override public Boolean getFromGame (ClientClasses go) {
@@ -97,10 +91,6 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, Boolean codeView) {
 //			go.(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-//			go.(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {
@@ -124,15 +114,7 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		
 		private void initCriteria() {
 			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+					.isNullAllowed(false));
 		}
 		
 		private void init() {
@@ -145,7 +127,8 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 
 		AlwaysThorium(ClientClasses go) { 
 			super("ALWAYS THORIUM", new Valid_AlwaysThorium());
-			setInitialValue(UserPreferences.alwaysThorium());
+			setHistoryCodeView(Initial, UserPreferences.alwaysThorium());
+			setHistoryCodeView(Default, false); // MODNAR
 		}
 		
 		@Override public Boolean getFromGame (ClientClasses go) {
@@ -162,10 +145,6 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, Boolean codeView) {
 //			go.(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-//			go.(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {
@@ -185,15 +164,7 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		
 		private void initCriteria() {
 			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+					.isNullAllowed(false));
 		}
 		
 		private void init() {
@@ -206,7 +177,8 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 
 		ChallengeMode(ClientClasses go) {
 			super("CHALLENGE MODE", new Valid_ChallengeMode());
-			setInitialValue(UserPreferences.challengeMode());
+			setHistoryCodeView(Initial, UserPreferences.challengeMode());
+			setHistoryCodeView(Default, false); // MODNAR
 		}
 		
 		@Override public Boolean getFromGame (ClientClasses go) {
@@ -223,10 +195,6 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, Boolean codeView) {
 //			go.(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-//			go.(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {
@@ -246,15 +214,7 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		
 		private void initCriteria() {
 			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+					.isNullAllowed(false));
 		}
 		
 		private void init() {
@@ -267,7 +227,8 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 
 		BattleScouts(ClientClasses go) {
 			super("BATTLE SCOUT", new Valid_BattleScouts());
-			setInitialValue(UserPreferences.battleScout());
+			setHistoryCodeView(Initial, UserPreferences.battleScout());
+			setHistoryCodeView(Default, false); // MODNAR
 		}
 		
 		@Override public Boolean getFromGame (ClientClasses go) {
@@ -284,10 +245,6 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, Boolean codeView) {
 //			go.(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-//			go.(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {}
@@ -310,21 +267,13 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		
 		private void initCriteria() {
 			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+					.isNullAllowed(false));
 		}
 		
 		private void init() {
 			initCriteria();
-			setLimits(new Integer[] {0 , 4});
-			setDefaultRandomLimits(new Integer[] {0 , 4});
+			setLimits(0 , 4);
+			setDefaultRandomLimits(0 , 4);
 		}
 	}
 	
@@ -333,7 +282,8 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 
 		CompanionWorlds(ClientClasses go) {
 			super("COMPANION WORLDS", new Valid_CompanionWorlds());
-			setInitialValue(UserPreferences.companionWorlds());
+			setHistoryCodeView(Initial, UserPreferences.companionWorlds());
+			setHistoryCodeView(Default, 0); // MODNAR
 		}
 		
 		@Override public Integer getFromGame (ClientClasses go) {
@@ -351,11 +301,7 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		@Override public void putToGUI(ClientClasses go, Integer codeView) {
 //			go.(codeView);
 		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-//			go.(getInitialCodeView());
-		}
-		
+
 		@Override public void initComments() {}
 	}
 	// ==============================================================
@@ -370,15 +316,7 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		
 		private void initCriteria() {
 			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+					.isNullAllowed(false));
 		}
 		
 		private void init() {
@@ -391,7 +329,8 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 
 		RandomTechStart(ClientClasses go) { 
 			super("RANDOM TECH START", new Valid_RandomTechStart());
-			setInitialValue(UserPreferences.randomTechStart());
+			setHistoryCodeView(Initial, UserPreferences.randomTechStart());
+			setHistoryCodeView(Default, false); // MODNAR
 		}
 		
 		@Override public Boolean getFromGame (ClientClasses go) {
@@ -408,10 +347,6 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, Boolean codeView) {
 //			go.(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-//			go.(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {}
@@ -434,21 +369,13 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		
 		private void initCriteria() {
 			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+					.isNullAllowed(false));
 		}
 		
 		private void init() {
 			initCriteria();
-			setLimits(new Integer[] {20 , 500});
-			setDefaultRandomLimits(new Integer[] {20 , 500});
+			setLimits(20 , 500);
+			setDefaultRandomLimits(20 , 500);
 		}
 	}
 	
@@ -457,30 +384,27 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 
 		CustomDifficulty(ClientClasses go) { 
 			super("CUSTOM DIFFICULTY", new Valid_CustomDifficulty());
-			setInitialValue(UserPreferences.customDifficulty());
+			setHistoryCodeView(Initial, UserPreferences.customDifficulty());
+			setHistoryCodeView(Default, 100); // MODNAR
 		}
-		@Override
-		public Integer getFromGame (ClientClasses go) {
+
+		@Override public Integer getFromGame (ClientClasses go) {
 			return UserPreferences.customDifficulty();
 		}
-		@Override
-		public void putToGame(ClientClasses go, Integer codeView) {
+
+		@Override public void putToGame(ClientClasses go, Integer codeView) {
 
 		}		
-		@Override
-		public Integer getFromUI (ClientClasses go) {
+
+		@Override public Integer getFromUI (ClientClasses go) {
 			return UserPreferences.customDifficulty();
 		}
-		@Override
-		public void putToGUI(ClientClasses go, Integer codeView) {
+
+		@Override public void putToGUI(ClientClasses go, Integer codeView) {
 //			go.(codeView);
 		}
-		@Override
-		public void putInitialToGUI(ClientClasses go) {
-//			go.(getInitialCodeView());
-		}
-		@Override
-		public void initComments() {
+
+		@Override public void initComments() {
 //			setBottomComments(AVAILABLE_FOR_CHANGE);
 		}
 	}
@@ -496,15 +420,7 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		
 		private void initCriteria() {
 			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+					.isNullAllowed(false));
 		}
 		
 		private void init() {
@@ -517,7 +433,8 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 
 		DynamicDifficulty(ClientClasses go) {
 			super("DYNAMIC DIFFICULTY", new Valid_DynamicDifficulty());
-			setInitialValue(UserPreferences.dynamicDifficulty());
+			setHistoryCodeView(Initial, UserPreferences.dynamicDifficulty());
+			setHistoryCodeView(Default, false); // MODNAR
 		}
 		
 		@Override public Boolean getFromGame (ClientClasses go) {
@@ -535,11 +452,7 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		@Override public void putToGUI(ClientClasses go, Boolean codeView) {
 //			go.(codeView);
 		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-//			go.(getInitialCodeView());
-		}
-		
+
 		@Override public void initComments() {
 //			setBottomComments(AVAILABLE_FOR_CHANGE);
 		}

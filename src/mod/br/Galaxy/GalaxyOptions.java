@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package rotp.mod.br.alteration;
+package mod.br.Galaxy;
 
 import mod.br.profileManager.GalaxySpacing;
 

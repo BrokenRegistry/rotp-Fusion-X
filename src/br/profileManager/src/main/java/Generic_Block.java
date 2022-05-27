@@ -8,7 +8,7 @@ import java.util.List;
  */
 class Generic_Block<
 		ValueClass, 
-		ValidClass extends Abstract_ValidData<ValueClass>> extends ToPrint {
+		ValidClass extends Abstract_ValidData<ValueClass>> extends WriteUtil {
 
 	private List<Generic_Line<ValueClass, Abstract_ValidData<ValueClass>>> lineList;
 	private Abstract_ValidData<ValueClass> valueValidation;
@@ -194,7 +194,7 @@ class Generic_Block<
 	 */	
 	 ValueClass getValue(String profile, ValueClass defaultValue) {
 		Generic_Line<ValueClass, Abstract_ValidData<ValueClass>> line = get(profile);
-		if (line == null) { // none exist... so empty
+		if (line == null || line.isBlankValue()) { // none exist... so empty
 			return defaultValue;
 		}
 		return line.getValue();
@@ -216,9 +216,9 @@ class Generic_Block<
 		String out = "";
 		for (Generic_Line<ValueClass, Abstract_ValidData<ValueClass>> line : lineList) {
 			if (out.isBlank()) {
-				out = line.toPrint();
+				out = line.toString();
 			} else {
-				out += System.lineSeparator() + line.toPrint();
+				out += System.lineSeparator() + line.toString();
 			}
 		}
 		return out;

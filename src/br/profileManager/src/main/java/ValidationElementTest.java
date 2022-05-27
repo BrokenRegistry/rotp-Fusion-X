@@ -46,14 +46,6 @@ class ValidationElementTest {
 				, "should have been «yyy               = Bla bla»");
 	}
 
-	@Test
-	void toPrint_None() {
-		assertEquals("# yyy               = Bla bla", 
-				new ValidationElement<String>("XXX", "yyy", "Bla bla", "Test")
-				.toPrint()
-				, "should have been «# yyy               = Bla bla»");
-	}
-
 	// ========== Testers ==========
 	@Test
 	void isValidCodeView_String_VC() {

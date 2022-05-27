@@ -16,7 +16,9 @@
 package br.profileManager.src.main.java;
 
 import static br.profileManager.src.main.java.Valid_ProfileAction.*;
+import static br.profileManager.src.main.java.WriteUtil.History.*;
 
+import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,7 +35,7 @@ import java.util.List;
 /**
  * @param <ClientClass> The class that have to go thru the profile manager
  */
-public abstract class Abstract_Profiles<ClientClass> extends ToPrint {
+public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 	// ------------------------------------------------------------------------
 	// Variables Properties
 	//
@@ -88,22 +90,7 @@ public abstract class Abstract_Profiles<ClientClass> extends ToPrint {
 	public Abstract_Parameter<?, ?, ClientClass> getParameter (String name) {
 		return parameterNameMap.get(name.toUpperCase());
 	}
-
-	/**
-	 * Load the profile file to update the Action
-   	 * Update with last options values
-   	 * Save the new profile file
-	 * @param clientObject The class that manage GUI parameters
-   	 */
-	public void saveGuiToFile(ClientClass clientObject) {
-		loadProfilesCfg(); // in case the user changed load or save actions
-		// Remove the Local Enable parameter where possibly wrongly added 
-			parameterProfileAction.removeLocalEnable();
-		updateGuiValue(clientObject);
-		doUserUpdateActions();
-		saveProfilesCfg();
-	}
-
+	
 	/**
    	 * Load the profile file to update the Action
    	 * Update with last options values
@@ -135,31 +122,6 @@ public abstract class Abstract_Profiles<ClientClass> extends ToPrint {
 	}
 
 	/**
-   	 * Load and execute the profile file
-   	 * only for the selected UI
-	 * @param group group name
-	 * @param clientObject The class that manage GUI parameters
-   	 */
-	public void loadLocalGroupSettings(String group, ClientClass clientObject) {
-		loadProfilesCfg();
-		List<String> settingKeys = getReadableProfiles();
-		currentGroup = groupMap.get(group.toUpperCase());
-		currentGroup.overrideGuiParameters(clientObject, settingKeys);
-	}
-	
-	/**
-   	 * Load and execute the profile file
-	 * @param clientObject The class that manage GUI parameters
-   	 */
-	public void loadGlobalGroupSettings(ClientClass clientObject) {
-		loadProfilesCfg();
-		List<String> settingKeys = getReadableProfiles();
-		for (Abstract_Group<ClientClass> group : groupMap.values()) {
-			group.overrideGuiParameters(clientObject, settingKeys);
-		}
-	}
-	
-	/**
 	 * @param runObject The class that manage Game parameters
 	 */
 	public void changeGameSettings(ClientClass runObject) {
@@ -172,13 +134,144 @@ public abstract class Abstract_Profiles<ClientClass> extends ToPrint {
 	}
 
 	/**
+   	 * Load the configuration file to update the Action
+   	 * Update with last Loaded Game options values
+   	 * Save the new configuration file
+	 * @param key the key to process
+	 * @param global Global or Local ?
+	 * @param group group name
+	 * @param clientObject The class that manage GUI parameters
+	 * @return key to local remaining processing
+   	 */
+	public boolean processKey(int key, boolean global,
+			String group, ClientClass clientObject) {
+		switch (key) {
+		case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
+			if(global) {
+				resetGlobalDefaultOptions(clientObject);
+				return true;
+			} else {
+				resetLocalDefaultOptions(group, clientObject);
+				return true;            		
+			}
+		case KeyEvent.VK_G: // BR: "G" = Reload User Presets
+			loadGlobalGroupSettings(clientObject);
+			return true;
+		case KeyEvent.VK_I: // BR: "I" = Reload Initial Presets
+			if(global) {
+				resetGlobalInitialOptions(clientObject);
+				return true;
+			} else {
+				resetLocalInitialOptions(group, clientObject);
+				return true;            		
+			}
+		case KeyEvent.VK_L: // BR: "L" = Load GUI User Presets
+			if(global) {
+				loadGlobalGroupSettings(clientObject);
+				return true;
+			} else {
+				loadLocalGroupSettings(group, clientObject);
+				return true;
+			}
+		case KeyEvent.VK_R: // BR: "R" = Load GUI Surprise Presets
+			if(global) {
+				loadSurpriseGlobalGroupSettings(clientObject);
+				return true;
+			} else {
+				loadSurpriseLocalGroupSettings(group, clientObject);
+				return true;
+			}
+		case KeyEvent.VK_U: // BR: "U" = Update User Presets
+			saveGuiToFile(clientObject);
+			return false;
+		}
+		return false;
+	}
+
+	/**
+	 * Load the profile file to update the Action
+   	 * Update with last options values
+   	 * Save the new profile file
+	 * @param clientObject The class that manage GUI parameters
+   	 */
+	private void saveGuiToFile(ClientClass clientObject) {
+		loadProfilesCfg(); // in case the user changed load or save actions
+		// Remove the Local Enable parameter where possibly wrongly added 
+			parameterProfileAction.removeLocalEnable();
+		updateGuiValue(clientObject);
+		doUserUpdateActions();
+		saveProfilesCfg();
+	}
+
+	/**
+   	 * Load and execute the profile file
+   	 * only for the selected UI
+	 * @param group group name
+	 * @param clientObject The class that manage GUI parameters
+   	 */
+	private void loadLocalGroupSettings(String group, ClientClass clientObject) {
+		loadProfilesCfg();
+		List<String> settingKeys = getReadableProfiles();
+		currentGroup = groupMap.get(group.toUpperCase());
+		currentGroup.overrideGuiParameters(clientObject, settingKeys);
+	}
+	
+	/**
+   	 * Load and execute the profile file
+	 * @param clientObject The class that manage GUI parameters
+   	 */
+	private void loadGlobalGroupSettings(ClientClass clientObject) {
+		loadProfilesCfg();
+		List<String> settingKeys = getReadableProfiles();
+		for (Abstract_Group<ClientClass> group : groupMap.values()) {
+			group.overrideGuiParameters(clientObject, settingKeys);
+		}
+	}
+	
+	/**
+   	 * Load and execute "Surprise" profile file
+   	 * only for the selected UI
+	 * @param group group name
+	 * @param clientObject The class that manage GUI parameters
+   	 */
+	private void loadSurpriseLocalGroupSettings(String group, ClientClass clientObject) {
+		loadProfilesCfg();
+		List<String> settingKeys = getSurpriseProfiles();
+		currentGroup = groupMap.get(group.toUpperCase());
+		currentGroup.overrideGuiParameters(clientObject, settingKeys);
+	}
+	
+	/**
+   	 * Load and execute "Surprise" profile file
+	 * @param clientObject The class that manage GUI parameters
+   	 */
+	private void loadSurpriseGlobalGroupSettings(ClientClass clientObject) {
+		loadProfilesCfg();
+		List<String> settingKeys = getSurpriseProfiles();
+		for (Abstract_Group<ClientClass> group : groupMap.values()) {
+			group.overrideGuiParameters(clientObject, settingKeys);
+		}
+	}
+
+	/**
    	 * Reset the game options as they where at the beginning,
    	 * for all GUI
 	 * @param clientObject The class that manage GUI parameters
    	 */
-	public void resetGlobalInitialOptions(ClientClass clientObject) {
+	private void resetGlobalInitialOptions(ClientClass clientObject) {
 		for (Abstract_Group<ClientClass> group : groupMap.values()) {
-			group.setGuiParametersToInitial(clientObject);
+			group.setGuiParameters(Initial, clientObject);
+		}
+	}
+
+	/**
+   	 * Reset the game options to their very default values,
+   	 * for all GUI
+	 * @param clientObject The class that manage GUI parameters
+   	 */
+	private void resetGlobalDefaultOptions(ClientClass clientObject) {
+		for (Abstract_Group<ClientClass> group : groupMap.values()) {
+			group.setGuiParameters(Default, clientObject);
 		}
 	}
 
@@ -188,9 +281,20 @@ public abstract class Abstract_Profiles<ClientClass> extends ToPrint {
 	 * @param group group name
 	 * @param clientObject The class that manage GUI parameters
    	 */
-	public void resetLocalInitialOptions(String group, ClientClass clientObject) {
+	private void resetLocalInitialOptions(String group, ClientClass clientObject) {
 		currentGroup = groupMap.get(group.toUpperCase());
-		currentGroup.setGuiParametersToInitial(clientObject);
+		currentGroup.setGuiParameters(Initial, clientObject);
+	}
+
+	/**
+   	 * Reset the game options to their very default values,
+   	 * for the selected GUI
+	 * @param group group name
+	 * @param clientObject The class that manage GUI parameters
+   	 */
+	private void resetLocalDefaultOptions(String group, ClientClass clientObject) {
+		currentGroup = groupMap.get(group.toUpperCase());
+		currentGroup.setGuiParameters(Default, clientObject);
 	}
 
 	// ========================================================================
@@ -224,8 +328,42 @@ public abstract class Abstract_Profiles<ClientClass> extends ToPrint {
 	// Other Methods
 	//
 	private void createDefaultUserProfiles() {
-		List<String> settingKeys = new ArrayList<String>(List.of("User", "Last", "Cryslonoid"));
-		
+		parameterProfileAction.addLine("User", 
+				ACTION_GUI_TO_FILE + " " + ACTION_FILE_TO_GUI,
+				"This profile could be Loaded by pressing \"L\"");
+		parameterProfileAction.addLine("LastGui",
+				ACTION_GUI_TO_FILE,
+				"This profile will keep the last GUI configuration");
+		parameterProfileAction.addLine("LastGame",
+				ACTION_GAME_TO_FILE,
+				"This profile will keep the loaded Game configuration");
+		parameterProfileAction.addLine("Random", 
+				ACTION_RANDOM,
+				"Loaded by pressing \"R\", add or replace by "
+						+ ACTION_FILE_TO_GUI + " to allow it to be loaded");
+		getParameter("PLAYER RACE").addLine("Random", "Random");
+		getParameter("PLAYER COLOR").addLine("Random", "Random",
+				"... Or you may choose a specific color");
+		getParameter("GALAXY SHAPE").addLine("Random",
+				"Random Rectangle, Ellipse, Spiral, Spiralarms",
+				"a limited choice");
+		getParameter("GALAXY SIZE").addLine("Random", "",
+				"Nothing changed by this profile");
+		getParameter("DIFFICULTY").addLine("Random", "Random 1, 4",
+				"a range from option list");
+		getParameter("NB OPPONENTS").addLine("Random", "Random 3, 6",
+				"a custom range");
+		getParameter("GALAXY AGE").addLine("Random", "Random");
+		getParameter("NEBULAE").addLine("Random","Random 1, 4",
+				"first option = 0");
+		getParameter("PLANET QUALITY").addLine("Random", "Random");
+		getParameter("AI HOSTILITY").addLine("Random", "Random 0, 3");
+		getParameter("COUNCIL").addLine("Random", "Random");
+		getParameter("RANDOMIZE AI").addLine("Random", "Random");
+		getParameter("RESEARCH").addLine("Random", "Random");
+		getParameter("TECH TRADING").addLine("Random", "Random");
+		getParameter("ALWAYS STAR GATES").addLine("Random", "Yes", "Not Random!");
+		getParameter("MAXIMIZE EMPIRES SPACING").addLine("Random", "NO");
 	}
 
 	private List<String> getAllProfiles() {
@@ -234,6 +372,10 @@ public abstract class Abstract_Profiles<ClientClass> extends ToPrint {
 	
 	private List<String> getReadableProfiles() {
 		return parameterProfileAction.getProfileListForCategory(LOAD_ENABLED);
+	}
+	
+	private List<String> getSurpriseProfiles() {
+		return parameterProfileAction.getProfileListForCategory(RANDOM_ENABLED);
 	}
 	
 	private List<String> getGameChangingProfiles() {
@@ -260,8 +402,9 @@ public abstract class Abstract_Profiles<ClientClass> extends ToPrint {
 				System.err.println("UserPreferences.load -- IOException: "+ e.toString());
 			}
 		} else {
-			// the file does not exist: create a default one 
-			saveProfilesCfg();
+			// the file does not exist: create a default one
+			createDefaultUserProfiles();
+			doUserUpdateActions();
 		}
 	}
 	
@@ -337,36 +480,45 @@ public abstract class Abstract_Profiles<ClientClass> extends ToPrint {
 		// Loop Thru User's Keys and perform requested action
 		List<String> profileList = parameterProfileAction.getProfileList();
 		for (String profile : profileList) {
-			profile = profile.toUpperCase();
-			String action = parameterProfileAction.getProfileValue(profile);
+			String action = parameterProfileAction.getProfileValue(profile.toUpperCase());
 			if (action.contains(ACTION_GUI_TO_FILE)) {
 				for (Abstract_Group<ClientClass> group : groupMap.values()) {
-					group.actionGuiToFile(profile);
+					group.actionToFile(Current, profile);
 				}
 			}
 			if (action.contains(ACTION_GAME_TO_FILE)) {
 				for (Abstract_Group<ClientClass> group : groupMap.values()) {
-					group.actionGameToFile(profile);
+					group.actionToFile(Game, profile);
 				}
 			}
 			if (action.contains(ACTION_INITIAL_TO_FILE)) {
 				for (Abstract_Group<ClientClass> group : groupMap.values()) {
-					group.actionInitialToFile(profile);
+					group.actionToFile(Initial, profile);
+				}
+			}
+			if (action.contains(ACTION_DEFAULT_TO_FILE)) {
+				for (Abstract_Group<ClientClass> group : groupMap.values()) {
+					group.actionToFile(Default, profile);
 				}
 			}
 			if (action.contains(ACTION_GUI_UPDATE_FILE)) {
 				for (Abstract_Group<ClientClass> group : groupMap.values()) {
-					group.actionGuiUpdateFile(profile);
+					group.actionUpdateFile(Current, profile);
 				}
 			}
 			if (action.contains(ACTION_GAME_UPDATE_FILE)) {
 				for (Abstract_Group<ClientClass> group : groupMap.values()) {
-					group.actionGameUpdateFile(profile);
+					group.actionUpdateFile(Game, profile);
 				}
 			}
 			if (action.contains(ACTION_INITIAL_UPDATE_FILE)) {
 				for (Abstract_Group<ClientClass> group : groupMap.values()) {
-					group.actionInitialUpdateFile(profile);
+					group.actionUpdateFile(Initial, profile);
+				}
+			}
+			if (action.contains(ACTION_DEFAULT_UPDATE_FILE)) {
+				for (Abstract_Group<ClientClass> group : groupMap.values()) {
+					group.actionUpdateFile(Default, profile);
 				}
 			}
 		}
@@ -399,44 +551,30 @@ public abstract class Abstract_Profiles<ClientClass> extends ToPrint {
 			super(PARAMETER_NAME, new Valid_ProfileAction());
 		}
 		
-	//	protected Parameter_ProfileAction(String Name) {
-	//		super(Name, new Valid_ProfileAction());
-	//	}
+		//	protected Parameter_ProfileAction(String Name) {
+		//		super(Name, new Valid_ProfileAction());
+		//	}
+			
+		@Override public void initComments() {
+			setHeadComments (
+				"			EXTENDED PLAYER'S SETTINGS" + NL +
+				"-------------------------------------------------- " + NL +
+				" " + NL
+				);
+			setBottomComments(
+				"(---- The last loaded Win)" );
+		  }
 		
-	@Override public void initComments() {
-		setHeadComments (
-			"			EXTENDED PLAYER'S SETTINGS" + NL +
-			"-------------------------------------------------- " + NL +
-			" " + NL +
-			"---- This is where you add your profile list " + NL +
-			"- File To UI		  = Load from file and update GUI" + NL +
-			"- File To Game		= Load from file and update Game at specific LOAD" + NL +
-			"- UI To File		  = Get from GUI and Save to file" + NL +
-			"- Game To File		= Get from Game and Save to file" + NL +
-			"- Initial To File	 = Get initial value of GUI and Save to file" + NL +
-			"- UI Update File	  = Get from GUI and Save to file, if field is not Empty" + NL +
-			"- Game Update File	= Get from GUI and Save to file, if field is not Empty" + NL +
-			"- Initial Update File = Get initial value of GUI and Save to file, if field is not Empty" + NL +
-			"---- Multiple LOAD will follow their sequence" + NL +
-			"---- Multiple choices are allowed. ex Load save" + NL +
-			" " 
-			);
-		setBottomComments(
-			"(---- The last loaded Win)" );
-	  }
+		@Override public String getFromGame(ClientClass clientObject) { 
+			return "-";
+		}
 	
-	@Override public String getFromGame(ClientClass clientObject) { 
-		return "-";
+		@Override public void putToGame(ClientClass runObject, String userOption) {}
+	
+		@Override public String getFromUI(ClientClass gO) { 
+			return "-";
+		}
+	
+		@Override public void putToGUI(ClientClass gO, String userOption) {}
 	}
-
-	@Override public void putToGame(ClientClass runObject, String userOption) {}
-
-	@Override public String getFromUI(ClientClass gO) { 
-		return "-";
-	}
-
-	@Override public void putToGUI(ClientClass gO, String userOption) {}
-
-	@Override public void putInitialToGUI(ClientClass gO) {}
- }
 }

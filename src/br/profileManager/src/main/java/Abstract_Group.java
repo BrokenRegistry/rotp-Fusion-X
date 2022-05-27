@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * @param <ClientClass> The class that have to go thru the profile manager
  */
-public abstract class Abstract_Group<ClientClass> extends ToPrint {
+public abstract class Abstract_Group<ClientClass> extends WriteUtil {
 
 	//  ========================================================================
 	// Variables Properties
@@ -66,62 +66,24 @@ public abstract class Abstract_Group<ClientClass> extends ToPrint {
 	}
 
 	/**
+	 * @param history  Field to get from
 	 * @param profileName the profile name
 	 */
-	public void actionGuiToFile(String profileName) {
+	public void actionToFile(History history, String profileName) {
 		for (Abstract_Parameter<?, ?, ClientClass> 
 					parameter : parameterNameMap.values() ) {
-			parameter.actionUiToFile(profileName);
+			parameter.actionToFile(history, profileName);
 		}
 	}
 
 	/**
+	 * @param history  Field to get from
 	 * @param profileName the profile name
 	 */
-	public void actionGameToFile(String profileName) {
-		for (Abstract_Parameter<?, ?, ClientClass> 
-					parameter : parameterNameMap.values() ) {
-			parameter.actionGameToFile(profileName);
-		}
-	}
-
-	/**
-	 * @param profileName the profile name
-	 */
-	public void actionInitialToFile(String profileName) {
+	public void actionUpdateFile(History history, String profileName) {
 		for (Abstract_Parameter<?, ?, ClientClass>
 					parameter : parameterNameMap.values() ) {
-			parameter.actionInitialToFile(profileName);
-		}
-	}
-
-	/**
-	 * @param profileName the profile name
-	 */
-	public void actionGuiUpdateFile(String profileName) {
-		for (Abstract_Parameter<?, ?, ClientClass>
-					parameter : parameterNameMap.values() ) {
-			parameter.actionUiUpdateFile(profileName);
-		}
-	}
-
-	/**
-	 * @param profileName the profile name
-	 */
-	public void actionGameUpdateFile(String profileName) {
-		for (Abstract_Parameter<?, ?, ClientClass>
-					parameter : parameterNameMap.values() ) {
-			parameter.actionGameUpdateFile(profileName);
-		}
-	}
-
-	/**
-	 * @param profileName the profile name
-	 */
-	public void actionInitialUpdateFile(String profileName) {
-		for (Abstract_Parameter<?, ?, ClientClass>
-					parameter : parameterNameMap.values() ) {
-			parameter.actionInitialUpdateFile(profileName);
+			parameter.actionUpdateFile(history, profileName);
 		}
 	}
 
@@ -168,13 +130,6 @@ public abstract class Abstract_Group<ClientClass> extends ToPrint {
 	public String toString(List<String> profileList) {
 		return toString(profileList, false);
 	}
-
-//	/**
-//	 * @return parameters group as String, ready to be printed
-//	 */
-//	@Override public String toString() {
-//		return toString(profileList(), false);
-//	}
 
 	// ========================================================================
 	// Initialization Methods
@@ -224,12 +179,13 @@ public abstract class Abstract_Group<ClientClass> extends ToPrint {
 	}
 
 	/**
+	 * @param history  Field to get from
 	 * @param clientObject The class that manage GUI parameters
 	 */
-	public void setGuiParametersToInitial(ClientClass clientObject) {
+	public void setGuiParameters(History history, ClientClass clientObject) {
 		for (Abstract_Parameter<?, ?, ClientClass> 
 					parameter : parameterNameMap.values() ) {
-			parameter.putInitialToGUI(clientObject);
+			parameter.putHistoryToGUI(history, clientObject);
 		}
 	}
 }

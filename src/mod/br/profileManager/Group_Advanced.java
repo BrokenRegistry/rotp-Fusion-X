@@ -23,6 +23,7 @@ import br.profileManager.src.main.java.Abstract_Group;
 import br.profileManager.src.main.java.Abstract_Parameter;
 import br.profileManager.src.main.java.Valid_String;
 import br.profileManager.src.main.java.ValidationCriteria;
+import static br.profileManager.src.main.java.WriteUtil.History.*;
 
 /**
  * @author BrokenRegistry
@@ -68,16 +69,7 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+			setValidationCriteria(new ValidationCriteria());
 		}
 		
 		private void init() {
@@ -91,8 +83,9 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		GalaxyAge(ClientClasses go) { 
 			super("GALAXY AGE", 
 					new Valid_GalaxyAge(go.getGuiObject().galaxyAgeOptions()));
-			setInitialValue(go.getGuiObject().selectedGalaxyAge());
-		}
+			setHistoryCodeView(Initial, go.getGuiObject().selectedGalaxyAge());
+			setHistoryUserView(Default, "Normal"); // Ray
+			}
 		
 		@Override public String getFromGame (ClientClasses go) {
 			return go.getGameObject().options().selectedGalaxyAge();
@@ -108,10 +101,6 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
 			go.getGuiObject().selectedGalaxyAge(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-			go.getGuiObject().selectedGalaxyAge(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {
@@ -137,16 +126,7 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+			setValidationCriteria(new ValidationCriteria());
 		}
 		
 		private void init() {
@@ -160,7 +140,8 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		StarDensity(ClientClasses go) {
 			super("STAR DENSITY",
 					new Valid_StarDensity(go.getGuiObject().starDensityOptions()));
-			setInitialValue(go.getGuiObject().selectedStarDensityOption());
+			setHistoryCodeView(Initial, go.getGuiObject().selectedStarDensityOption());
+			setHistoryUserView(Default, "Normal"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
@@ -177,10 +158,6 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
 			go.getGuiObject().selectedStarDensityOption(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-			go.getGuiObject().selectedStarDensityOption(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {}
@@ -201,16 +178,7 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+			setValidationCriteria(new ValidationCriteria());
 		}
 		
 		private void init() {
@@ -224,7 +192,8 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		Nebulae(ClientClasses go) {
 			super("NEBULAE",
 					new Valid_Nebulae(go.getGuiObject().nebulaeOptions()));
-			setInitialValue(go.getGuiObject().selectedNebulaeOption());
+			setHistoryCodeView(Initial, go.getGuiObject().selectedNebulaeOption());
+			setHistoryUserView(Default, "Normal"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
@@ -241,10 +210,6 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
 			go.getGuiObject().selectedNebulaeOption(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-			go.getGuiObject().selectedNebulaeOption(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {}
@@ -265,16 +230,7 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+			setValidationCriteria(new ValidationCriteria());
 		}
 		
 		private void init() {
@@ -288,7 +244,8 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		PlanetQuality(ClientClasses go) {
 			super("PLANET QUALITY",
 					new Valid_PlanetQuality(go.getGuiObject().planetQualityOptions()));
-			setInitialValue(go.getGuiObject().selectedPlanetQualityOption());
+			setHistoryCodeView(Initial, go.getGuiObject().selectedPlanetQualityOption());
+			setHistoryUserView(Default, "Normal"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
@@ -305,10 +262,6 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
 			go.getGuiObject().selectedPlanetQualityOption(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-			go.getGuiObject().selectedPlanetQualityOption(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {}
@@ -329,16 +282,7 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+			setValidationCriteria(new ValidationCriteria());
 		}
 		
 		private void init() {
@@ -352,7 +296,8 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		Terraforming(ClientClasses go) {
 			super("TERRAFORMING", 
 					new Valid_Terraforming(go.getGuiObject().terraformingOptions()));
-			setInitialValue(go.getGuiObject().selectedTerraformingOption());
+			setHistoryCodeView(Initial, go.getGuiObject().selectedTerraformingOption());
+			setHistoryUserView(Default, "Normal"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
@@ -369,10 +314,6 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
 			go.getGuiObject().selectedTerraformingOption(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-			go.getGuiObject().selectedTerraformingOption(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {
@@ -395,16 +336,7 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+			setValidationCriteria(new ValidationCriteria());
 		}
 		
 		private void init() {
@@ -418,7 +350,8 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		RandomEvents(ClientClasses go) {
 			super("RANDOM EVENTS", 
 					new Valid_RandomEvents(go.getGuiObject().randomEventOptions()));
-			setInitialValue(go.getGuiObject().selectedRandomEventOption());
+			setHistoryCodeView(Initial, go.getGuiObject().selectedRandomEventOption());
+			setHistoryUserView(Default, "On"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
@@ -435,10 +368,6 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
 			go.getGuiObject().selectedRandomEventOption(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-			go.getGuiObject().selectedRandomEventOption(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {
@@ -461,16 +390,7 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+			setValidationCriteria(new ValidationCriteria());
 		}
 		
 		private void init() {
@@ -484,7 +404,8 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		AIHostility(ClientClasses go) {
 			super("AI HOSTILITY", 
 					new Valid_AIHostility(go.getGuiObject().aiHostilityOptions()));
-			setInitialValue(go.getGuiObject().selectedAIHostilityOption());
+			setHistoryCodeView(Initial, go.getGuiObject().selectedAIHostilityOption());
+			setHistoryUserView(Default, "Normal"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
@@ -501,10 +422,6 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
 			go.getGuiObject().selectedAIHostilityOption(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-			go.getGuiObject().selectedAIHostilityOption(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {
@@ -527,16 +444,7 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+			setValidationCriteria(new ValidationCriteria());
 		}
 		
 		private void init() {
@@ -550,7 +458,8 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		Council(ClientClasses go) {
 			super("COUNCIL", 
 					new Valid_Council(go.getGuiObject().councilWinOptions()));
-			setInitialValue(go.getGuiObject().selectedCouncilWinOption());
+			setHistoryCodeView(Initial, go.getGuiObject().selectedCouncilWinOption());
+			setHistoryUserView(Default, "Rebels"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
@@ -567,10 +476,6 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
 			go.getGuiObject().selectedCouncilWinOption(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-			go.getGuiObject().selectedCouncilWinOption(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {
@@ -593,16 +498,7 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+			setValidationCriteria(new ValidationCriteria());
 		}
 		
 		private void init() {
@@ -616,7 +512,8 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		RandomizeAI(ClientClasses go) {
 			super("RANDOMIZE AI",
 					new Valid_RandomizeAI(go.getGuiObject().randomizeAIOptions()));
-			setInitialValue(go.getGuiObject().selectedRandomizeAIOption());
+			setHistoryCodeView(Initial, go.getGuiObject().selectedRandomizeAIOption());
+			setHistoryUserView(Default, "None"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
@@ -633,10 +530,6 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
 			go.getGuiObject().selectedRandomizeAIOption(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-			go.getGuiObject().selectedRandomizeAIOption(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {}
@@ -657,16 +550,7 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+			setValidationCriteria(new ValidationCriteria());
 		}
 		
 		private void init() {
@@ -680,7 +564,8 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		AutoPlay(ClientClasses go) {
 			super("AUTOPLAY", 
 					new Valid_AutoPlay(go.getGuiObject().autoplayOptions()));
-			setInitialValue(go.getGuiObject().selectedAutoplayOption());
+			setHistoryCodeView(Initial, go.getGuiObject().selectedAutoplayOption());
+			setHistoryUserView(Default, "Off"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
@@ -697,10 +582,6 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
 			go.getGuiObject().selectedAutoplayOption(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-			go.getGuiObject().selectedAutoplayOption(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {}
@@ -721,16 +602,7 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+			setValidationCriteria(new ValidationCriteria());
 		}
 		
 		private void init() {
@@ -744,7 +616,8 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		Research(ClientClasses go) { 
 			super("RESEARCH", 
 					new Valid_Research(go.getGuiObject().researchRateOptions()));
-			setInitialValue(go.getGuiObject().selectedResearchRate());
+			setHistoryCodeView(Initial, go.getGuiObject().selectedResearchRate());
+			setHistoryUserView(Default, "Normal"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
@@ -761,10 +634,6 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
 			go.getGuiObject().selectedResearchRate(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-			go.getGuiObject().selectedResearchRate(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {
@@ -787,16 +656,7 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+			setValidationCriteria(new ValidationCriteria());
 		}
 		
 		private void init() {
@@ -810,7 +670,8 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		WarpSpeed(ClientClasses go) { 
 			super("WARP SPEED", 
 					new Valid_WarpSpeed(go.getGuiObject().warpSpeedOptions()));
-			setInitialValue(go.getGuiObject().selectedWarpSpeedOption());
+			setHistoryCodeView(Initial, go.getGuiObject().selectedWarpSpeedOption());
+			setHistoryUserView(Default, "Normal"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
@@ -827,10 +688,6 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
 			go.getGuiObject().selectedWarpSpeedOption(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-			go.getGuiObject().selectedWarpSpeedOption(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {
@@ -853,16 +710,7 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+			setValidationCriteria(new ValidationCriteria());
 		}
 		
 		private void init() {
@@ -876,7 +724,8 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		FuelRange(ClientClasses go) { 
 			super("FUEL RANGE", 
 					new Valid_FuelRange(go.getGuiObject().fuelRangeOptions()));
-			setInitialValue(go.getGuiObject().selectedFuelRangeOption());
+			setHistoryCodeView(Initial, go.getGuiObject().selectedFuelRangeOption());
+			setHistoryUserView(Default, "Normal"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
@@ -893,10 +742,6 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
 			go.getGuiObject().selectedFuelRangeOption(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-			go.getGuiObject().selectedFuelRangeOption(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {
@@ -919,16 +764,7 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+			setValidationCriteria(new ValidationCriteria());
 		}
 		
 		private void init() {
@@ -942,7 +778,8 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		TechTrading(ClientClasses go) { 
 			super("TECH TRADING", 
 					new Valid_TechTrading(go.getGuiObject().techTradingOptions()));
-			setInitialValue(go.getGuiObject().selectedTechTradeOption());
+			setHistoryCodeView(Initial, go.getGuiObject().selectedTechTradeOption());
+			setHistoryUserView(Default, "Yes"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
@@ -959,10 +796,6 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
 			go.getGuiObject().selectedTechTradeOption(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-			go.getGuiObject().selectedTechTradeOption(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {
@@ -985,16 +818,7 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false)
-					.isBlankAllowed(true)
-					.isRandomAllowed(true)
-					.userViewEquals(false)
-					.categoryEquals(false)
-					.userViewIsCaseSensitive(false)
-					.codeViewIsCaseSensitive(false)
-					.categoryIsCaseSensitive(false)
-					.printFormat(PrintFormat.CAPITALIZE));
+			setValidationCriteria(new ValidationCriteria());
 		}
 		
 		private void init() {
@@ -1008,7 +832,8 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		Colonizing(ClientClasses go) { 
 			super("COLONIZING", 
 					new Valid_Colonizing(go.getGuiObject().colonizingOptions()));
-			setInitialValue(go.getGuiObject().selectedColonizingOption());
+			setHistoryCodeView(Initial, go.getGuiObject().selectedColonizingOption());
+			setHistoryUserView(Default, "Normal"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
@@ -1025,10 +850,6 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
 			go.getGuiObject().selectedColonizingOption(codeView);
-		}
-		
-		@Override public void putInitialToGUI(ClientClasses go) {
-			go.getGuiObject().selectedColonizingOption(getInitialCodeView());
 		}
 		
 		@Override public void initComments() {

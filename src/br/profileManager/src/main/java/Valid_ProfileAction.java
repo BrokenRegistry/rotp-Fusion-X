@@ -15,65 +15,76 @@
 
 package br.profileManager.src.main.java;
 
+import static br.profileManager.src.main.java.WriteUtil.History.*;
+
 /**
  * For the validation of the profiles Action
  */
 
 class Valid_ProfileAction extends Valid_String {
 	static final String LOAD_ENABLED    = "ENABLE_LOAD_LIST";
+	static final String RANDOM_ENABLED  = "ENABLE_RANDOM_LIST";
 	static final String WRITE_ENABLED   = "ENABLE_WRITE_LIST";
 	static final String GAME_ENABLED    = "ENABLE_GAME_LIST";
 	static final String SPECIAL_ENABLED = "SPECIAL_LIST";
-	static final String ACTION_FILE_TO_GUI  = "GUI";
-	static final String ACTION_FILE_TO_GAME = "GAME";
-	static final String ACTION_GUI_TO_FILE  = "SAVE";
-	static final String ACTION_GAME_TO_FILE = "PULL";
-	static final String ACTION_INITIAL_TO_FILE  = "INITIAL";
-	static final String ACTION_GUI_UPDATE_FILE  = "UPDATE";
-	static final String ACTION_GAME_UPDATE_FILE = "PICK";
-	static final String ACTION_INITIAL_UPDATE_FILE = "DEFAULT";
+	static final String ACTION_RANDOM   = "Surprise";
+	static final String ACTION_FILE_TO_GUI  = "Load";
+	static final String ACTION_FILE_TO_GAME = "Change";
+	static final String ACTION_GUI_TO_FILE  = "SaveGui";
+	static final String ACTION_GAME_TO_FILE = "SaveGame";
+	static final String ACTION_INITIAL_TO_FILE  = "SaveInitial";
+	static final String ACTION_DEFAULT_TO_FILE  = "SaveDefault";
+	static final String ACTION_GUI_UPDATE_FILE  = "GetGUI";
+	static final String ACTION_GAME_UPDATE_FILE = "GetGame";
+	static final String ACTION_INITIAL_UPDATE_FILE = "GetInitial";
+	static final String ACTION_DEFAULT_UPDATE_FILE = "GetDefault";
 
 	public  static final String PARAMETER_NAME = "PROFILES ACTIONS";
-	private static final String DEFAULT_VALUE  = "SAVE";
+	private static final String DEFAULT_VALUE  = "";
 
 	Valid_ProfileAction() {
 		setDefaultName("None!");
-		setDefaultValue(DEFAULT_VALUE);
+		setHistoryUserView(Default, DEFAULT_VALUE);
+//		setDefaultValue(DEFAULT_VALUE);
 
 		setValidationCriteria(new ValidationCriteria()
-				.isNullAllowed(false)
-				.isBlankAllowed(true)
 				.isRandomAllowed(false)
 				.userViewEquals(false)
-				.categoryEquals(false)
-				.userViewIsCaseSensitive(false)
-				.codeViewIsCaseSensitive(false)
-				.categoryIsCaseSensitive(false)
-				.printFormat(PrintFormat.CAPITALIZE));
+				.codeViewEquals(false));
 		
 		addElement(ACTION_FILE_TO_GUI,
-				"Load from file and change GUI" ,
+				"If the key \"L\" is pressed, this profile will change the GUI" ,
 				LOAD_ENABLED);
+		addElement(ACTION_RANDOM,
+				"If the key \"R\" is pressed, this profile will change the GUI..." + NL
+				+ "I use it to Randomize, but could be alternate load!" ,
+				RANDOM_ENABLED);
 		addElement(ACTION_FILE_TO_GAME, 
-				"Load from file and change Game at \"X LOAD\"" ,
+				"If the key \"X\" is pressed in Load Menu, the loaded Game will be changed" ,
 				GAME_ENABLED + " " + LOAD_ENABLED);
 		addElement(ACTION_GUI_TO_FILE, 
-				"Get from GUI and Save to file" ,
+				"When a Game is started or if the key \"U\" is pressed, this profile will get the GUI settings" ,
 				WRITE_ENABLED);
 		addElement(ACTION_GAME_TO_FILE,
-				"Get from Game and Save to file" ,
+				"When a Game is started, this profile will get the Game settings" ,
 				WRITE_ENABLED);
 		addElement(ACTION_INITIAL_TO_FILE,
-				"Get initial value of GUI and Save to file" ,
+				"When a Game is started or if the key \"U\" is pressed, this profile will get the initial settings" ,
+				WRITE_ENABLED);
+		addElement(ACTION_DEFAULT_TO_FILE,
+				"When a Game is started or if the key \"U\" is pressed, this profile will get the default settings" ,
 				WRITE_ENABLED);
 		addElement(ACTION_GUI_UPDATE_FILE,
-				"If actif Field: Get from GUI and Save to file" ,
+				"When a Game is started or if the key \"U\" is pressed, non empty parameters of this profile will get the GUI settings" ,
 				WRITE_ENABLED);
 		addElement(ACTION_GAME_UPDATE_FILE, 
-				"If actif Field: Get from Game and Save to file" ,
+				"When a Game is started, non empty parameters of this profile will get the Game settings" ,
 				WRITE_ENABLED);
 		addElement(ACTION_INITIAL_UPDATE_FILE,
-				"If actif Field: Get initial value of GUI and Save to file" ,
+				"When a Game is started or if the key \"U\" is pressed, non empty parameters of this profile will get the initial settings" ,
+				WRITE_ENABLED);
+		addElement(ACTION_DEFAULT_UPDATE_FILE,
+				"When a Game is started or if the key \"U\" is pressed, non empty parameters of this profile will get the default settings" ,
 				WRITE_ENABLED);
 //		list.addElement("CLEAR",
 //				"Remove every occurrence of this setting" ,

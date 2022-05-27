@@ -22,21 +22,21 @@ package br.profileManager.src.main.java;
  */
 class Generic_Line<
 		ValueClass, 
-		ValidClass extends Abstract_ValidData<ValueClass>> extends ToPrint {
+		ValidClass extends Abstract_ValidData<ValueClass>> extends WriteUtil {
 	
     // ==================================================
 	// Constant Properties
     //
-    private static final String 
-    		BASE_KEY_FORMAT = "%-" + LINE_SPLIT_POSITION.toString() + "s";
+    private static final String BASE_KEY_FORMAT = 
+    		"%-" + Integer.toString(lineSplitPosition()) + "s";
     public  static final String KEY_VALUE_SEPARATOR = ":";
     private static final String VALUE_SPACER        = " ";
-    private static final String
-    		KEY_VALUE_SEPARATOR_PRT = KEY_VALUE_SEPARATOR + VALUE_SPACER;
-    private static final String 
-    		KEY_FORMAT = BASE_KEY_FORMAT + KEY_VALUE_SEPARATOR_PRT;
-    private static final String 
-    		KEY_VALUE_FORMAT = "%-" + END_COMMENT_POSITION.toString() + "s";
+    private static final String	KEY_VALUE_SEPARATOR_PRT =
+    		KEY_VALUE_SEPARATOR + VALUE_SPACER;
+    private static final String KEY_FORMAT = 
+    		BASE_KEY_FORMAT + KEY_VALUE_SEPARATOR_PRT;
+    private static final String KEY_VALUE_FORMAT =
+    		"%-" + Integer.toString(commentEndPosition()) + "s";
  
     // ==================================================
 	// Variables Properties
@@ -48,7 +48,6 @@ class Generic_Line<
 	// ==================================================
     // Constructors
     //
-
 	/**
 	 * create and initialize a new {@code LineValid} with default value
 	 * @param validationData the {@code Abstract_ValidData<ValueClass>} validationData
@@ -112,9 +111,9 @@ class Generic_Line<
  			return this;
  			}
  		// Get the comment if one
- 		setComment(ToComment.extractComment(line));
+ 		setComment(WriteUtil.extractComment(line));
  		// Split the Key and the value
-		String[] list = ToComment.removeComment(line).split(KEY_VALUE_SEPARATOR, 2);
+		String[] list = WriteUtil.removeComment(line).split(KEY_VALUE_SEPARATOR, 2);
 		setName(list[0]);
 		if (list.length == 2) {
 			initValue(list[1]);
@@ -302,6 +301,9 @@ class Generic_Line<
 		out += PMutil.neverNull(entryValue);
 		if (comment != null && !comment.isBlank()) {
 			out = String.format(KEY_VALUE_FORMAT, out);
+			if (!" ".equals(PMutil.getLastChar(out))) {
+				out += " ";
+			}
 			out += toComment(comment);		
 		}
 		return out;
@@ -330,7 +332,7 @@ class Generic_Line<
 	static String getValueAsString(String line) {
 		line = PMutil.clean(line);
 		if (!line.isBlank()) {
-			String[] list = ToComment.removeComment(line).split(KEY_VALUE_SEPARATOR, 2);
+			String[] list = WriteUtil.removeComment(line).split(KEY_VALUE_SEPARATOR, 2);
 			if (list.length == 2) {
 				return list[1].strip();
 			}

@@ -1,4 +1,4 @@
-package mod.br.profileManager;
+package mod.br.Galaxy;
 
 /**
  * @author BrokenRegistry
