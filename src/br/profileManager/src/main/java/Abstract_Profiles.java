@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import rotp.ui.UserPreferences;
+
 /**
  * @param <ClientClass> The class that have to go thru the profile manager
  */
@@ -181,6 +183,9 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 				loadSurpriseLocalGroupSettings(group, clientObject);
 				return true;
 			}
+		case KeyEvent.VK_S: // BR: "S = Save Remnant.cfg
+			UserPreferences.save();
+			return false;
 		case KeyEvent.VK_U: // BR: "U" = Update User Presets
 			saveGuiToFile(clientObject);
 			return false;

@@ -22,6 +22,7 @@ import java.util.List;
 import br.profileManager.src.main.java.Abstract_Group;
 import br.profileManager.src.main.java.Abstract_Parameter;
 import br.profileManager.src.main.java.ValidationCriteria;
+import mod.br.Galaxy.GalaxySpacing;
 import mod.br.Galaxy.StarsOptions;
 import br.profileManager.src.main.java.Valid_Boolean;
 import br.profileManager.src.main.java.Valid_Double;

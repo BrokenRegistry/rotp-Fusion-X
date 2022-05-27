@@ -27,7 +27,10 @@ public class Valid_Integer extends Abstract_ValidData<Integer> {
 	// ==================================================
     // Constructors
     //
-	protected Valid_Integer() {
+	/**
+	 * Base Constructor for Integer Validation Class
+	 */
+	public Valid_Integer() {
 		super();
 		init();
 	}

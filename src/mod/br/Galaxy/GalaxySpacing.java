@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package mod.br.profileManager;
+package mod.br.Galaxy;
 
 /**
  * @author BrokenRegistry

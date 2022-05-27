@@ -209,6 +209,20 @@ class Generic_Line<
 	// Testers
 	//
 	/**
+	 * Check if this entry line is dedicated for this Validation,
+	 * if true, set new parameters
+	 * @param line the {@code String to analyze}
+	 * @return <b>true</b> if line was used
+	 */
+	boolean isLineForMe(String line) {
+		if (getName().equalsIgnoreCase(getKey(line))) {
+			newLine(line);
+			return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * Ask if something has been set by user entry
 	 * @return {@code boolean}
 	 */

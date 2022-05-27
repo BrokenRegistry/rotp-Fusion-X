@@ -20,19 +20,16 @@ import static br.profileManager.src.main.java.WriteUtil.History.*;
 /**
  * For the validation of the configurations Action
  */
-class Valid_LocalEnable extends Valid_ProfileAction {
+class Valid_Verbose extends Valid_String {
 	
-	// From Valid_ConfigAction
-	//	static final String LOAD_ENABLED    = "ENABLE_LOAD_LIST";
-	//	static final String WRITE_ENABLED   = "ENABLE_WRITE_LIST";
-	//	static final String GAME_ENABLED    = "ENABLE_GAME_LIST";
-	//	static final String SPECIAL_ENABLED = "SPECIAL_LIST";
-	static final String LOCAL_ENABLED = "LOCAL_LIST";
+	private static final String OPTION_ENABLED  = "OPTION";
+	private static final String PARAMETER_ENABLED = "PARAMETER";
+	private static final String COMMENT_ENABLED = "COMMENT";
 
-	public  static final String PARAMETER_NAME = "¦ LOCAL ENABLE";
-	private static final String DEFAULT_VALUE  = "ALL";
+	public  static final String PARAMETER_NAME = "Verbose";
+	private static final String DEFAULT_VALUE  = "FULL";
 
-	Valid_LocalEnable() {
+	Valid_Verbose() {
 		setDefaultName(PARAMETER_NAME);
 		setHistoryUserView(Default, DEFAULT_VALUE);
 		setHistoryUserView(Current, DEFAULT_VALUE);
@@ -42,18 +39,18 @@ class Valid_LocalEnable extends Valid_ProfileAction {
 				.userViewEquals(false)
 				.codeViewEquals(false));
 
-		addElement("NONE",
-				"No actions are allowed in this Setting" ,
-				LOCAL_ENABLED);
-		addElement("ALL",
-				"All actions are allowed in this Setting" ,
-				LOCAL_ENABLED + " " + LOAD_ENABLED + " " + WRITE_ENABLED);
-		addElement("TO FILE", 
-				"Allows actions that change the file" ,
-				LOCAL_ENABLED + " " + WRITE_ENABLED);
-		addElement("FROM FILE", 
-				"Allows actions Get from GUI and Save to file" ,
-				LOCAL_ENABLED + " " + LOAD_ENABLED);
+		addElement("NO",
+				"No option comments, No parameter comments, no option" ,
+				"");
+		addElement("OPTION",
+				"No option comments, No parameter comments, Show Options" ,
+				OPTION_ENABLED);
+		addElement("PARAMETER", 
+				"No option comments, Parameter comments, Show Options" ,
+				OPTION_ENABLED + " " + PARAMETER_ENABLED);
+		addElement("FULL", 
+				"Option comments, Parameter Comments, Show Options",
+				OPTION_ENABLED + " " + PARAMETER_ENABLED + " " + COMMENT_ENABLED);
 	}
 
  	// ==========================================================
@@ -62,7 +59,7 @@ class Valid_LocalEnable extends Valid_ProfileAction {
 	/**
 	 * Base for every User Entry Lines
 	 */
-	static class Line_LocalEnable extends Generic_Line<String, Valid_LocalEnable>{
+	static class Line_Verbose extends Generic_Line<String, Valid_Verbose>{
 
 	 	// ==========================================================
 	    // Constructors
@@ -70,32 +67,32 @@ class Valid_LocalEnable extends Valid_ProfileAction {
 		/**
 		 * Create a new standard default valued LocalEnable
 		 */
-		Line_LocalEnable() {
-			super(new Valid_LocalEnable());
+		Line_Verbose() {
+			super(new Valid_Verbose());
 			setValue(DEFAULT_VALUE);
 		}
 
 		/**
 		 * Create a new standard LocalEnable with a custom value
 		 */
-		Line_LocalEnable(String value) {
-			super(new Valid_LocalEnable());
+		Line_Verbose(String value) {
+			super(new Valid_Verbose());
 			setValue(value);
 		}
 
 		// ==========================================================
 		// Getters and Setters
 		//
-		boolean isLoadEnabled() {
-			return isValueFromCategory(LOAD_ENABLED);
+		boolean isOptionEnabled() {
+			return isValueFromCategory(OPTION_ENABLED);
 		}
 		
-		boolean isWriteEnabled() {
-			return isValueFromCategory(WRITE_ENABLED);
+		boolean isSettingEnabled() {
+			return isValueFromCategory(PARAMETER_ENABLED);
 		}
 		
-		boolean isLocal() {
-			return isValueFromCategory(LOCAL_ENABLED);
+		boolean isCommentEnabled() {
+			return isValueFromCategory(COMMENT_ENABLED);
 		}
 	}
 }

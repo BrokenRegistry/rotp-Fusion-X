@@ -134,6 +134,44 @@ public class UserPreferences {
         save();
     }
 
+    // BR setters for modnar parameters
+    public static void setAlwaysStarGates(boolean newValue) {
+    	alwaysStarGates = newValue;
+    }
+    public static void setAlwaysThorium(boolean newValue) {
+    	alwaysThorium = newValue;
+    }
+    public static void setChallengeMode(boolean newValue) {
+    	challengeMode = newValue;
+    }
+    public static void setBattleScout(boolean newValue) {
+    	battleScout = newValue;
+    }
+    public static void setCompanionWorlds(int newValue) {
+        companionWorlds = newValue;
+        if (companionWorlds > 4) {
+        	companionWorlds = 4;
+        }
+        else if (companionWorlds < 0) {
+        	companionWorlds = 0;
+        }
+    }
+    public static void setRandomTechStart(boolean newValue) {
+    	randomTechStart = newValue; 
+    }
+    public static void setCustomDifficulty(int newValue) {
+        customDifficulty = newValue;
+        if (customDifficulty >= 500) {
+        	customDifficulty = 500;
+        }
+        else if (customDifficulty < 20) {
+        	customDifficulty = 20;
+        }
+    }
+    public static void setDynamicDifficulty(boolean newValue) {
+    	dynamicDifficulty = newValue; 
+    } // \BR
+
     // modnar: MOD option toggles, specifically for UI
     public static void toggleAlwaysStarGates()       { alwaysStarGates = !alwaysStarGates; save(); }
     public static void toggleAlwaysThorium()         { alwaysThorium = !alwaysThorium; save(); }

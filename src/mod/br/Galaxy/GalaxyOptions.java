@@ -17,8 +17,6 @@
 
 package mod.br.Galaxy;
 
-import mod.br.profileManager.GalaxySpacing;
-
 //import mod.br.alteration.GalaxySpacing;
 
 /**

@@ -17,12 +17,9 @@
 
 package mod.br.profileManager;
 
-import java.util.List;
-
 import static br.profileManager.src.main.java.WriteUtil.History.*;
 import br.profileManager.src.main.java.Abstract_Group;
 import br.profileManager.src.main.java.Abstract_Parameter;
-import br.profileManager.src.main.java.ValidationCriteria;
 import br.profileManager.src.main.java.Valid_Boolean;
 import br.profileManager.src.main.java.Valid_Integer;
 import rotp.ui.UserPreferences;
@@ -51,30 +48,13 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 	// ==============================================================
 	// ALWAYS STAR GATES
 	//
-	static class Valid_AlwaysStarGates extends Valid_Boolean {
-
-		Valid_AlwaysStarGates() {
-			super();
-			init();
-		}
-		
-		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false));
-		}
-		
-		private void init() {
-			initCriteria();
-		}
-	}
-	
 	static class AlwaysStarGates extends 
-			Abstract_Parameter <Boolean, Valid_AlwaysStarGates, ClientClasses> {
+			Abstract_Parameter <Boolean, Valid_Boolean, ClientClasses> {
 
 		AlwaysStarGates(ClientClasses go) {
-			super( "ALWAYS STAR GATES", new Valid_AlwaysStarGates());
+			super( "ALWAYS STAR GATES", new Valid_Boolean());
 			setHistoryCodeView(Initial, UserPreferences.alwaysStarGates());
-			setHistoryCodeView(Default, false); // MODNAR
+			setHistoryCodeView(Default, false); // MODNAR DEFAULT
 		}
 		
 		@Override public Boolean getFromGame (ClientClasses go) {
@@ -90,7 +70,7 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public void putToGUI(ClientClasses go, Boolean codeView) {
-//			go.(codeView);
+			UserPreferences.setAlwaysStarGates(codeView);;
 		}
 		
 		@Override public void initComments() {
@@ -105,30 +85,13 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 	// ==============================================================
 	// ALWAYS THORIUM
 	//
-	static class Valid_AlwaysThorium extends Valid_Boolean {
-
-		Valid_AlwaysThorium() {
-			super();
-			init();
-		}
-		
-		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false));
-		}
-		
-		private void init() {
-			initCriteria();
-		}
-	}
-	
 	static class AlwaysThorium extends 
-			Abstract_Parameter <Boolean, Valid_AlwaysThorium, ClientClasses> {
+			Abstract_Parameter <Boolean, Valid_Boolean, ClientClasses> {
 
 		AlwaysThorium(ClientClasses go) { 
-			super("ALWAYS THORIUM", new Valid_AlwaysThorium());
+			super("ALWAYS THORIUM", new Valid_Boolean());
 			setHistoryCodeView(Initial, UserPreferences.alwaysThorium());
-			setHistoryCodeView(Default, false); // MODNAR
+			setHistoryCodeView(Default, false); // MODNAR DEFAULT
 		}
 		
 		@Override public Boolean getFromGame (ClientClasses go) {
@@ -144,7 +107,7 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public void putToGUI(ClientClasses go, Boolean codeView) {
-//			go.(codeView);
+			UserPreferences.setAlwaysThorium(codeView);
 		}
 		
 		@Override public void initComments() {
@@ -155,30 +118,13 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 	// ==============================================================
 	// CHALLENGE MODE
 	//
-	static class Valid_ChallengeMode extends Valid_Boolean {
-
-		Valid_ChallengeMode() {
-			super();
-			init();
-		}
-		
-		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false));
-		}
-		
-		private void init() {
-			initCriteria();
-		}
-	}
-	
 	static class ChallengeMode extends 
-			Abstract_Parameter <Boolean, Valid_ChallengeMode, ClientClasses> {
+			Abstract_Parameter <Boolean, Valid_Boolean, ClientClasses> {
 
 		ChallengeMode(ClientClasses go) {
-			super("CHALLENGE MODE", new Valid_ChallengeMode());
+			super("CHALLENGE MODE", new Valid_Boolean());
 			setHistoryCodeView(Initial, UserPreferences.challengeMode());
-			setHistoryCodeView(Default, false); // MODNAR
+			setHistoryCodeView(Default, false); // MODNAR DEFAULT
 		}
 		
 		@Override public Boolean getFromGame (ClientClasses go) {
@@ -194,7 +140,7 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public void putToGUI(ClientClasses go, Boolean codeView) {
-//			go.(codeView);
+			UserPreferences.setChallengeMode(codeView);
 		}
 		
 		@Override public void initComments() {
@@ -205,30 +151,13 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 	// ==============================================================
 	// BATTLE SCOUT
 	//
-	static class Valid_BattleScouts extends Valid_Boolean {
-
-		Valid_BattleScouts() {
-			super();
-			init();
-		}
-		
-		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false));
-		}
-		
-		private void init() {
-			initCriteria();
-		}
-	}
-	
 	static class BattleScouts extends 
-			Abstract_Parameter <Boolean, Valid_BattleScouts, ClientClasses> {
+			Abstract_Parameter <Boolean, Valid_Boolean, ClientClasses> {
 
 		BattleScouts(ClientClasses go) {
-			super("BATTLE SCOUT", new Valid_BattleScouts());
+			super("BATTLE SCOUT", new Valid_Boolean());
 			setHistoryCodeView(Initial, UserPreferences.battleScout());
-			setHistoryCodeView(Default, false); // MODNAR
+			setHistoryCodeView(Default, false); // MODNAR DEFAULT
 		}
 		
 		@Override public Boolean getFromGame (ClientClasses go) {
@@ -244,7 +173,7 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public void putToGUI(ClientClasses go, Boolean codeView) {
-//			go.(codeView);
+			UserPreferences.setBattleScout(codeView);
 		}
 		
 		@Override public void initComments() {}
@@ -253,37 +182,15 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 	// ==============================================================
 	// COMPANION WORLDS
 	//
-	static class Valid_CompanionWorlds extends Valid_Integer {
-
-		Valid_CompanionWorlds() {
-			super();
-			init();
-		}
-		
-		Valid_CompanionWorlds(List<Integer> options) {
-			super(options);
-			init();
-		}
-		
-		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false));
-		}
-		
-		private void init() {
-			initCriteria();
-			setLimits(0 , 4);
-			setDefaultRandomLimits(0 , 4);
-		}
-	}
-	
 	static class CompanionWorlds extends 
-			Abstract_Parameter <Integer, Valid_CompanionWorlds, ClientClasses> {
+			Abstract_Parameter <Integer, Valid_Integer, ClientClasses> {
 
 		CompanionWorlds(ClientClasses go) {
-			super("COMPANION WORLDS", new Valid_CompanionWorlds());
+			super("COMPANION WORLDS", new Valid_Integer());
 			setHistoryCodeView(Initial, UserPreferences.companionWorlds());
-			setHistoryCodeView(Default, 0); // MODNAR
+			setHistoryCodeView(Default, 0); // MODNAR DEFAULT
+			setLimits(0 , 4);
+			setDefaultRandomLimits(0 , 4);
 		}
 		
 		@Override public Integer getFromGame (ClientClasses go) {
@@ -299,38 +206,22 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public void putToGUI(ClientClasses go, Integer codeView) {
-//			go.(codeView);
+			UserPreferences.setCompanionWorlds(codeView);
 		}
 
 		@Override public void initComments() {}
 	}
+
 	// ==============================================================
 	// RANDOM TECH START
 	//
-	static class Valid_RandomTechStart extends Valid_Boolean {
-
-		Valid_RandomTechStart() {
-			super();
-			init();
-		}
-		
-		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false));
-		}
-		
-		private void init() {
-			initCriteria();
-		}
-	}
-	
 	static class RandomTechStart extends 
-			Abstract_Parameter <Boolean, Valid_RandomTechStart, ClientClasses> {
+			Abstract_Parameter <Boolean, Valid_Boolean, ClientClasses> {
 
 		RandomTechStart(ClientClasses go) { 
-			super("RANDOM TECH START", new Valid_RandomTechStart());
+			super("RANDOM TECH START", new Valid_Boolean());
 			setHistoryCodeView(Initial, UserPreferences.randomTechStart());
-			setHistoryCodeView(Default, false); // MODNAR
+			setHistoryCodeView(Default, false); // MODNAR DEFAULT
 		}
 		
 		@Override public Boolean getFromGame (ClientClasses go) {
@@ -346,7 +237,7 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public void putToGUI(ClientClasses go, Boolean codeView) {
-//			go.(codeView);
+			UserPreferences.setRandomTechStart(codeView);
 		}
 		
 		@Override public void initComments() {}
@@ -355,37 +246,15 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 	// ==============================================================
 	// CUSTOM DIFFICULTY
 	//
-	static class Valid_CustomDifficulty extends Valid_Integer {
-
-		Valid_CustomDifficulty() {
-			super();
-			init();
-		}
-		
-		Valid_CustomDifficulty(List<Integer> options) {
-			super(options);
-			init();
-		}
-		
-		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false));
-		}
-		
-		private void init() {
-			initCriteria();
-			setLimits(20 , 500);
-			setDefaultRandomLimits(20 , 500);
-		}
-	}
-	
 	static class CustomDifficulty extends
-			Abstract_Parameter <Integer, Valid_CustomDifficulty, ClientClasses> {
+			Abstract_Parameter <Integer, Valid_Integer, ClientClasses> {
 
 		CustomDifficulty(ClientClasses go) { 
-			super("CUSTOM DIFFICULTY", new Valid_CustomDifficulty());
+			super("CUSTOM DIFFICULTY", new Valid_Integer());
 			setHistoryCodeView(Initial, UserPreferences.customDifficulty());
-			setHistoryCodeView(Default, 100); // MODNAR
+			setHistoryCodeView(Default, 100); // MODNAR DEFAULT
+			setLimits(20 , 500);
+			setDefaultRandomLimits(20 , 500);
 		}
 
 		@Override public Integer getFromGame (ClientClasses go) {
@@ -401,40 +270,25 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		}
 
 		@Override public void putToGUI(ClientClasses go, Integer codeView) {
-//			go.(codeView);
+			UserPreferences.setCustomDifficulty(codeView);
 		}
 
 		@Override public void initComments() {
 //			setBottomComments(AVAILABLE_FOR_CHANGE);
 		}
 	}
+
 	// ==============================================================
 	// DYNAMIC DIFFICULTY
 	//
-	static class Valid_DynamicDifficulty extends Valid_Boolean {
 
-		Valid_DynamicDifficulty() {
-			super();
-			init();
-		}
-		
-		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false));
-		}
-		
-		private void init() {
-			initCriteria();
-		}
-	}
-	
    static class DynamicDifficulty extends
-			Abstract_Parameter <Boolean, Valid_DynamicDifficulty, ClientClasses> {
+			Abstract_Parameter <Boolean, Valid_Boolean, ClientClasses> {
 
 		DynamicDifficulty(ClientClasses go) {
-			super("DYNAMIC DIFFICULTY", new Valid_DynamicDifficulty());
+			super("DYNAMIC DIFFICULTY", new Valid_Boolean());
 			setHistoryCodeView(Initial, UserPreferences.dynamicDifficulty());
-			setHistoryCodeView(Default, false); // MODNAR
+			setHistoryCodeView(Default, false); // MODNAR DEFAULT
 		}
 		
 		@Override public Boolean getFromGame (ClientClasses go) {
@@ -450,7 +304,7 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public void putToGUI(ClientClasses go, Boolean codeView) {
-//			go.(codeView);
+			UserPreferences.setDynamicDifficulty(codeView);
 		}
 
 		@Override public void initComments() {
