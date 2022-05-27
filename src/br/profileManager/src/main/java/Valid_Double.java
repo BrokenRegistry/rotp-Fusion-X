@@ -28,7 +28,10 @@ public class Valid_Double extends Abstract_ValidData<Double> {
     // Constructors
     //
 	
-	protected Valid_Double() {
+	/**
+	 * Base Constructor for Double Validation Class
+	 */
+	public Valid_Double() {
 		super();
 		init();
 	}

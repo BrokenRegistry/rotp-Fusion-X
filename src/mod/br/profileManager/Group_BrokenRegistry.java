@@ -17,11 +17,8 @@
 
 package mod.br.profileManager;
 
-import java.util.List;
-
 import br.profileManager.src.main.java.Abstract_Group;
 import br.profileManager.src.main.java.Abstract_Parameter;
-import br.profileManager.src.main.java.ValidationCriteria;
 import mod.br.Galaxy.GalaxySpacing;
 import mod.br.Galaxy.StarsOptions;
 import br.profileManager.src.main.java.Valid_Boolean;
@@ -56,7 +53,7 @@ public class Group_BrokenRegistry extends  Abstract_Group <ClientClasses> {
 		MaximizeEmpiresSpacing(ClientClasses go) {
 			super( "MAXIMIZE EMPIRES SPACING", new Valid_Boolean());
 			setHistoryCodeView(Initial, GalaxySpacing.DEFAULT_MAXIMIZE_EMPIRES_SPACING);
-			setHistoryCodeView(Default, false); // BR
+			setHistoryCodeView(Default, false); // BR DEFAULT
 		}
 		// ------------------------------------------------
 		// Overrider
@@ -65,9 +62,7 @@ public class Group_BrokenRegistry extends  Abstract_Group <ClientClasses> {
 			return GalaxySpacing.isMaximizeEmpiresSpacing();
 		}
 		
-		@Override public void putToGame(ClientClasses go, Boolean codeView) {
-
-		}
+		@Override public void putToGame(ClientClasses go, Boolean codeView) {}
 		
 		@Override public Boolean getFromUI (ClientClasses go) {
 			return GalaxySpacing.isMaximizeEmpiresSpacing();
@@ -87,37 +82,15 @@ public class Group_BrokenRegistry extends  Abstract_Group <ClientClasses> {
 	// ========================================================================
 	// PREF STARS PER EMPIRE
 	//
-	static class Valid_PreferedStarsPerEmpire extends Valid_Integer {
-
-		Valid_PreferedStarsPerEmpire() {
-			super();
-			init();
-		}
-		
-		Valid_PreferedStarsPerEmpire(List<Integer> options) {
-			super(options);
-			init();
-		}
-			
-		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false));
-		}
-		
-		private void init() {
-			initCriteria();
-			setLimits(0 , 1000000);
-			setDefaultRandomLimits(16 , 24);
-		}
-	}
-	
 	static class PreferedStarsPerEmpire extends 
-			Abstract_Parameter <Integer, Valid_PreferedStarsPerEmpire, ClientClasses> {
+			Abstract_Parameter <Integer, Valid_Integer, ClientClasses> {
 
 		PreferedStarsPerEmpire(ClientClasses go) { 
-			super( "PREF STARS PER EMPIRE", new Valid_PreferedStarsPerEmpire());
+			super( "PREF STARS PER EMPIRE", new Valid_Integer());
 			setHistoryCodeView(Initial, GalaxySpacing.DEFAULT_PREFERED_STARS_PER_EMPIRE);
-			setHistoryCodeView(Default, 16); // BR
+			setHistoryCodeView(Default, 16); // BR DEFAULT
+			setLimits(0 , 1000000);
+			setDefaultRandomLimits(16 , 24);
 		}
 		// ------------------------------------------------
 		// Overrider
@@ -126,9 +99,7 @@ public class Group_BrokenRegistry extends  Abstract_Group <ClientClasses> {
 			return GalaxySpacing.getPreferedStarsPerEmpire();
 		}
 		
-		@Override public void putToGame(ClientClasses go, Integer codeView) {
-
-		}
+		@Override public void putToGame(ClientClasses go, Integer codeView) {}
 		
 		@Override public Integer getFromUI (ClientClasses go) {
 			return GalaxySpacing.getPreferedStarsPerEmpire();
@@ -144,37 +115,15 @@ public class Group_BrokenRegistry extends  Abstract_Group <ClientClasses> {
 	// ========================================================================
 	// MIN STARS PER EMPIRE
 	//
-	static class Valid_MinStarsPerEmpire extends Valid_Integer {
-
-		Valid_MinStarsPerEmpire() {
-			super();
-			init();
-		}
-		
-		Valid_MinStarsPerEmpire(List<Integer> options) {
-			super(options);
-			init();
-		}
-			
-		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false));
-		}
-		
-		private void init() {
-			initCriteria();
-			setLimits(0 , 1000000);
-			setDefaultRandomLimits(4 , 16);
-		}
-	}
-	
 	static class MinStarsPerEmpire extends 
-			Abstract_Parameter <Integer, Valid_MinStarsPerEmpire, ClientClasses> {
+			Abstract_Parameter <Integer, Valid_Integer, ClientClasses> {
 
 		MinStarsPerEmpire(ClientClasses go) {
-			super( "MIN STARS PER EMPIRE", new Valid_MinStarsPerEmpire());
+			super( "MIN STARS PER EMPIRE", new Valid_Integer());
 			setHistoryCodeView(Initial, GalaxySpacing.DEFAULT_MIN_STARS_PER_EMPIRE);
-			setHistoryCodeView(Default, 8); // BR
+			setHistoryCodeView(Default, 8); // BR DEFAULT
+			setLimits(0 , 1000000);
+			setDefaultRandomLimits(4 , 16);
 		}
 		// ------------------------------------------------
 		// Overrider
@@ -183,9 +132,7 @@ public class Group_BrokenRegistry extends  Abstract_Group <ClientClasses> {
 			return GalaxySpacing.getMinStarsPerEmpire();
 		}
 		
-		@Override public void putToGame(ClientClasses go, Integer codeView) {
-
-		}
+		@Override public void putToGame(ClientClasses go, Integer codeView) {}
 		
 		@Override public Integer getFromUI (ClientClasses go) {
 			return GalaxySpacing.getMinStarsPerEmpire();
@@ -201,37 +148,15 @@ public class Group_BrokenRegistry extends  Abstract_Group <ClientClasses> {
 	// ========================================================================
 	// NO PLANET MULTIPLIER
 	//
-	static class Valid_NoPlanetMultiplier extends Valid_Double {
-
-		Valid_NoPlanetMultiplier() {
-			super();
-			init();
-		}
-		
-		Valid_NoPlanetMultiplier(List<Double> options) {
-			super(options);
-			init();
-		}
-		
-		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false));
-		}
-		
-		private void init() {
-			initCriteria();
-			setLimits(0.0 , 1000000.0);
-			setDefaultRandomLimits(0.0 , 2.0);
-		}
-	}
-	
 	static class NoPlanetMultiplier extends 
-			Abstract_Parameter <Double, Valid_NoPlanetMultiplier, ClientClasses> {
+			Abstract_Parameter <Double, Valid_Double, ClientClasses> {
 
 		NoPlanetMultiplier(ClientClasses go) { 
-			super( "NO PLANET PCT MULT", new Valid_NoPlanetMultiplier());
+			super( "NO PLANET PCT MULT", new Valid_Double());
 			setHistoryCodeView(Initial, StarsOptions.NO_PLANET_MULTIPLIER);
-			setHistoryCodeView(Default, 1.0); // BR
+			setHistoryCodeView(Default, 1.0); // BR DEFAULT
+			setLimits(0.0 , 1000000.0);
+			setDefaultRandomLimits(0.0 , 2.0);
 		}
 		
 		// ------------------------------------------------
@@ -241,9 +166,7 @@ public class Group_BrokenRegistry extends  Abstract_Group <ClientClasses> {
 			return StarsOptions.getNoPlanetMultiplier();
 		}
 		
-		@Override public void putToGame(ClientClasses go, Double codeView) {
-
-		}
+		@Override public void putToGame(ClientClasses go, Double codeView) {}
 		
 		@Override public Double getFromUI (ClientClasses go) {
 			return StarsOptions.getNoPlanetMultiplier();
