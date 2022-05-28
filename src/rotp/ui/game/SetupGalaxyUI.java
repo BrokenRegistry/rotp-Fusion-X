@@ -865,10 +865,10 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
     public void keyPressed(KeyEvent e) {
         int k = e.getKeyCode();
         switch(k) {
-            case KeyEvent.VK_ESCAPE:
+           case KeyEvent.VK_ESCAPE:
                 goToRaceSetup();
                 return;
-            case KeyEvent.VK_ENTER:
+          case KeyEvent.VK_ENTER:
                 startGame();
                 return;
             case KeyEvent.VK_M: // BR: "M" = Go to Main Menu

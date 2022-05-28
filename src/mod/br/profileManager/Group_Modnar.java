@@ -21,6 +21,7 @@ import static br.profileManager.src.main.java.WriteUtil.History.*;
 import br.profileManager.src.main.java.Abstract_Group;
 import br.profileManager.src.main.java.Abstract_Parameter;
 import br.profileManager.src.main.java.Valid_Boolean;
+import br.profileManager.src.main.java.Valid_Float;
 import br.profileManager.src.main.java.Valid_Integer;
 import rotp.ui.UserPreferences;
 
@@ -43,6 +44,7 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		addParameter(new RandomTechStart(go));
 		addParameter(new CustomDifficulty(go));
 		addParameter(new DynamicDifficulty(go));
+		addParameter(new MissileSizeModifier(go));
 	}
 
 	// ==============================================================
@@ -281,7 +283,6 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 	// ==============================================================
 	// DYNAMIC DIFFICULTY
 	//
-
    static class DynamicDifficulty extends
 			Abstract_Parameter <Boolean, Valid_Boolean, ClientClasses> {
 
@@ -305,6 +306,41 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, Boolean codeView) {
 			UserPreferences.setDynamicDifficulty(codeView);
+		}
+
+		@Override public void initComments() {
+//			setBottomComments(AVAILABLE_FOR_CHANGE);
+		}
+	}
+
+	// ==============================================================
+	// MISSILE SIZE MODIFIER
+	//
+	static class MissileSizeModifier extends
+			Abstract_Parameter <Float, Valid_Float, ClientClasses> {
+
+		MissileSizeModifier(ClientClasses go) { 
+			super("MISSILE SIZE MODIFIER", new Valid_Float());
+			setHistoryCodeView(Initial, UserPreferences.missileSizeModifier());
+			setHistoryCodeView(Default, 0.66f); // XILMI DEFAULT
+			setLimits(0.1f , 1.0f);
+			setDefaultRandomLimits(0.1f , 1.0f);
+		}
+
+		@Override public Float getFromGame (ClientClasses go) {
+			return UserPreferences.missileSizeModifier();
+		}
+
+		@Override public void putToGame(ClientClasses go, Float codeView) {
+
+		}		
+
+		@Override public Float getFromUI (ClientClasses go) {
+			return UserPreferences.missileSizeModifier();
+		}
+
+		@Override public void putToGUI(ClientClasses go, Float codeView) {
+			UserPreferences.setMissileSizeModifier(codeView);
 		}
 
 		@Override public void initComments() {

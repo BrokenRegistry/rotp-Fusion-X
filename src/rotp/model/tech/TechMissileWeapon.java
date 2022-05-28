@@ -30,6 +30,7 @@ import rotp.model.game.GameSession;
 import rotp.model.ships.ShipWeaponMissile;
 import rotp.ui.RotPUI;
 import rotp.ui.combat.ShipBattleUI;
+import rotp.ui.UserPreferences;
 
 public final class TechMissileWeapon extends Tech {
     public static List<String> missileTypes = new ArrayList<>();
@@ -224,6 +225,9 @@ public final class TechMissileWeapon extends Tech {
                 imageKey = "MISSILE_SCATTER_PACK_X";
                 break;
         }
+        cost *= UserPreferences.missileSizeModifier();
+        size *= UserPreferences.missileSizeModifier();
+        power *= UserPreferences.missileSizeModifier();
     }
     @Override
     public float baseValue(Empire c) { return c.ai().scientist().baseValue(this); }

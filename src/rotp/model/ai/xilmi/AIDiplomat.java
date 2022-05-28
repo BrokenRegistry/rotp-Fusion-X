@@ -120,7 +120,7 @@ public class AIDiplomat implements Base, Diplomat {
         List<Tech> allTechs = new ArrayList<>();
         for (String id: allMyTechIds)
         {
-            if(willingToTradeTech(tech(id)))
+            if(willingToTradeTech(tech(id), e))
                 allTechs.add(tech(id));
         }
         allTechs.removeAll(e.tech().tradedTechs());
@@ -262,7 +262,7 @@ public class AIDiplomat implements Base, Diplomat {
         if (tech.isObsolete(requestor))
             return new ArrayList<>();
         
-        if(!willingToTradeTech(tech))
+        if(!willingToTradeTech(tech, requestor))
             return new ArrayList<>();
         
         EmpireView view = empire.viewForEmpire(requestor);
@@ -324,7 +324,7 @@ public class AIDiplomat implements Base, Diplomat {
                 List<Tech> counterTechs = v.empire().diplomatAI().techsRequestedForCounter(empire, wantedTech);
                 List<Tech> willingToTradeCounterTechs = new ArrayList<>(counterTechs.size());
                 for (Tech t: counterTechs) {
-                    if (willingToTradeTech(t))
+                    if (willingToTradeTech(t, v.empire()))
                     {
                         //now check if I would give them something for their counter
                         List<Tech> countersToCounter = techsRequestedForCounter(v.empire(), t);
@@ -2142,6 +2142,23 @@ public class AIDiplomat implements Base, Diplomat {
         return rank;
     }
     @Override
+    public int warTechLevelRank()
+    {
+        int rank = 1;
+        float myTechLevel = empire.tech().avgWarTechLevel();
+        for(Empire emp:empire.contactedEmpires())
+        {
+            if(!empire.inEconomicRange(emp.id))
+                continue;
+            //System.out.println(galaxy().currentTurn()+" "+empire.name()+" myTechLevel: " +myTechLevel+" their TechLevel: "+emp.tech().avgTechLevel());
+            if(emp.tech().avgWarTechLevel() > myTechLevel)
+                rank++;
+        }
+        if(myTechLevel >= 99)
+            rank = 1;
+        return rank;
+    }
+    @Override
     public int militaryRank(Empire etc, boolean inAttackRange)
     {
         int rank = 1;
@@ -2226,11 +2243,13 @@ public class AIDiplomat implements Base, Diplomat {
         }
         return warAllowed;
     }
-    public boolean willingToTradeTech(Tech tech)
+    public boolean willingToTradeTech(Tech tech, Empire tradePartner)
     {
         //The player can decide for themselves what they want to give away!
         if(!empire.isAIControlled())
             return true;
+        if(!tech.isObsolete(empire) && !empire.alliedWith(tradePartner.id))
+            return false;
         for(Empire emp : empire.contactedEmpires())
         {
             EmpireView ev = empire.viewForEmpire(emp);

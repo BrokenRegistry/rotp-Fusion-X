@@ -587,6 +587,12 @@ public final class TechTree implements Base, Serializable {
             sum += cat.techLevel();
         return sum/category.length;
     }
+    public Float avgWarTechLevel() {
+        float sum = 0;
+        for (TechCategory cat: category)
+            sum += cat.warTechLevel();
+        return sum/category.length;
+    }
     public void preNextTurn() {
         totalResearchThisTurn = empire().totalPlanetaryResearch();
     }
@@ -818,19 +824,6 @@ public final class TechTree implements Base, Serializable {
         return base;
     }
     public float newMissileBaseCost() {
-        float cost = MissileBase.MINIMUM_COST;
-        if (topArmorTech != null)
-            cost += topArmorTech().baseArmor.cost(empire());
-        if (topBaseMissileTech != null)
-            cost += topBaseMissileTech().baseMissile.cost(empire());
-        if (topBaseScatterPackTech != null)
-            cost += topBaseScatterPackTech().baseMissile.cost(empire());
-        if (topDeflectorShieldTech != null)
-            cost += topDeflectorShieldTech().baseShield.cost(empire());
-        if (topBattleComputerTech != null)
-            cost += topBattleComputerTech().baseComputer.cost(empire());
-        if (topECMJammerTech != null)
-            cost += topECMJammerTech().baseECM.cost(empire());
-        return cost;
+        return newMissileBase().cost(empire);
     }
 }

@@ -238,8 +238,9 @@ public class MapOverlayBombardPrompt extends MapOverlay {
         }
         else {
             String titleStr = text("MAIN_BOMBARD_TITLE", sysName);
+            if(!fleet.empire().atWarWith(sys.empId()))
+                titleStr = text("NEUTRAL_BOMBARD_TITLE", sysName);
             titleStr = sys.empire().replaceTokens(titleStr, "alien");
-            g.setColor(Color.black);
             int titleFontSize = scaledFont(g, titleStr, boxW-leftW, 20, 14);
             g.setFont(narrowFont(titleFontSize));
             drawString(g,titleStr, boxX+leftW, boxY+s25);
@@ -267,7 +268,10 @@ public class MapOverlayBombardPrompt extends MapOverlay {
             g.setFont(narrowFont(promptFontSize));
             int swPrompt = g.getFontMetrics().stringWidth(promptStr);
             int promptY = boxY+s35+transportH;
-            drawShadowedString(g, promptStr, 4, boxX+leftW, promptY+s20, SystemPanel.textShadowC, Color.white);
+            if(fleet.empire().atWarWith(sys.empId()))
+                drawShadowedString(g, promptStr, 4, boxX+leftW, promptY+s20, SystemPanel.textShadowC, Color.white);
+            else
+                drawShadowedString(g, promptStr, 4, boxX+leftW, promptY+s20, SystemPanel.textShadowC, Color.red);
 
             // draw yes/no buttons
             g.setFont(narrowFont(20));

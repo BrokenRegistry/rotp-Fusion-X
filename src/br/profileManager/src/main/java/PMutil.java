@@ -479,6 +479,79 @@ public class PMutil {
 	}
 
 	/**
+	 * Compare the {@code Float} value to the limits and return a value inside them.
+	 * <br> If value is null limits average will be returned
+	 * <br> If all parameters are null
+	 * @param  value the value to test
+	 * @param  limit1 the first limit, assumed as min if the other is null
+	 * @param  limit2 the second limit, assumed as max if the other is null
+	 * @return the validated value, null if all parameters are null
+	 */
+	static Float validateLimits(Float value, Float limit1, Float limit2) {
+		if (value == null) {
+			if (limit1 == null) {
+				return limit2;
+			}
+			if (limit2 == null) {
+				return limit1;
+			}
+			return (limit1 + limit2)/2;
+		}
+		// The value is not null
+		if (limit1 == null) {
+			return min(value, limit2);
+		}
+		if (limit2 == null) {
+			return max(value, limit1);
+		}
+		// no null parameters
+		value = max(value, min(limit1, limit2));
+		return min(value, max(limit1, limit2));
+	}
+
+	/**
+	 * Compare the two {@code Float} value and return the biggest one.
+	 * If value are null the other one win. If both are null return null
+	 * @param  value1 the first value to compare
+	 * @param  value2 the second value to compare
+	 * @return the biggest value
+	 */
+	static Float max(Float value1, Float value2) {
+		// If one is null, return the other, return null if both are null
+		if (value1 == null) {
+			return value2;
+		}
+		if (value2 == null) {
+			return value1;
+		}
+		if (value1 >= value2) {
+			return value1;
+		}
+		return value2;
+	}
+
+	/**
+	 * Compare the two {@code Double} value and return the smallest one.
+	 * If value are null the other one win. If both are null return null
+	 * @param  value1 the first value to compare
+	 * @param  value2 the second value to compare
+	 * @return the smallest value
+	 */
+	static Float min(Float value1, Float value2) {
+		// If one is null, return the other, return null if both are null
+		if (value1 == null) {
+			return value2;
+		}
+		if (value2 == null) {
+			return value1;
+		}
+		if (value1 <= value2) {
+			return value1;
+		}
+		return value2;
+	}	
+
+	/**
 	 * Compare the {@code Double} value to the limits and return a value inside them.
 	 * <br> If value is null limits average will be returned
 	 * <br> If all parameters are null
@@ -585,6 +658,29 @@ public class PMutil {
 
 	/**
 	 * Check boundaries to avoid error throwing 
+	 * and generate random {@code Float} number
+	 * @param min inclusive {@code Float} minimum bound
+	 * @param max exclusive {@code Float} maximum bound
+	 * @return random {@code Float} value in the specified range
+	 * <br> if min = max : return min
+	 */
+	static Float nextRandomFloat(Float min, Float max) {
+		if (isFiniteFloat(min) && isFiniteFloat(max)) { // also test for null
+			if (max.floatValue() == min.floatValue()) {
+				return min;
+			}
+			if (max < min) {
+				Double D =  ThreadLocalRandom.current().nextDouble(max, min);
+				return D.floatValue();
+			}
+			Double D = ThreadLocalRandom.current().nextDouble(min, max);
+			return D.floatValue();
+		}
+		return null; // what else?
+	}
+
+	/**
+	 * Check boundaries to avoid error throwing 
 	 * and generate random {@code Long} number
 	 * @param min inclusive minimum bound
 	 * @param max exclusive maximum bound
@@ -614,6 +710,18 @@ public class PMutil {
 	 */
 	static Double getRandom(Double min, Double max) {
 		return nextRandomDouble(min, max);
+	}
+	
+	/**
+	 * Check boundaries to avoid error throwing 
+	 * and generate random {@code Float} number
+	 * @param min inclusive {@code Float} minimum bound
+	 * @param max exclusive {@code Float} maximum bound
+	 * @return random {@code Float} value in the specified range
+	 * <br> if min = max : return min
+	 */
+	static Float getRandom(Float min, Float max) {
+		return nextRandomFloat(min, max);
 	}
 	
 	/**
@@ -828,6 +936,14 @@ public class PMutil {
 	// ==============================================================
     // String Conversion Tools
     //
+	/**
+	 * Check {@code Float} for null NaN or Infinity
+	 * @param value the {@code Float} to be checked
+     * @return the {@code Float} result
+	 */
+	static Boolean isFiniteFloat(Float value) {
+		return (value != null && Float.isFinite(value));
+	}
 	/**
 	 * Convert {@code String} to {@code Boolean}
 	 * @param string 

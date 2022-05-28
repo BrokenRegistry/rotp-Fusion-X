@@ -252,7 +252,8 @@ public class AIGovernor implements Base, Governor {
         boolean buildingVitalShip = false;
         //Mostly for Sakkra and Meklar, so they expand quicker when they can 72% pop is where the growth drops below 80%
         if(col.shipyard().desiredShips() > 0
-                && (col.currentProductionCapacity() > 0.5f || col.production() > col.shipyard().design().cost()))
+                && (col.currentProductionCapacity() > 0.5f || col.production() > col.shipyard().design().cost())
+                && col.shipyard().design().active())
         {
             workerGoal = 0;
             buildingVitalShip = true;
@@ -408,7 +409,9 @@ public class AIGovernor implements Base, Governor {
             bomberCost += lab.design(i).cost() * counts[i] * empire.shipDesignerAI().bombingAdapted(lab.design(i));
         }
         //ail: No use to build any ships if they won't do damage anyways. Better tech up.
-        boolean viableForShipProduction = prodScore >= 1 || needToMilitarize;
+        boolean allInShipProducer = col.planet().productionAdj() >= 1 && col.planet().researchAdj() <= 1;
+        boolean allIn = allInShipProducer && empire.diplomatAI().techIsAdequateForWar();
+        boolean viableForShipProduction = prodScore >= 1 || needToMilitarize || allIn;
         float turnsBeforeColonyDestroyed = Float.MAX_VALUE;
         if(popLoss > 0)
             turnsBeforeColonyDestroyed = col.population() / popLoss;
@@ -535,12 +538,12 @@ public class AIGovernor implements Base, Governor {
             }
         }
         //System.out.print("\n"+empire.name()+" "+col.name()+" expected bombard-Damage: "+enemyBombardDamage+" Bc: "+enemyBc);
-        if(enemyBc > 0 && enemyBombardDamage == 0)
+        if(enemyBc > 0 && enemyBombardDamage == 0 || col.defense().shieldLevel() > 0)
             allowBases = true;
         if (sys == null)  // this can happen at startup
             col.defense().maxBases(0);
         else if (allowBases)
-            col.defense().maxBases(max(currBases, 1));
+            col.defense().maxBases(max(currBases, 1, (int)(prod / col.defense().missileBase().cost(empire))));
         /*
         else if (empire.sv.isBorderSystem(sys.id))
             col.defense().maxBases(max(currBases, (int)(col.production()/40))); // modnar: reduce base count*/
@@ -662,6 +665,7 @@ public class AIGovernor implements Base, Governor {
             return Score/avgScore;
         return 0;
     }
+    @Override
     public float expectedBombardDamageAsIfBasesWereThere(ShipFleet fl, StarSystem sys) {
         if (!sys.isColonized())
             return 0;
