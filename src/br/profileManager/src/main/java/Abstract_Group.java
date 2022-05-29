@@ -131,6 +131,15 @@ public abstract class Abstract_Group<ClientClass> extends WriteUtil {
 		return toString(profileList, false);
 	}
 
+	void forceCreationMissingProfile(List<String> profileList) {
+		if (PMutil.getForceCreationMissingProfile()) {
+			for (Abstract_Parameter<?, ?, ClientClass>
+						parameter : parameterNameMap.values() ) {
+				parameter.forceCreationMissingProfile(profileList);
+			}
+		}
+	}
+
 	// ========================================================================
 	// Initialization Methods
 	//

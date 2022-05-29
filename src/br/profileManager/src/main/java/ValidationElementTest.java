@@ -40,10 +40,10 @@ class ValidationElementTest {
 	// ========== Getters ==========	
 	@Test
 	void toString_None() {
-		assertEquals("yyy               = Bla bla", 
+		assertEquals("yyy           = Bla bla", 
 				new ValidationElement<String>("XXX", "yyy", "Bla bla", "Test")
 				.toString()
-				, "should have been «yyy               = Bla bla»");
+				, "should have been «yyy           = Bla bla»");
 	}
 
 	// ========== Testers ==========
@@ -53,10 +53,10 @@ class ValidationElementTest {
 				new ValidationElement<String>("XXX", "yyy", "Bla bla", "Test")
 				.isValidCodeView("XXX", new ValidationCriteria())
 				, "should have been «true»");
-		assertEquals(false, 
+		assertEquals(true, 
 				new ValidationElement<String>("XXX", "yyy", "Bla bla", "Test")
 				.isValidCodeView("xxx", new ValidationCriteria())
-				, "should have been «false»");
+				, "should have been «true»");
 	}
 	
 	@Test
@@ -75,7 +75,7 @@ class ValidationElementTest {
 				, "should have been «false»");
 		assertEquals(true, 
 				new ValidationElement<String>("XXX", "yyy", "Bla bla", "Test")
-				.isValidUserEntry("Yy",
+				.isValidUserEntry("Yyy, zzz",
 						new ValidationCriteria().userViewEquals(false))
 				, "should have been «true»");
 	}

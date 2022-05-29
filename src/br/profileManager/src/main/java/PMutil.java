@@ -622,7 +622,7 @@ public class PMutil {
 			return value1;
 		}
 		return value2;
-	}	
+	}
 
 	// ==================================================
     // Random Generation Methods
@@ -971,7 +971,7 @@ public class PMutil {
 	 */
 	public static String toYesNoString(Boolean value) {
 		if (value == null) {
-			return "null";
+			return "";
 		}
 		return value ? "YES" : "NO";
 	}

@@ -16,145 +16,145 @@ class Group_AdvancedTest {
 	private String NL = System.lineSeparator();
 	
 	private String galaxyAgePrt = 
-			"#  " + NL +
-			"# ----------- Advanced Game Options -----------" + NL +
-			"#  " + NL +
-			"¦ PARAMETER         : GALAXY AGE" + NL +
-			"# OPTIONS           : [Young, Normal, Old]" + NL +
-			"# Initial/GUI/Game  : Normal / Normal / " + NL + 
-			"¦ LOCAL ENABLE      : ALL" + NL +
-			"Profile 1           : " + NL +
-			"Random              : " + NL +
+			";  " + NL +
+			"; ----------- Advanced Game Options -----------" + NL +
+			";  " + NL +
+			"¦ Parameter     : GALAXY AGE" + NL +
+			"; Options       : [Young, Normal, Old]" + NL +
+			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game : " + NL + 
+			"¦ LOCAL ENABLE  : All" + NL +
+			"Profile 1       : " + NL +
+			"Random          : " + NL +
 			"" + NL;
 
 	private String starDensityPrt = 
-			"¦ PARAMETER         : STAR DENSITY" + NL +
-			"# OPTIONS           : [Lowest, Lower, Low, Normal, High, Higher, Highest]" + NL +
-			"# Initial/GUI/Game  : Normal / Normal / " + NL + 
-			"¦ LOCAL ENABLE      : ALL" + NL +
-			"Profile 1           : " + NL +
-			"Random              : " + NL +
+			"¦ Parameter     : STAR DENSITY" + NL +
+			"; Options       : [Lowest, Lower, Low, Normal, High, Higher, Highest]" + NL +
+			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game : " + NL + 
+			"¦ LOCAL ENABLE  : All" + NL +
+			"Profile 1       : " + NL +
+			"Random          : " + NL +
 			"" + NL;
 
 	private String nebulaePrt = 
-			"¦ PARAMETER         : NEBULAE" + NL +
-			"# OPTIONS           : [None, Rare, Uncommon, Normal, Common, Frequent]" + NL +
-			"# Initial/GUI/Game  : Normal / Normal / " + NL + 
-			"¦ LOCAL ENABLE      : ALL" + NL +
-			"Profile 1           : " + NL +
-			"Random              : " + NL +
+			"¦ Parameter     : NEBULAE" + NL +
+			"; Options       : [None, Rare, Uncommon, Normal, Common, Frequent]" + NL +
+			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game : " + NL + 
+			"¦ LOCAL ENABLE  : All" + NL +
+			"Profile 1       : " + NL +
+			"Random          : " + NL +
 			"" + NL;
 
 	private String planetQualityPrt = 
-			"¦ PARAMETER         : PLANET QUALITY" + NL +
-			"# OPTIONS           : [Normal, Larger, Richer]" + NL +
-			"# Initial/GUI/Game  : Normal / Normal / " + NL + 
-			"¦ LOCAL ENABLE      : ALL" + NL +
-			"Profile 1           : " + NL +
-			"Random              : " + NL +
+			"¦ Parameter     : PLANET QUALITY" + NL +
+			"; Options       : [Normal, Larger, Richer]" + NL +
+			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game : " + NL + 
+			"¦ LOCAL ENABLE  : All" + NL +
+			"Profile 1       : " + NL +
+			"Random          : " + NL +
 			"" + NL;
 
 	private String terraformingPrt = 
-			"¦ PARAMETER         : TERRAFORMING" + NL +
-			"# OPTIONS           : [Normal, Reduced, None]" + NL +
-			"# Initial/GUI/Game  : Normal / Normal / "  + NL +
-			"¦ LOCAL ENABLE      : ALL" + NL +
-			"Profile 1           : " + NL +
-			"Random              : " + NL+
+			"¦ Parameter     : TERRAFORMING" + NL +
+			"; Options       : [Normal, Reduced, None]" + NL +
+			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game : "  + NL +
+			"¦ LOCAL ENABLE  : All" + NL +
+			"Profile 1       : " + NL +
+			"Random          : " + NL+
 			"" + NL;
 	
 	private String randomEventsPrt = 
-			"¦ PARAMETER         : RANDOM EVENTS" + NL +
-			"# OPTIONS           : [On, Monsters, Off]" + NL +
-			"# Initial/GUI/Game  : Monsters / Monsters / " + NL + 
-			"¦ LOCAL ENABLE      : ALL" + NL +
-			"Profile 1           : " + NL +
-			"Random              : " + NL +
-			"# ---- Available for changes in game saves" + NL +
+			"¦ Parameter     : RANDOM EVENTS" + NL +
+			"; Options       : [On, Monsters, Off]" + NL +
+			"¦ History       : Current : Monsters / Last :  / Initial : Monsters / Default : On / Game : " + NL + 
+			"¦ LOCAL ENABLE  : All" + NL +
+			"Profile 1       : " + NL +
+			"Random          : " + NL +
+			"; ---- Available for changes in game saves" + NL +
 			"" + NL;
 
 	private String AIHostilityPrt = 
-			"¦ PARAMETER         : AI HOSTILITY" + NL +
-			"# OPTIONS           : [Lowest, Lower, Low, Normal, High, Higher, Highest]" + NL +
-			"# Initial/GUI/Game  : Normal / Normal / " + NL + 
-			"¦ LOCAL ENABLE      : ALL" + NL +
-			"Profile 1           : " + NL +
-			"Random              : " + NL +
+			"¦ Parameter     : AI HOSTILITY" + NL +
+			"; Options       : [Lowest, Lower, Low, Normal, High, Higher, Highest]" + NL +
+			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game : " + NL + 
+			"¦ LOCAL ENABLE  : All" + NL +
+			"Profile 1       : " + NL +
+			"Random          : " + NL +
 			"" + NL;
 
 	private String councilPrt = 
-			"¦ PARAMETER         : COUNCIL" + NL +
-			"# OPTIONS           : [Immediate, Rebels, None]" + NL +
-			"# Initial/GUI/Game  : Rebels / Rebels / " + NL + 
-			"¦ LOCAL ENABLE      : ALL" + NL +
-			"Profile 1           : " + NL +
-			"Random              : " + NL +
-			"# ---- Available for changes in game saves" + NL +
+			"¦ Parameter     : COUNCIL" + NL +
+			"; Options       : [Immediate, Rebels, None]" + NL +
+			"¦ History       : Current : Rebels / Last :  / Initial : Rebels / Default : Rebels / Game : " + NL + 
+			"¦ LOCAL ENABLE  : All" + NL +
+			"Profile 1       : " + NL +
+			"Random          : " + NL +
+			"; ---- Available for changes in game saves" + NL +
 			"" + NL;
 
 	private String randomizeAIPrt = 
-			"¦ PARAMETER         : RANDOMIZE AI" + NL +
-			"# OPTIONS           : [None, Personality, Ability, Both]" + NL +
-			"# Initial/GUI/Game  : None / None / " + NL + 
-			"¦ LOCAL ENABLE      : ALL" + NL +
-			"Profile 1           : " + NL +
-			"Random              : " + NL +
+			"¦ Parameter     : RANDOMIZE AI" + NL +
+			"; Options       : [None, Personality, Ability, Both]" + NL +
+			"¦ History       : Current : None / Last :  / Initial : None / Default : None / Game : " + NL + 
+			"¦ LOCAL ENABLE  : All" + NL +
+			"Profile 1       : " + NL +
+			"Random          : " + NL +
 			"" + NL;
 
 	private String autoPlayPrt = 
-			"¦ PARAMETER         : AUTOPLAY" + NL +
-			"# OPTIONS           : [Off, Base, Xilmi, Cruel, Random]" + NL +
-			"# Initial/GUI/Game  : Off / Off / "  + NL +
-			"¦ LOCAL ENABLE      : ALL" + NL +
-			"Profile 1           : " + NL +
-			"Random              : " + NL+
+			"¦ Parameter     : AUTOPLAY" + NL +
+			"; Options       : [Off, Base, Xilmi, Cruel, Random]" + NL +
+			"¦ History       : Current : Off / Last :  / Initial : Off / Default : Off / Game : "  + NL +
+			"¦ LOCAL ENABLE  : All" + NL +
+			"Profile 1       : " + NL +
+			"Random          : " + NL+
 			"" + NL;
 	
 	private String researchPrt = 
-			"¦ PARAMETER         : RESEARCH" + NL +
-			"# OPTIONS           : [Normal, Slow, Slower, Slowest, Fast]" + NL +
-			"# Initial/GUI/Game  : Normal / Normal / "  + NL +
-			"¦ LOCAL ENABLE      : ALL" + NL +
-			"Profile 1           : " + NL +
-			"Random              : " + NL+
+			"¦ Parameter     : RESEARCH" + NL +
+			"; Options       : [Normal, Slow, Slower, Slowest, Fast]" + NL +
+			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game : "  + NL +
+			"¦ LOCAL ENABLE  : All" + NL +
+			"Profile 1       : " + NL +
+			"Random          : " + NL+
 			"" + NL;
 	
 	private String warpSpeedPrt = 
-			"¦ PARAMETER         : WARP SPEED" + NL +
-			"# OPTIONS           : [Normal, Fast]" + NL +
-			"# Initial/GUI/Game  : Normal / Normal / "  + NL +
-			"¦ LOCAL ENABLE      : ALL" + NL +
-			"Profile 1           : " + NL +
-			"Random              : " + NL+
+			"¦ Parameter     : WARP SPEED" + NL +
+			"; Options       : [Normal, Fast]" + NL +
+			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game : "  + NL +
+			"¦ LOCAL ENABLE  : All" + NL +
+			"Profile 1       : " + NL +
+			"Random          : " + NL+
 			"" + NL;
 	
 	private String fuelRangePrt = 
-			"¦ PARAMETER         : FUEL RANGE" + NL +
-			"# OPTIONS           : [Normal]" + NL +
-			"# Initial/GUI/Game  : Normal / Normal / "  + NL +
-			"¦ LOCAL ENABLE      : ALL" + NL +
-			"Profile 1           : " + NL +
-			"Random              : " + NL+
+			"¦ Parameter     : FUEL RANGE" + NL +
+			"; Options       : [Normal]" + NL +
+			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game : "  + NL +
+			"¦ LOCAL ENABLE  : All" + NL +
+			"Profile 1       : " + NL +
+			"Random          : " + NL+
 			"" + NL;
 	
 	private String techTradingPrt = 
-			"¦ PARAMETER         : TECH TRADING" + NL +
-			"# OPTIONS           : [Yes, Allies, No]" + NL +
-			"# Initial/GUI/Game  : Yes / Yes / "  + NL +
-			"¦ LOCAL ENABLE      : ALL" + NL +
-			"Profile 1           : " + NL +
-			"Random              : " + NL+
-			"# ---- Available for changes in game saves" + NL +
+			"¦ Parameter     : TECH TRADING" + NL +
+			"; Options       : [Yes, Allies, No]" + NL +
+			"¦ History       : Current : Yes / Last :  / Initial : Yes / Default : Yes / Game : "  + NL +
+			"¦ LOCAL ENABLE  : All" + NL +
+			"Profile 1       : " + NL +
+			"Random          : " + NL+
+			"; ---- Available for changes in game saves" + NL +
 			"" + NL;
 	
 	private String colonizingPrt = 
-			"¦ PARAMETER         : COLONIZING" + NL +
-			"# OPTIONS           : [Normal, Restricted]" + NL +
-			"# Initial/GUI/Game  : Normal / Normal / "  + NL +
-			"¦ LOCAL ENABLE      : ALL" + NL +
-			"Profile 1           : " + NL +
-			"Random              : " + NL+
-			"# ---- Available for changes in game saves" + NL +
+			"¦ Parameter     : COLONIZING" + NL +
+			"; Options       : [Normal, Restricted]" + NL +
+			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game : "  + NL +
+			"¦ LOCAL ENABLE  : All" + NL +
+			"Profile 1       : " + NL +
+			"Random          : " + NL+
+			"; ---- Available for changes in game saves" + NL +
 			"" + NL;
 	
 	@Test void GalaxyAge_ClientClasses() {

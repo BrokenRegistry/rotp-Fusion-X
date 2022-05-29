@@ -224,6 +224,18 @@ class Generic_Block<
 		return out;
 	}
 
+	void forceCreationMissingProfile(List<String> profileList) {
+		Generic_Line<ValueClass, Abstract_ValidData<ValueClass>> line;
+		if (PMutil.getForceCreationMissingProfile()) {
+			for (String profile : profileList) {
+				line = get(profile);
+				if (line == null) {
+					add(profile, ""); // add the missing one as empty;
+				}
+			}
+		}
+	}
+
 	/**
 	 * toString filtered by profile list
 	 * @return print ready String with profileList block content
@@ -233,9 +245,9 @@ class Generic_Block<
 		Generic_Line<ValueClass, Abstract_ValidData<ValueClass>> line;
 		for (String profile : profileList) {
 			line = get(profile);
-			if (PMutil.getForceCreationMissingProfile() 
-					&& line == null) { // none exist...
-				add(profile);           // add the missing one
+			if (line == null &&         // none exist...
+					PMutil.getForceCreationMissingProfile()) {
+				add(profile, "");       // add the missing one as empty
 				line = get(profile);
 			}
 			if (out.isBlank()) {

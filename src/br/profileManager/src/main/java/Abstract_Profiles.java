@@ -346,9 +346,19 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 				ACTION_RANDOM,
 				"Loaded by pressing \"R\", add or replace by "
 						+ ACTION_FILE_TO_GUI + " to allow it to be loaded");
-		getParameter("PLAYER RACE").addLine("Random", "Random");
-		getParameter("PLAYER COLOR").addLine("Random", "Random",
-				"... Or you may choose a specific color");
+		// Fill the Random
+		for (Abstract_Parameter<?, ?, ClientClass> parameter : parameterNameMap.values()) {
+			parameter.addLine("Random", "Random");
+		}
+		getParameter("AUTOPLAY").addLine("Random", "Off", "Not Random!");
+		getParameter("MAXIMIZE EMPIRES SPACING").addLine("Random", "NO",
+				"Not Random, not yet");
+		
+		// Special random with comments
+		getParameter("PLAYER RACE").addLine("Random", "Random",
+				"Full random");
+		getParameter("PLAYER COLOR").addLine("Random", "Green, Lime",
+				"2 values = a range from option list");
 		getParameter("GALAXY SHAPE").addLine("Random",
 				"Random Rectangle, Ellipse, Spiral, Spiralarms",
 				"a limited choice");
@@ -356,19 +366,22 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 				"Nothing changed by this profile");
 		getParameter("DIFFICULTY").addLine("Random", "Random 1, 4",
 				"a range from option list");
+		getParameter("OPPONENT AI").addLine("Random", 
+				"Random Base, Xilmi, Xilmi",
+				"2 chances to have Xilmi vs Base");
 		getParameter("NB OPPONENTS").addLine("Random", "Random 3, 6",
 				"a custom range");
-		getParameter("GALAXY AGE").addLine("Random", "Random");
+		getParameter("GALAXY AGE").addLine("Random",
+				"Random Young, Young, Old, Old",
+				"Only 2 choices... Not a range");
 		getParameter("NEBULAE").addLine("Random","Random 1, 4",
-				"first option = 0");
-		getParameter("PLANET QUALITY").addLine("Random", "Random");
-		getParameter("AI HOSTILITY").addLine("Random", "Random 0, 3");
-		getParameter("COUNCIL").addLine("Random", "Random");
-		getParameter("RANDOMIZE AI").addLine("Random", "Random");
-		getParameter("RESEARCH").addLine("Random", "Random");
-		getParameter("TECH TRADING").addLine("Random", "Random");
-		getParameter("ALWAYS STAR GATES").addLine("Random", "Yes", "Not Random!");
-		getParameter("MAXIMIZE EMPIRES SPACING").addLine("Random", "NO");
+				"Range = Rare .. Common (first option = 0)");
+//		getParameter("AI HOSTILITY").addLine("Random", "Random 0, 3");
+//		getParameter("COUNCIL").addLine("Random", "Random");
+//		getParameter("RANDOMIZE AI").addLine("Random", "Random");
+//		getParameter("RESEARCH").addLine("Random", "Random");
+//		getParameter("TECH TRADING").addLine("Random", "Random");
+//		getParameter("ALWAYS STAR GATES").addLine("Random", "Yes", "Not Random!");
 	}
 
 	private List<String> getAllProfiles() {
@@ -406,9 +419,12 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 			catch (IOException e) {
 				System.err.println("UserPreferences.load -- IOException: "+ e.toString());
 			}
-		} else {
+			forceCreationMissingProfile(getAllProfiles());
+		}
+		else {
 			// the file does not exist: create a default one
 			createDefaultUserProfiles();
+			forceCreationMissingProfile(getAllProfiles());
 			doUserUpdateActions();
 		}
 	}
@@ -481,10 +497,17 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 		}
 	}
 	
+	private void forceCreationMissingProfile(List<String> profileList) {
+		if (PMutil.getForceCreationMissingProfile()) {
+			for (Abstract_Group<ClientClass> group : groupMap.values()) {
+				group.forceCreationMissingProfile(profileList);
+			}
+		}
+	}
+	
 	void doUserUpdateActions() {
 		// Loop Thru User's Keys and perform requested action
-		List<String> profileList = parameterProfileAction.getProfileList();
-		for (String profile : profileList) {
+		for (String profile : getAllProfiles()) {
 			String action = parameterProfileAction.getProfileValue(profile.toUpperCase());
 			if (action.contains(ACTION_GUI_TO_FILE)) {
 				for (Abstract_Group<ClientClass> group : groupMap.values()) {

@@ -674,8 +674,8 @@ class PMutilTest {
 
 	@Test
 	void toYesNoString_Boolean() {
-		assertEquals("null", toYesNoString((Boolean)null)
-				, "should have been «null»");
+		assertEquals("", toYesNoString((Boolean)null)
+				, "should have been \"\"»");
 		assertEquals("YES",  toYesNoString(true)
 				, "should have been «null»");
 		assertEquals("NO",   toYesNoString(false)

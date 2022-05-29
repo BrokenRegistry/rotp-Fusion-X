@@ -14,28 +14,27 @@ class Group_RaceTest {
 	private String NL = System.lineSeparator();
 	
 	private String racePrt = 
-			"#  " + NL +
-			"# --------- Races Game Options ---------" + NL +
-			"#  " + NL +
-			"¦ PARAMETER         : PLAYER RACE" + NL +
-			"# OPTIONS           : [Human, Alkari, Silicoid, Mrrshan, Klackon, " + 
-			                       "Meklar, Psilon, Darlok, Sakkra, Bulrathi]" + NL +
-			"# Initial/GUI/Game  : Human / Human / " + NL + 
-			"¦ LOCAL ENABLE      : ALL" + NL +
-			"Profile 1           : " + NL +
-			"Random              : " + NL +
+			";  " + NL +
+			"; --------- Races Game Options ---------" + NL +
+			";  " + NL +
+			"¦ Parameter     : PLAYER RACE" + NL +
+			"; Options       : [Human, Alkari, Silicoid, Mrrshan, Klackon, Meklar, Psilon," + NL +
+			";   \" \"         : Darlok, Sakkra, Bulrathi]" + NL +
+			"¦ History       : Current : Human / Last :  / Initial : Human / Default : Human / Game : " + NL + 
+			"¦ LOCAL ENABLE  : All" + NL +
+			"Profile 1       : " + NL +
+			"Random          : " + NL +
 			"" + NL;
 
 	private String colorPrt = 
-			"¦ PARAMETER         : PLAYER COLOR" + NL +
-			"# OPTIONS           : [Red, Green, Yellow, Blue, Orange, Purple, " + 
-			                       "Aqua, Fuchsia, Brown, White, Lime, Grey, " +
-			                       "Plum, Light Blue, Mint, Olive]" + NL +
-			"# Initial/GUI/Game  : Blue / Blue / "  + NL +
-			"¦ LOCAL ENABLE      : ALL" + NL +
-			"Profile 1           : " + NL +
-			"Random              : " + NL+
-			"# ---- Available for changes in game saves" + NL + 
+			"¦ Parameter     : PLAYER COLOR" + NL +
+			"; Options       : [Red, Green, Yellow, Blue, Orange, Purple, Aqua, Fuchsia," + NL +
+			";   \" \"         : Brown, White, Lime, Grey, Plum, Light Blue, Mint, Olive]" + NL +
+			"¦ History       : Current : Blue / Last :  / Initial : Blue / Default : Red / Game : "  + NL +
+			"¦ LOCAL ENABLE  : All" + NL +
+			"Profile 1       : " + NL +
+			"Random          : " + NL+
+			"; ---- Available for changes in game saves" + NL + 
 			"" + NL;
 	
 	@Test void PlayerRace_ClientClasses() {

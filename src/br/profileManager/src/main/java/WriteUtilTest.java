@@ -15,13 +15,13 @@ class WriteUtilTest {
 		String src = "line 1"
 						+ System.lineSeparator() 
 						+ "line 2";
-		String out = "# line 1" 
+		String out = "; line 1" 
 						+ System.lineSeparator() 
-						+ "# line 2";
-		assertEquals("# abc", toComment("abc")
-				, "should have been «# abc»");
-		assertEquals("# ", toComment("")
-				, "should have been «# »");
+						+ "; line 2";
+		assertEquals("; abc", toComment("abc")
+				, "should have been «; abc»");
+		assertEquals("; ", toComment("")
+				, "should have been «; »");
 		assertEquals("", toComment((String)null)
 				, "should have been «»");
 		assertEquals(out, toComment(src)
@@ -33,9 +33,9 @@ class WriteUtilTest {
 		List<String> src = new ArrayList<String>();
 		src.add("line 1");
 		src.add("line 2");
-		String out = "# line 1" 
+		String out = "; line 1" 
 						+ System.lineSeparator() 
-						+ "# line 2";
+						+ "; line 2";
 		assertEquals(out, listToComment(src)
 				, "should have been two lines");
 	}
@@ -43,10 +43,10 @@ class WriteUtilTest {
 
 	@Test
 	void toComment_Object_Boolean() {
-		assertEquals("# abc", toComment("abc", true)
-				, "should have been «# abc»");
-		assertEquals("# ", toComment("", true)
-				, "should have been «# »");
+		assertEquals("; abc", toComment("abc", true)
+				, "should have been «; abc»");
+		assertEquals("; ", toComment("", true)
+				, "should have been «; »");
 		assertEquals("", toComment("", false)
 				, "should have been «»");
 		assertEquals((String)null, toComment("", (Boolean)null)
@@ -62,15 +62,15 @@ class WriteUtilTest {
 				, "should have been «false»");
 		assertEquals(false, isComment((Boolean)null)
 				, "should have been «false»");
-		assertEquals(true, isComment("# abc")
+		assertEquals(true, isComment("; abc")
 				, "should have been «true»");
-		assertEquals(true, isComment("#abc")
+		assertEquals(true, isComment(";abc")
 				, "should have been «true»");
-		assertEquals(true, isComment("#abc")
+		assertEquals(true, isComment(";abc")
 				, "should have been «true»");
-		assertEquals(true, isComment("#")
+		assertEquals(true, isComment(";")
 				, "should have been «true»");
-		assertEquals(false, isComment("xyz    # abc")
+		assertEquals(false, isComment("xyz    ; abc")
 				, "should have been «false»");
 	}
 
@@ -83,35 +83,35 @@ class WriteUtilTest {
 				, "should have been «false»");
 		assertEquals(false, containsComment((Boolean)null)
 				, "should have been «false»");
-		assertEquals(true, containsComment("# abc")
+		assertEquals(true, containsComment("; abc")
 				, "should have been «true»");
-		assertEquals(true, containsComment("#abc")
+		assertEquals(true, containsComment(";abc")
 				, "should have been «true»");
-		assertEquals(true, containsComment("#abc")
+		assertEquals(true, containsComment(";abc")
 				, "should have been «true»");
-		assertEquals(true, containsComment("#")
+		assertEquals(true, containsComment(";")
 				, "should have been «true»");
-		assertEquals(true, containsComment("xyz    # abc")
+		assertEquals(true, containsComment("xyz    ; abc")
 				, "should have been «true»");
 	}
 
 
 	@Test
 	void removeComment_Object() {
-		assertEquals("", removeComment("# abc")
+		assertEquals("", removeComment("; abc")
 				, "should have been «»");
-		assertEquals("xyz", removeComment("xyz    # abc")
+		assertEquals("xyz", removeComment("xyz    ; abc")
 				, "should have been «xyz»");
 	}
 
 
 	@Test
 	void extractComment_Object() {
-		assertEquals("", extractComment("# ")
+		assertEquals("", extractComment("; ")
 				, "should have been «»");
-		assertEquals("abc", extractComment("# abc")
+		assertEquals("abc", extractComment("; abc")
 				, "should have been «abc»");
-		assertEquals("abc", extractComment("xyz    # abc")
+		assertEquals("abc", extractComment("xyz    ; abc")
 				, "should have been «abc»");
 		assertEquals((String)null, extractComment((String)null)
 				, "should have been «null»");
@@ -120,25 +120,25 @@ class WriteUtilTest {
 
 	@Test
 	void splitComment_Object() {
-		assertEquals("xyz", splitComment("xyz    # abc")[0]
+		assertEquals("xyz", splitComment("xyz    ; abc")[0]
 				, "should have been «xyz»");
-		assertEquals("abc", splitComment("xyz    # abc")[1]
+		assertEquals("abc", splitComment("xyz    ; abc")[1]
 				, "should have been «abc»");
-		assertEquals("", splitComment("    # abc")[0]
+		assertEquals("", splitComment("    ; abc")[0]
 				, "should have been «xyz»");
-		assertEquals("abc", splitComment("    # abc")[1]
+		assertEquals("abc", splitComment("    ; abc")[1]
 				, "should have been «abc»");
-		assertEquals("xyz", splitComment("xyz    #")[0]
+		assertEquals("xyz", splitComment("xyz    ;")[0]
 				, "should have been «xyz»");
-		assertEquals("", splitComment("xyz    #")[1]
+		assertEquals("", splitComment("xyz    ;")[1]
 				, "should have been «»");
 		assertEquals("xyz", splitComment("xyz ")[0]
 				, "should have been «xyz»");
 		assertEquals("", splitComment("xyz ")[1]
 				, "should have been «null»");
-		assertEquals("", splitComment("# abc")[0]
+		assertEquals("", splitComment("; abc")[0]
 				, "should have been «»");
-		assertEquals("abc", splitComment("# abc")[1]
+		assertEquals("abc", splitComment("; abc")[1]
 				, "should have been «abc»");
 		assertEquals("", splitComment("")[0]
 				, "should have been «»");
@@ -149,25 +149,25 @@ class WriteUtilTest {
 
 	@Test
 	void trawSplitComment_Object() {
-		assertEquals("xyz    ", rawSplitComment("xyz    # abc")[0]
+		assertEquals("xyz    ", rawSplitComment("xyz    ; abc")[0]
 				, "should have been «xyz»");
-		assertEquals(" abc", rawSplitComment("xyz    # abc")[1]
+		assertEquals(" abc", rawSplitComment("xyz    ; abc")[1]
 				, "should have been « abc»");
-		assertEquals("    ", rawSplitComment("    # abc")[0]
+		assertEquals("    ", rawSplitComment("    ; abc")[0]
 				, "should have been «xyz»");
-		assertEquals(" abc", rawSplitComment("    # abc")[1]
+		assertEquals(" abc", rawSplitComment("    ; abc")[1]
 				, "should have been « abc»");
-		assertEquals("xyz    ", rawSplitComment("xyz    #")[0]
+		assertEquals("xyz    ", rawSplitComment("xyz    ;")[0]
 				, "should have been «xyz»");
-		assertEquals("", rawSplitComment("xyz    #")[1]
+		assertEquals("", rawSplitComment("xyz    ;")[1]
 				, "should have been «»");
 		assertEquals("xyz ", rawSplitComment("xyz ")[0]
 				, "should have been «xyz»");
 		assertEquals((String)null, rawSplitComment("xyz ")[1]
 				, "should have been «null»");
-		assertEquals("", rawSplitComment("# abc")[0]
+		assertEquals("", rawSplitComment("; abc")[0]
 				, "should have been «»");
-		assertEquals(" abc", rawSplitComment("# abc")[1]
+		assertEquals(" abc", rawSplitComment("; abc")[1]
 				, "should have been « abc»");
 		assertEquals("", rawSplitComment("")[0]
 				, "should have been «»");

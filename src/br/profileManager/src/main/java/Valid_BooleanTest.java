@@ -17,13 +17,13 @@ class Valid_BooleanTest {
 	
 	@Test
 	void Line_String_String() {
-		assertEquals(true, new Line_Boolean("key : YES # comment")
+		assertEquals(true, new Line_Boolean("key : YES ; comment")
 				.getValue()
 				, "should have been «true»");
-		assertEquals("comment", new Line_Boolean("key : YES # comment")
+		assertEquals("comment", new Line_Boolean("key : YES ; comment")
 				.getComment()
 				, "should have been «comment»");
-		assertEquals("key", new Line_Boolean("key : YES # comment")
+		assertEquals("key", new Line_Boolean("key : YES ; comment")
 				.getName()
 				, "should have been «key»");
 	}
@@ -32,7 +32,7 @@ class Valid_BooleanTest {
 	@Test
 	void setValue_Boolean() {
 		Line_Boolean line = new Line_Boolean();
-		assertEquals(false, line.newLine("key : YES # comment")
+		assertEquals(false, line.newLine("key : YES ; comment")
 				.setValue(false).getValue()
 				, "should have been «newValue»");
 		assertEquals(false, line.getValue()
@@ -48,7 +48,7 @@ class Valid_BooleanTest {
 				.newLine((String)null).getValue()
 				, "should have been «»");
 		assertEquals(true, new Line_Boolean()
-				.newLine("key : YES # comment").getValue()
+				.newLine("key : YES ; comment").getValue()
 				, "should have been «true»");
 		assertEquals("", new Line_Boolean()
 				.newLine("key : YES").getComment()
@@ -58,7 +58,7 @@ class Valid_BooleanTest {
 	@Test
 	void setName_String() {
 		Line_Boolean line = new Line_Boolean();
-		assertEquals("newKey", line.newLine("key : YES # comment")
+		assertEquals("newKey", line.newLine("key : YES ; comment")
 				.setName("newKey").getName()
 				, "should have been «newKey»");
 		assertEquals("newKey", line.getName()
@@ -68,7 +68,7 @@ class Valid_BooleanTest {
 	@Test
 	void setValue_String() {
 		Line_Boolean line = new Line_Boolean();
-		assertEquals(false, line.newLine("key : YES # comment")
+		assertEquals(false, line.newLine("key : YES ; comment")
 				.setValue(false).getValue()
 				, "should have been «newValue»");
 		assertEquals(false, line.getValue()
@@ -78,7 +78,7 @@ class Valid_BooleanTest {
 	@Test
 	void setComment_String() {
 		Line_Boolean line = new Line_Boolean();
-		assertEquals("newComment", line.newLine("key : YES # comment")
+		assertEquals("newComment", line.newLine("key : YES ; comment")
 				.setComment("newComment").getComment()
 				, "should have been «newComment»");
 		assertEquals("newComment", line.getComment()
@@ -88,21 +88,21 @@ class Valid_BooleanTest {
 	// ========== Getters ==========
 	@Test
 	void getName_None() {
-		assertEquals("key", new Line_Boolean("key : YES # comment")
+		assertEquals("key", new Line_Boolean("key : YES ; comment")
 				.getName()
 				, "should have been «key»");
 	}
 	
 	@Test
 	void getValue_None() {
-		assertEquals(true, new Line_Boolean("key : YES # comment")
+		assertEquals(true, new Line_Boolean("key : YES ; comment")
 				.getValue()
 				, "should have been true");
 	}
 
 	@Test
 	void getValue_Boolean() {
-		assertEquals(true, new Line_Boolean("key : YES # comment")
+		assertEquals(true, new Line_Boolean("key : YES ; comment")
 				.getValue(false)
 				, "should have been true");
 		assertEquals(true, new Line_Boolean().getValue(true)
@@ -111,7 +111,7 @@ class Valid_BooleanTest {
 
 	@Test
 	void getOrDefault_Boolean() {
-		assertEquals(true, new Line_Boolean("key : YES # comment")
+		assertEquals(true, new Line_Boolean("key : YES ; comment")
 				.getOrDefault(false)
 				, "should have been true");
 		assertEquals(true, new Line_Boolean().getOrDefault(true)
@@ -120,14 +120,14 @@ class Valid_BooleanTest {
 
 	@Test
 	void getComment_None() {
-		assertEquals("comment", new Line_Boolean("key : YES # comment")
+		assertEquals("comment", new Line_Boolean("key : YES ; comment")
 				.getComment()
 				, "should have been «comment»");
 	}
 	
 	@Test
 	void getValueAsEntry_None() {
-		assertEquals(true, new Line_Boolean("key : YES # comment")
+		assertEquals(true, new Line_Boolean("key : YES ; comment")
 				.getValueAsEntry().getValue()
 				, "should have been true");
 	}

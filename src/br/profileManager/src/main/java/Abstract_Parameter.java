@@ -377,6 +377,12 @@ public abstract class Abstract_Parameter<
 	// ==========================================================
 	// Other Methods
 	//		
+	void forceCreationMissingProfile(List<String> profileList) {
+		if (PMutil.getForceCreationMissingProfile()) {
+			userProfiles.forceCreationMissingProfile(profileList);
+		}
+	}
+
 	/**
 	 * @param groupCodeViews 
 	 * @return parameter as String, ready to be printed

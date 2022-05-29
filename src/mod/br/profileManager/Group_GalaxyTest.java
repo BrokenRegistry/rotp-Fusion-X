@@ -18,51 +18,54 @@ class Group_GalaxyTest {
 	private String NL = System.lineSeparator();
 	
 	private String galaxyShapePrt = 
-			"#  " + NL +
-			"# ------------- Galaxy Options -------------" + NL +
-			"#  " + NL +
-			"¦ PARAMETER         : GALAXY SHAPE" + NL +
-			"# OPTIONS           : [Rectangle, Ellipse, Spiral, Text, Cluster, Swirlclusters, Grid, Spiralarms, Maze, Shuriken, Bullseye, Lorenz, Fractal]" + NL +
-			"# Initial/GUI/Game  : Rectangle / Rectangle / " + NL + 
-			"¦ LOCAL ENABLE      : ALL" + NL +
-			"Profile 1           : " + NL +
-			"Random              : " + NL +
+			";  " + NL +
+			"; ------------- Galaxy Options -------------" + NL +
+			";  " + NL +
+			"¦ Parameter     : GALAXY SHAPE" + NL +
+			"; Options       : [Rectangle, Ellipse, Spiral, Text, Cluster, Swirlclusters," + NL +
+			";   \" \"         : Grid, Spiralarms, Maze, Shuriken, Bullseye, Lorenz, Fractal]" + NL +
+			"¦ History       : Current : Rectangle / Last :  / Initial : Rectangle / Default : Rectangle / Game : " + NL + 
+			"¦ LOCAL ENABLE  : All" + NL +
+			"Profile 1       : " + NL +
+			"Random          : " + NL +
 			"" + NL;
 
 	private String galaxySizePrt = 
-			"¦ PARAMETER         : GALAXY SIZE" + NL +
-			"# OPTIONS           : [Tiny, Small, Small2, Average, Average2, Large, Large2, Huge, Huge2, Massive, Massive2, Massive3, Massive4, Massive5, Insane, Ludicrous, Maximum]" + NL +
-			"# Initial/GUI/Game  : Small / Small / " + NL + 
-			"¦ LOCAL ENABLE      : ALL" + NL +
-			"Profile 1           : " + NL +
-			"Random              : " + NL +
+			"¦ Parameter     : GALAXY SIZE" + NL +
+			"; Options       : [Tiny, Small, Small2, Average, Average2, Large, Large2, Huge," + NL +
+			";   \" \"         : Huge2, Massive, Massive2, Massive3, Massive4, Massive5," + NL +
+			";   \" \"         : Insane, Ludicrous, Maximum]" + NL +
+			"¦ History       : Current : Small / Last :  / Initial : Small / Default : Small / Game : " + NL + 
+			"¦ LOCAL ENABLE  : All" + NL +
+			"Profile 1       : " + NL +
+			"Random          : " + NL +
 			"" + NL;
 
 	private String difficultyPrt = 
-			"¦ PARAMETER         : DIFFICULTY" + NL +
-			"# OPTIONS           : [Easiest, Easier, Easy, Normal, Hard, Harder, Hardest, Custom]" + NL +
-			"# Initial/GUI/Game  : Normal / Normal / " + NL + 
-			"¦ LOCAL ENABLE      : ALL" + NL +
-			"Profile 1           : " + NL +
-			"Random              : " + NL +
+			"¦ Parameter     : DIFFICULTY" + NL +
+			"; Options       : [Easiest, Easier, Easy, Normal, Hard, Harder, Hardest, Custom]" + NL +
+			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Easy / Game : " + NL + 
+			"¦ LOCAL ENABLE  : All" + NL +
+			"Profile 1       : " + NL +
+			"Random          : " + NL +
 			"" + NL;
 
 	private String opponentAIPrt = 
-			"¦ PARAMETER         : OPPONENT AI" + NL +
-			"# OPTIONS           : [Base, Xilmi, Cruel, Unfair, Random, Allrandom, Select]" + NL +
-			"# Initial/GUI/Game  : Cruel / Cruel / " + NL + 
-			"¦ LOCAL ENABLE      : ALL" + NL +
-			"Profile 1           : " + NL +
-			"Random              : " + NL +
+			"¦ Parameter     : OPPONENT AI" + NL +
+			"; Options       : [Base, Xilmi, Cruel, Unfair, Random, Allrandom, Select]" + NL +
+			"¦ History       : Current : Cruel / Last :  / Initial : Cruel / Default : Base / Game : " + NL + 
+			"¦ LOCAL ENABLE  : All" + NL +
+			"Profile 1       : " + NL +
+			"Random          : " + NL +
 			"" + NL;
 
 	private String nbOpponentPrt = 
-			"¦ PARAMETER         : NB OPPONENTS" + NL +
-			"# OPTIONS           : [Min=0, Max=15, Rnd Low=1, Rnd Up=15]" + NL +
-			"# Initial/GUI/Game  : 4 / 4 / "  + NL +
-			"¦ LOCAL ENABLE      : ALL" + NL +
-			"Profile 1           : " + NL +
-			"Random              : " + NL+
+			"¦ Parameter     : NB OPPONENTS" + NL +
+			"; Options       : [Min=0, Max=15, Rnd Low=1, Rnd Up=15]" + NL +
+			"¦ History       : Current : 4 / Last :  / Initial : 4 / Default : 3 / Game : "  + NL +
+			"¦ LOCAL ENABLE  : All" + NL +
+			"Profile 1       : " + NL +
+			"Random          : " + NL+
 			"" + NL;
 	
 	@Test void GalaxyShape_ClientClasses() {

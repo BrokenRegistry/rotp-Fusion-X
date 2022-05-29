@@ -16,11 +16,11 @@ class Valid_StringTest {
 	
 	@Test
 	void Line_String_String() {
-		assertEquals("value", new Line_String("key : value # comment").getValue()
+		assertEquals("value", new Line_String("key : value ; comment").getValue()
 				, "should have been «value»");
-		assertEquals("comment", new Line_String("key : value # comment").getComment()
+		assertEquals("comment", new Line_String("key : value ; comment").getComment()
 				, "should have been «comment»");
-		assertEquals("key", new Line_String("key : value # comment").getName()
+		assertEquals("key", new Line_String("key : value ; comment").getName()
 				, "should have been «key»");
 	}
 	
@@ -31,7 +31,7 @@ class Valid_StringTest {
 		assertEquals("", new Line_String().newLine((String)null).getValue()
 				, "should have been «»");
 		assertEquals("value", new Line_String()
-				.newLine("key : value # comment").getValue()
+				.newLine("key : value ; comment").getValue()
 				, "should have been «value»");
 		assertEquals("", new Line_String()
 				.newLine("key : value").getComment()
@@ -41,7 +41,7 @@ class Valid_StringTest {
 	@Test
 	void setName_String() {
 		Line_String line = new Line_String();
-		assertEquals("newKey", line.newLine("key : value # comment")
+		assertEquals("newKey", line.newLine("key : value ; comment")
 				.setName("newKey").getName()
 				, "should have been «newKey»");
 		assertEquals("newKey", line.getName()
@@ -51,7 +51,7 @@ class Valid_StringTest {
 	@Test
 	void setValue_String() {
 		Line_String line = new Line_String();
-		assertEquals("newValue", line.newLine("key : value # comment")
+		assertEquals("newValue", line.newLine("key : value ; comment")
 				.setValue("newValue").getValue()
 				, "should have been «newValue»");
 		assertEquals("newValue", line.getValue()
@@ -62,7 +62,7 @@ class Valid_StringTest {
 	@Test
 	void setComment_String() {
 		Line_String line = new Line_String();
-		assertEquals("newComment", line.newLine("key : value # comment")
+		assertEquals("newComment", line.newLine("key : value ; comment")
 				.setComment("newComment").getComment()
 				, "should have been «newComment»");
 		assertEquals("newComment", line.getComment()
@@ -72,28 +72,28 @@ class Valid_StringTest {
 	@Test
 	void getName_None() {
 		assertEquals("key", new Line_String()
-				.newLine("key : value # comment").getName()
+				.newLine("key : value ; comment").getName()
 				, "should have been «key»");
 	}
 	
 	@Test
 	void getValue_None() {
 		assertEquals("value", new Line_String()
-				.newLine("key : value # comment").getValue()
+				.newLine("key : value ; comment").getValue()
 				, "should have been «value»");
 	}
 
 	@Test
 	void getComment_None() {
 		assertEquals("comment", new Line_String()
-				.newLine("key : value # comment").getComment()
+				.newLine("key : value ; comment").getComment()
 				, "should have been «comment»");
 	}
 
 	@Test
 	void getValueAsEntry_None() {
 		assertEquals("value", new Line_String()
-				.newLine("key : value # comment")
+				.newLine("key : value ; comment")
 				.getValueAsEntry().getValue()
 				, "should have been «value»");
 	}
