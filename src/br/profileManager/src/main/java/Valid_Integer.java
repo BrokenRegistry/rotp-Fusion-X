@@ -86,17 +86,6 @@ public class Valid_Integer extends Abstract_ValidData<Integer> {
 		return PMutil.getRandom(getDefaultRandomLimits(0), getDefaultRandomLimits(1));
 	}
 	
-//	/**
-//	 * Process Random with parameters
-//	 * @param parameters {@code String[]} the extra parameters
-//	 * @return {@code Integer} OutputString
-//	 */
-//	@Override Integer randomWithParameters(String[] parameters) {
-//		if (parameters.length > 2) {
-//			return randomWithList(parameters);
-//		}
-//		return randomWithLimit(parameters);
-//	}
 	/**
 	 * Process Random within Given Limits
 	 * @param parameters {@code String[]} the extra parameters
@@ -143,19 +132,6 @@ public class Valid_Integer extends Abstract_ValidData<Integer> {
 				+ ", Rnd Up=" + this.getDefaultRandomLimits(1).toString()
 				+ "]");
 	}
-
-	// ==================================================
-    // Other Methods
-    //
-//	/**
-//	 * Process Random among the given list
-//	 * @param parameters {@code String[]} the extra parameters
-//	 * @return {@code Integer} Random Value
-//	 */
-//	@Override Integer randomWithList(String[] parameters) {
-//		int id = PMutil.getRandom(0, parameters.length);
-//		return entryValidation(parameters[id]);
-//	}
 
 	// ==========================================================
     // Nested Classes

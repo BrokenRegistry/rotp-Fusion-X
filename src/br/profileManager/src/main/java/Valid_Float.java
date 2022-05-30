@@ -88,17 +88,6 @@ public class Valid_Float extends Abstract_ValidData<Float> {
 		return PMutil.getRandom(getDefaultRandomLimits(0), getDefaultRandomLimits(1));
 	}
 	
-//	/**
-//	 * Process Random with parameters
-//	 * @param parameters {@code String[]} the extra parameters
-//	 * @return {@code Float} OutputString
-//	 */
-//	@Override Float randomWithParameters(String[] parameters) {
-//		if (parameters.length > 2) {
-//			return randomWithList(parameters);
-//		}
-//		return randomWithLimit(parameters);
-//	}
 	/**
 	 * Process Random within Given Limits
 	 * @param parameters {@code String[]} the extra parameters
@@ -144,19 +133,6 @@ public class Valid_Float extends Abstract_ValidData<Float> {
 				+ ", Rnd Up=" + this.getDefaultRandomLimits(1).toString()
 				+ "]");
 	}
-
-	// ==================================================
-    // Other Methods
-    //
-//	/**
-//	 * Process Random among the given list
-//	 * @param parameters {@code String[]} the extra parameters
-//	 * @return {@code Float} Random Value
-//	 */
-//	Float randomWithList(String[] parameters) {
-//		int id = PMutil.getRandom(0, parameters.length);
-//		return entryValidation(parameters[id]);
-//	}
 
 	// ==========================================================
     // Nested Classes

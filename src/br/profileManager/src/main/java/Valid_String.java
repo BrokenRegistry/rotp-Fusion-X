@@ -104,17 +104,6 @@ public class Valid_String extends Abstract_ValidData<String> {
 		return getHistoryUserView(Default); // What else?
 	}
 	
-//	/**
-//	 * Process Random with parameters
-//	 * @param parameters {@code String[]} the extra parameters
-//	 * @return {@code String} Random Value
-//	 */
-//	@Override String randomWithParameters(String[] parameters) {
-//		if (parameters.length > 2) {
-//			return randomWithList(parameters);
-//		}
-//		return randomWithLimit(parameters);
-//	}
 	/**
 	 * Process Random within Given Limits
 	 * @param parameters {@code String[]} the extra parameters
@@ -215,43 +204,6 @@ public class Valid_String extends Abstract_ValidData<String> {
  		}
 		return "";
 	}
-
-	// ==================================================
-    // Other Methods
-    //
-//	private Integer getBestLimit(String[] parameters, int index, int[] lim) {
-//		int out = lim[index];
-//		// get given parameter and test it
-//		String param = parameters[index];
-//		// test for integer
-//		if (PMutil.testForInteger(param)) {
-//			return PMutil.validateLimits(PMutil.toInteger(param), lim[0], lim[1]);
-//		} 
-//		// test if in list
-//		if (isValidUserEntry(param)) {
-//			return this.getUserViewIndex(param, out);
-//		}
-//		// get default value and repeat the test
-//		param = getDefaultRandomLimits(index);
-//		if (PMutil.testForInteger(param)) {
-//			return PMutil.validateLimits(PMutil.toInteger(param), lim[0], lim[1]);
-//		} 
-//		if (isValidUserEntry(param)) {
-//			return this.getUserViewIndex(param, out);
-//		}
-//		// Nothing good... return the limit
-//		return out;
-//	}
-	
-//	/**
-//	 * Process Random among the given list
-//	 * @param parameters {@code String[]} the extra parameters
-//	 * @return {@code String} Random Value
-//	 */
-//	Override String randomWithList(String[] parameters) {
-//		int id = PMutil.getRandom(0, parameters.length);
-//		return entryValidation(parameters[id]);
-//	}
 
  	// ==========================================================
     // Nested Classes

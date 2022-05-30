@@ -90,19 +90,6 @@ public class Valid_Boolean extends Abstract_ValidData<Boolean> {
 		return PMutil.toBoolean(userView);
 	}
 	
-	// ==================================================
-    // Other Methods
-    //
-//	/**
-//	 * Process Random among the given list
-//	 * @param parameters {@code String[]} the extra parameters
-//	 * @return {@code Boolean} Random Value
-//	 */
-//	Boolean randomWithList(String[] parameters) {
-//		int id = PMutil.getRandom(0, parameters.length);
-//		return entryValidation(parameters[id]);
-//	}
-
  	// ==========================================================
     // Nested Classes
     //

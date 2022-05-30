@@ -323,7 +323,6 @@ public abstract class Abstract_ValidData<ValueClass> extends WriteUtil{
 		return entryValidation(parameters[id]);
 	}
 
-
 	/**
 	 * @return <b>true</b> if the Validation List is not empty
 	 */

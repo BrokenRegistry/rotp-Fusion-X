@@ -27,7 +27,6 @@ public class Valid_Double extends Abstract_ValidData<Double> {
 	// ==================================================
     // Constructors
     //
-	
 	/**
 	 * Base Constructor for Double Validation Class
 	 */
@@ -88,17 +87,6 @@ public class Valid_Double extends Abstract_ValidData<Double> {
 		return PMutil.getRandom(getDefaultRandomLimits(0), getDefaultRandomLimits(1));
 	}
 	
-//	/**
-//	 * Process Random with parameters
-//	 * @param parameters {@code String[]} the extra parameters
-//	 * @return {@code Double} OutputString
-//	 */
-//	@Override Double randomWithParameters(String[] parameters) {
-//		if (parameters.length > 2) {
-//			return randomWithList(parameters);
-//		}
-//		return randomWithLimit(parameters);
-//	}
 	/**
 	 * Process Random within Given Limits
 	 * @param parameters {@code String[]} the extra parameters
@@ -144,20 +132,6 @@ public class Valid_Double extends Abstract_ValidData<Double> {
 				+ ", Rnd Up=" + this.getDefaultRandomLimits(1).toString()
 				+ "]");
 	}
-
-	// ==================================================
-    // Other Methods
-    //
-	
-//	/**
-//	 * Process Random among the given list
-//	 * @param parameters {@code String[]} the extra parameters
-//	 * @return {@code Double} Random Value
-//	 */
-//	Double randomWithList(String[] parameters) {
-//		int id = PMutil.getRandom(0, parameters.length);
-//		return entryValidation(parameters[id]);
-//	}
 
 	// ==========================================================
     // Nested Classes
