@@ -23,6 +23,7 @@ import mod.br.Galaxy.GalaxySpacing;
 import mod.br.Galaxy.StarsOptions;
 import br.profileManager.src.main.java.Valid_Boolean;
 import br.profileManager.src.main.java.Valid_Double;
+import br.profileManager.src.main.java.Valid_Float;
 import br.profileManager.src.main.java.Valid_Integer;
 import static br.profileManager.src.main.java.WriteUtil.History.*;
 
@@ -149,30 +150,30 @@ public class Group_BrokenRegistry extends  Abstract_Group <ClientClasses> {
 	// NO PLANET MULTIPLIER
 	//
 	static class NoPlanetMultiplier extends 
-			Abstract_Parameter <Double, Valid_Double, ClientClasses> {
+			Abstract_Parameter <Float, Valid_Float, ClientClasses> {
 
 		NoPlanetMultiplier(ClientClasses go) { 
-			super( "NO PLANET PCT MULT", new Valid_Double());
-			setHistoryCodeView(Initial, StarsOptions.NO_PLANET_MULTIPLIER);
-			setHistoryCodeView(Default, 1.0); // BR DEFAULT
-			setLimits(0.0 , 1000000.0);
-			setDefaultRandomLimits(0.0 , 2.0);
+			super( "NO PLANET MULTIPLIER", new Valid_Float());
+			setHistoryCodeView(Initial, StarsOptions.DEFAULT_NO_PLANET_MULTIPLIER);
+			setHistoryCodeView(Default, 1f); // BR DEFAULT
+			setLimits(0f , 1000000f);
+			setDefaultRandomLimits(0f , 2f);
 		}
 		
 		// ------------------------------------------------
 		// Overrider
 		//
-		@Override public Double getFromGame (ClientClasses go) {
+		@Override public Float getFromGame (ClientClasses go) {
 			return StarsOptions.getNoPlanetMultiplier();
 		}
 		
-		@Override public void putToGame(ClientClasses go, Double codeView) {}
+		@Override public void putToGame(ClientClasses go, Float codeView) {}
 		
-		@Override public Double getFromUI (ClientClasses go) {
+		@Override public Float getFromUI (ClientClasses go) {
 			return StarsOptions.getNoPlanetMultiplier();
 		}
 		
-		@Override public void putToGUI(ClientClasses go, Double codeView) {
+		@Override public void putToGUI(ClientClasses go, Float codeView) {
 			StarsOptions.setNoPlanetMultiplier(codeView);
 		}
 		

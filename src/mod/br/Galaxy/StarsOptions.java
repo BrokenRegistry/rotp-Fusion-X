@@ -17,32 +17,56 @@
 
 package mod.br.Galaxy;
 
+import java.util.Arrays;
+import java.util.List;
+
+import br.profileManager.src.main.java.PMutil;
+import rotp.model.game.MOO1GameOptions;
+import rotp.model.planet.PlanetType;
+
 /**
  * @author BrokenRegistry
  * Customize the number of star without planets
  */
 public class StarsOptions {
 
-    // ========================================================================
+	private static final List<String> PLANET_TYPES = 
+			Arrays.asList(MOO1GameOptions.planetTypes());
+
+	// ========================================================================
     // NO PLANET MULTIPLIER
     //
 	/**
 	 * Default value for NO_PLANET_MULTIPLIER
 	 */
-	public static final Double NO_PLANET_MULTIPLIER = 1.0;
-	private static Double noPlanetMultiplier = NO_PLANET_MULTIPLIER;
+	public static final Float DEFAULT_NO_PLANET_MULTIPLIER = 1.0f;
+	private static final int   NONE_INDEX = PLANET_TYPES.indexOf(PlanetType.NONE);
+	
+	private static Float noPlanetMultiplier = DEFAULT_NO_PLANET_MULTIPLIER;
 
 	/**
-	 * @return the noPlanetMultiplier
+	 * @return the current noPlanetMultiplier
 	 */
-	public static Double getNoPlanetMultiplier() {
+	public static Float getNoPlanetMultiplier() {
 		return noPlanetMultiplier;
 	}
 
 	/**
-	 * @param noPlanetMultiplier the noPlanetMultiplier to set
+	 * @param noPlanetMultiplier the new value
 	 */
-	public static void setNoPlanetMultiplier(Double noPlanetMultiplier) {
+	public static void setNoPlanetMultiplier(Float noPlanetMultiplier) {
 		StarsOptions.noPlanetMultiplier = noPlanetMultiplier;
 	}
+	
+	/**
+	 * @param cumSum the Cumulative Probability
+	 * @return the new Cumulative Probability
+	 */
+	public static float[] changeCumulativeProbability(float[] cumSum) {
+		float[] density = PMutil.probCumulToDensity(cumSum);
+		density[NONE_INDEX] *= noPlanetMultiplier;
+		return PMutil.probDensityToCumul(density);
+	}
+	
+
 }

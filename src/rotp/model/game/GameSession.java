@@ -817,7 +817,7 @@ public final class GameSession implements Base, Serializable {
         }
         // Save the last loaded game parameters
         Profiles.saveGameOptionsToFile(instance.options());
-        // #BR:
+        // \BR:
         
         startExecutors();
         RotPUI.instance().mainUI().checkMapInitialized();

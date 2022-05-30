@@ -90,7 +90,7 @@ public class Group_Race extends Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String userOption) {
- //	   	gs.getGameObject().options().selectedPlayer().race = userOption; // Direct to avoid reseting opponents
+ //	   	gs.getGuiObject().selectedPlayer().race = userOption; // Direct to avoid reseting opponents
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
@@ -199,12 +199,12 @@ public class Group_Race extends Abstract_Group <ClientClasses> {
 	    // ========== Overriders ==========
 	    //
 		@Override public Integer getFromGame (ClientClasses go) {
-			return go.getGameObject().options().selectedPlayerColor();
+			return go.getGuiObject().selectedPlayerColor();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, Integer codeView) {
 			gs.getGameObject().galaxy().empire(0).changeColorId(codeView);
-			gs.getGameObject().options().selectedPlayerColor(codeView);
+			gs.getGuiObject().selectedPlayerColor(codeView);
 		}
 		
 		@Override public Integer getFromUI (ClientClasses go) {

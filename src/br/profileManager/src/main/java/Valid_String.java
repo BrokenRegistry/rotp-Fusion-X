@@ -41,12 +41,12 @@ public class Valid_String extends Abstract_ValidData<String> {
 	
 	private void init() {
 		initCriteria();
-		setHistoryCodeView(Default, "");
-		setHistoryCodeView(Last, "");
-		setHistoryCodeView(Initial, "");
-		setHistoryCodeView(Current, "");
-		setHistoryCodeView(Game, "");
-		setHistoryCodeView(Blank, "");
+//		setHistoryCodeView(Default, "");
+//		setHistoryCodeView(Last, "");
+//		setHistoryCodeView(Initial, "");
+//		setHistoryCodeView(Current, "");
+//		setHistoryCodeView(Game, "");
+//		setHistoryCodeView(Blank, "");
 	}
 
 	// ==================================================

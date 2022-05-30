@@ -566,6 +566,9 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
         }
         repaint();
         buttonClick();
+        // BR: Save the last loaded game parameters
+        Profiles.saveGameOptionsToFile(newGameOptions());
+ 
         UserPreferences.setForNewGame();
         final Runnable save = () -> {
             long start = System.currentTimeMillis();

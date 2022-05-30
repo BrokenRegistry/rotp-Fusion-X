@@ -127,7 +127,7 @@ class PMutilTest {
 	}
 
 	// ==================================================
-    // Other String Methods
+    // Some String Methods
     //
 	@Test
 	void addLinebreaks_String() {
@@ -299,6 +299,22 @@ class PMutilTest {
 	// ==================================================
     // Math Methods
     //
+	@Test
+	void probDensityToCumul_FloatArray() {
+	   	float[] cumSum  = new float[] {0f, 10f, 50f, 80f, 100f, 100f};
+	   	float[] density = new float[] {0,  10f, 40f, 30f,  20f,   0f};    
+	   	assertArrayEquals(cumSum, probDensityToCumul(density)
+				, "should have been «{0f, 10f, 50f, 80f, 100f, 100f}»");
+	}
+	
+	@Test
+	void probCumulToDensity_FloatArray() {
+	   	float[] cumSum  = new float[] {0f, 10f, 50f, 80f, 100f, 100f};
+	   	float[] density = new float[] {0,  10f, 40f, 30f,  20f,   0f};    
+	   	assertArrayEquals(density, probCumulToDensity(cumSum)
+				, "should have been «{0,  10f, 40f, 30f,  20f,   0f}»");
+	}
+	
 	@Test
 	void testValidateLimitsInteger() {
 		assertEquals(8, validateLimits(8, -88, 88)

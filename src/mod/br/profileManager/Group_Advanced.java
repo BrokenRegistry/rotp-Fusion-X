@@ -88,7 +88,7 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 			}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGameObject().options().selectedGalaxyAge();
+			return go.getGuiObject().selectedGalaxyAge();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
@@ -145,7 +145,7 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGameObject().options().selectedStarDensityOption();
+			return go.getGuiObject().selectedStarDensityOption();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
@@ -197,7 +197,7 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGameObject().options().selectedNebulaeOption();
+			return go.getGuiObject().selectedNebulaeOption();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
@@ -249,7 +249,7 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGameObject().options().selectedPlanetQualityOption();
+			return go.getGuiObject().selectedPlanetQualityOption();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
@@ -301,11 +301,11 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGameObject().options().selectedTerraformingOption();
+			return go.getGuiObject().selectedTerraformingOption();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
-//			gs.getGameObject().options().selectedTerraformingOption(codeView);
+//			gs.getGuiObject().selectedTerraformingOption(codeView);
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
@@ -355,11 +355,11 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGameObject().options().selectedRandomEventOption();
+			return go.getGuiObject().selectedRandomEventOption();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
-			gs.getGameObject().options().selectedRandomEventOption(codeView);
+			gs.getGuiObject().selectedRandomEventOption(codeView);
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
@@ -409,11 +409,11 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGameObject().options().selectedAIHostilityOption();
+			return go.getGuiObject().selectedAIHostilityOption();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
-//			gs.getGameObject().options().selectedAIHostilityOption(codeView);
+//			gs.getGuiObject().selectedAIHostilityOption(codeView);
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
@@ -463,11 +463,11 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGameObject().options().selectedCouncilWinOption();
+			return go.getGuiObject().selectedCouncilWinOption();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
-			gs.getGameObject().options().selectedCouncilWinOption(codeView);
+			gs.getGuiObject().selectedCouncilWinOption(codeView);
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
@@ -517,7 +517,7 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGameObject().options().selectedRandomizeAIOption();
+			return go.getGuiObject().selectedRandomizeAIOption();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
@@ -569,7 +569,7 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGameObject().options().selectedAutoplayOption();
+			return go.getGuiObject().selectedAutoplayOption();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
@@ -621,11 +621,11 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGameObject().options().selectedResearchRate();
+			return go.getGuiObject().selectedResearchRate();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
-//			gs.getGameObject().options().selectedResearchRate(codeView);
+//			gs.getGuiObject().selectedResearchRate(codeView);
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
@@ -675,11 +675,11 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGameObject().options().selectedWarpSpeedOption();
+			return go.getGuiObject().selectedWarpSpeedOption();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
-//			gs.getGameObject().options().selectedWarpSpeedOption(codeView);
+//			gs.getGuiObject().selectedWarpSpeedOption(codeView);
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
@@ -729,11 +729,11 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGameObject().options().selectedFuelRangeOption();
+			return go.getGuiObject().selectedFuelRangeOption();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
-//			gs.getGameObject().options().selectedFuelRangeOption(codeView);
+//			gs.getGuiObject().selectedFuelRangeOption(codeView);
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
@@ -783,11 +783,11 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGameObject().options().selectedTechTradeOption();
+			return go.getGuiObject().selectedTechTradeOption();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
-			gs.getGameObject().options().selectedTechTradeOption(codeView);
+			gs.getGuiObject().selectedTechTradeOption(codeView);
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
@@ -837,11 +837,11 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGameObject().options().selectedColonizingOption();
+			return go.getGuiObject().selectedColonizingOption();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
-			gs.getGameObject().options().selectedColonizingOption(codeView);
+			gs.getGuiObject().selectedColonizingOption(codeView);
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {

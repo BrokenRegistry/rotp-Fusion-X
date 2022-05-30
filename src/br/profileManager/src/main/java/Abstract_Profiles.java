@@ -78,6 +78,21 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 	}
 
 	/**
+   	 * Check if' OK to use a parameter
+	 * @param parameter the Parameter to check
+   	 * @return the Parameter status
+   	 */
+	public boolean isParameterEnabled (String parameter) {
+		if (isInitialized()) {
+			Abstract_Parameter<?, ?, ClientClass> param = getParameter(parameter);
+			if (param != null) {
+				return param.isLoadEnabled();
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * @param name ID of the group
 	 * @return the group instance
 	 */
@@ -90,7 +105,7 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 	 * @return the parameter instance
 	 */
 	public Abstract_Parameter<?, ?, ClientClass> getParameter (String name) {
-		return parameterNameMap.get(name.toUpperCase());
+		return parameterNameMap.get(PMutil.neverNull(name).toUpperCase());
 	}
 	
 	/**

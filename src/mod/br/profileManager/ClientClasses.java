@@ -31,6 +31,7 @@ public class ClientClasses {
 	 */
 	public ClientClasses(GameSession gameObject) {
 		this.gameObject = gameObject;
+		this.guiObject  = gameObject.options();
 	}
 
 	/**

@@ -199,7 +199,7 @@ public class PMutil {
 	}
 
 	// ==================================================
-    // Other String Methods
+    // Some String Methods
     //
 	/**
 	 * Split string to not be longer than maxLineLength,
@@ -405,6 +405,45 @@ public class PMutil {
 	// ==================================================
     // Math Methods
     //
+	/**
+	 * Convert a probability density to
+	 * a probability cumulative sum
+	 * @param density the probability density
+	 * @return the probability cumulative sum Normalized to 1
+	 */
+	public static float[] probDensityToCumul(float[] density) {
+    	float[] cumSum = new float[density.length];
+    	// Non normalized sum 
+    	float total = 0;
+        for (int i = 0; i < density.length; i++) {
+            total += density[i];
+            cumSum[i] = total;
+        }
+        // Normalize
+        for (int i = 0; i < density.length; i++) {
+        	cumSum[i] = cumSum[i] / total;
+        }
+        return cumSum;
+    }
+	
+	/**
+	 * Convert a probability cumulative sum to
+	 * a probability density
+	 * @param cumSum the probability cumulative sum 
+	 * @return the probability density
+	 */
+	public static float[] probCumulToDensity(float[] cumSum) {
+		if (cumSum == null || cumSum.length == 0) {
+			return cumSum; // return to the sender!
+		}
+    	float[] density = new float[cumSum.length];
+    	density[0] = cumSum[0];
+        for (int i = 1; i < cumSum.length; i++) {
+            density[i] = cumSum[i] - cumSum[i-1];
+        }
+        return density;
+    }
+	
 	/**
 	 * Compare the {@code Integer} value to the limits and return a value inside them.
 	 * <br> If value is null limits average will be returned

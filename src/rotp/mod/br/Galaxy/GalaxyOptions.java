@@ -15,7 +15,10 @@
  * limitations under the License.
  */
 
-package mod.br.Galaxy;
+package rotp.mod.br.Galaxy;
+
+import mod.br.Galaxy.GalaxySpacing;
+import mod.br.Galaxy.StarsOptions;
 
 //import mod.br.alteration.GalaxySpacing;
 
@@ -53,5 +56,14 @@ public class GalaxyOptions {
 	 */
 	public static float getMinOrionBuffer() {
 		return GalaxySpacing.getMinOrionBuffer();
-    }	
+    }
+	
+	/**
+	 * @param cumSum the Cumulative Probability
+	 * @return the new Cumulative Probability
+	 */
+	public static float[] changeCumulativeProbability(float[] cumSum) {
+		return StarsOptions.changeCumulativeProbability(cumSum);
+	}
+		
 }

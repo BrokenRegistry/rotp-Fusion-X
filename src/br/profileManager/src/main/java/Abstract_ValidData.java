@@ -45,9 +45,10 @@ public abstract class Abstract_ValidData<ValueClass> extends WriteUtil{
 	 * @param newValue the new "history" Value
 	 */
 	protected void setHistoryCodeView(History history, ValueClass newValue) {
-		if (history == Last 
-				&&!PMutil.neverNull(historyMap.get(Last)).isBlank()) {
-			return; // Last was already assigned
+		if (history == Last) { // if in two step to allow breakpoint
+			if (!PMutil.neverNull(historyMap.get(Last)).isBlank()) {
+				return; // Last was already assigned	
+			}
 		}
 		historyMap.put(history, newValue);
 		if (history == Initial) {

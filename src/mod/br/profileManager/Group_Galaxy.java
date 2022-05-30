@@ -85,7 +85,7 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 	    // ========== Overriders ==========
 	    //
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGameObject().options().selectedGalaxyShape();
+			return go.getGuiObject().selectedGalaxyShape();
 		}
 		
 		@Override public void putToGame(ClientClasses go, String codeView) {
@@ -148,7 +148,7 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 	    // ========== Overriders ==========
 	    //
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGameObject().options().selectedGalaxySize();
+			return go.getGuiObject().selectedGalaxySize();
 		}
 		
 		@Override public void putToGame(ClientClasses go, String codeView) {
@@ -207,11 +207,11 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 	    // ========== Overriders ==========
 	    //
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGameObject().options().selectedGameDifficulty();
+			return go.getGuiObject().selectedGameDifficulty();
 		}
 		
 		@Override public void putToGame(ClientClasses go, String codeView) {
-//			go.getGameObject().options().selectedGameDifficulty(codeView);
+//			go.getGuiObject().selectedGameDifficulty(codeView);
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
@@ -267,7 +267,7 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 	    // ========== Overriders ==========
 	    //
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGameObject().options().selectedOpponentAIOption();
+			return go.getGuiObject().selectedOpponentAIOption();
 		}
 		
 		@Override public void putToGame(ClientClasses go, String codeView) {
