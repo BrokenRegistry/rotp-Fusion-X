@@ -86,16 +86,42 @@ public class Valid_Integer extends Abstract_ValidData<Integer> {
 		return PMutil.getRandom(getDefaultRandomLimits(0), getDefaultRandomLimits(1));
 	}
 	
+//	/**
+//	 * Process Random with parameters
+//	 * @param parameters {@code String[]} the extra parameters
+//	 * @return {@code Integer} OutputString
+//	 */
+//	@Override Integer randomWithParameters(String[] parameters) {
+//		if (parameters.length > 2) {
+//			return randomWithList(parameters);
+//		}
+//		return randomWithLimit(parameters);
+//	}
 	/**
-	 * Process Random with parameters
+	 * Process Random within Given Limits
 	 * @param parameters {@code String[]} the extra parameters
-	 * @return {@code Integer} OutputString
+	 * @return {@code Integer} Random Value
 	 */
-	@Override Integer randomWithParameters(String[] parameters) {
-		if (parameters.length > 2) {
-			return randomWithList(parameters);
+	@Override Integer randomWithLimit(String[] parameters) {
+		
+		int lim1 = getLimits(0);
+		int lim2 = getLimits(1);
+		int min = Math.min(lim1, lim2);
+		int max = Math.max(lim1, lim2);
+		// First Limit
+		if (parameters.length >= 1) {
+			if (PMutil.testForInteger(parameters[0])) {
+				lim1 = PMutil.validateLimits(PMutil.toInteger(parameters[0]), min, max);
+			} 
 		}
-		return randomWithLimit(parameters);
+		// Second Limit
+		if (parameters.length >= 2) {
+			if (PMutil.testForInteger(parameters[1])) {
+				lim2 = PMutil.validateLimits(PMutil.toInteger(parameters[1]), min, max);
+			} 
+		}
+		// get Random
+		return PMutil.getRandom(lim1, lim2);
 	}
 	
 	@Override protected String toUserView(Integer codeView) {
@@ -121,41 +147,15 @@ public class Valid_Integer extends Abstract_ValidData<Integer> {
 	// ==================================================
     // Other Methods
     //
-	/**
-	 * Process Random within Given Limits
-	 * @param parameters {@code String[]} the extra parameters
-	 * @return {@code Integer} Random Value
-	 */
-	Integer randomWithLimit(String[] parameters) {
-		int lim1 = getLimits(0);
-		int lim2 = getLimits(1);
-		int min = Math.min(lim1, lim2);
-		int max = Math.max(lim1, lim2);
-		// First Limit
-		if (parameters.length >= 1) {
-			if (PMutil.testForInteger(parameters[0])) {
-				lim1 = PMutil.validateLimits(PMutil.toInteger(parameters[0]), min, max);
-			} 
-		}
-		// Second Limit
-		if (parameters.length >= 2) {
-			if (PMutil.testForInteger(parameters[1])) {
-				lim2 = PMutil.validateLimits(PMutil.toInteger(parameters[1]), min, max);
-			} 
-		}
-		// get Random
-		return PMutil.getRandom(lim1, lim2);
-	}
-	
-	/**
-	 * Process Random among the given list
-	 * @param parameters {@code String[]} the extra parameters
-	 * @return {@code Integer} Random Value
-	 */
-	Integer randomWithList(String[] parameters) {
-		int id = PMutil.getRandom(0, parameters.length);
-		return entryValidation(parameters[id]);
-	}
+//	/**
+//	 * Process Random among the given list
+//	 * @param parameters {@code String[]} the extra parameters
+//	 * @return {@code Integer} Random Value
+//	 */
+//	@Override Integer randomWithList(String[] parameters) {
+//		int id = PMutil.getRandom(0, parameters.length);
+//		return entryValidation(parameters[id]);
+//	}
 
 	// ==========================================================
     // Nested Classes

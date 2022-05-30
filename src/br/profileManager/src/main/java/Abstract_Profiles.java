@@ -357,7 +357,7 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 		// Special random with comments
 		getParameter("PLAYER RACE").addLine("Random", "Random",
 				"Full random");
-		getParameter("PLAYER COLOR").addLine("Random", "Green, Lime",
+		getParameter("PLAYER COLOR").addLine("Random", "Random Green, Lime",
 				"2 values = a range from option list");
 		getParameter("GALAXY SHAPE").addLine("Random",
 				"Random Rectangle, Ellipse, Spiral, Spiralarms",

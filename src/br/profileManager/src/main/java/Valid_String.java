@@ -104,16 +104,40 @@ public class Valid_String extends Abstract_ValidData<String> {
 		return getHistoryUserView(Default); // What else?
 	}
 	
+//	/**
+//	 * Process Random with parameters
+//	 * @param parameters {@code String[]} the extra parameters
+//	 * @return {@code String} Random Value
+//	 */
+//	@Override String randomWithParameters(String[] parameters) {
+//		if (parameters.length > 2) {
+//			return randomWithList(parameters);
+//		}
+//		return randomWithLimit(parameters);
+//	}
 	/**
-	 * Process Random with parameters
+	 * Process Random within Given Limits
 	 * @param parameters {@code String[]} the extra parameters
 	 * @return {@code String} Random Value
 	 */
-	@Override String randomWithParameters(String[] parameters) {
-		if (parameters.length > 2) {
-			return randomWithList(parameters);
-		}
-		return randomWithLimit(parameters);
+	@Override String randomWithLimit(String[] parameters) {
+		// This should not happen... 
+		// Probably due to a bad first parameter
+		return randomWithInListLimit(parameters);
+//		int min = 0;
+//		int max = listSize();
+//		int[] lim = new int[] {min, max};
+//		// First Limit
+//		if (parameters.length >= 1) {
+//			min = getBestLimit(parameters, 0, lim);
+//		}
+//		// Second Limit
+//		if (parameters.length >= 2) {
+//			max = getBestLimit(parameters, 1, lim);
+//		}
+//		// get Random
+//		int id = PMutil.getRandom(min, max);
+//		return getCodeView(id);
 	}
 	
 	@Override String toCodeView(String userView) {
@@ -195,61 +219,39 @@ public class Valid_String extends Abstract_ValidData<String> {
 	// ==================================================
     // Other Methods
     //
-	private Integer getBestLimit(String[] parameters, int index, int[] lim) {
-		int out = lim[index];
-		// get given parameter and test it
-		String param = parameters[index];
-		// test for integer
-		if (PMutil.testForInteger(param)) {
-			return PMutil.validateLimits(PMutil.toInteger(param), lim[0], lim[1]);
-		} 
-		// test if in list
-		if (isValidUserEntry(param)) {
-			return this.getUserViewIndex(param, out);
-		}
-		// get default value and repeat the test
-		param = getDefaultRandomLimits(index);
-		if (PMutil.testForInteger(param)) {
-			return PMutil.validateLimits(PMutil.toInteger(param), lim[0], lim[1]);
-		} 
-		if (isValidUserEntry(param)) {
-			return this.getUserViewIndex(param, out);
-		}
-		// Nothing good... return the limit
-		return out;
-	}
+//	private Integer getBestLimit(String[] parameters, int index, int[] lim) {
+//		int out = lim[index];
+//		// get given parameter and test it
+//		String param = parameters[index];
+//		// test for integer
+//		if (PMutil.testForInteger(param)) {
+//			return PMutil.validateLimits(PMutil.toInteger(param), lim[0], lim[1]);
+//		} 
+//		// test if in list
+//		if (isValidUserEntry(param)) {
+//			return this.getUserViewIndex(param, out);
+//		}
+//		// get default value and repeat the test
+//		param = getDefaultRandomLimits(index);
+//		if (PMutil.testForInteger(param)) {
+//			return PMutil.validateLimits(PMutil.toInteger(param), lim[0], lim[1]);
+//		} 
+//		if (isValidUserEntry(param)) {
+//			return this.getUserViewIndex(param, out);
+//		}
+//		// Nothing good... return the limit
+//		return out;
+//	}
 	
-	/**
-	 * Process Random within Given Limits
-	 * @param parameters {@code String[]} the extra parameters
-	 * @return {@code String} Random Value
-	 */
-	String randomWithLimit(String[] parameters) {
-		int min = 0;
-		int max = listSize();
-		int[] lim = new int[] {min, max};
-		// First Limit
-		if (parameters.length >= 1) {
-			min = getBestLimit(parameters, 0, lim);
-		}
-		// Second Limit
-		if (parameters.length >= 2) {
-			max = getBestLimit(parameters, 1, lim);
-		}
-		// get Random
-		int id = PMutil.getRandom(min, max);
-		return getCodeView(id);
-	}
-	
-	/**
-	 * Process Random among the given list
-	 * @param parameters {@code String[]} the extra parameters
-	 * @return {@code String} Random Value
-	 */
-	String randomWithList(String[] parameters) {
-		int id = PMutil.getRandom(0, parameters.length);
-		return entryValidation(parameters[id]);
-	}
+//	/**
+//	 * Process Random among the given list
+//	 * @param parameters {@code String[]} the extra parameters
+//	 * @return {@code String} Random Value
+//	 */
+//	Override String randomWithList(String[] parameters) {
+//		int id = PMutil.getRandom(0, parameters.length);
+//		return entryValidation(parameters[id]);
+//	}
 
  	// ==========================================================
     // Nested Classes

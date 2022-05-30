@@ -121,7 +121,7 @@ public abstract class Abstract_ValidData<ValueClass> extends WriteUtil{
 	 * @param parameters {@code String[]} the extra parameters
 	 * @return {@code Code View} OutputString
 	 */
-	abstract ValueClass randomWithParameters(String[] parameters);
+	abstract ValueClass randomWithLimit(String[] parameters);
 
 	/**
 	 * Conversion from code view to user view
@@ -278,6 +278,53 @@ public abstract class Abstract_ValidData<ValueClass> extends WriteUtil{
     // Test Methods
     //
 	/**
+	 * Process Random within Given Limits
+	 * @param parameters {@code String[]} the extra parameters
+	 * @return {@code String} Random Value
+	 */
+	protected ValueClass randomWithInListLimit(String[] parameters) {
+		int min = 0;
+		int max = listSize();
+		// First Limit
+		if (parameters.length >= 1) {
+			min = getUserViewIndex(parameters[0], min);
+		}
+		// Second Limit
+		if (parameters.length >= 2) {
+			max = getUserViewIndex(parameters[1], max);
+		}
+		// get Random
+		int id = PMutil.getRandom(min, max);
+		return getCodeView(id);
+	}
+
+	/**
+	 * Process Random with parameters
+	 * @param parameters {@code String[]} the extra parameters
+	 * @return {@code ValueClass} Output Value
+	 */
+	ValueClass randomWithParameters(String[] parameters) {
+		if (parameters.length > 2) {
+			return randomWithList(parameters);
+		}
+		if (hasList() && isValidUserEntry(parameters[0])) {
+			return randomWithInListLimit(parameters);
+		}
+		return randomWithLimit(parameters);
+	}
+	
+	/**
+	 * Process Random among the given list
+	 * @param parameters {@code String[]} the extra parameters
+	 * @return {@code ValueClass} Random Value
+	 */
+	ValueClass randomWithList(String[] parameters) {
+		int id = PMutil.getRandom(0, parameters.length);
+		return entryValidation(parameters[id]);
+	}
+
+
+	/**
 	 * @return <b>true</b> if the Validation List is not empty
 	 */
 	protected boolean hasList() {
@@ -347,15 +394,14 @@ public abstract class Abstract_ValidData<ValueClass> extends WriteUtil{
 	 * @return the {@code int} index
 	 */
 	protected int getUserViewIndex(String userView, int defaultIndex) {
- 		if (userView != null) {
- 			int index = 0;
-			for (ValidationElement<ValueClass> element : validationList) {
-				if (element.isValidUserEntry(userView, criteria)) {
-					return index;
-				}
-				index++;
+		userView = PMutil.clean(userView);
+		int index = 0;
+		for (ValidationElement<ValueClass> element : validationList) {
+			if (element.isValidUserEntry(userView, criteria)) {
+				return index;
 			}
- 		}
+			index++;
+		}
 		return defaultIndex;
 	}
 	

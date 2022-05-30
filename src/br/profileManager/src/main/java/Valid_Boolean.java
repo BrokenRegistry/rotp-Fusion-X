@@ -77,7 +77,11 @@ public class Valid_Boolean extends Abstract_ValidData<Boolean> {
 		// ex: Random yes, yes, yes, NO
 		return randomWithList(parameters);
 	}
-	
+	// This should never happen
+	@Override Boolean randomWithLimit(String[] parameters) {
+		return randomWithList(parameters);
+	}
+
 	@Override String toUserView(Boolean codeView) {
 		return PMutil.toYesNoString(codeView);
 	}
@@ -89,15 +93,15 @@ public class Valid_Boolean extends Abstract_ValidData<Boolean> {
 	// ==================================================
     // Other Methods
     //
-	/**
-	 * Process Random among the given list
-	 * @param parameters {@code String[]} the extra parameters
-	 * @return {@code Boolean} Random Value
-	 */
-	Boolean randomWithList(String[] parameters) {
-		int id = PMutil.getRandom(0, parameters.length);
-		return entryValidation(parameters[id]);
-	}
+//	/**
+//	 * Process Random among the given list
+//	 * @param parameters {@code String[]} the extra parameters
+//	 * @return {@code Boolean} Random Value
+//	 */
+//	Boolean randomWithList(String[] parameters) {
+//		int id = PMutil.getRandom(0, parameters.length);
+//		return entryValidation(parameters[id]);
+//	}
 
  	// ==========================================================
     // Nested Classes
