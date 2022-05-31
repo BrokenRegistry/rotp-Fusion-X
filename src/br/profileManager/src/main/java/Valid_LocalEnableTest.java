@@ -48,12 +48,12 @@ class Valid_LocalEnableTest {
 				, "should have been «false»");
 	}
 
-	@Test
-	void isLocal_None() {
-		assertEquals(true, 
-				new Line_LocalEnable().isLocal()
-				, "should have been «true»");
-	}
+//	@Test
+//	void isLocal_None() {
+//		assertEquals(true, 
+//				new Line_LocalEnable().isLocal()
+//				, "should have been «true»");
+//	}
 
 	@Test
 	void isBlankValue_None() {

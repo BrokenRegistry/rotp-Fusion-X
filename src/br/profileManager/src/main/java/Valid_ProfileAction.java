@@ -45,8 +45,9 @@ class Valid_ProfileAction extends Valid_String {
 	Valid_ProfileAction() {
 		setDefaultName("None!");
 		setHistoryUserView(Default, DEFAULT_VALUE);
-//		setDefaultValue(DEFAULT_VALUE);
-
+		setShowHistory(false);
+		setShowLocalEnable(false);
+		
 		setValidationCriteria(new ValidationCriteria()
 				.isRandomAllowed(false)
 				.userViewEquals(false)

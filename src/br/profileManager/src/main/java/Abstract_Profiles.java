@@ -117,7 +117,7 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 	public void saveGameToFile(ClientClass clientObject) {
 		loadProfilesCfg(); // in case the user changed load or save actions
 		// Remove the Local Enable parameter where possibly wrongly added 
-			parameterProfileAction.removeLocalEnable();
+//			parameterProfileAction.removeLocalEnable(); // TODO
 		updateGameValue(clientObject);
 		doUserUpdateActions();
 		saveProfilesCfg();
@@ -217,7 +217,7 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 	private void saveGuiToFile(ClientClass clientObject) {
 		loadProfilesCfg(); // in case the user changed load or save actions
 		// Remove the Local Enable parameter where possibly wrongly added 
-			parameterProfileAction.removeLocalEnable();
+//			parameterProfileAction.removeLocalEnable(); // TODO
 		updateGuiValue(clientObject);
 		doUserUpdateActions();
 		saveProfilesCfg();
@@ -484,7 +484,7 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 	
 	private int saveProfilesCfg() {
 		// Remove the Local Enable parameter where possibly wrongly added 
-		parameterProfileAction.removeLocalEnable();
+//		parameterProfileAction.removeLocalEnable(); // TODO
 		
 		List<String> settingKeys = getAllProfiles();
 		if (settingKeys == null || settingKeys.isEmpty()) {

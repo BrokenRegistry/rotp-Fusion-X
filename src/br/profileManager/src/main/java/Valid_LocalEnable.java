@@ -20,14 +20,15 @@ import static br.profileManager.src.main.java.WriteUtil.History.*;
 /**
  * For the validation of the configurations Action
  */
-class Valid_LocalEnable extends Valid_ProfileAction {
-	
+//class Valid_LocalEnable extends Valid_ProfileAction {
+class Valid_LocalEnable extends Valid_String {
+
 	// From Valid_ConfigAction
-	//	static final String LOAD_ENABLED    = "ENABLE_LOAD_LIST";
-	//	static final String WRITE_ENABLED   = "ENABLE_WRITE_LIST";
-	//	static final String GAME_ENABLED    = "ENABLE_GAME_LIST";
+		static final String LOAD_ENABLED    = "ENABLE_LOAD_LIST";
+		static final String WRITE_ENABLED   = "ENABLE_WRITE_LIST";
+		static final String GAME_ENABLED    = "ENABLE_GAME_LIST";
 	//	static final String SPECIAL_ENABLED = "SPECIAL_LIST";
-	static final String LOCAL_ENABLED = "LOCAL_LIST";
+	//  static final String LOCAL_ENABLED = "LOCAL_LIST";
 
 	public  static final String PARAMETER_NAME = "¦ LOCAL ENABLE";
 	private static final String DEFAULT_VALUE  = "ALL";
@@ -36,6 +37,7 @@ class Valid_LocalEnable extends Valid_ProfileAction {
 		setDefaultName(PARAMETER_NAME);
 		setHistoryUserView(Default, DEFAULT_VALUE);
 		setHistoryUserView(Current, DEFAULT_VALUE);
+		setShowWithOptions(true);
 		
 		setValidationCriteria(new ValidationCriteria()
 				.isRandomAllowed(false)
@@ -44,16 +46,20 @@ class Valid_LocalEnable extends Valid_ProfileAction {
 
 		addElement("NO",
 				"No actions are allowed in this Setting" ,
-				LOCAL_ENABLED);
+//				LOCAL_ENABLED
+				"");
 		addElement("ALL",
 				"All actions are allowed in this Setting" ,
-				LOCAL_ENABLED + " " + LOAD_ENABLED + " " + WRITE_ENABLED);
-		addElement("TO FILE", 
+//				LOCAL_ENABLED + " " + 
+				LOAD_ENABLED + " " + WRITE_ENABLED);
+		addElement("WRITE", 
 				"Allows actions that change the file" ,
-				LOCAL_ENABLED + " " + WRITE_ENABLED);
-		addElement("FROM FILE", 
+//				LOCAL_ENABLED + " " + 
+				WRITE_ENABLED);
+		addElement("LOAD", 
 				"Allows actions Get from GUI and Save to file" ,
-				LOCAL_ENABLED + " " + LOAD_ENABLED);
+//				LOCAL_ENABLED + " " + 
+				LOAD_ENABLED);
 	}
 
  	// ==========================================================
@@ -94,8 +100,8 @@ class Valid_LocalEnable extends Valid_ProfileAction {
 			return isValueFromCategory(WRITE_ENABLED);
 		}
 		
-		boolean isLocal() {
-			return isValueFromCategory(LOCAL_ENABLED);
-		}
+//		boolean isLocal() {
+//			return isValueFromCategory(LOCAL_ENABLED);
+//		}
 	}
 }

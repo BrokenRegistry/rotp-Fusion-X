@@ -313,6 +313,9 @@ class Generic_Line<
 		String out = "";
 		out += String.format(KEY_FORMAT, entryName.toString());
 		out += PMutil.neverNull(entryValue);
+		if (getValidationData().isShowWithOptions()) {
+			comment = getValidationData().getOptionsRange();
+		}
 		if (comment != null && !comment.isBlank()) {
 			out = String.format(KEY_VALUE_FORMAT, out);
 			if (!" ".equals(PMutil.getLastChar(out))) {

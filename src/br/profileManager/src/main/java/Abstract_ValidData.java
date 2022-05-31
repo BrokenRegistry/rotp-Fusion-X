@@ -35,15 +35,17 @@ public abstract class Abstract_ValidData<ValueClass> extends WriteUtil{
 	private List<ValueClass> limits = new ArrayList<ValueClass>();
 	private Map<History, ValueClass> historyMap = new EnumMap<>(History.class);
 	
-	private String     defaultName  = "none";
-//	private boolean showHistory     = true;
-//	private boolean showLocalEnable = true;
+	private String  defaultName     = "none";
+	private boolean showWithOptions = false;
+	private boolean showHistory     = true;
+	private boolean showLocalEnable = true;
 	
 	/**
 	 * Set the "history" Code View
 	 * @param history  Field to be filled
 	 * @param newValue the new "history" Value
 	 */
+
 	protected void setHistoryCodeView(History history, ValueClass newValue) {
 		if (history == Last) { // if in two step to allow breakpoint
 			if (!PMutil.neverNull(historyMap.get(Last)).isBlank()) {
@@ -144,6 +146,30 @@ public abstract class Abstract_ValidData<ValueClass> extends WriteUtil{
     // Setters
     //
 	/**
+	 * Set the showWithOptions parameter value
+	 * @param newValue
+	 */
+	protected void setShowWithOptions(boolean newValue) {
+		showWithOptions = newValue;
+	}
+
+	/**
+	 * Set the showHistory parameter value
+	 * @param newValue
+	 */
+	protected void setShowHistory(boolean newValue) {
+		showHistory = newValue;
+	}
+
+	/**
+	 * Set the showLocalEnable parameter value
+	 * @param newValue
+	 */
+	protected void setShowLocalEnable(boolean newValue) {
+		showLocalEnable = newValue;
+	}
+
+	/**
 	 * Set the {@code Code View} limits
 	 * @param newLimits
 	 */
@@ -200,6 +226,30 @@ public abstract class Abstract_ValidData<ValueClass> extends WriteUtil{
 	// ==================================================
     // Getters
     //
+	/**
+	 * Get the showWithOptions parameter value
+	 * @return newValue
+	 */
+	protected boolean isShowWithOptions() {
+		return showWithOptions;
+	}
+
+	/**
+	 * Get the showHistory parameter value
+	 * @return newValue
+	 */
+	protected boolean isShowHistory() {
+		return showHistory;
+	}
+
+	/**
+	 * Get the showLocalEnable parameter value
+	 * @return newValue
+	 */
+	protected boolean isShowLocalEnabled() {
+		return showLocalEnable;
+	}
+
 	/**
 	 * Get the {@code Code View} limits
 	 * @return the limits
