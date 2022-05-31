@@ -3782,7 +3782,43 @@ public final class Empire implements Base, NamedObject, Serializable {
         }
     }
    
-    public static Comparator<Empire> TOTAL_POPULATION = (Empire o1, Empire o2) -> o2.totalPlanetaryPopulation().compareTo(o1.totalPlanetaryPopulation());
+    // BR: Trying to allow changing race // TODO
+    /**
+	 * @param newRace the new race Name
+	 */
+	public void setRace(String newRace) {
+		// raceKey = newRace;   
+		race = Race.keyed(newRace);
+        // dataRaceKey = newRace;
+		dataRace = Race.keyed(newRace);
+        // raceNameIndex = race.nameIndex(race.nextAvailableName());
+        leader = new Leader(this, race.nextAvailableLeader());
+        shipImage = null;
+        shipImageLarge = null;
+        shipImageHuge = null;
+        scoutImage = null;
+        transportImage = null;
+        loadStartingShipDesigns();
+        recalcPlanetaryProduction();
+        String sysName = race.nextAvailableHomeworld();
+        galaxy().system(homeSysId).name(sysName);
+        int numCompWorlds = 0;
+        if (compSysId != null) {
+        	numCompWorlds = compSysId.length;
+        }
+        if (numCompWorlds > 0) { 
+            String[] compSysName = new String[]{"α", "β", "γ", "δ"}; // companion world Greek letter prefix
+            for (int id = 0; id < numCompWorlds; id++) {
+            	int sysId = compSysId[id];
+            	StarSystem compSys = galaxy().system(sysId);
+               	String oldName = compSys.name();
+               	String newName = compSysName[id] + " " + sysName;
+            	compSys.name(newName);
+            }
+        }
+	} // \BR
+
+	public static Comparator<Empire> TOTAL_POPULATION = (Empire o1, Empire o2) -> o2.totalPlanetaryPopulation().compareTo(o1.totalPlanetaryPopulation());
     public static Comparator<Empire> TOTAL_PRODUCTION = (Empire o1, Empire o2) -> o2.totalPlanetaryProduction().compareTo(o1.totalPlanetaryProduction());
     public static Comparator<Empire> AVG_TECH_LEVEL   = (Empire o1, Empire o2) -> o2.tech.avgTechLevel().compareTo(o1.tech.avgTechLevel());
     public static Comparator<Empire> TOTAL_FLEET_SIZE = (Empire o1, Empire o2) -> o2.totalFleetSize().compareTo(o1.totalFleetSize());

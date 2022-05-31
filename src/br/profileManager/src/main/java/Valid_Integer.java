@@ -70,6 +70,9 @@ public class Valid_Integer extends Abstract_ValidData<Integer> {
 		// Then Check if value is valid
 		Integer value = PMutil.toInteger(userEntry);
 		if (value == null) {
+			if (hasList() && isValidUserEntry(userEntry)) {
+				return getCodeView(userEntry);
+			}
 			if (getValidationCriteria().isBlankAllowed()) {
 				return null;
 			}

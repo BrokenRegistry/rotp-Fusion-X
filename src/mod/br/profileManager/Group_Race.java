@@ -77,28 +77,30 @@ public class Group_Race extends Abstract_Group <ClientClasses> {
 	    // startingRaceOptions
 		PlayerRace(ClientClasses go) { 
 			super("PLAYER RACE",
-				  new Valid_Race(go.getGuiObject().startingRaceOptions()));
-			setHistoryCodeView(Initial, go.getGuiObject().selectedPlayerRace());
+				  new Valid_Race(go.getOptionsObject().startingRaceOptions()));
+			setHistoryCodeView(Initial, go.getOptionsObject().selectedPlayerRace());
 			// No default (Random) ... So Initial!
-			setHistoryCodeView(Default, go.getGuiObject().selectedPlayerRace());
+			setHistoryCodeView(Default, go.getOptionsObject().selectedPlayerRace());
 		}
 		
 	    // ========== Overriders ==========
 	    //
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGuiObject().selectedPlayerRace();
+			return go.getOptionsObject().selectedPlayerRace();
 		}
 		
-		@Override public void putToGame(ClientClasses gs, String userOption) {
- //	   	gs.getGuiObject().selectedPlayer().race = userOption; // Direct to avoid reseting opponents
+		@Override public void putToGame(ClientClasses go, String userOption) {
+			go.getOptionsObject().selectedPlayer().race = userOption; // Direct to avoid reseting opponents
+//			go.getSessionObject().player().setRace(userOption);
+			go.getSessionObject().galaxy().empire(0).setRace(userOption);
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
-			return go.getGuiObject().selectedPlayerRace();
+			return go.getOptionsObject().selectedPlayerRace();
 		}
 		
 		@Override public void putToGUI(ClientClasses go, String userOption) {
-			go.getGuiObject().selectedPlayerRace(userOption);
+			go.getOptionsObject().selectedPlayerRace(userOption);
 		}
 		
 		@Override public void initComments() {
@@ -193,26 +195,26 @@ public class Group_Race extends Abstract_Group <ClientClasses> {
 	    //
 		PlayerColor(ClientClasses go) {
 			super("PLAYER COLOR", new Valid_Color());
-			setHistoryCodeView(Initial, go.getGuiObject().selectedPlayerColor());
+			setHistoryCodeView(Initial, go.getOptionsObject().selectedPlayerColor());
 		}
 		
 	    // ========== Overriders ==========
 	    //
 		@Override public Integer getFromGame (ClientClasses go) {
-			return go.getGuiObject().selectedPlayerColor();
+			return go.getOptionsObject().selectedPlayerColor();
 		}
 		
-		@Override public void putToGame(ClientClasses gs, Integer codeView) {
-			gs.getGameObject().galaxy().empire(0).changeColorId(codeView);
-			gs.getGuiObject().selectedPlayerColor(codeView);
+		@Override public void putToGame(ClientClasses go, Integer codeView) {
+			go.getOptionsObject().selectedPlayerColor(codeView);
+			go.getSessionObject().galaxy().empire(0).changeColorId(codeView);
 		}
 		
 		@Override public Integer getFromUI (ClientClasses go) {
-			return go.getGuiObject().selectedPlayerColor();
+			return go.getOptionsObject().selectedPlayerColor();
 		}
 		
 		@Override public void putToGUI(ClientClasses go, Integer codeView) {
-			go.getGuiObject().selectedPlayerColor(codeView);
+			go.getOptionsObject().selectedPlayerColor(codeView);
 		}
 		
 		@Override public void initComments() {

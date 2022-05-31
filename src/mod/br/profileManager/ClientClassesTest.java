@@ -47,7 +47,7 @@ public class ClientClassesTest extends ClientClasses{
 	 * @return the guiObject
 	 */
 	@Override
-	public IGameOptions getGuiObject() {
+	public IGameOptions getOptionsObject() {
 		return guiObject;
 	}
 
@@ -56,7 +56,7 @@ public class ClientClassesTest extends ClientClasses{
 	 * @return this
 	 */
 	@Override
-	public ClientClasses setGuiObject(IGameOptions guiObject) {
+	public ClientClasses setOptionsObject(IGameOptions guiObject) {
 		this.guiObject = guiObject;
 		return this;
 	}

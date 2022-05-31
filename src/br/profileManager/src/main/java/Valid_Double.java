@@ -71,6 +71,9 @@ public class Valid_Double extends Abstract_ValidData<Double> {
 		// Then Check if value is valid
 		Double value = PMutil.toDouble(userEntry);
 		if (value == null) {
+			if (hasList() && isValidUserEntry(userEntry)) {
+				return getCodeView(userEntry);
+			}
 			if (getValidationCriteria().isBlankAllowed()) {
 				return null;
 			}

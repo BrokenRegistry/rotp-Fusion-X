@@ -42,7 +42,7 @@ class Valid_LocalEnable extends Valid_ProfileAction {
 				.userViewEquals(false)
 				.codeViewEquals(false));
 
-		addElement("NONE",
+		addElement("NO",
 				"No actions are allowed in this Setting" ,
 				LOCAL_ENABLED);
 		addElement("ALL",

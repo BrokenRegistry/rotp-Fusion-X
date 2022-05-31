@@ -71,6 +71,9 @@ public class Valid_Float extends Abstract_ValidData<Float> {
 		}
 		// Then Check if value is valid
 		Float value = PMutil.toFloat(userEntry);
+		if (hasList() && isValidUserEntry(userEntry)) {
+			return getCodeView(userEntry);
+		}
 		if (value == null) {
 			if (getValidationCriteria().isBlankAllowed()) {
 				return null;

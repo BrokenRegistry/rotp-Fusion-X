@@ -9,8 +9,8 @@ import rotp.model.game.IGameOptions;
  * Could be replaced by using {@code Object} and casting the class
  */
 public class ClientClasses {
-	private IGameOptions guiObject;
-	private GameSession  gameObject;
+	private IGameOptions optionsObject;
+	private GameSession  sessionObject;
 	private boolean Initial = false;
 
 	/**
@@ -23,46 +23,46 @@ public class ClientClasses {
 	 * @param guiObject {@code IGameOptions} to set
 	 */
 	public ClientClasses(IGameOptions guiObject) {
-		this.guiObject = guiObject;
+		this.optionsObject = guiObject;
 	}
 
 	/**
 	 * @param gameObject {@code GameSession} to set
 	 */
 	public ClientClasses(GameSession gameObject) {
-		this.gameObject = gameObject;
-		this.guiObject  = gameObject.options();
+		this.sessionObject = gameObject;
+		this.optionsObject  = gameObject.options();
 	}
 
 	/**
 	 * @return the guiObject
 	 */
-	public IGameOptions getGuiObject() {
-		return guiObject;
+	public IGameOptions getOptionsObject() {
+		return optionsObject;
 	}
 
 	/**
 	 * @param guiObject the guiObject to set
 	 * @return this for chaining purpose
 	 */
-	public ClientClasses setGuiObject(IGameOptions guiObject) {
-		this.guiObject = guiObject;
+	public ClientClasses setOptionsObject(IGameOptions guiObject) {
+		this.optionsObject = guiObject;
 		return this;
 	}
 
 	/**
 	 * @return the gameObject
 	 */
-	public GameSession getGameObject() {
-		return gameObject;
+	public GameSession getSessionObject() {
+		return sessionObject;
 	}
 
 	/**
 	 * @param gameObject the gameObject to set
 	 * @return this for chaining purpose
 	 */
-	public ClientClasses setGameObject(GameSession gameObject) {
-		this.gameObject = gameObject;
+	public ClientClasses setSessionObject(GameSession gameObject) {
+		this.sessionObject = gameObject;
 		return this;
 	}
 

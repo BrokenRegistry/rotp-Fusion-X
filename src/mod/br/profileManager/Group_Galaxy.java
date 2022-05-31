@@ -77,15 +77,15 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 	    //
 		GalaxyShape(ClientClasses go) { 
 			super("GALAXY SHAPE",
-					new Valid_GalaxyShape(go.getGuiObject().galaxyShapeOptions()));
-			setHistoryCodeView(Initial, go.getGuiObject().selectedGalaxyShape());
+					new Valid_GalaxyShape(go.getOptionsObject().galaxyShapeOptions()));
+			setHistoryCodeView(Initial, go.getOptionsObject().selectedGalaxyShape());
 			setHistoryUserView(Default, "Rectangle"); // Ray
 		}
 		
 	    // ========== Overriders ==========
 	    //
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGuiObject().selectedGalaxyShape();
+			return go.getOptionsObject().selectedGalaxyShape();
 		}
 		
 		@Override public void putToGame(ClientClasses go, String codeView) {
@@ -93,11 +93,11 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
-			return go.getGuiObject().selectedGalaxyShape();
+			return go.getOptionsObject().selectedGalaxyShape();
 		}
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
-			go.getGuiObject().selectedGalaxyShape(codeView);
+			go.getOptionsObject().selectedGalaxyShape(codeView);
 		}
 		
 		@Override public void initComments() {
@@ -140,15 +140,15 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 	    //
 		GalaxySize(ClientClasses go) {
 			super("GALAXY SIZE",
-					new Valid_GalaxySize(go.getGuiObject().galaxySizeOptions()));
-		setHistoryCodeView(Initial, go.getGuiObject().selectedGalaxySize());
+					new Valid_GalaxySize(go.getOptionsObject().galaxySizeOptions()));
+		setHistoryCodeView(Initial, go.getOptionsObject().selectedGalaxySize());
 		setHistoryUserView(Default, "Small"); // Ray
 		}
 		
 	    // ========== Overriders ==========
 	    //
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGuiObject().selectedGalaxySize();
+			return go.getOptionsObject().selectedGalaxySize();
 		}
 		
 		@Override public void putToGame(ClientClasses go, String codeView) {
@@ -156,11 +156,11 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
-			return go.getGuiObject().selectedGalaxySize();
+			return go.getOptionsObject().selectedGalaxySize();
 		}
 		@Override
 		public void putToGUI(ClientClasses go, String codeView) {
-			go.getGuiObject().selectedGalaxySize(codeView);
+			go.getOptionsObject().selectedGalaxySize(codeView);
 		}
 		
 		@Override public void initComments() {}
@@ -199,15 +199,15 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 	    //
 		Difficulty(ClientClasses go) {
 			super("DIFFICULTY",
-				  new Valid_Difficulty(go.getGuiObject().gameDifficultyOptions()));
-		setHistoryCodeView(Initial, go.getGuiObject().selectedGameDifficulty());
+				  new Valid_Difficulty(go.getOptionsObject().gameDifficultyOptions()));
+		setHistoryCodeView(Initial, go.getOptionsObject().selectedGameDifficulty());
 		setHistoryUserView(Default, "Easy"); // Ray
 		}
 		
 	    // ========== Overriders ==========
 	    //
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGuiObject().selectedGameDifficulty();
+			return go.getOptionsObject().selectedGameDifficulty();
 		}
 		
 		@Override public void putToGame(ClientClasses go, String codeView) {
@@ -215,11 +215,11 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
-			return go.getGuiObject().selectedGameDifficulty();
+			return go.getOptionsObject().selectedGameDifficulty();
 		}
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
-			go.getGuiObject().selectedGameDifficulty(codeView);
+			go.getOptionsObject().selectedGameDifficulty(codeView);
 		}
 		
 		@Override public void initComments() {
@@ -259,15 +259,15 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 	    //
 		OpponentAI(ClientClasses go) {
 			super("OPPONENT AI", 
-					new Valid_OpponentAI(go.getGuiObject().opponentAIOptions()));
-			setHistoryCodeView(Initial, go.getGuiObject().selectedOpponentAIOption());
+					new Valid_OpponentAI(go.getOptionsObject().opponentAIOptions()));
+			setHistoryCodeView(Initial, go.getOptionsObject().selectedOpponentAIOption());
 			setHistoryUserView(Default, "Base"); // Ray
 		}
 		
 	    // ========== Overriders ==========
 	    //
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGuiObject().selectedOpponentAIOption();
+			return go.getOptionsObject().selectedOpponentAIOption();
 		}
 		
 		@Override public void putToGame(ClientClasses go, String codeView) {
@@ -275,11 +275,11 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
-			return go.getGuiObject().selectedOpponentAIOption();
+			return go.getOptionsObject().selectedOpponentAIOption();
 		}
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
-			go.getGuiObject().selectedOpponentAIOption(codeView);
+			go.getOptionsObject().selectedOpponentAIOption(codeView);
 		}
 		
 		@Override public void initComments() {}
@@ -314,10 +314,10 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 	    //
 		NbOpponent(ClientClasses go) {
 			super("NB OPPONENTS", new Valid_NbOpponent());
-			setHistoryCodeView(Initial, go.getGuiObject().selectedNumberOpponents());
+			setHistoryCodeView(Initial, go.getOptionsObject().selectedNumberOpponents());
 			setHistoryCodeView(Default, 3); // Ray
 			Integer min = 0;
-			Integer max = go.getGuiObject().maximumOpponentsOptions();
+			Integer max = go.getOptionsObject().maximumOpponentsOptions();
 			setLimits(min, max);
 			setDefaultRandomLimits(1, max);
 		}
@@ -325,7 +325,7 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 	    // ========== Overriders ==========
 	    //
 		@Override public Integer getFromGame (ClientClasses go) {
-			return go.getGuiObject().selectedNumberOpponents();
+			return go.getOptionsObject().selectedNumberOpponents();
 		}
 		
 		@Override public void putToGame(ClientClasses go, Integer codeView) {
@@ -333,16 +333,16 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public Integer getFromUI (ClientClasses go) {
-			return go.getGuiObject().selectedNumberOpponents();
+			return go.getOptionsObject().selectedNumberOpponents();
 		}
 		
 		@Override public void putToGUI(ClientClasses go, Integer codeView) {
 			// the limits may have changed from previous settings
 			Integer min = 0;
-			Integer max = go.getGuiObject().maximumOpponentsOptions();
+			Integer max = go.getOptionsObject().maximumOpponentsOptions();
 			setLimits(min, max);
 			setDefaultRandomLimits(1, max);
-			go.getGuiObject().selectedNumberOpponents(Math.min(max, codeView));
+			go.getOptionsObject().selectedNumberOpponents(Math.min(max, codeView));
 		}
 
 		@Override public void initComments() {}

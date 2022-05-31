@@ -82,13 +82,13 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 
 		GalaxyAge(ClientClasses go) { 
 			super("GALAXY AGE", 
-					new Valid_GalaxyAge(go.getGuiObject().galaxyAgeOptions()));
-			setHistoryCodeView(Initial, go.getGuiObject().selectedGalaxyAge());
+					new Valid_GalaxyAge(go.getOptionsObject().galaxyAgeOptions()));
+			setHistoryCodeView(Initial, go.getOptionsObject().selectedGalaxyAge());
 			setHistoryUserView(Default, "Normal"); // Ray
 			}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGuiObject().selectedGalaxyAge();
+			return go.getOptionsObject().selectedGalaxyAge();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
@@ -96,11 +96,11 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
-			return go.getGuiObject().selectedGalaxyAge();
+			return go.getOptionsObject().selectedGalaxyAge();
 		}
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
-			go.getGuiObject().selectedGalaxyAge(codeView);
+			go.getOptionsObject().selectedGalaxyAge(codeView);
 		}
 		
 		@Override public void initComments() {
@@ -139,13 +139,13 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 
 		StarDensity(ClientClasses go) {
 			super("STAR DENSITY",
-					new Valid_StarDensity(go.getGuiObject().starDensityOptions()));
-			setHistoryCodeView(Initial, go.getGuiObject().selectedStarDensityOption());
+					new Valid_StarDensity(go.getOptionsObject().starDensityOptions()));
+			setHistoryCodeView(Initial, go.getOptionsObject().selectedStarDensityOption());
 			setHistoryUserView(Default, "Normal"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGuiObject().selectedStarDensityOption();
+			return go.getOptionsObject().selectedStarDensityOption();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
@@ -153,11 +153,11 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
-			return go.getGuiObject().selectedStarDensityOption();
+			return go.getOptionsObject().selectedStarDensityOption();
 		}
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
-			go.getGuiObject().selectedStarDensityOption(codeView);
+			go.getOptionsObject().selectedStarDensityOption(codeView);
 		}
 		
 		@Override public void initComments() {}
@@ -191,13 +191,13 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 
 		Nebulae(ClientClasses go) {
 			super("NEBULAE",
-					new Valid_Nebulae(go.getGuiObject().nebulaeOptions()));
-			setHistoryCodeView(Initial, go.getGuiObject().selectedNebulaeOption());
+					new Valid_Nebulae(go.getOptionsObject().nebulaeOptions()));
+			setHistoryCodeView(Initial, go.getOptionsObject().selectedNebulaeOption());
 			setHistoryUserView(Default, "Normal"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGuiObject().selectedNebulaeOption();
+			return go.getOptionsObject().selectedNebulaeOption();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
@@ -205,11 +205,11 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
-			return go.getGuiObject().selectedNebulaeOption();
+			return go.getOptionsObject().selectedNebulaeOption();
 		}
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
-			go.getGuiObject().selectedNebulaeOption(codeView);
+			go.getOptionsObject().selectedNebulaeOption(codeView);
 		}
 		
 		@Override public void initComments() {}
@@ -243,13 +243,13 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 
 		PlanetQuality(ClientClasses go) {
 			super("PLANET QUALITY",
-					new Valid_PlanetQuality(go.getGuiObject().planetQualityOptions()));
-			setHistoryCodeView(Initial, go.getGuiObject().selectedPlanetQualityOption());
+					new Valid_PlanetQuality(go.getOptionsObject().planetQualityOptions()));
+			setHistoryCodeView(Initial, go.getOptionsObject().selectedPlanetQualityOption());
 			setHistoryUserView(Default, "Normal"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGuiObject().selectedPlanetQualityOption();
+			return go.getOptionsObject().selectedPlanetQualityOption();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
@@ -257,11 +257,11 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
-			return go.getGuiObject().selectedPlanetQualityOption();
+			return go.getOptionsObject().selectedPlanetQualityOption();
 		}
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
-			go.getGuiObject().selectedPlanetQualityOption(codeView);
+			go.getOptionsObject().selectedPlanetQualityOption(codeView);
 		}
 		
 		@Override public void initComments() {}
@@ -295,13 +295,13 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 
 		Terraforming(ClientClasses go) {
 			super("TERRAFORMING", 
-					new Valid_Terraforming(go.getGuiObject().terraformingOptions()));
-			setHistoryCodeView(Initial, go.getGuiObject().selectedTerraformingOption());
+					new Valid_Terraforming(go.getOptionsObject().terraformingOptions()));
+			setHistoryCodeView(Initial, go.getOptionsObject().selectedTerraformingOption());
 			setHistoryUserView(Default, "Normal"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGuiObject().selectedTerraformingOption();
+			return go.getOptionsObject().selectedTerraformingOption();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
@@ -309,11 +309,11 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
-			return go.getGuiObject().selectedTerraformingOption();
+			return go.getOptionsObject().selectedTerraformingOption();
 		}
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
-			go.getGuiObject().selectedTerraformingOption(codeView);
+			go.getOptionsObject().selectedTerraformingOption(codeView);
 		}
 		
 		@Override public void initComments() {
@@ -349,25 +349,25 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 
 		RandomEvents(ClientClasses go) {
 			super("RANDOM EVENTS", 
-					new Valid_RandomEvents(go.getGuiObject().randomEventOptions()));
-			setHistoryCodeView(Initial, go.getGuiObject().selectedRandomEventOption());
+					new Valid_RandomEvents(go.getOptionsObject().randomEventOptions()));
+			setHistoryCodeView(Initial, go.getOptionsObject().selectedRandomEventOption());
 			setHistoryUserView(Default, "On"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGuiObject().selectedRandomEventOption();
+			return go.getOptionsObject().selectedRandomEventOption();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
-			gs.getGuiObject().selectedRandomEventOption(codeView);
+			gs.getOptionsObject().selectedRandomEventOption(codeView);
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
-			return go.getGuiObject().selectedRandomEventOption();
+			return go.getOptionsObject().selectedRandomEventOption();
 		}
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
-			go.getGuiObject().selectedRandomEventOption(codeView);
+			go.getOptionsObject().selectedRandomEventOption(codeView);
 		}
 		
 		@Override public void initComments() {
@@ -403,13 +403,13 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 
 		AIHostility(ClientClasses go) {
 			super("AI HOSTILITY", 
-					new Valid_AIHostility(go.getGuiObject().aiHostilityOptions()));
-			setHistoryCodeView(Initial, go.getGuiObject().selectedAIHostilityOption());
+					new Valid_AIHostility(go.getOptionsObject().aiHostilityOptions()));
+			setHistoryCodeView(Initial, go.getOptionsObject().selectedAIHostilityOption());
 			setHistoryUserView(Default, "Normal"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGuiObject().selectedAIHostilityOption();
+			return go.getOptionsObject().selectedAIHostilityOption();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
@@ -417,11 +417,11 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
-			return go.getGuiObject().selectedAIHostilityOption();
+			return go.getOptionsObject().selectedAIHostilityOption();
 		}
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
-			go.getGuiObject().selectedAIHostilityOption(codeView);
+			go.getOptionsObject().selectedAIHostilityOption(codeView);
 		}
 		
 		@Override public void initComments() {
@@ -457,25 +457,25 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 
 		Council(ClientClasses go) {
 			super("COUNCIL", 
-					new Valid_Council(go.getGuiObject().councilWinOptions()));
-			setHistoryCodeView(Initial, go.getGuiObject().selectedCouncilWinOption());
+					new Valid_Council(go.getOptionsObject().councilWinOptions()));
+			setHistoryCodeView(Initial, go.getOptionsObject().selectedCouncilWinOption());
 			setHistoryUserView(Default, "Rebels"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGuiObject().selectedCouncilWinOption();
+			return go.getOptionsObject().selectedCouncilWinOption();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
-			gs.getGuiObject().selectedCouncilWinOption(codeView);
+			gs.getOptionsObject().selectedCouncilWinOption(codeView);
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
-			return go.getGuiObject().selectedCouncilWinOption();
+			return go.getOptionsObject().selectedCouncilWinOption();
 		}
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
-			go.getGuiObject().selectedCouncilWinOption(codeView);
+			go.getOptionsObject().selectedCouncilWinOption(codeView);
 		}
 		
 		@Override public void initComments() {
@@ -511,13 +511,13 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 
 		RandomizeAI(ClientClasses go) {
 			super("RANDOMIZE AI",
-					new Valid_RandomizeAI(go.getGuiObject().randomizeAIOptions()));
-			setHistoryCodeView(Initial, go.getGuiObject().selectedRandomizeAIOption());
+					new Valid_RandomizeAI(go.getOptionsObject().randomizeAIOptions()));
+			setHistoryCodeView(Initial, go.getOptionsObject().selectedRandomizeAIOption());
 			setHistoryUserView(Default, "None"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGuiObject().selectedRandomizeAIOption();
+			return go.getOptionsObject().selectedRandomizeAIOption();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
@@ -525,11 +525,11 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
-			return go.getGuiObject().selectedRandomizeAIOption();
+			return go.getOptionsObject().selectedRandomizeAIOption();
 		}
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
-			go.getGuiObject().selectedRandomizeAIOption(codeView);
+			go.getOptionsObject().selectedRandomizeAIOption(codeView);
 		}
 		
 		@Override public void initComments() {}
@@ -563,13 +563,13 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 
 		AutoPlay(ClientClasses go) {
 			super("AUTOPLAY", 
-					new Valid_AutoPlay(go.getGuiObject().autoplayOptions()));
-			setHistoryCodeView(Initial, go.getGuiObject().selectedAutoplayOption());
+					new Valid_AutoPlay(go.getOptionsObject().autoplayOptions()));
+			setHistoryCodeView(Initial, go.getOptionsObject().selectedAutoplayOption());
 			setHistoryUserView(Default, "Off"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGuiObject().selectedAutoplayOption();
+			return go.getOptionsObject().selectedAutoplayOption();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
@@ -577,11 +577,11 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
-			return go.getGuiObject().selectedAutoplayOption();
+			return go.getOptionsObject().selectedAutoplayOption();
 		}
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
-			go.getGuiObject().selectedAutoplayOption(codeView);
+			go.getOptionsObject().selectedAutoplayOption(codeView);
 		}
 		
 		@Override public void initComments() {}
@@ -615,13 +615,13 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 
 		Research(ClientClasses go) { 
 			super("RESEARCH", 
-					new Valid_Research(go.getGuiObject().researchRateOptions()));
-			setHistoryCodeView(Initial, go.getGuiObject().selectedResearchRate());
+					new Valid_Research(go.getOptionsObject().researchRateOptions()));
+			setHistoryCodeView(Initial, go.getOptionsObject().selectedResearchRate());
 			setHistoryUserView(Default, "Normal"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGuiObject().selectedResearchRate();
+			return go.getOptionsObject().selectedResearchRate();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
@@ -629,11 +629,11 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
-			return go.getGuiObject().selectedResearchRate();
+			return go.getOptionsObject().selectedResearchRate();
 		}
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
-			go.getGuiObject().selectedResearchRate(codeView);
+			go.getOptionsObject().selectedResearchRate(codeView);
 		}
 		
 		@Override public void initComments() {
@@ -669,13 +669,13 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 
 		WarpSpeed(ClientClasses go) { 
 			super("WARP SPEED", 
-					new Valid_WarpSpeed(go.getGuiObject().warpSpeedOptions()));
-			setHistoryCodeView(Initial, go.getGuiObject().selectedWarpSpeedOption());
+					new Valid_WarpSpeed(go.getOptionsObject().warpSpeedOptions()));
+			setHistoryCodeView(Initial, go.getOptionsObject().selectedWarpSpeedOption());
 			setHistoryUserView(Default, "Normal"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGuiObject().selectedWarpSpeedOption();
+			return go.getOptionsObject().selectedWarpSpeedOption();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
@@ -683,11 +683,11 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
-			return go.getGuiObject().selectedWarpSpeedOption();
+			return go.getOptionsObject().selectedWarpSpeedOption();
 		}
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
-			go.getGuiObject().selectedWarpSpeedOption(codeView);
+			go.getOptionsObject().selectedWarpSpeedOption(codeView);
 		}
 		
 		@Override public void initComments() {
@@ -723,13 +723,13 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 
 		FuelRange(ClientClasses go) { 
 			super("FUEL RANGE", 
-					new Valid_FuelRange(go.getGuiObject().fuelRangeOptions()));
-			setHistoryCodeView(Initial, go.getGuiObject().selectedFuelRangeOption());
+					new Valid_FuelRange(go.getOptionsObject().fuelRangeOptions()));
+			setHistoryCodeView(Initial, go.getOptionsObject().selectedFuelRangeOption());
 			setHistoryUserView(Default, "Normal"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGuiObject().selectedFuelRangeOption();
+			return go.getOptionsObject().selectedFuelRangeOption();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
@@ -737,11 +737,11 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
-			return go.getGuiObject().selectedFuelRangeOption();
+			return go.getOptionsObject().selectedFuelRangeOption();
 		}
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
-			go.getGuiObject().selectedFuelRangeOption(codeView);
+			go.getOptionsObject().selectedFuelRangeOption(codeView);
 		}
 		
 		@Override public void initComments() {
@@ -777,25 +777,25 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 
 		TechTrading(ClientClasses go) { 
 			super("TECH TRADING", 
-					new Valid_TechTrading(go.getGuiObject().techTradingOptions()));
-			setHistoryCodeView(Initial, go.getGuiObject().selectedTechTradeOption());
+					new Valid_TechTrading(go.getOptionsObject().techTradingOptions()));
+			setHistoryCodeView(Initial, go.getOptionsObject().selectedTechTradeOption());
 			setHistoryUserView(Default, "Yes"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGuiObject().selectedTechTradeOption();
+			return go.getOptionsObject().selectedTechTradeOption();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
-			gs.getGuiObject().selectedTechTradeOption(codeView);
+			gs.getOptionsObject().selectedTechTradeOption(codeView);
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
-			return go.getGuiObject().selectedTechTradeOption();
+			return go.getOptionsObject().selectedTechTradeOption();
 		}
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
-			go.getGuiObject().selectedTechTradeOption(codeView);
+			go.getOptionsObject().selectedTechTradeOption(codeView);
 		}
 		
 		@Override public void initComments() {
@@ -831,25 +831,25 @@ public class Group_Advanced extends  Abstract_Group <ClientClasses> {
 
 		Colonizing(ClientClasses go) { 
 			super("COLONIZING", 
-					new Valid_Colonizing(go.getGuiObject().colonizingOptions()));
-			setHistoryCodeView(Initial, go.getGuiObject().selectedColonizingOption());
+					new Valid_Colonizing(go.getOptionsObject().colonizingOptions()));
+			setHistoryCodeView(Initial, go.getOptionsObject().selectedColonizingOption());
 			setHistoryUserView(Default, "Normal"); // Ray
 		}
 		
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getGuiObject().selectedColonizingOption();
+			return go.getOptionsObject().selectedColonizingOption();
 		}
 		
 		@Override public void putToGame(ClientClasses gs, String codeView) {
-			gs.getGuiObject().selectedColonizingOption(codeView);
+			gs.getOptionsObject().selectedColonizingOption(codeView);
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
-			return go.getGuiObject().selectedColonizingOption();
+			return go.getOptionsObject().selectedColonizingOption();
 		}
 		
 		@Override public void putToGUI(ClientClasses go, String codeView) {
-			go.getGuiObject().selectedColonizingOption(codeView);
+			go.getOptionsObject().selectedColonizingOption(codeView);
 		}
 		
 		@Override public void initComments() {
