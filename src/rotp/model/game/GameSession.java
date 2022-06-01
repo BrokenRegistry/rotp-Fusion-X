@@ -257,6 +257,9 @@ public final class GameSession implements Base, Serializable {
             shipsConstructed().clear();
             spyActivity = false;
             galaxy().startGame();
+            // BR: Save the last loaded game parameters
+            Profiles.saveGameOptionsToFile(this);
+            // \BR
             saveRecentSession(false);
             saveBackupSession(1);
             clearNewGameOptions();
@@ -816,7 +819,7 @@ public final class GameSession implements Base, Serializable {
         	Profiles.changeGameSettings(instance);
         }
         // Save the last loaded game parameters
-        Profiles.saveGameOptionsToFile(instance.options());
+        Profiles.saveGameOptionsToFile(instance);
         // \BR:
         
         startExecutors();

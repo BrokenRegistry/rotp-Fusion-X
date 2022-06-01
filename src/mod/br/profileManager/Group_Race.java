@@ -40,8 +40,8 @@ public class Group_Race extends Abstract_Group <ClientClasses> {
 	@Override protected void initSettingList(ClientClasses go) {
 			addParameter(new PlayerRace(go));
 			addParameter(new PlayerColor(go));
-//			addParameter(new PlayerHomeWorld(go));
-//			addParameter(new PlayerName(go));
+			addParameter(new PlayerHomeWorld(go));
+			addParameter(new PlayerName(go));
 	}
 
 	// ==============================================================
@@ -212,12 +212,13 @@ public class Group_Race extends Abstract_Group <ClientClasses> {
 			setHistoryCodeView(Initial, go.getOptionsObject().selectedHomeWorldName());
 			// No default (Random) ... So Initial!
 			setHistoryCodeView(Default, go.getOptionsObject().selectedHomeWorldName());
+			getDataValidation().getValidationCriteria().isRandomAllowed(false);
 		}
 		
 	    // ========== Overriders ==========
 	    //
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getOptionsObject().selectedHomeWorldName();
+			return go.getSessionObject().galaxy().empire(0).getHomeWorldName();
 		}
 		
 		@Override public void putToGame(ClientClasses go, String userOption) {
@@ -251,6 +252,7 @@ public class Group_Race extends Abstract_Group <ClientClasses> {
 			setHistoryCodeView(Initial, go.getOptionsObject().selectedLeaderName());
 			// No default (Random) ... So Initial!
 			setHistoryCodeView(Default, go.getOptionsObject().selectedLeaderName());
+			getDataValidation().getValidationCriteria().isRandomAllowed(false);
 		}
 		
 	    // ========== Overriders ==========

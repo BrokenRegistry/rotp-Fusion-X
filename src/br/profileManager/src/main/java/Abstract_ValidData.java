@@ -313,7 +313,7 @@ public abstract class Abstract_ValidData<ValueClass> extends WriteUtil{
 	 * Get the {@code ValidationCriteria} limits
 	 * @return the limits
 	 */
-	protected ValidationCriteria getValidationCriteria() {
+	public ValidationCriteria getValidationCriteria() {
 		return criteria;
 	}
 

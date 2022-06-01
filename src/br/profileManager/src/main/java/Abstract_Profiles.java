@@ -50,7 +50,7 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 	private Abstract_Parameter<?, ?, ClientClass> currentParameter;
 	private String currentParameterName;
 	private Abstract_Group<ClientClass> currentGroup;
-	
+		
 	// ========================================================================
 	//  Abstract Methods
 	//
@@ -128,7 +128,19 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 		// Remove the Local Enable parameter where possibly wrongly added 
 //			parameterProfileAction.removeLocalEnable(); // TODO
 		updateGameValue(clientObject);
-		doUserUpdateActions();
+		for (String profile : getGameToFileProfiles()) {
+			String action = parameterProfileAction.getProfileValue(profile.toUpperCase());
+			if (action.contains(ACTION_GAME_TO_FILE)) {
+				for (Abstract_Group<ClientClass> group : groupMap.values()) {
+					group.actionToFile(Game, profile);
+				}
+			}
+			if (action.contains(ACTION_GAME_UPDATE_FILE)) {
+				for (Abstract_Group<ClientClass> group : groupMap.values()) {
+					group.actionUpdateFile(Game, profile);
+				}
+			}
+		}
 		saveProfilesCfg();
 	}
 
@@ -223,6 +235,7 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 	/**
 	 * Load the profile file to update the Action
    	 * Update with last options values
+   	 * Execute User Actions
    	 * Save the new profile file
 	 * @param clientObject The class that manage GUI parameters
    	 */
@@ -232,6 +245,20 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 //			parameterProfileAction.removeLocalEnable(); // TODO
 		updateGuiValue(clientObject);
 		doUserUpdateActions();
+		saveProfilesCfg();
+	}
+
+	/**
+	 * Load the profile file to update the Action
+   	 * Update with last options values
+   	 * Save the new profile file (without User Action)
+	 * @param clientObject The class that manage GUI parameters
+   	 */
+	public void saveLastGuiToFile(ClientClass clientObject) {
+		loadProfilesCfg(); // in case the user changed load or save actions
+		// Remove the Local Enable parameter where possibly wrongly added 
+//			parameterProfileAction.removeLocalEnable(); // TODO
+		updateGuiValue(clientObject);
 		saveProfilesCfg();
 	}
 
@@ -413,6 +440,10 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 
 	private List<String> getAllProfiles() {
 		return parameterProfileAction.getProfileList();
+	}
+	
+	private List<String> getGameToFileProfiles() {
+		return parameterProfileAction.getProfileListForCategory(LAST_ENABLED);
 	}
 	
 	private List<String> getReadableProfiles() {

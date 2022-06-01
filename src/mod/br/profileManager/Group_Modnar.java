@@ -68,8 +68,11 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		
 		@Override public Boolean getFromGame (ClientClasses go) {
 			for (Empire empire : go.getSessionObject().galaxy().empires()) {
-				List<String> techList = empire.tech().category(StarGateCategory)
-													.techIdsAvailableForResearch(true);
+//				List<String> techList = empire.tech().category(StarGateCategory)
+//													.techIdsAvailableForResearch(true);
+				List<String> techList = empire.tech()
+						.category(StarGateCategory).possibleTechs();
+				
 				if (!techList.contains(StarGateId)) {
 					return false;
 				}
@@ -117,8 +120,8 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		
 		@Override public Boolean getFromGame (ClientClasses go) {
 			for (Empire empire : go.getSessionObject().galaxy().empires()) {
-				List<String> techList = empire.tech().category(ThoriumCellCategory)
-													.techIdsAvailableForResearch(true);
+				List<String> techList = empire.tech()
+						.category(ThoriumCellCategory).possibleTechs();
 				if (!techList.contains(ThoriumCellId)) {
 					return false;
 				}

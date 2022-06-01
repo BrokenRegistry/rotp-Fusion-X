@@ -56,6 +56,16 @@ public class Profiles {
 	}
 
 	/**
+	 * Load the profile file to update the Action
+   	 * Update with last options values
+   	 * Save the new profile file (without User Action)
+	 * @param options The class that manage GUI parameters
+   	 */
+	public static void saveLastGuiToFile(IGameOptions options) {
+//		userProfiles.saveLastGuiToFile(new ClientClasses(options));
+	}
+	
+	/**
    	 * Load the configuration file to update the Action
    	 * Update with last Loaded Game options values
    	 * Save the new configuration file
@@ -63,6 +73,16 @@ public class Profiles {
    	 */
 	public static void saveGameOptionsToFile(IGameOptions options) {
 		userProfiles.saveGameToFile(new ClientClasses(options));
+	}
+	
+	/**
+   	 * Load the configuration file to update the Action
+   	 * Update with last Loaded Game options values
+   	 * Save the new configuration file
+	 * @param instance 
+   	 */
+	public static void saveGameOptionsToFile(GameSession instance) {
+		userProfiles.saveGameToFile(new ClientClasses(instance));
 	}
 
 	/**

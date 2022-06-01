@@ -3808,6 +3808,14 @@ public final class Empire implements Base, NamedObject, Serializable {
 
     // BR:
     /**
+	 * @return the current Name of Home World
+	 */
+	public String getHomeWorldName() {
+        return galaxy().system(homeSysId).name();
+	} // \BR
+
+    // BR:
+    /**
      * Change Home World and Companions Name
 	 * @param NewName the new HomeWorld Name
 	 */

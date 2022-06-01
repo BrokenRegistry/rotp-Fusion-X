@@ -25,6 +25,7 @@ public class Valid_ProfileAction extends Valid_String {
 	static final String LOAD_ENABLED    = "ENABLE_LOAD_LIST";
 	static final String RANDOM_ENABLED  = "ENABLE_RANDOM_LIST";
 	static final String WRITE_ENABLED   = "ENABLE_WRITE_LIST";
+	static final String LAST_ENABLED    = "ENABLE_LAST_LIST"; // Update last Game State
 	static final String GAME_ENABLED    = "ENABLE_GAME_LIST";
 	static final String SPECIAL_ENABLED = "SPECIAL_LIST";
 	/**
@@ -103,7 +104,7 @@ public class Valid_ProfileAction extends Valid_String {
 				WRITE_ENABLED);
 		addElement(ACTION_GAME_TO_FILE,
 				"When a Game is started, this profile will get the Game settings" ,
-				WRITE_ENABLED);
+				WRITE_ENABLED + " " + LAST_ENABLED);
 		addElement(ACTION_INITIAL_TO_FILE,
 				"When a Game is started or if the key \"U\" is pressed, this profile will get the initial settings" ,
 				WRITE_ENABLED);
@@ -115,7 +116,7 @@ public class Valid_ProfileAction extends Valid_String {
 				WRITE_ENABLED);
 		addElement(ACTION_GAME_UPDATE_FILE, 
 				"When a Game is started, non empty parameters of this profile will get the Game settings" ,
-				WRITE_ENABLED);
+				WRITE_ENABLED + " " + LAST_ENABLED);
 		addElement(ACTION_INITIAL_UPDATE_FILE,
 				"When a Game is started or if the key \"U\" is pressed, non empty parameters of this profile will get the initial settings" ,
 				WRITE_ENABLED);
