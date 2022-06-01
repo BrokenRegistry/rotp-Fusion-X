@@ -21,24 +21,59 @@ import static br.profileManager.src.main.java.WriteUtil.History.*;
  * For the validation of the profiles Action
  */
 
-class Valid_ProfileAction extends Valid_String {
+public class Valid_ProfileAction extends Valid_String {
 	static final String LOAD_ENABLED    = "ENABLE_LOAD_LIST";
 	static final String RANDOM_ENABLED  = "ENABLE_RANDOM_LIST";
 	static final String WRITE_ENABLED   = "ENABLE_WRITE_LIST";
 	static final String GAME_ENABLED    = "ENABLE_GAME_LIST";
 	static final String SPECIAL_ENABLED = "SPECIAL_LIST";
-	static final String ACTION_RANDOM   = "Surprise";
-	static final String ACTION_FILE_TO_GUI  = "Load";
-	static final String ACTION_FILE_TO_GAME = "Change";
-	static final String ACTION_GUI_TO_FILE  = "SaveGui";
-	static final String ACTION_GAME_TO_FILE = "SaveGame";
-	static final String ACTION_INITIAL_TO_FILE  = "SaveInitial";
-	static final String ACTION_DEFAULT_TO_FILE  = "SaveDefault";
-	static final String ACTION_GUI_UPDATE_FILE  = "GetGUI";
-	static final String ACTION_GAME_UPDATE_FILE = "GetGame";
-	static final String ACTION_INITIAL_UPDATE_FILE = "GetInitial";
-	static final String ACTION_DEFAULT_UPDATE_FILE = "GetDefault";
-
+	/**
+	 * User view association with Action Random
+	 */
+	public static final String ACTION_RANDOM       = "Surprise";
+	/**
+	 * User view association with Action Get from file and put to GUI
+	 */
+	public static final String ACTION_FILE_TO_GUI  = "Load";
+	/**
+	 * User view association with Action Get from file and put to GAME
+	 */
+	public static final String ACTION_FILE_TO_GAME = "Change";
+	/**
+	 * User view association with Action Get from GUI and put to File
+	 */
+	public static final String ACTION_GUI_TO_FILE  = "SaveGui";
+	/**
+	 * User view association with Action Get from Game and put to File
+	 */
+	public static final String ACTION_GAME_TO_FILE = "SaveGame";
+	/**
+	 * User view association with Action Get from Initial and put to File
+	 */
+	public static final String ACTION_INITIAL_TO_FILE  = "SaveInitial";
+	/**
+	 * User view association with Action Get from Default and put to File
+	 */
+	public static final String ACTION_DEFAULT_TO_FILE  = "SaveDefault";
+	/**
+	 * User view association with Action Get from GUI and update File
+	 */
+	public static final String ACTION_GUI_UPDATE_FILE  = "GetGUI";
+	/**
+	 * User view association with Action Get from Game and update File
+	 */
+	public static final String ACTION_GAME_UPDATE_FILE = "GetGame";
+	/**
+	 * User view association with Action Get from Initial and update File
+	 */
+	public static final String ACTION_INITIAL_UPDATE_FILE = "GetInitial";
+	/**
+	 * User view association with Action Get from Default and update File
+	 */
+	public static final String ACTION_DEFAULT_UPDATE_FILE = "GetDefault";
+	/**
+	 * User view association with Parameter Name
+	 */
 	public  static final String PARAMETER_NAME = "PROFILES ACTIONS";
 	private static final String DEFAULT_VALUE  = "";
 

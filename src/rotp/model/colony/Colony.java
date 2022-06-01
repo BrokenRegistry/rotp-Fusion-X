@@ -1922,4 +1922,12 @@ public final class Colony implements Base, IMappedObject, Serializable {
             allocation(SHIP, allocationRemaining() + allocation(RESEARCH));
         }
     }
+
+    // BR:
+    /**
+	 * @return the Challenge Mod State
+	 */
+	public boolean isChallengeMode() {
+        return challengeMode;
+	} // \BR
 }

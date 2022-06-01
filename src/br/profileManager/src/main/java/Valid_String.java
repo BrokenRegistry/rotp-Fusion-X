@@ -26,11 +26,18 @@ public class Valid_String extends Abstract_ValidData<String> {
     // ==================================================
     // Constructors and initializers
     //
-	protected Valid_String() {
+	/**
+	 * Base Constructor for String Validation
+	 */
+	public Valid_String() {
 		super();
 		init();
 	}
-	protected Valid_String(List<String> options) {
+	/**
+	 * Constructor for String Validation with list initialization
+	 * @param options the list to initialize
+	 */
+	public Valid_String(List<String> options) {
 		super(options);
 		init();
 	}

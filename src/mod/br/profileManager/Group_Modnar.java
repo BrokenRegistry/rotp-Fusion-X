@@ -18,11 +18,15 @@
 package mod.br.profileManager;
 
 import static br.profileManager.src.main.java.WriteUtil.History.*;
+
+import java.util.List;
+
 import br.profileManager.src.main.java.Abstract_Group;
 import br.profileManager.src.main.java.Abstract_Parameter;
 import br.profileManager.src.main.java.Valid_Boolean;
 import br.profileManager.src.main.java.Valid_Float;
 import br.profileManager.src.main.java.Valid_Integer;
+import rotp.model.empires.Empire;
 import rotp.ui.UserPreferences;
 
 /**
@@ -53,6 +57,9 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 	static class AlwaysStarGates extends 
 			Abstract_Parameter <Boolean, Valid_Boolean, ClientClasses> {
 
+		private String StarGateId = "Stargate:0";
+		private int StarGateCategory = 4;
+
 		AlwaysStarGates(ClientClasses go) {
 			super( "ALWAYS STAR GATES", new Valid_Boolean());
 			setHistoryCodeView(Initial, UserPreferences.alwaysStarGates());
@@ -60,11 +67,20 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public Boolean getFromGame (ClientClasses go) {
-			return UserPreferences.alwaysStarGates();
+			for (Empire empire : go.getSessionObject().galaxy().empires()) {
+				List<String> techList = empire.tech().category(StarGateCategory)
+													.techIdsAvailableForResearch(true);
+				if (!techList.contains(StarGateId)) {
+					return false;
+				}
+			}
+			return true;
 		}
 
 		@Override public void putToGame(ClientClasses go, Boolean codeView) {
-
+			for (Empire empire : go.getSessionObject().galaxy().empires()) {
+				empire.tech().category(StarGateCategory).addPossibleTech(StarGateId);
+			}
 		}
 		
 		@Override public Boolean getFromUI (ClientClasses go) {
@@ -80,7 +96,7 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 				" " + NL +
 				"------------- Modnar's Options -------------" + NL +
 				" ");
-//			setBottomComments(AVAILABLE_FOR_CHANGE);
+			setBottomComments(AVAILABLE_FOR_CHANGE);
 		}
 	}
 	
@@ -90,6 +106,9 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 	static class AlwaysThorium extends 
 			Abstract_Parameter <Boolean, Valid_Boolean, ClientClasses> {
 
+		private String ThoriumCellId = "FuelRange:8";
+		private int ThoriumCellCategory = 4;
+
 		AlwaysThorium(ClientClasses go) { 
 			super("ALWAYS THORIUM", new Valid_Boolean());
 			setHistoryCodeView(Initial, UserPreferences.alwaysThorium());
@@ -97,11 +116,20 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public Boolean getFromGame (ClientClasses go) {
-			return UserPreferences.alwaysThorium();
+			for (Empire empire : go.getSessionObject().galaxy().empires()) {
+				List<String> techList = empire.tech().category(ThoriumCellCategory)
+													.techIdsAvailableForResearch(true);
+				if (!techList.contains(ThoriumCellId)) {
+					return false;
+				}
+			}
+			return true;
 		}
 		
 		@Override public void putToGame(ClientClasses go, Boolean codeView) {
-
+			for (Empire empire : go.getSessionObject().galaxy().empires()) {
+				empire.tech().category(ThoriumCellCategory).addPossibleTech(ThoriumCellId);
+			}
 		}
 		
 		@Override public Boolean getFromUI (ClientClasses go) {
@@ -113,7 +141,7 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public void initComments() {
-//			setBottomComments(AVAILABLE_FOR_CHANGE);
+			setBottomComments(AVAILABLE_FOR_CHANGE);
 		}
 	}
 	
@@ -130,12 +158,10 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public Boolean getFromGame (ClientClasses go) {
-			return UserPreferences.challengeMode();
+			return go.getSessionObject().galaxy().empire(0).isChallengeMode();
 		}
 		
-		@Override public void putToGame(ClientClasses go, Boolean codeView) {
-
-		}
+		@Override public void putToGame(ClientClasses go, Boolean codeView) {}
 		
 		@Override public Boolean getFromUI (ClientClasses go) {
 			return UserPreferences.challengeMode();
@@ -145,9 +171,7 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 			UserPreferences.setChallengeMode(codeView);
 		}
 		
-		@Override public void initComments() {
-//			setBottomComments(AVAILABLE_FOR_CHANGE);
-		}
+		@Override public void initComments() {}
 	}
 	
 	// ==============================================================
@@ -163,12 +187,11 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public Boolean getFromGame (ClientClasses go) {
-			return UserPreferences.battleScout();
+			return null; // There is no way to know!
+//			return UserPreferences.battleScout();
 		}
 		
-		@Override public void putToGame(ClientClasses go, Boolean codeView) {
-
-		}		
+		@Override public void putToGame(ClientClasses go, Boolean codeView) {}		
 		
 		@Override public Boolean getFromUI (ClientClasses go) {
 			return UserPreferences.battleScout();
@@ -196,12 +219,10 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public Integer getFromGame (ClientClasses go) {
-			return UserPreferences.companionWorlds();
+			return go.getSessionObject().galaxy().empire(0).getCompanionWorldsNumber();
 		}
 		
-		@Override public void putToGame(ClientClasses go, Integer codeView) {
-
-		}
+		@Override public void putToGame(ClientClasses go, Integer codeView) {}
 		
 		@Override public Integer getFromUI (ClientClasses go) {
 			return UserPreferences.companionWorlds();
@@ -227,12 +248,11 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public Boolean getFromGame (ClientClasses go) {
-			return UserPreferences.randomTechStart();
+			return null; // There is no way to know!
+//			return UserPreferences.randomTechStart();
 		}
 		
-		@Override public void putToGame(ClientClasses go, Boolean codeView) {
-
-		}
+		@Override public void putToGame(ClientClasses go, Boolean codeView) {}
 		
 		@Override public Boolean getFromUI (ClientClasses go) {
 			return UserPreferences.randomTechStart();
@@ -260,11 +280,11 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		}
 
 		@Override public Integer getFromGame (ClientClasses go) {
-			return UserPreferences.customDifficulty();
+			return UserPreferences.customDifficulty(); // Dynamic: Same as UserPreferences
 		}
 
 		@Override public void putToGame(ClientClasses go, Integer codeView) {
-
+			UserPreferences.setCustomDifficulty(codeView); // Dynamic: Same as UserPreferences
 		}		
 
 		@Override public Integer getFromUI (ClientClasses go) {
@@ -276,7 +296,7 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		}
 
 		@Override public void initComments() {
-//			setBottomComments(AVAILABLE_FOR_CHANGE);
+			setBottomComments(DYNAMIC_PARAMETER);
 		}
 	}
 
@@ -293,11 +313,11 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public Boolean getFromGame (ClientClasses go) {
-			return UserPreferences.dynamicDifficulty();
+			return UserPreferences.dynamicDifficulty(); // Dynamic: Same as UserPreferences
 		}
 		
 		@Override public void putToGame(ClientClasses go, Boolean codeView) {
-
+			UserPreferences.setDynamicDifficulty(codeView); // Dynamic: Same as UserPreferences
 		}
 		
 		@Override public Boolean getFromUI (ClientClasses go) {
@@ -309,7 +329,7 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		}
 
 		@Override public void initComments() {
-//			setBottomComments(AVAILABLE_FOR_CHANGE);
+			setBottomComments(DYNAMIC_PARAMETER);
 		}
 	}
 
@@ -328,11 +348,11 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		}
 
 		@Override public Float getFromGame (ClientClasses go) {
-			return UserPreferences.missileSizeModifier();
+			return UserPreferences.missileSizeModifier(); // Dynamic: Same as UserPreferences
 		}
 
 		@Override public void putToGame(ClientClasses go, Float codeView) {
-
+			UserPreferences.setMissileSizeModifier(codeView); // Dynamic: Same as UserPreferences
 		}		
 
 		@Override public Float getFromUI (ClientClasses go) {
@@ -344,7 +364,7 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		}
 
 		@Override public void initComments() {
-//			setBottomComments(AVAILABLE_FOR_CHANGE);
+			setBottomComments(DYNAMIC_PARAMETER);
 		}
 	}
 }

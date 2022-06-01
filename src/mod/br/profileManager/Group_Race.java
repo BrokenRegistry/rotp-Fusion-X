@@ -40,44 +40,21 @@ public class Group_Race extends Abstract_Group <ClientClasses> {
 	@Override protected void initSettingList(ClientClasses go) {
 			addParameter(new PlayerRace(go));
 			addParameter(new PlayerColor(go));
+//			addParameter(new PlayerHomeWorld(go));
+//			addParameter(new PlayerName(go));
 	}
 
 	// ==============================================================
 	// PLAYER RACE
 	//
-	static class Valid_Race extends Valid_String {
-
-	    // ========== Constructors and initializer ==========
-	    //
-		Valid_Race() {
-			super();
-			init();
-		}
-		
-		Valid_Race(List<String> options) {
-			super(options);
-			init();
-		}
-		
-		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria());
-		}
-		
-		private void init() {
-			initCriteria();
-		}
-	}
-	
-	// ========== Parameter Section ==========
-	//
 	static class PlayerRace extends
-			Abstract_Parameter <String, Valid_Race, ClientClasses> {
+			Abstract_Parameter <String, Valid_String, ClientClasses> {
 
 	    // ========== Constructors and initializer ==========
 	    // startingRaceOptions
 		PlayerRace(ClientClasses go) { 
 			super("PLAYER RACE",
-				  new Valid_Race(go.getOptionsObject().startingRaceOptions()));
+				  new Valid_String(go.getOptionsObject().startingRaceOptions()));
 			setHistoryCodeView(Initial, go.getOptionsObject().selectedPlayerRace());
 			// No default (Random) ... So Initial!
 			setHistoryCodeView(Default, go.getOptionsObject().selectedPlayerRace());
@@ -108,7 +85,7 @@ public class Group_Race extends Abstract_Group <ClientClasses> {
 				" " + NL +
 				"--------- Races Game Options ---------" + NL +
 				" ");
-//			setBottomComments(AVAILABLE_FOR_CHANGE);
+			setBottomComments(AVAILABLE_FOR_CHANGE);
 		}
 	}
 	
@@ -220,5 +197,87 @@ public class Group_Race extends Abstract_Group <ClientClasses> {
 		@Override public void initComments() {
 			setBottomComments(AVAILABLE_FOR_CHANGE);
 		}	
+	}
+
+	// ==============================================================
+	// PLAYER HOMEWORLD
+	//
+	static class PlayerHomeWorld extends
+			Abstract_Parameter <String, Valid_String, ClientClasses> {
+
+	    // ========== Constructors and initializer ==========
+	    // startingRaceOptions
+		PlayerHomeWorld(ClientClasses go) { 
+			super("PLAYER HOMEWORLD",
+				  new Valid_String(go.getOptionsObject().startingRaceOptions()));
+			setHistoryCodeView(Initial, go.getOptionsObject().selectedPlayerRace());
+			// No default (Random) ... So Initial!
+			setHistoryCodeView(Default, go.getOptionsObject().selectedPlayerRace());
+		}
+		
+	    // ========== Overriders ==========
+	    //
+		@Override public String getFromGame (ClientClasses go) {
+			return go.getOptionsObject().selectedPlayerRace();
+		}
+		
+		@Override public void putToGame(ClientClasses go, String userOption) {
+			go.getOptionsObject().selectedPlayer().race = userOption; // Direct to avoid reseting opponents
+//			go.getSessionObject().player().setRace(userOption);
+			go.getSessionObject().galaxy().empire(0).setRace(userOption);
+		}
+		
+		@Override public String getFromUI (ClientClasses go) {
+			return go.getOptionsObject().selectedPlayerRace();
+		}
+		
+		@Override public void putToGUI(ClientClasses go, String userOption) {
+			go.getOptionsObject().selectedPlayerRace(userOption);
+		}
+		
+		@Override public void initComments() {
+			setBottomComments(AVAILABLE_FOR_CHANGE);
+		}
+	}
+
+	// ==============================================================
+	// PLAYER NAME
+	//
+	static class PlayerName extends
+			Abstract_Parameter <String, Valid_String, ClientClasses> {
+
+	    // ========== Constructors and initializer ==========
+	    // startingRaceOptions
+		PlayerName(ClientClasses go) { 
+			super("PLAYER NAME",
+				  new Valid_String(go.getOptionsObject().startingRaceOptions()));
+			setHistoryCodeView(Initial, go.getOptionsObject().selectedPlayerRace());
+			// No default (Random) ... So Initial!
+			setHistoryCodeView(Default, go.getOptionsObject().selectedPlayerRace());
+		}
+		
+	    // ========== Overriders ==========
+	    //
+		@Override public String getFromGame (ClientClasses go) {
+			return go.getOptionsObject().selectedPlayerRace();
+		}
+		
+		@Override public void putToGame(ClientClasses go, String userOption) {
+			go.getOptionsObject().selectedPlayer().race = userOption; // Direct to avoid reseting opponents
+//			go.getSessionObject().player().setRace(userOption);
+			go.getSessionObject().galaxy().empire(0).setRace(userOption);
+		}
+		
+		@Override public String getFromUI (ClientClasses go) {
+			return go.getOptionsObject().selectedPlayerRace();
+		}
+		
+		@Override public void putToGUI(ClientClasses go, String userOption) {
+			go.getOptionsObject().selectedPlayerRace(userOption);
+		}
+		
+		@Override public void initComments() {
+			setBottomComments(AVAILABLE_FOR_CHANGE);
+		}
 	}
 }

@@ -43,6 +43,7 @@ public abstract class Abstract_Parameter<
 	private static final String OPTIONS_NEWLINE   = new Line_String(
 								toComment("  \" \" "), "", null).toString();
 	protected static final String AVAILABLE_FOR_CHANGE = "---- Available for changes in game saves";
+	protected static final String DYNAMIC_PARAMETER    = "---- Dynamically change game";
 
 	// ------------------------------------------------------------------------
 	// Variables Properties
@@ -308,12 +309,12 @@ public abstract class Abstract_Parameter<
 	}
 
 	// for default parameters and internal use
-	void addLine (String name, String value) {
+	public void addLine (String name, String value) {
 		userProfiles.add(name, value);
 	}
 
 	// for default parameters and internal use
-	void addLine (String name, String value, String comment) {
+	public void addLine (String name, String value, String comment) {
 		userProfiles.add(name, value, comment);
 	}
 

@@ -3782,6 +3782,30 @@ public final class Empire implements Base, NamedObject, Serializable {
         }
     }
    
+    // BR:
+    /**
+	 * @return the Challenge Mod State
+	 */
+	public boolean isChallengeMode() {
+		for (StarSystem system : colonizedSystems) {
+			if (system.colony() != null) {
+				return system.colony().isChallengeMode();
+			}
+		}
+        return false; // This should never happen... But better safe than sorry!
+	} // \BR
+
+    // BR:
+    /**
+	 * @return the current number of companion worlds
+	 */
+	public int getCompanionWorldsNumber() {
+        if (compSysId != null) {
+        	return compSysId.length;
+        }
+        return 0;
+	} // \BR
+
     // BR: Trying to allow changing race // TODO
     /**
 	 * @param newRace the new race Name
@@ -3802,10 +3826,7 @@ public final class Empire implements Base, NamedObject, Serializable {
         recalcPlanetaryProduction();
         String sysName = race.nextAvailableHomeworld();
         galaxy().system(homeSysId).name(sysName);
-        int numCompWorlds = 0;
-        if (compSysId != null) {
-        	numCompWorlds = compSysId.length;
-        }
+        int numCompWorlds = getCompanionWorldsNumber();
         if (numCompWorlds > 0) { 
             String[] compSysName = new String[]{"α", "β", "γ", "δ"}; // companion world Greek letter prefix
             for (int id = 0; id < numCompWorlds; id++) {

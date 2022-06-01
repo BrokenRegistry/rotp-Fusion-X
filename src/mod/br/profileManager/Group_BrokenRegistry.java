@@ -22,7 +22,6 @@ import br.profileManager.src.main.java.Abstract_Parameter;
 import mod.br.Galaxy.GalaxySpacing;
 import mod.br.Galaxy.StarsOptions;
 import br.profileManager.src.main.java.Valid_Boolean;
-import br.profileManager.src.main.java.Valid_Double;
 import br.profileManager.src.main.java.Valid_Float;
 import br.profileManager.src.main.java.Valid_Integer;
 import static br.profileManager.src.main.java.WriteUtil.History.*;
