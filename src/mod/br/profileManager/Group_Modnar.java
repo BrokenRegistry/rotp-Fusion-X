@@ -78,8 +78,10 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		}
 
 		@Override public void putToGame(ClientClasses go, Boolean codeView) {
-			for (Empire empire : go.getSessionObject().galaxy().empires()) {
+			if (codeView) {
+				for (Empire empire : go.getSessionObject().galaxy().empires()) {
 				empire.tech().category(StarGateCategory).insertPossibleTech(StarGateId);
+				}
 			}
 		}
 		
@@ -127,8 +129,10 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 		}
 		
 		@Override public void putToGame(ClientClasses go, Boolean codeView) {
-			for (Empire empire : go.getSessionObject().galaxy().empires()) {
-				empire.tech().category(ThoriumCellCategory).insertPossibleTech(ThoriumCellId);
+			if (codeView) {
+				for (Empire empire : go.getSessionObject().galaxy().empires()) {
+					empire.tech().category(ThoriumCellCategory).insertPossibleTech(ThoriumCellId);
+				}
 			}
 		}
 		
