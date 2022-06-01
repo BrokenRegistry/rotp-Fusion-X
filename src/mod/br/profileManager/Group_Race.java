@@ -208,31 +208,29 @@ public class Group_Race extends Abstract_Group <ClientClasses> {
 	    // ========== Constructors and initializer ==========
 	    // startingRaceOptions
 		PlayerHomeWorld(ClientClasses go) { 
-			super("PLAYER HOMEWORLD",
-				  new Valid_String(go.getOptionsObject().startingRaceOptions()));
-			setHistoryCodeView(Initial, go.getOptionsObject().selectedPlayerRace());
+			super("PLAYER HOMEWORLD", new Valid_String());
+			setHistoryCodeView(Initial, go.getOptionsObject().selectedHomeWorldName());
 			// No default (Random) ... So Initial!
-			setHistoryCodeView(Default, go.getOptionsObject().selectedPlayerRace());
+			setHistoryCodeView(Default, go.getOptionsObject().selectedHomeWorldName());
 		}
 		
 	    // ========== Overriders ==========
 	    //
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getOptionsObject().selectedPlayerRace();
+			return go.getOptionsObject().selectedHomeWorldName();
 		}
 		
 		@Override public void putToGame(ClientClasses go, String userOption) {
-			go.getOptionsObject().selectedPlayer().race = userOption; // Direct to avoid reseting opponents
-//			go.getSessionObject().player().setRace(userOption);
-			go.getSessionObject().galaxy().empire(0).setRace(userOption);
+			go.getOptionsObject().selectedHomeWorldName(userOption);
+			go.getSessionObject().galaxy().empire(0).setHomeWorldName(userOption);
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
-			return go.getOptionsObject().selectedPlayerRace();
+			return go.getOptionsObject().selectedHomeWorldName();
 		}
 		
 		@Override public void putToGUI(ClientClasses go, String userOption) {
-			go.getOptionsObject().selectedPlayerRace(userOption);
+			go.getOptionsObject().selectedHomeWorldName(userOption);
 		}
 		
 		@Override public void initComments() {
@@ -249,31 +247,29 @@ public class Group_Race extends Abstract_Group <ClientClasses> {
 	    // ========== Constructors and initializer ==========
 	    // startingRaceOptions
 		PlayerName(ClientClasses go) { 
-			super("PLAYER NAME",
-				  new Valid_String(go.getOptionsObject().startingRaceOptions()));
-			setHistoryCodeView(Initial, go.getOptionsObject().selectedPlayerRace());
+			super("PLAYER NAME", new Valid_String());
+			setHistoryCodeView(Initial, go.getOptionsObject().selectedLeaderName());
 			// No default (Random) ... So Initial!
-			setHistoryCodeView(Default, go.getOptionsObject().selectedPlayerRace());
+			setHistoryCodeView(Default, go.getOptionsObject().selectedLeaderName());
 		}
 		
 	    // ========== Overriders ==========
 	    //
 		@Override public String getFromGame (ClientClasses go) {
-			return go.getOptionsObject().selectedPlayerRace();
+			return go.getSessionObject().galaxy().empire(0).leader().name();
 		}
 		
 		@Override public void putToGame(ClientClasses go, String userOption) {
-			go.getOptionsObject().selectedPlayer().race = userOption; // Direct to avoid reseting opponents
-//			go.getSessionObject().player().setRace(userOption);
-			go.getSessionObject().galaxy().empire(0).setRace(userOption);
+			go.getOptionsObject().selectedLeaderName(userOption);
+			go.getSessionObject().galaxy().empire(0).leader().setName(userOption);
 		}
 		
 		@Override public String getFromUI (ClientClasses go) {
-			return go.getOptionsObject().selectedPlayerRace();
+			return go.getOptionsObject().selectedLeaderName();
 		}
 		
 		@Override public void putToGUI(ClientClasses go, String userOption) {
-			go.getOptionsObject().selectedPlayerRace(userOption);
+			go.getOptionsObject().selectedLeaderName(userOption);
 		}
 		
 		@Override public void initComments() {
