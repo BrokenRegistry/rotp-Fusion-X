@@ -89,7 +89,15 @@ public class Valid_Boolean extends Abstract_ValidData<Boolean> {
 	@Override Boolean toCodeView(String userView) {
 		return PMutil.toBoolean(userView);
 	}
-	
+
+	/**
+	 * Generate option Range for limit and random
+	 * @return the range
+	 */
+	@Override public String getOptionsRange() {
+		return (PMutil.capitalize(PMutil.BOOLEAN_LIST.toString()));
+	}
+
  	// ==========================================================
     // Nested Classes
     //
