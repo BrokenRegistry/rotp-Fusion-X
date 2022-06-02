@@ -68,7 +68,6 @@ public class Group_Race extends Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGame(ClientClasses go, String userOption) {
 			go.getOptionsObject().selectedPlayer().race = userOption; // Direct to avoid reseting opponents
-//			go.getSessionObject().player().setRace(userOption);
 			go.getSessionObject().galaxy().empire(0).setRace(userOption);
 		}
 		

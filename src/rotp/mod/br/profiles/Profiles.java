@@ -19,8 +19,6 @@ package rotp.mod.br.profiles;
 
 import mod.br.profileManager.ClientClasses;
 import mod.br.profileManager.UserProfiles;
-import rotp.Rotp;
-//import mod.br.settings.UserSettings;
 import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
 
@@ -57,16 +55,6 @@ public class Profiles {
 		return userProfiles.isInitialized();
 	}
 
-	/**
-	 * Load the profile file to update the Action
-   	 * Update with last options values
-   	 * Save the new profile file (without User Action)
-	 * @param options The class that manage GUI parameters
-   	 */
-	public static void saveLastGuiToFile(IGameOptions options) {
-//		userProfiles.saveLastGuiToFile(new ClientClasses(options));
-	}
-	
 	/**
    	 * Load the configuration file to update the Action
    	 * Update with last Loaded Game options values
@@ -117,8 +105,6 @@ public class Profiles {
 	public static boolean isSpacingEnabled() {
 		// Here because this is the Mod that knows the other Mods
 		return userProfiles.isParameterEnabled("MAXIMIZE EMPIRES SPACING");
-//		return userProfiles.isInitialized() &&
-//				userProfiles.getParameter("MAXIMIZE EMPIRES SPACING").isLoadEnabled();
 	}
 
 	/**

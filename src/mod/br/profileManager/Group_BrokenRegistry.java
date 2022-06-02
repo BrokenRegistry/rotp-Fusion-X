@@ -24,6 +24,8 @@ import mod.br.Galaxy.StarsOptions;
 import br.profileManager.src.main.java.Valid_Boolean;
 import br.profileManager.src.main.java.Valid_Float;
 import br.profileManager.src.main.java.Valid_Integer;
+import br.profileManager.src.main.java.Valid_String;
+
 import static br.profileManager.src.main.java.WriteUtil.History.*;
 
 
@@ -42,6 +44,7 @@ public class Group_BrokenRegistry extends  Abstract_Group <ClientClasses> {
 		addParameter(new PreferedStarsPerEmpire(go));
 		addParameter(new MinStarsPerEmpire(go));
 		addParameter(new NoPlanetMultiplier(go));
+		addParameter(new OpponentRaceList(go));
 	}
 
 	// ========================================================================
@@ -174,6 +177,44 @@ public class Group_BrokenRegistry extends  Abstract_Group <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, Float codeView) {
 			StarsOptions.setNoPlanetMultiplier(codeView);
+		}
+		
+		@Override public void initComments() {}
+	}
+	
+	// ==============================================================
+	// OPPONENTS RACE LIST
+	//
+	static class OpponentRaceList extends
+			Abstract_Parameter <String, Valid_String, ClientClasses> {
+
+	    // ========== Constructors and initializer ==========
+	    // startingRaceOptions
+		OpponentRaceList(ClientClasses go) { 
+			super("OPPONENTS RACE LIST",
+					new Valid_String(go.getOptionsObject().startingRaceOptions()));
+			setHistoryCodeView(Initial, "");
+			setHistoryCodeView(Default, "");
+			getDataValidation().getValidationCriteria().isRandomAllowed(false);
+		}
+		
+	    // ========== Overriders ==========
+	    //
+		@Override public String getFromGame (ClientClasses go) {
+			return ""; // TODO
+		}
+		
+		@Override public void putToGame(ClientClasses go, String userOption) {
+			go.getOptionsObject().selectedLeaderName(userOption);
+			go.getSessionObject().galaxy().empire(0).leader().setName(userOption);
+		}
+		
+		@Override public String getFromUI (ClientClasses go) {
+			return ""; // TODO
+		}
+		
+		@Override public void putToGUI(ClientClasses go, String userOption) {
+			// TODO
 		}
 		
 		@Override public void initComments() {}

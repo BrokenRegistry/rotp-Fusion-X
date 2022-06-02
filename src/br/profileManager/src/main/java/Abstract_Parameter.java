@@ -352,13 +352,6 @@ public abstract class Abstract_Parameter<
 		return false;
 	}
 	
-//	/**
-//	 * Remove the Local Enable parameter where possibly wrongly added 
-//	 */
-//	public void removeLocalEnable() {
-//		localEnable.setValue("");
-//	} // TODO
-
 	/**
 	 * Get the Local Enable loading state 
 	 * @return loading status
@@ -412,7 +405,6 @@ public abstract class Abstract_Parameter<
 		out += toCommentLine(optionsComments) ;
 
 		// HISTORY
-//		if (!localEnable.isBlankValue()) {
 		if (dataValidation.isShowHistory()) {
 			out += new Line_String(HEAD_OF_HISTORY,
 					Current.toString() + HDEF
@@ -434,7 +426,6 @@ public abstract class Abstract_Parameter<
 		}
 
 		// LOCAL ENABLE
-//		if (!localEnable.isBlankValue()) {
 		if (dataValidation.isShowLocalEnabled()) {
 			out += localEnable.toString() + NL;
 		}

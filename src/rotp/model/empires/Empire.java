@@ -3829,19 +3829,6 @@ public final class Empire implements Base, NamedObject, Serializable {
                	sv.name(compSysId[id], name);
              }
         }
-		
-//		galaxy().system(homeSysId).name(NewName);
-//        int numCompWorlds = getCompanionWorldsNumber();
-//        if (numCompWorlds > 0) { 
-//            String[] compSysName = new String[]{"α", "β", "γ", "δ"}; // companion world Greek letter prefix
-//            for (int id = 0; id < numCompWorlds; id++) {
-//            	int sysId = compSysId[id];
-//            	StarSystem compSys = galaxy().system(sysId);
-//               	String oldName = compSys.name();
-//               	String newName = compSysName[id] + " " + NewName;
-//            	compSys.name(newName);
-//            }
-//        }
 	} // \BR
 
     // BR: Trying to allow changing race
@@ -3863,19 +3850,6 @@ public final class Empire implements Base, NamedObject, Serializable {
         loadStartingShipDesigns();
         recalcPlanetaryProduction();
         setHomeWorldName(race.nextAvailableHomeworld());
-//        String sysName = race.nextAvailableHomeworld();
-//        galaxy().system(homeSysId).name(sysName);
-//        int numCompWorlds = getCompanionWorldsNumber();
-//        if (numCompWorlds > 0) { 
-//            String[] compSysName = new String[]{"α", "β", "γ", "δ"}; // companion world Greek letter prefix
-//            for (int id = 0; id < numCompWorlds; id++) {
-//            	int sysId = compSysId[id];
-//            	StarSystem compSys = galaxy().system(sysId);
-//               	String oldName = compSys.name();
-//               	String newName = compSysName[id] + " " + sysName;
-//            	compSys.name(newName);
-//            }
-//        }
 	} // \BR
 
 	public static Comparator<Empire> TOTAL_POPULATION = (Empire o1, Empire o2) -> o2.totalPlanetaryPopulation().compareTo(o1.totalPlanetaryPopulation());
