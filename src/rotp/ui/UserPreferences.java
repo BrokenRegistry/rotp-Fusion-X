@@ -87,6 +87,12 @@ public class UserPreferences {
     private static float uiTexturePct = 0.20f;
     private static int screenSizePct = 93;
     private static int backupTurns = 5; // modnar: change default turns between backups to 5
+    private static float showFleetFactor   = 1.0f; // BR: adjust the Galaxy Map fleet disappearance
+    private static float showFlagFactor    = 1.0f; // BR: adjust the Galaxy Map flag disappearance
+    private static float showPathFactor    = 1.0f; // BR: adjust the Galaxy Map Path disappearance
+    private static int   showNameMinFont   = 8;    // BR: adjust the Galaxy Map Star Name disappearance
+    private static float showInfoFontRatio = 0.7f; // BR: adjust the Galaxy Map swap info to name only
+    private static float mapFontFactor     = 1.0f; // BR: adjust the Galaxy Map Font Size
 
     public static void setToDefault() {
         autoColonize = false;
@@ -97,7 +103,7 @@ public class UserPreferences {
         sensitivityMode = SENSITIVITY_MEDIUM;
         screenSizePct = 93;
         backupTurns = 5; // modnar: change default turns between backups to 5
-        customDifficulty = 100; // mondar: add custom difficulty level option, in units of percent
+        customDifficulty = 100; // modnar: add custom difficulty level option, in units of percent
         dynamicDifficulty = false; // modnar: add dynamic difficulty option, change AI colony production
         alwaysStarGates = false; // modnar: add option to always have Star Gates tech
         alwaysThorium = false; // modnar: add option to always have Thorium Cells tech
@@ -115,11 +121,17 @@ public class UserPreferences {
         musicVolume = 10;
         soundVolume = 10;
         SoundManager.current().resetSoundVolumes();
+        showFleetFactor   = 1.0f; // BR: adjust the Galaxy Map fleet disappearance
+        showFlagFactor    = 1.0f; // BR: adjust the Galaxy Map flag disappearance
+        showPathFactor    = 1.0f; // BR: adjust the Galaxy Map Path disappearance
+        showNameMinFont   = 8;    // BR: adjust the Galaxy Map Star Name disappearance
+        showInfoFontRatio = 0.7f; // BR: adjust the Galaxy Map swap info to name only
+        mapFontFactor     = 1.0f; // BR: adjust the Colony Galaxy Map Font Size
         save();
     }
     // modnar: set MOD option to defaults, specifically for UI
     public static void setModToDefault() {
-        customDifficulty = 180; // mondar: add custom difficulty level option, in units of percent
+        customDifficulty = 180; // modnar: add custom difficulty level option, in units of percent
         dynamicDifficulty = false; // modnar: add dynamic difficulty option, change AI colony production
         alwaysStarGates = false; // modnar: add option to always have Star Gates tech
         alwaysThorium = false; // modnar: add option to always have Thorium Cells tech
@@ -135,6 +147,105 @@ public class UserPreferences {
         autoBombardMode = AUTOBOMBARD_NO;
         save();
     }
+    
+    // BR setters and getter for Show Factors
+    /**
+     * This Factor is used to adjust the fleet disappearance
+     * @param newValue between 0.5 and 2.0
+     */
+    public static void setShowFleetFactor(float newValue) {
+    	float min = 0.5f;
+    	float max = 2.0f;
+    	showFleetFactor = Math.min(max, Math.max(min, newValue));
+    }
+    /**
+     * This factor is used to adjust the fleet disappearance
+     * @return Scale factor between 0.5 and 2.0
+     */
+    public static Float getShowFleetFactor() {
+    	return showFleetFactor;
+    }
+    /**
+     * This Factor is used to adjust the flag disappearance
+     * @param newValue between 0.5 and 2.0
+     */
+    public static void setShowFlagFactor(float newValue) {
+    	float min = 0.5f;
+    	float max = 2.0f;
+    	showFlagFactor = Math.min(max, Math.max(min, newValue));
+    }
+    /**
+     * This factor is used to adjust the flag disappearance
+     * @return Scale factor between 0.5 and 2.0
+     */
+    public static Float getShowFlagFactor() {
+    	return showFlagFactor;
+    }
+    /**
+     * This Factor is used to adjust the path disappearance
+     * @param newValue between 0.5 and 2.0
+     */
+    public static void setShowPathFactor(float newValue) {
+    	float min = 0.5f;
+    	float max = 2.0f;
+    	showPathFactor = Math.min(max, Math.max(min, newValue));
+    }
+    /**
+     * This factor is used to adjust the path disappearance
+     * @return Scale factor between 0.5 and 2.0
+     */
+    public static Float getShowPathFactor() {
+    	return showPathFactor;
+    }
+    /**
+     * This Factor is used to adjust the Star Name disappearance
+     * @param newValue between 2 and 24
+     */
+    public static void setShowNameMinFont(int newValue) {
+    	int min = 2;
+    	int max = 24;
+    	showNameMinFont = Math.min(max, Math.max(min, newValue));
+    }
+    /**
+     * This factor is used to adjust the Star Name disappearance
+     * @return Scale factor between 2 and 24
+     */
+    public static Integer getShowNameMinFont() {
+    	return showNameMinFont;
+    }
+    /**
+     * This Font Size is used while displaying Star Name
+     * @param newValue between 0.25 and 2.0
+     */
+    public static void setShowInfoFontRatio(float newValue) {
+    	float min = 0.25f;
+    	float max = 2.0f;
+    	showInfoFontRatio = Math.min(max, Math.max(min, newValue));
+    }
+    /**
+     * This Font Size is used while displaying Star Name
+      * @return Scale factor between 0.25 and 2.0
+     */
+    public static Float getShowInfoFontRatio() {
+    	return showInfoFontRatio;
+    }
+    /**
+     * To adjust the Galaxy Map Font Size
+      * @param newValue between 0.5 and 2.0
+     */
+    public static void setMapFontFactor(float newValue) {
+    	float min = 0.5f;
+    	float max = 2.0f;
+    	mapFontFactor = Math.min(max, Math.max(min, newValue));
+    }
+    /**
+     * To adjust the Galaxy Map Font Size
+     * @return Scale factor between 0.5 and 2.0
+     */
+    public static Float getMapFontFactor() {
+    	return mapFontFactor;
+    }
+    // \BR
 
     // BR setters for modnar parameters
     public static void setAlwaysStarGates(boolean newValue) {
@@ -401,6 +512,12 @@ public class UserPreferences {
             out.println(keyFormat("COMPANION_WORLDS")+ companionWorlds); // modnar: add option to start game with additional colonies
             out.println(keyFormat("MISSILE_SIZE_MODIFIER")+ missileSizeModifier);
             out.println(keyFormat("LANGUAGE")+ languageDir());
+            out.println(keyFormat("SHOW_FLEET_FACTOR")    + getShowFleetFactor().toString());   // BR:
+            out.println(keyFormat("SHOW_FLAG_FACTOR")     + getShowFlagFactor().toString());    // BR:
+            out.println(keyFormat("SHOW_PATH_FACTOR")     + getShowPathFactor().toString());    // BR:
+            out.println(keyFormat("SHOW_NAME_MIN_FONT")   + getShowNameMinFont().toString());   // BR:
+            out.println(keyFormat("SHOW_INFO_FONT_RATIO") + getShowInfoFontRatio().toString()); // BR:
+            out.println(keyFormat("MAP_FONT_FACTOR")      + getMapFontFactor().toString());     // BR:
             return 0;
         }
         catch (IOException e) {
@@ -461,7 +578,13 @@ public class UserPreferences {
             case "COMPANION_WORLDS": setNumCompanionWorlds(val); return; // modnar: add option to start game with additional colonies
             case "MISSILE_SIZE_MODIFIER": setMissileSizeModifier(val); return;
             case "LANGUAGE":     selectLanguage(val); return;
-            default:
+            case "SHOW_FLEET_FACTOR":    setShowFleetFactor(stringToFloat(val));   return; // BR:
+            case "SHOW_FLAG_FACTOR":     setShowFlagFactor(stringToFloat(val));    return; // BR:
+            case "SHOW_PATH_FACTOR":     setShowPathFactor(stringToFloat(val));    return; // BR:
+            case "SHOW_NAME_MIN_FONT":   setShowNameMinFont(stringToInteger(val)); return; // BR:
+            case "SHOW_INFO_FONT_RATIO": setShowInfoFontRatio(stringToFloat(val)); return; // BR:
+            case "MAP_FONT_FACTOR":      setMapFontFactor(stringToFloat(val));     return; // BR:
+           default:
                 break;
         }
     }
@@ -502,6 +625,34 @@ public class UserPreferences {
     private static void setScreenSizePct(int i) {
         screenSizePct = Math.max(50,Math.min(i,100));
     }
+    // BR:
+    /**
+     * Convert String to Float and manage errors
+     * @param string Source of Float
+     * @return Float value, or <b>null</b> on error
+     */
+    public static Float stringToFloat(String string) {
+    	try {
+    		return Float.valueOf(string.trim());
+        }
+        catch (NumberFormatException nfe) {
+        	return null; // silent error!
+        }
+    } // \BR:
+    // BR:
+    /**
+     * Convert String to Integer and manage errors
+     * @param string Source of Integer
+     * @return Integer value, or <b>null</b> on error
+     */
+    public static Integer stringToInteger(String string) {
+    	try {
+    		return Integer.valueOf(string.trim());
+        }
+        catch (NumberFormatException nfe) {
+        	return null; // silent error!
+        }
+    } // \BR:
     public static boolean shrinkFrame() {
         int oldSize = screenSizePct;
         setScreenSizePct(screenSizePct-5);

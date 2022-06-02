@@ -19,6 +19,7 @@ package rotp.mod.br.profiles;
 
 import mod.br.profileManager.ClientClasses;
 import mod.br.profileManager.UserProfiles;
+import rotp.Rotp;
 //import mod.br.settings.UserSettings;
 import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
@@ -45,6 +46,7 @@ public class Profiles {
 	 * @param options the {@code IGameOptions} containing the parameters
 	 */
 	public static void initUserSettings(IGameOptions options) {
+		// System.out.println("Scaling Factor is: " + Rotp.getScalingFactor());
 		userProfiles.initAndLoadProfiles(new ClientClasses(options));
 	}
 	/**
