@@ -45,11 +45,7 @@ public class WriteUtil {
 	    /**
 	     * Settings from the last time a game was launched
 	     */
-	    Game,
-	    /**
-	     * Bank value! (Type dependent)
-	     */
-	    Blank
+	    Game
 	}
 	
 	/**
