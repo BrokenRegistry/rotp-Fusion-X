@@ -21,21 +21,21 @@ import java.util.Map;
 import static br.profileManager.src.main.java.WriteUtil.History.*;
 
 /**
- * Common methods for data validation
- * @param <ValueClass> the Value's Code View Class
+ * Common methods for data validation of List of Values
+ * @param <ValueClass> the Value's Base Code View Class
+ * @param <ListClass>  the Value's List Code View Class
  */
-public abstract class Abstract_ValidData<ValueClass> 
+public abstract class Abstract_ValidListData<ValueClass, ListClass extends List<ValueClass>> 
 						extends Abstract_Valid_Base<ValueClass>{
 	
-	private Map<History, ValueClass> historyMap = new EnumMap<>(History.class);
-	
+	private Map<History, ListClass> historyMap = new EnumMap<>(History.class);
 	
     // ==================================================
     // Constructors and initializers
     //
-	Abstract_ValidData() {}
+	Abstract_ValidListData() {}
 
-	Abstract_ValidData(List<ValueClass> options) {
+	Abstract_ValidListData(List<ValueClass> options) {
 		initList(options);
 	}
 	
@@ -54,7 +54,7 @@ public abstract class Abstract_ValidData<ValueClass>
     //
 	/**
 	 * Process Random without parameters
-	 * @return {@code Code View} Output Value
+	 * @return {@code Code View} OutputString
 	 */
 	abstract ValueClass randomWithoutParameters();
 
@@ -64,7 +64,7 @@ public abstract class Abstract_ValidData<ValueClass>
 	 * @param codeView {@code Code View} the value to convert
 	 * @return {@code String} the user view
 	 */
-	abstract String toUserView(ValueClass codeView);
+	abstract String toUserView(ListClass codeView);
 	
 	/**
 	 * Conversion from user view to code view.
@@ -72,7 +72,7 @@ public abstract class Abstract_ValidData<ValueClass>
 	 * @param codeView {@code String} the value to convert
 	 * @return {@code Code View} the code view
 	 */
-	abstract ValueClass toCodeView(String userView);
+	abstract ListClass toCodeView(String userView);
 
 	// ------------------------------------------------
     // Overriders
@@ -82,7 +82,7 @@ public abstract class Abstract_ValidData<ValueClass>
 	 * @return the default limit Code View
 	 */
 	@Override ValueClass getDefaultLimit() {
-		return getHistoryCodeView(Default);
+		return getHistoryCodeView(Default).get(0);
 	}
 
 	// ==================================================
@@ -94,7 +94,7 @@ public abstract class Abstract_ValidData<ValueClass>
 	 * @param newValue the new "history" Value
 	 */
 
-	protected void setHistoryCodeView(History history, ValueClass newValue) {
+	protected void setHistoryCodeView(History history, ListClass newValue) {
 		if (history == Last) { // if in two step to allow breakpoint
 			if (!PMutil.neverNull(historyMap.get(Last)).isBlank()) {
 				return; // Last was already assigned	
@@ -123,7 +123,7 @@ public abstract class Abstract_ValidData<ValueClass>
 	 * @param history  Field to be retrieved
 	 * @return the "history" Code View
 	 */
-	protected ValueClass getHistoryCodeView(History history) {
+	protected ListClass getHistoryCodeView(History history) {
 		return historyMap.get(history);
 	}
 

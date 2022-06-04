@@ -48,12 +48,6 @@ public class Valid_String extends Abstract_ValidData<String> {
 	
 	private void init() {
 		initCriteria();
-//		setHistoryCodeView(Default, "");
-//		setHistoryCodeView(Last, "");
-//		setHistoryCodeView(Initial, "");
-//		setHistoryCodeView(Current, "");
-//		setHistoryCodeView(Game, "");
-//		setHistoryCodeView(Blank, "");
 	}
 
 	// ==================================================
@@ -120,20 +114,6 @@ public class Valid_String extends Abstract_ValidData<String> {
 		// This should not happen... 
 		// Probably due to a bad first parameter
 		return randomWithInListLimit(parameters);
-//		int min = 0;
-//		int max = listSize();
-//		int[] lim = new int[] {min, max};
-//		// First Limit
-//		if (parameters.length >= 1) {
-//			min = getBestLimit(parameters, 0, lim);
-//		}
-//		// Second Limit
-//		if (parameters.length >= 2) {
-//			max = getBestLimit(parameters, 1, lim);
-//		}
-//		// get Random
-//		int id = PMutil.getRandom(min, max);
-//		return getCodeView(id);
 	}
 	
 	@Override String toCodeView(String userView) {
@@ -173,8 +153,8 @@ public class Valid_String extends Abstract_ValidData<String> {
 			}
 			return out;
  		}
-		return getHistoryUserView(Blank);
-//		return getBlankValue();
+//		return getHistoryUserView(Blank);
+		return getBlankValue();
 	}
 
 	/**
