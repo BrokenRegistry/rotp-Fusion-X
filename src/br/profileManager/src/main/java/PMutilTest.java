@@ -301,8 +301,8 @@ class PMutilTest {
     //
 	@Test
 	void probDensityToCumul_FloatArray() {
-	   	float[] cumSum  = new float[] {0f, 10f, 50f, 80f, 100f, 100f};
-	   	float[] density = new float[] {0,  10f, 40f, 30f,  20f,   0f};    
+	   	float[] cumSum  = new float[] {0.0f, 0.1f, 0.5f, 0.8f, 1.0f, 1.0f};
+	   	float[] density = new float[] {0.0f, 0.1f, 0.4f, 0.3f, 0.2f, 0.0f};    
 	   	assertArrayEquals(cumSum, probDensityToCumul(density)
 				, "should have been «{0f, 10f, 50f, 80f, 100f, 100f}»");
 	}

@@ -69,8 +69,8 @@ class Valid_LocalEnableTest {
 
 	@Test
 	void toString_None() {
-		assertEquals("¦ LOCAL ENABLE  : All", 
+		assertEquals("¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]", 
 				new Line_LocalEnable().toString()
-				, "should have been \"¦ LOCAL ENABLE  : All\"");
+				, "should have been \"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]\"");
 	}
 }
