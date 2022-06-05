@@ -24,7 +24,8 @@ import static br.profileManager.src.main.java.WriteUtil.History.Default;
  */
 class Generic_Entry<
 		ValueClass,
-		ValidClass extends Abstract_ValidData<ValueClass>> extends WriteUtil {
+		ValidClass extends Abstract_ValidData<ValueClass>>
+		extends WriteUtil {
 
 	private static final String RANDOM_ID = "RANDOM";
 	private static final String PARAMETERS_SEPARATOR  = ",";
@@ -224,19 +225,26 @@ class Generic_Entry<
 	 * Analyze user Entry content
 	 */
 	private void entryAnalysis() {
-		if ( validationData.getValidationCriteria().isRandomAllowed()
-				&& isRandom(getUserEntry())) {
-			if (hasExtraParameters(getUserEntry())) {
-				setValue(validationData.randomWithParameters(
-						splitParameters(removeRandomId(getUserEntry()))));
-				setOutputStr(getUserEntry());
-				return;
-			}
-			setValue(validationData.randomWithoutParameters());
-			setOutputStr(getUserEntry());
-			return;
+		Abstract_ValidData<ValueClass>.CodeAndUserView result = 
+				validationData.entryAnalysis(getUserEntry());
+		setValue(result.codeView);
+		if (result.userView != null) {
+			setOutputStr(result.userView);
 		}
-		setValue(validationData.entryValidation(getUserEntry()));
+//		
+//		if ( validationData.getValidationCriteria().isRandomAllowed()
+//				&& isRandom(getUserEntry())) {
+//			if (hasExtraParameters(getUserEntry())) {
+//				setValue(validationData.randomWithParameters(
+//						splitParameters(removeRandomId(getUserEntry()))));
+//				setOutputStr(getUserEntry());
+//				return;
+//			}
+//			setValue(validationData.randomWithoutParameters());
+//			setOutputStr(getUserEntry());
+//			return;
+//		}
+//		setValue(validationData.entryValidation(getUserEntry()));
 	}
 	
 	// ==================================================

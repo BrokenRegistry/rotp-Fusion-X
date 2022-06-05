@@ -26,10 +26,10 @@ class Valid_StringTest {
 	
 	@Test
 	void newLine_String() {
-		assertEquals("", new Line_String().newLine("").getValue()
-				, "should have been «»");
-		assertEquals("", new Line_String().newLine((String)null).getValue()
-				, "should have been «»");
+		assertEquals(null, new Line_String().newLine("").getValue()
+				, "should have been «null»");
+		assertEquals(null, new Line_String().newLine((String)null).getValue()
+				, "should have been «null»");
 		assertEquals("value", new Line_String()
 				.newLine("key : value ; comment").getValue()
 				, "should have been «value»");

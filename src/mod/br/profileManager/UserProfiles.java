@@ -143,27 +143,29 @@ public class UserProfiles extends Abstract_Profiles<ClientClasses> {
 				"Not Random, not yet");
 		
 		// Special random with comments
-		getParameter("PLAYER RACE").addLine("Random", "Random",
-				"Full random");
-		getParameter("PLAYER COLOR").addLine("Random", "Random Green, Lime",
-				"2 values = a range from option list");
-		getParameter("GALAXY SHAPE").addLine("Random",
-				"Random Rectangle, Ellipse, Spiral, Spiralarms",
-				"a limited choice");
-		getParameter("GALAXY SIZE").addLine("Random", "",
-				"Nothing changed by this profile");
-		getParameter("DIFFICULTY").addLine("Random", "Random 1, 4",
-				"a range from option list");
-		getParameter("OPPONENT AI").addLine("Random", 
-				"Random Base, Xilmi, Xilmi",
-				"2 chances to have Xilmi vs Base");
-		getParameter("NB OPPONENTS").addLine("Random", "Random 3, 6",
-				"a custom range");
-		getParameter("GALAXY AGE").addLine("Random",
-				"Random Young, Young, Old, Old",
-				"Only 2 choices... Not a range");
-		getParameter("NEBULAE").addLine("Random","Random 1, 4",
-				"Range = Rare .. Common (first option = 0)");
+//		getParameter("PLAYER RACE").addLine("Random", "Random",
+//				"Full random");
+//		getParameter("PLAYER COLOR").addLine("Random", "Random Green, Lime",
+//				"2 values = a range from option list");
+//		getParameter("GALAXY SHAPE").addLine("Random",
+//				"Random Rectangle, Ellipse, Spiral, Spiralarms",
+//				"a limited choice");
+//		getParameter("GALAXY SIZE").addLine("Random", "",
+//				"Nothing changed by this profile");
+//		getParameter("DIFFICULTY").addLine("Random", "Random 1, 4",
+//				"a range from option list");
+//		getParameter("OPPONENT AI").addLine("Random", 
+//				"Random Base, Xilmi, Xilmi",
+//				"2 chances to have Xilmi vs Base");
+//		getParameter("NB OPPONENTS").addLine("Random", "Random 3, 6",
+//				"a custom range");
+//		getParameter("GALAXY AGE").addLine("Random",
+//				"Random Young, Young, Old, Old",
+//				"Only 2 choices... Not a range");
+//		getParameter("NEBULAE").addLine("Random","Random 1, 4",
+//				"Range = Rare .. Common (first option = 0)");
+
+		
 //		getParameter("AI HOSTILITY").addLine("Random", "Random 0, 3");
 //		getParameter("COUNCIL").addLine("Random", "Random");
 //		getParameter("RANDOMIZE AI").addLine("Random", "Random");

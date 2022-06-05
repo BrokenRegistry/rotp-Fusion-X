@@ -15,8 +15,6 @@
 
 package br.profileManager.src.main.java;
 
-import static br.profileManager.src.main.java.WriteUtil.History.Default;
-
 import java.util.List;
 
 /**
@@ -54,67 +52,6 @@ public class Valid_Integer extends Abstract_ValidData<Integer> {
 	// ==================================================
     // Overriders
     //
-	/**
-	 * Process non Random user entry
-	 * @return {@code Integer} Validated Value
-	 */
-	@Override Integer entryValidation(String userEntry) {
-		userEntry = PMutil.clean(userEntry);
-		// First Check for blank values
-		if (userEntry.isBlank()) {
-			if (getValidationCriteria().isBlankAllowed()) {
-				return null;
-			}
-			return getHistoryCodeView(Default);
-		}
-		// Then Check if value is valid
-		Integer value = PMutil.toInteger(userEntry);
-		if (value == null) {
-			if (hasList() && isValidUserEntry(userEntry)) {
-				return getCodeView(userEntry);
-			}
-			if (getValidationCriteria().isBlankAllowed()) {
-				return null;
-			}
-			return getHistoryCodeView(Default);
-		}
-		return PMutil.validateLimits(value, getLimits(0), getLimits(1));
-	}
-	
-	/**
-	 * Process Random without parameters
-	 * @return {@code Integer} OutputString
-	 */
-	@Override Integer randomWithoutParameters() {
-		return PMutil.getRandom(getDefaultRandomLimits(0), getDefaultRandomLimits(1));
-	}
-	
-	/**
-	 * Process Random within Given Limits
-	 * @param parameters {@code String[]} the extra parameters
-	 * @return {@code Integer} Random Value
-	 */
-	@Override Integer randomWithLimit(String[] parameters) {
-		
-		int lim1 = getLimits(0);
-		int lim2 = getLimits(1);
-		int min = Math.min(lim1, lim2);
-		int max = Math.max(lim1, lim2);
-		// First Limit
-		if (parameters.length >= 1) {
-			if (PMutil.testForInteger(parameters[0])) {
-				lim1 = PMutil.validateLimits(PMutil.toInteger(parameters[0]), min, max);
-			} 
-		}
-		// Second Limit
-		if (parameters.length >= 2) {
-			if (PMutil.testForInteger(parameters[1])) {
-				lim2 = PMutil.validateLimits(PMutil.toInteger(parameters[1]), min, max);
-			} 
-		}
-		// get Random
-		return PMutil.getRandom(lim1, lim2);
-	}
 	
 	@Override protected String toUserView(Integer codeView) {
 		return PMutil.neverNull(codeView);
@@ -124,6 +61,87 @@ public class Valid_Integer extends Abstract_ValidData<Integer> {
 		return PMutil.toInteger(userView);
 	}
 
+	/**
+	 * Process Random without user parameters
+	 * @return {@code Integer} OutputString
+	 */
+	@Override Integer getRandom(Integer lim1, Integer lim2) {
+		return PMutil.getRandom(lim1, lim2);
+	}
+	
+	/**
+	 * Validate the limits for the Value class type
+	 * @param value the {@code Code View} Value to validate
+	 * @param lim1  the {@code Code View} first limit
+	 * @param lim2  the {@code Code View} second limit
+	 * @return {@code Code View} Validated Value
+	 */
+	@Override Integer validateLimits(Integer value,
+									Integer lim1, Integer lim2) {
+		return PMutil.validateLimits(value, getLimits(0), getLimits(1));
+	}
+
+//	/**
+//	 * Process non Random user entry
+//	 * @return {@code Integer} Validated Value
+//	 */
+//	@Override Integer entryValidation(String userEntry) {
+//		userEntry = PMutil.clean(userEntry);
+//		// First Check for blank values
+//		if (userEntry.isBlank()) {
+//			if (getValidationCriteria().isBlankAllowed()) {
+//				return null;
+//			}
+//			return getHistoryCodeView(Default);
+//		}
+//		// Then Check if value is valid
+//		Integer value = PMutil.toInteger(userEntry);
+//		if (value == null) {
+//			if (hasList() && isValidUserEntry(userEntry)) {
+//				return getCodeView(userEntry);
+//			}
+//			if (getValidationCriteria().isBlankAllowed()) {
+//				return null;
+//			}
+//			return getHistoryCodeView(Default);
+//		}
+//		return PMutil.validateLimits(value, getLimits(0), getLimits(1));
+//	}
+	
+//	/**
+//	 * Process Random without parameters
+//	 * @return {@code Integer} OutputString
+//	 */
+//	@Override Integer randomWithoutParameters() {
+//		return PMutil.getRandom(getDefaultRandomLimits(0), getDefaultRandomLimits(1));
+//	}
+	
+//	/**
+//	 * Process Random within Given Limits
+//	 * @param parameters {@code String[]} the extra parameters
+//	 * @return {@code Integer} Random Value
+//	 */
+//	@Override Integer randomWithLimit(String[] parameters) {
+//		
+//		int lim1 = getLimits(0);
+//		int lim2 = getLimits(1);
+//		int min = Math.min(lim1, lim2);
+//		int max = Math.max(lim1, lim2);
+//		// First Limit
+//		if (parameters.length >= 1) {
+//			if (PMutil.testForInteger(parameters[0])) {
+//				lim1 = PMutil.validateLimits(PMutil.toInteger(parameters[0]), min, max);
+//			} 
+//		}
+//		// Second Limit
+//		if (parameters.length >= 2) {
+//			if (PMutil.testForInteger(parameters[1])) {
+//				lim2 = PMutil.validateLimits(PMutil.toInteger(parameters[1]), min, max);
+//			} 
+//		}
+//		// get Random
+//		return PMutil.getRandom(lim1, lim2);
+//	}
 	/**
 	 * Generate option Range for limit and random
 	 * @return the range

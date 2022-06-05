@@ -15,6 +15,7 @@
 
 package br.profileManager.src.main.java;
 
+import java.util.Collection;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -23,20 +24,36 @@ import static br.profileManager.src.main.java.WriteUtil.History.*;
 
 /**
  * Common methods for data validation
- * @param <ValueClass> the Value's Code View Class
+ * @param <ValueClass>  the Base Type for Code View
+ * @param <ValueClass> Either ValueClass or List<ValueClass>
  */
-public abstract class Abstract_ValidData<ValueClass> 
+public abstract class Abstract_Valid<ValueClass> 
 						extends Abstract_Valid_Base<ValueClass>{
+
+	private static final String LIST_SEPARATOR = "/";
+	private boolean isList;
+	private Map<History, String> historyMap = new EnumMap<>(History.class);
 	
-	private Map<History, ValueClass> historyMap = new EnumMap<>(History.class);
-	
-	
+	private boolean isClassCollection(Class value) {
+		  return Collection.class.isAssignableFrom(value) || Map.class.isAssignableFrom(value);
+		}
     // ==================================================
     // Constructors and initializers
     //
-	Abstract_ValidData() {}
+	Abstract_Valid(ValueClass defaultValue) {
+		isList = defaultValue instanceof Collection;
+	}
 
-	Abstract_ValidData(List<ValueClass> options) {
+	Abstract_Valid(boolean isList) {
+		this.isList = isList;}
+
+	Abstract_Valid(List<ValueClass> options) {
+		this.isList = false;
+		initList(options);
+	}
+	
+	Abstract_Valid(List<ValueClass> options, boolean isList) {
+		this.isList = isList;
 		initList(options);
 	}
 	
@@ -67,38 +84,37 @@ public abstract class Abstract_ValidData<ValueClass>
 	 * Process Random without parameters
 	 * @return {@code Integer} OutputString
 	 */
-	abstract ValueClass getRandom(ValueClass lim1, ValueClass lim2);
+	abstract String getRandom(ValueClass lim1, ValueClass lim2);
 
 	/**
 	 * Process non Random user entry
 	 * @return {@code Code View} Validated Value
 	 */
-//	abstract ValueClass entryValidation(String userEntry);
-	ValueClass entryValidation(String userEntry) {
+	String entryValidation(String userEntry) {
 		userEntry = PMutil.clean(userEntry);
 		// First Check for blank values
 		if (userEntry.isBlank()) {
 			if (getValidationCriteria().isBlankAllowed()) {
 				return null;
 			}
-			return getHistoryCodeView(Default);
+			return getHistoryUserView(Default);
 		}
 		// Then Check if value is valid
 		ValueClass value = toCodeView(userEntry);  // Raw conversion
 		if (value == null) {
 			// not Valid Check if part of the list 
 			if (hasList() && isValidUserEntry(userEntry)) {
-				return getCodeView(userEntry);
+				return userEntry;
 			} // Nothing Valid, then either blank or default
 			else if (getValidationCriteria().isBlankAllowed()) {
 				return null;
 			}
 			else {
-				return getHistoryCodeView(Default);
+				return getHistoryUserView(Default);
 			}
 		} else {
 			// Check for limit before returning the value
-			return validateLimits(value, getLimits(0), getLimits(1));
+			return toUserView(validateLimits(value, getLimits(0), getLimits(1)));
 		}
 	}
 
@@ -108,7 +124,7 @@ public abstract class Abstract_ValidData<ValueClass>
 	 * @return {@code Code View} OutputString
 	 */
 //	abstract ValueClass randomWithLimit(String[] parameters);
-	ValueClass randomWithLimit(String[] parameters) {
+	String randomWithLimit(String[] parameters) {
 		ValueClass lim1 = getLimits(0);
 		ValueClass lim2 = getLimits(1);
 		if (parameters.length >= 1) {
@@ -133,7 +149,7 @@ public abstract class Abstract_ValidData<ValueClass>
 	 * @return {@code Code View} Output Value
 	 */
 //	abstract ValueClass randomWithoutParameters();
-	ValueClass randomWithoutParameters() {
+	String randomWithoutParameters() {
 		return getRandom(getDefaultRandomLimits(0), getDefaultRandomLimits(1));
 	}
 
@@ -173,7 +189,7 @@ public abstract class Abstract_ValidData<ValueClass>
 	 * @param newValue the new "history" Value
 	 */
 
-	protected void setHistoryCodeView(History history, ValueClass newValue) {
+	protected void setHistoryUserView(History history, String newValue) {
 		if (history == Last) { // if in two step to allow breakpoint
 			if (!PMutil.neverNull(historyMap.get(Last)).isBlank()) {
 				return; // Last was already assigned	
@@ -190,8 +206,8 @@ public abstract class Abstract_ValidData<ValueClass>
 	 * @param history  Field to be filled
 	 * @param newValue the new "history" Value
 	 */
-	protected void setHistoryUserView(History history, String newValue) {
-		setHistoryCodeView(history, toCodeView(newValue));
+	protected void setHistoryCodeView(History history, ValueClass newValue) {
+		setHistoryUserView(history, toUserView(newValue));
 	}
 
 	// ==================================================
@@ -203,16 +219,16 @@ public abstract class Abstract_ValidData<ValueClass>
 	 * @return the "history" Code View
 	 */
 	protected ValueClass getHistoryCodeView(History history) {
-		return historyMap.get(history);
+		return toCodeView(historyMap.get(history));
 	}
 
 	/**
 	 * Get the "history" User View
 	 * @param history  Field to be retrieved
-	 * @return the "history" Code View
+	 * @return the "history" User View
 	 */
 	protected String getHistoryUserView(History history) {
-		return toUserView(historyMap.get(history));
+		return historyMap.get(history);
 	}
 	// ==================================================
     // Test Methods
@@ -222,7 +238,7 @@ public abstract class Abstract_ValidData<ValueClass>
 	 * @param parameters {@code String[]} the extra parameters
 	 * @return {@code String} Random Value
 	 */
-	protected ValueClass randomWithInListLimit(String[] parameters) {
+	protected String randomWithInListLimit(String[] parameters) {
 		int min = 0;
 		int max = listSize();
 		// First Limit
@@ -235,15 +251,15 @@ public abstract class Abstract_ValidData<ValueClass>
 		}
 		// get Random
 		int id = PMutil.getRandom(min, max);
-		return getCodeView(id);
+		return getUserView(id);
 	}
 
 	/**
 	 * Process Random with parameters
 	 * @param parameters {@code String[]} the extra parameters
-	 * @return {@code ValueClass} Output Value
+	 * @return {@code String} Output Value
 	 */
-	ValueClass randomWithParameters(String[] parameters) {
+	String randomWithParameters(String[] parameters) {
 		if (parameters.length > 2) {
 			return randomWithList(parameters);
 		}
@@ -256,9 +272,9 @@ public abstract class Abstract_ValidData<ValueClass>
 	/**
 	 * Process Random among the given list
 	 * @param parameters {@code String[]} the extra parameters
-	 * @return {@code ValueClass} Random Value
+	 * @return {@code String} Random Value
 	 */
-	ValueClass randomWithList(String[] parameters) {
+	String randomWithList(String[] parameters) {
 		int id = PMutil.getRandom(0, parameters.length);
 		return entryValidation(parameters[id]);
 	}
@@ -269,32 +285,15 @@ public abstract class Abstract_ValidData<ValueClass>
 	 * Analyze user Entry content
 	 * @return 
 	 */
-	protected Abstract_ValidData<ValueClass>.CodeAndUserView entryAnalysis(String userEntry) {
-		CodeAndUserView out = new CodeAndUserView();
+	protected String entryAnalysis(String userEntry) {
 		if ( getValidationCriteria().isRandomAllowed()
 				&& isRandom(userEntry)) {
 			if (hasExtraParameters(userEntry)) {
-				out.codeView = (randomWithParameters(
-						splitParameters(removeRandomId(userEntry))));
-				out.userView = userEntry;
-				return out;
+				return randomWithParameters(
+						splitParameters(removeRandomId(userEntry)));
 			}
-			out.codeView = (randomWithoutParameters());
-			out.userView = userEntry;
-			return out;
+			return randomWithoutParameters();
 		}
-		out.codeView = (entryValidation(userEntry));
-		return out;
+		return entryValidation(userEntry);
 	}
-	// ==================================================
-    // Nested Class 
-    //
-	/**
-	 * Used for method return parameter
-	 */
-	class CodeAndUserView {
-		ValueClass codeView;
-		String userView;
-	}
-
 }

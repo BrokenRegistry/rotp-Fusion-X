@@ -28,6 +28,8 @@ import br.profileManager.src.main.java.Valid_String;
 
 import static br.profileManager.src.main.java.WriteUtil.History.*;
 
+import java.util.List;
+
 
 /**
  * @author BrokenRegistry
@@ -184,6 +186,38 @@ public class Group_BrokenRegistry extends  Abstract_Group <ClientClasses> {
 	
 	// ==============================================================
 	// OPPONENTS RACE LIST
+	//
+	public class Valid_List extends Valid_String {
+		
+	    // ==================================================
+	    // Constructors and initializers
+	    //
+		/**
+		 * Base Constructor for String Validation
+		 */
+		public Valid_List() {
+			super();
+			init();
+		}
+		
+		/**
+		 * Constructor for String Validation with list initialization
+		 * @param options the list to initialize
+		 */
+		public Valid_List(List<String> options) {
+			super(options);
+			init();
+		}
+		
+		private void initCriteria() {
+			getValidationCriteria().isRandomAllowed(false);
+		}
+		
+		private void init() {
+			initCriteria();
+		}
+	}
+	// ========== Parameter Section ==========
 	//
 	static class OpponentRaceList extends
 			Abstract_Parameter <String, Valid_String, ClientClasses> {

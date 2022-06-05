@@ -24,6 +24,8 @@ import java.util.List;
  */
 public abstract class Abstract_Valid_Base<ValueClass> extends WriteUtil{
 	
+	private static final String RANDOM_ID = "RANDOM";
+	private static final String PARAMETERS_SEPARATOR  = ",";
 	private List<ValidationElement<ValueClass>> validationList =
 			new ArrayList<ValidationElement<ValueClass>>();
 	private ValidationCriteria criteria = new ValidationCriteria();
@@ -59,19 +61,6 @@ public abstract class Abstract_Valid_Base<ValueClass> extends WriteUtil{
 	// ==================================================
     // Abstract Methods Request
     //
-	/**
-	 * Process non Random user entry
-	 * @return {@code Code View} Validated Value
-	 */
-	abstract ValueClass entryValidation(String userEntry);
-
-	/**
-	 * Process Random with parameters
-	 * @param parameters {@code String[]} the extra parameters
-	 * @return {@code Code View} OutputString
-	 */
-	abstract ValueClass randomWithLimit(String[] parameters);
-	
 	/**
 	 * Get the default limit value
 	 * @return the default limit Code View
@@ -279,56 +268,62 @@ public abstract class Abstract_Valid_Base<ValueClass> extends WriteUtil{
     // Test Methods
     //
 	/**
-	 * Process Random within Given Limits
-	 * @param parameters {@code String[]} the extra parameters
-	 * @return {@code String} Random Value
-	 */
-	protected ValueClass randomWithInListLimit(String[] parameters) {
-		int min = 0;
-		int max = listSize();
-		// First Limit
-		if (parameters.length >= 1) {
-			min = getUserViewIndex(parameters[0], min);
-		}
-		// Second Limit
-		if (parameters.length >= 2) {
-			max = getUserViewIndex(parameters[1], max);
-		}
-		// get Random
-		int id = PMutil.getRandom(min, max);
-		return getCodeView(id);
-	}
-
-	/**
-	 * Process Random with parameters
-	 * @param parameters {@code String[]} the extra parameters
-	 * @return {@code ValueClass} Output Value
-	 */
-	ValueClass randomWithParameters(String[] parameters) {
-		if (parameters.length > 2) {
-			return randomWithList(parameters);
-		}
-		if (hasList() && isValidUserEntry(parameters[0])) {
-			return randomWithInListLimit(parameters);
-		}
-		return randomWithLimit(parameters);
-	}
-	
-	/**
-	 * Process Random among the given list
-	 * @param parameters {@code String[]} the extra parameters
-	 * @return {@code ValueClass} Random Value
-	 */
-	ValueClass randomWithList(String[] parameters) {
-		int id = PMutil.getRandom(0, parameters.length);
-		return entryValidation(parameters[id]);
-	}
-
-	/**
 	 * @return <b>true</b> if the Validation List is not empty
 	 */
 	protected boolean hasList() {
 		return validationList.size() > 0;
+	}
+
+	// ==================================================
+    // Random Management Methods
+    //
+	// TODO Move up to Valid
+	/**
+	 * Test if user Entry is asking for a random parameter
+	 * @param userEntry the {@code String} to analyze
+	 * @return <b>true</b> if is random
+	 */
+	protected static boolean isRandom(String userEntry) {
+		userEntry = PMutil.clean(userEntry).toUpperCase();
+		if (userEntry.length() >= RANDOM_ID.length()) {
+			return userEntry.substring(0, RANDOM_ID.length()).equals(RANDOM_ID); 
+		}
+		return false;
+	}
+
+	/**
+	 * Check for extra parameter in Random request
+	 * @param userEntry the {@code String} to analyze
+	 * @return <b>true</b> if has extra parameters
+	 */
+	protected static boolean hasExtraParameters(String userEntry) {
+		return !removeRandomId(userEntry).isBlank();
+	}
+
+	/**
+	 * Remove the Random word and return the extra parameters
+	 * @param userEntry the {@code String} to analyze
+	 * @return the extra parameters
+	 */
+	protected static String removeRandomId(String userEntry) {
+		userEntry = PMutil.clean(userEntry);
+		userEntry = userEntry.substring(RANDOM_ID.length()).strip();
+		// Check for misplaced PARAMETERS_SEPARATOR
+		if (!userEntry.isEmpty() &&
+				userEntry.charAt(0) == PARAMETERS_SEPARATOR.charAt(0)) {
+			userEntry = userEntry.substring(1).strip();
+		}
+		return userEntry;
+	}
+
+	/**
+	 * Remove the Random word and return the extra parameters
+	 * @param userEntry the {@code String} to analyze
+	 * @return the extra parameters
+	 */
+	protected static String[] splitParameters(String parameters) {
+		// parameters should already be tested
+		return parameters.split(PARAMETERS_SEPARATOR);
 	}
 
 	// ==================================================
@@ -416,6 +411,7 @@ public abstract class Abstract_Valid_Base<ValueClass> extends WriteUtil{
 	 *  @return The CodeView from its index
 	 */
 	protected ValueClass getCodeView(int index) {
+		index = Math.max(0, Math.min(validationList.size()-1, index));
 		return validationList.get(index).getCodeView();
 	}
 	
@@ -423,6 +419,7 @@ public abstract class Abstract_Valid_Base<ValueClass> extends WriteUtil{
 	 *  @return The UserView from its index
 	 */
 	protected String getUserView(int index) {
+		index = Math.max(0, Math.min(validationList.size()-1, index));
 		return validationList.get(index).getUserView();
 	}
 	

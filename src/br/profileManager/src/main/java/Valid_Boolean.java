@@ -15,8 +15,6 @@
 
 package br.profileManager.src.main.java;
 
-import static br.profileManager.src.main.java.WriteUtil.History.*;
-
 /**
  * For the validation of the {@code Boolean}
  */
@@ -30,42 +28,71 @@ public class Valid_Boolean extends Abstract_ValidData<Boolean> {
 	 */
 	public Valid_Boolean() {
 		setValidationCriteria(new ValidationCriteria());
+		// Just to avoid null array
+		setLimits(false, true);
+		setDefaultRandomLimits(false, true);
+;
 	}
 
 	// ==================================================
     // Overriders
     //
+	@Override String toUserView(Boolean codeView) {
+		return PMutil.toYesNoString(codeView);
+	}
+	
+	@Override Boolean toCodeView(String userView) {
+		return PMutil.toBoolean(userView);
+	}
+
 	/**
-	 * Process non Random user entry
-	 * @return {@code Boolean} Validated Value
+	 * Limits are not for booleans...
+	 * @return random value
 	 */
-	@Override Boolean entryValidation(String userEntry) {
-		userEntry = PMutil.clean(userEntry);
-		// First Check for blank values
-		if (userEntry.isBlank()) {
-			if (getValidationCriteria().isBlankAllowed()) {
-				return null;
-			}
-			return getHistoryCodeView(Default);
-		}
-		// Then Check if value is valid
-		Boolean value = PMutil.toBoolean(userEntry);
-		if (value == null) {
-			if (getValidationCriteria().isBlankAllowed()) {
-				return null;
-			}
-			return getHistoryCodeView(Default);
-		}
-		return value;
+	@Override Boolean getRandom(Boolean lim1, Boolean lim2) {
+		return PMutil.getBooleanRandom();
 	}
 	
 	/**
-	 * Process Random without parameters
-	 * @return {@code Boolean} OutputString
+	 * Should never happen
+	 * @return value
 	 */
-	@Override Boolean randomWithoutParameters() {
-		return PMutil.getBooleanRandom();
+	@Override Boolean validateLimits(Boolean value,
+									Boolean lim1, Boolean lim2) {
+		return value;
 	}
+
+//	/**
+//	 * Process non Random user entry
+//	 * @return {@code Boolean} Validated Value
+//	 */
+//	@Override Boolean entryValidation(String userEntry) {
+//		userEntry = PMutil.clean(userEntry);
+//		// First Check for blank values
+//		if (userEntry.isBlank()) {
+//			if (getValidationCriteria().isBlankAllowed()) {
+//				return null;
+//			}
+//			return getHistoryCodeView(Default);
+//		}
+//		// Then Check if value is valid
+//		Boolean value = PMutil.toBoolean(userEntry);
+//		if (value == null) {
+//			if (getValidationCriteria().isBlankAllowed()) {
+//				return null;
+//			}
+//			return getHistoryCodeView(Default);
+//		}
+//		return value;
+//	}
+//	
+//	/**
+//	 * Process Random without parameters
+//	 * @return {@code Boolean} OutputString
+//	 */
+//	@Override Boolean randomWithoutParameters() {
+//		return PMutil.getBooleanRandom();
+//	}
 	
 	/**
 	 * Process Random with parameters
@@ -77,17 +104,10 @@ public class Valid_Boolean extends Abstract_ValidData<Boolean> {
 		// ex: Random yes, yes, yes, NO
 		return randomWithList(parameters);
 	}
+	
 	// This should never happen
 	@Override Boolean randomWithLimit(String[] parameters) {
 		return randomWithList(parameters);
-	}
-
-	@Override String toUserView(Boolean codeView) {
-		return PMutil.toYesNoString(codeView);
-	}
-	
-	@Override Boolean toCodeView(String userView) {
-		return PMutil.toBoolean(userView);
 	}
 
 	/**

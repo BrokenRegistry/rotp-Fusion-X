@@ -53,6 +53,30 @@ public class Valid_String extends Abstract_ValidData<String> {
 	// ==================================================
     // Overriders
     //
+	@Override String toCodeView(String userView) {
+		return getCodeView(userView);
+	}
+	
+	@Override String toUserView(String codeView) {
+		return getUserView(codeView);
+	}
+
+	/**
+	 * Should never happen
+	 * @return lim1
+	 */
+	@Override String getRandom(String lim1, String lim2) {
+		return lim1; // Should never happen but...
+	}
+	
+	/**
+	 * Should never happen
+	 * @return value
+	 */
+	@Override String validateLimits(String value, String lim1, String lim2) {
+		return value; // Should never happen but...
+	}
+
 	/**
 	 * Process non Random user entry
 	 * @return {@code String} Validated Code View
@@ -62,9 +86,9 @@ public class Valid_String extends Abstract_ValidData<String> {
 		// First Check for blank values
 		if (userEntry.isBlank()) {
 			if (getValidationCriteria().isBlankAllowed()) {
-				return userEntry;
+				return null;
 			}
-			return getHistoryUserView(Default);
+			return getHistoryCodeView(Default);
 		}
 		// Then Check for a validation list
 		if (!hasList()) {
@@ -75,7 +99,7 @@ public class Valid_String extends Abstract_ValidData<String> {
 		if (isValidUserEntry(userEntry)) {
 			return toCodeView(userEntry);
 		}
-		return getHistoryUserView(Default);
+		return getHistoryCodeView(Default);
 	}
 
 	/**
@@ -116,14 +140,6 @@ public class Valid_String extends Abstract_ValidData<String> {
 		return randomWithInListLimit(parameters);
 	}
 	
-	@Override String toCodeView(String userView) {
-		return getCodeView(userView);
-	}
-	
-	@Override String toUserView(String codeView) {
-		return getUserView(codeView);
-	}
-	
 	/**
 	 * Test if the user entry is part of the validation list
 	 * for both unique and multiple values allowed,
@@ -153,7 +169,6 @@ public class Valid_String extends Abstract_ValidData<String> {
 			}
 			return out;
  		}
-//		return getHistoryUserView(Blank);
 		return getBlankValue();
 	}
 

@@ -55,74 +55,103 @@ public class Valid_Double extends Abstract_ValidData<Double> {
 	// ==================================================
     // Overriders
     //
-	/**
-	 * Process non Random user entry
-	 * @return {@code Double} Validated Value
-	 */
-	@Override Double entryValidation(String userEntry) {
-		userEntry = PMutil.clean(userEntry);
-		// First Check for blank values
-		if (userEntry.isBlank()) {
-			if (getValidationCriteria().isBlankAllowed()) {
-				return null;
-			}
-			return getHistoryCodeView(Default);
-		}
-		// Then Check if value is valid
-		Double value = PMutil.toDouble(userEntry);
-		if (value == null) {
-			if (hasList() && isValidUserEntry(userEntry)) {
-				return getCodeView(userEntry);
-			}
-			if (getValidationCriteria().isBlankAllowed()) {
-				return null;
-			}
-			return getHistoryCodeView(Default);
-		}
-		return PMutil.validateLimits(value, getLimits(0), getLimits(1));
-	}
 	
-	/**
-	 * Process Random without parameters
-	 * @return {@code Double} OutputString
-	 */
-	@Override Double randomWithoutParameters() {
-		return PMutil.getRandom(getDefaultRandomLimits(0), getDefaultRandomLimits(1));
-	}
-	
-	/**
-	 * Process Random within Given Limits
-	 * @param parameters {@code String[]} the extra parameters
-	 * @return {@code Double} Random Value
-	 */
-	@Override Double randomWithLimit(String[] parameters) {
-		Double lim1 = getLimits(0);
-		Double lim2 = getLimits(1);
-		Double min = Math.min(lim1, lim2);
-		Double max = Math.max(lim1, lim2);
-		// First Limit
-		if (parameters.length >= 1) {
-			if (PMutil.testForNumeric(parameters[0])) {
-				lim1 = PMutil.validateLimits(PMutil.toDouble(parameters[0]), min, max);
-			} 
-		}
-		// Second Limit
-		if (parameters.length >= 2) {
-			if (PMutil.testForNumeric(parameters[1])) {
-				lim2 = PMutil.validateLimits(PMutil.toDouble(parameters[1]), min, max);
-			} 
-		}
-		// get Random
-		return PMutil.getRandom(lim1, lim2);
-	}
-	
-	@Override String toUserView(Double codeView) {
+	@Override protected String toUserView(Double codeView) {
 		return PMutil.neverNull(codeView);
 	}
 	
-	@Override Double toCodeView(String userView) {
+	@Override protected Double toCodeView(String userView) {
 		return PMutil.toDouble(userView);
 	}
+
+	/**
+	 * Process Random without user parameters
+	 * @return {@code Double} OutputString
+	 */
+	@Override Double getRandom(Double lim1, Double lim2) {
+		return PMutil.getRandom(lim1, lim2);
+	}
+	
+	/**
+	 * Validate the limits for the Value class type
+	 * @param value the {@code Code View} Value to validate
+	 * @param lim1  the {@code Code View} first limit
+	 * @param lim2  the {@code Code View} second limit
+	 * @return {@code Code View} Validated Value
+	 */
+	@Override Double validateLimits(Double value,
+									Double lim1, Double lim2) {
+		return PMutil.validateLimits(value, getLimits(0), getLimits(1));
+	}
+
+//	/**
+//	 * Process non Random user entry
+//	 * @return {@code Double} Validated Value
+//	 */
+//	@Override Double entryValidation(String userEntry) {
+//		userEntry = PMutil.clean(userEntry);
+//		// First Check for blank values
+//		if (userEntry.isBlank()) {
+//			if (getValidationCriteria().isBlankAllowed()) {
+//				return null;
+//			}
+//			return getHistoryCodeView(Default);
+//		}
+//		// Then Check if value is valid
+//		Double value = PMutil.toDouble(userEntry);
+//		if (value == null) {
+//			if (hasList() && isValidUserEntry(userEntry)) {
+//				return getCodeView(userEntry);
+//			}
+//			if (getValidationCriteria().isBlankAllowed()) {
+//				return null;
+//			}
+//			return getHistoryCodeView(Default);
+//		}
+//		return PMutil.validateLimits(value, getLimits(0), getLimits(1));
+//	}
+//	
+//	/**
+//	 * Process Random without parameters
+//	 * @return {@code Double} OutputString
+//	 */
+//	@Override Double randomWithoutParameters() {
+//		return PMutil.getRandom(getDefaultRandomLimits(0), getDefaultRandomLimits(1));
+//	}
+//	
+//	/**
+//	 * Process Random within Given Limits
+//	 * @param parameters {@code String[]} the extra parameters
+//	 * @return {@code Double} Random Value
+//	 */
+//	@Override Double randomWithLimit(String[] parameters) {
+//		Double lim1 = getLimits(0);
+//		Double lim2 = getLimits(1);
+//		Double min = Math.min(lim1, lim2);
+//		Double max = Math.max(lim1, lim2);
+//		// First Limit
+//		if (parameters.length >= 1) {
+//			if (PMutil.testForNumeric(parameters[0])) {
+//				lim1 = PMutil.validateLimits(PMutil.toDouble(parameters[0]), min, max);
+//			} 
+//		}
+//		// Second Limit
+//		if (parameters.length >= 2) {
+//			if (PMutil.testForNumeric(parameters[1])) {
+//				lim2 = PMutil.validateLimits(PMutil.toDouble(parameters[1]), min, max);
+//			} 
+//		}
+//		// get Random
+//		return PMutil.getRandom(lim1, lim2);
+//	}
+//	
+//	@Override String toUserView(Double codeView) {
+//		return PMutil.neverNull(codeView);
+//	}
+//	
+//	@Override Double toCodeView(String userView) {
+//		return PMutil.toDouble(userView);
+//	}
 
 	/**
 	 * Generate option Range for limit and random
