@@ -15,24 +15,27 @@
 
 package br.profileManager.src.main.java;
 
+import static br.profileManager.src.main.java.PMconfig.commentEndPosition;
+import static br.profileManager.src.main.java.PMconfig.lineSplitPosition;
+import static br.profileManager.src.main.java.PMconfig.valueSpacer;
+import static br.profileManager.src.main.java.PMconfig.keyValueSeparator;
+
+
 /**
  * Base for every User Entry Lines
- * @param <ValueClass> the Value's Code View Class
- * @param <ValidClass>  The Value's validation class
+ * @param <T> the Value's Code View Class
+ * @param <V>  The Value's validation class
  */
-class Generic_Line<
-		ValueClass, 
-		ValidClass extends Abstract_ValidData<ValueClass>> extends WriteUtil {
+class Lines<T, V extends Validation<T>>
+		extends WriteUtil {
 	
     // ==================================================
-	// Constant Properties
+	// Constant Properties 
     //
     private static final String BASE_KEY_FORMAT = 
     		"%-" + Integer.toString(lineSplitPosition()) + "s";
-    public  static final String KEY_VALUE_SEPARATOR = ":";
-    private static final String VALUE_SPACER        = " ";
     private static final String	KEY_VALUE_SEPARATOR_PRT =
-    		KEY_VALUE_SEPARATOR + VALUE_SPACER;
+    		keyValueSeparator() + valueSpacer();
     private static final String KEY_FORMAT = 
     		BASE_KEY_FORMAT + KEY_VALUE_SEPARATOR_PRT;
     private static final String KEY_VALUE_FORMAT =
@@ -42,7 +45,7 @@ class Generic_Line<
 	// Variables Properties
     //
 	private String entryName = "none";
-	private Generic_Entry<ValueClass, ValidClass> entryValue;
+	private Entry<T, V> entryValue;
 	private String comment = null;
 
 	// ==================================================
@@ -50,53 +53,53 @@ class Generic_Line<
     //
 	/**
 	 * create and initialize a new {@code LineValid} with default value
-	 * @param validationData the {@code Abstract_ValidData<ValueClass>} validationData
+	 * @param validationData the {@code Abstract_ValidData<T>} validationData
 	 */
-	Generic_Line(Abstract_ValidData<ValueClass> validationData) {
-		entryValue = new Generic_Entry<ValueClass, ValidClass>(validationData);
+	Lines(Validation<T> validationData) {
+		entryValue = new Entry<T, V>(validationData);
 		setName(validationData.getDefaultName());
 	}
 	
-	Generic_Line(Abstract_ValidData<ValueClass> validationData,
+	Lines(Validation<T> validationData,
 			 String line) {	
-		entryValue = new Generic_Entry<ValueClass, ValidClass>(validationData);
+		entryValue = new Entry<T, V>(validationData);
 		newLine(line);
 	}
 
-	Generic_Line(Abstract_ValidData<ValueClass> validationData,
+	Lines(Validation<T> validationData,
 			 String name,
 			 String value) {
-		entryValue = new Generic_Entry<ValueClass, ValidClass>(validationData, value);
+		entryValue = new Entry<T, V>(validationData, value);
 		setName(name);
 	}
 
-	Generic_Line(Abstract_ValidData<ValueClass> validationData,
+	Lines(Validation<T> validationData,
 			 String name,
-			 ValueClass value) {
-		entryValue = new Generic_Entry<ValueClass, ValidClass>(validationData, value);
+			 AbstractT<T> value) {
+		entryValue = new Entry<T, V>(validationData, value);
 		setName(name);
 	}
 
-	Generic_Line(Abstract_ValidData<ValueClass> validationData,
+	Lines(Validation<T> validationData,
 			 String name,
 			 String value,
 			 String comment) {
-		entryValue = new Generic_Entry<ValueClass, ValidClass>(validationData, value);
+		entryValue = new Entry<T, V>(validationData, value);
 		setName(name);
 		setComment(comment);
 	}
 
-	Generic_Line(Abstract_ValidData<ValueClass> validationData,
+	Lines(Validation<T> validationData,
 			 String name,
-			 ValueClass value, 
+			 AbstractT<T> value, 
 			 String comment) {
-		entryValue = new Generic_Entry<ValueClass, ValidClass>(validationData, value);
+		entryValue = new Entry<T, V>(validationData, value);
 		setName(name);
 		setComment(comment);
 	}
 
 	@SuppressWarnings("unused")
-	private Generic_Line() {} // Forbidden constructor
+	private Lines() {} // Forbidden constructor
 	
 	// ==================================================
 	// Setters
@@ -105,7 +108,7 @@ class Generic_Line<
 		entryValue.set(newValue);
 	}
 
-	Generic_Line<ValueClass, ValidClass> newLine(String line) {
+	Lines<T, V> newLine(String line) {
  		if (PMutil.isBlank(line)) {
  			initValue("");
  			return this;
@@ -113,7 +116,7 @@ class Generic_Line<
  		// Get the comment if one
  		setComment(WriteUtil.extractComment(line));
  		// Split the Key and the value
-		String[] list = WriteUtil.removeComment(line).split(KEY_VALUE_SEPARATOR, 2);
+		String[] list = WriteUtil.removeComment(line).split(keyValueSeparator(), 2);
 		setName(list[0]);
 		if (list.length == 2) {
 			initValue(list[1]);
@@ -126,17 +129,17 @@ class Generic_Line<
 	 * @param newKey the new {@code String} key
 	 * @return current object to allow chaining
 	 */
-	Generic_Line<ValueClass, ValidClass> setName(String newKey) {
+	Lines<T, V> setName(String newKey) {
 		entryName = PMutil.clean(newKey);
 		return this;
 	}
 
 	/**
-	 * set a new {@code ValueClass} value
-	 * @param newValue the new {@code ValueClass} Value
+	 * set a new {@code Abstract_U<T>} value
+	 * @param newValue the new {@code Abstract_U<T>} Value
 	 * @return current object to allow chaining
 	 */
-	Generic_Line<ValueClass, ValidClass> setValue(ValueClass newValue) {
+	Lines<T, V> setValue(AbstractT<T> newValue) {
 		entryValue.setValue(newValue);
 		return this;
 	}
@@ -146,7 +149,7 @@ class Generic_Line<
 	 * @param newComment the new {@code String} Comment
 	 * @return current object to allow chaining
 	 */
-	Generic_Line<ValueClass, ValidClass> setComment(String newComment) {
+	Lines<T, V> setComment(String newComment) {
 		comment = newComment;
 		return this;
 	}
@@ -162,25 +165,25 @@ class Generic_Line<
 	}
 
 	/**
-	 * @return the entryValue value as {@code ValueClass}
+	 * @return the entryValue value as {@code Abstract_U<T>}
 	 */
-	ValueClass getValue() {
+	AbstractT<T> getValue() {
 		return entryValue.getValue();
 	}
 
 	/**
 	 * @param defaultValue The value to return on Blank
-	 * @return the entryValue value as {@code ValueClass}
+	 * @return the entryValue value as {@code Abstract_U<T>}
 	 */
-	ValueClass getValue(ValueClass defaultValue) {
+	AbstractT<T> getValue(AbstractT<T> defaultValue) {
 		return entryValue.getValue(defaultValue);
 	}
 
 	/**
 	 * @param defaultValue The value to return on Blank
-	 * @return the entryValue value as {@code ValueClass}
+	 * @return the entryValue value as {@code Abstract_U<T>}
 	 */
-	ValueClass getOrDefault(ValueClass defaultValue) {
+	AbstractT<T> getOrDefault(AbstractT<T> defaultValue) {
 		return entryValue.getOrDefault(defaultValue);
 	}
 
@@ -194,15 +197,15 @@ class Generic_Line<
 	/**
 	 * Return the entryValue as {@code EntryValid}
 	 */
-	Generic_Entry<ValueClass, ValidClass> getValueAsEntry() {
+	Entry<T, V> getValueAsEntry() {
 		return entryValue;
 	}
 
 	/**
 	 * Return the Value Validation Data
 	 */
-	Abstract_ValidData<ValueClass> getValidationData() {
-		return getValueAsEntry().getValidationData();
+	Validation<T> getValidationData() {
+		return getValueAsEntry().getValidation();
 	}
 
 	// ==================================================
@@ -255,7 +258,7 @@ class Generic_Line<
 		if (getValueAsEntry() == null) {
 			return false;
 		}
-		return getValidationData().isValidCodeView(getValue(), category);
+		return getValidationData().isValidCodeView(getValue().codeView(), category);
 	}
 
 	/**
@@ -268,7 +271,7 @@ class Generic_Line<
 			return false;
 		}
 		String value = getValue().toString();
-		if (value != null) {
+		if (value != null && !value.isEmpty()) {
 			return PMutil.containsIgnoreCase(filter, value);
 		}
 		return false;
@@ -339,7 +342,7 @@ class Generic_Line<
 		if (line.isBlank()) {
 			return "";
 		}
-		return line.split(KEY_VALUE_SEPARATOR, 2)[0].strip();
+		return line.split(keyValueSeparator(), 2)[0].strip();
 	}
 	/**
 	 * Test if the {@code String} has a value and extract it
@@ -349,7 +352,7 @@ class Generic_Line<
 	static String getValueAsString(String line) {
 		line = PMutil.clean(line);
 		if (!line.isBlank()) {
-			String[] list = WriteUtil.removeComment(line).split(KEY_VALUE_SEPARATOR, 2);
+			String[] list = WriteUtil.removeComment(line).split(keyValueSeparator(), 2);
 			if (list.length == 2) {
 				return list[1].strip();
 			}

@@ -20,27 +20,27 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
- * @param <ClientClass> The class that have to go thru the profile manager
+ * @param <C> The class that have to go thru the profile manager
  */
-public abstract class Abstract_Group<ClientClass> extends WriteUtil {
+public abstract class AbstractGroup<C> extends WriteUtil {
 
 	//  ========================================================================
 	// Variables Properties
 	//
-	LinkedHashMap<String, Abstract_Parameter<?, ?, ClientClass>>
+	LinkedHashMap<String, AbstractParameter<?, ?, C>>
 		parameterNameMap = new LinkedHashMap<String, 
-								Abstract_Parameter<?, ?, ClientClass>>();
+								AbstractParameter<?, ?, C>>();
 
 	//  ========================================================================
 	// Constructor
 	//
-	protected Abstract_Group(ClientClass clientObject) {
+	protected AbstractGroup(C clientObject) {
 		initSettingList(clientObject);
 	}
 	// ========================================================================
 	// Abstract Methods
 	//
-	protected abstract void initSettingList(ClientClass clientObject);
+	protected abstract void initSettingList(C clientObject);
 
 	// ========================================================================
 	// Public and packages Methods
@@ -48,20 +48,20 @@ public abstract class Abstract_Group<ClientClass> extends WriteUtil {
 	/**
 	 * @param clientObject The class that manage GUI parameters
 	 */
-	public void actionGetGuiCodeView(ClientClass clientObject) {
-		for (Abstract_Parameter<?, ?, ClientClass>
+	public void actionTakeGuiCodeView(C clientObject) {
+		for (AbstractParameter<?, ?, C>
 					parameter : parameterNameMap.values() ) {
-			parameter.setGuiCodeView(clientObject); 
+			parameter.setFromGuiCodeView(clientObject); 
 		}
 	}
 
 	/**
 	 * @param clientObject The class that manage GUI parameters
 	 */
-	public void actionGetGameCodeView(ClientClass clientObject) {
-		for (Abstract_Parameter<?, ?, ClientClass> 
+	public void actionTakeGameCodeView(C clientObject) {
+		for (AbstractParameter<?, ?, C> 
 					parameter : parameterNameMap.values() ) {
-			parameter.setGameCodeView(clientObject);
+			parameter.setFromGameCodeView(clientObject);
 		}
 	}
 
@@ -70,7 +70,7 @@ public abstract class Abstract_Group<ClientClass> extends WriteUtil {
 	 * @param profileName the profile name
 	 */
 	public void actionToFile(History history, String profileName) {
-		for (Abstract_Parameter<?, ?, ClientClass> 
+		for (AbstractParameter<?, ?, C> 
 					parameter : parameterNameMap.values() ) {
 			parameter.actionToFile(history, profileName);
 		}
@@ -81,7 +81,7 @@ public abstract class Abstract_Group<ClientClass> extends WriteUtil {
 	 * @param profileName the profile name
 	 */
 	public void actionUpdateFile(History history, String profileName) {
-		for (Abstract_Parameter<?, ?, ClientClass>
+		for (AbstractParameter<?, ?, C>
 					parameter : parameterNameMap.values() ) {
 			parameter.actionUpdateFile(history, profileName);
 		}
@@ -98,7 +98,7 @@ public abstract class Abstract_Group<ClientClass> extends WriteUtil {
 	 * @param profileName the profile name
 	 * @return Selected parameter
 	 */
-	public Abstract_Parameter<?, ?, ClientClass> getParameter(String profileName) {
+	public AbstractParameter<?, ?, C> getParameter(String profileName) {
 		return parameterNameMap.get(profileName);
 	}
 
@@ -109,7 +109,7 @@ public abstract class Abstract_Group<ClientClass> extends WriteUtil {
 	 */
 	public String toString(List<String> profileList, boolean cleanProfiles) {
 		String out = "";
-		for (Abstract_Parameter<?, ?, ClientClass>
+		for (AbstractParameter<?, ?, C>
 					parameter : parameterNameMap.values() ) {
 			if (cleanProfiles) {
 				out += parameter.toString(profileList);
@@ -133,7 +133,7 @@ public abstract class Abstract_Group<ClientClass> extends WriteUtil {
 
 	void forceCreationMissingProfile(List<String> profileList) {
 		if (PMutil.getForceCreationMissingProfile()) {
-			for (Abstract_Parameter<?, ?, ClientClass>
+			for (AbstractParameter<?, ?, C>
 						parameter : parameterNameMap.values() ) {
 				parameter.forceCreationMissingProfile(profileList);
 			}
@@ -147,7 +147,7 @@ public abstract class Abstract_Group<ClientClass> extends WriteUtil {
 	 * @param parameter the parameter block to process
 	 */
 	protected void addParameter(
-			Abstract_Parameter<?, ?, ClientClass> parameter) {
+			AbstractParameter<?, ?, C> parameter) {
 		parameterNameMap.put(parameter.getParameterName(), parameter);
 	}
 
@@ -155,7 +155,7 @@ public abstract class Abstract_Group<ClientClass> extends WriteUtil {
 	 * Partial reset, values only
 	 */
 	void resetAllUserSettings() {
-		for (Abstract_Parameter<?, ?, ClientClass>
+		for (AbstractParameter<?, ?, C>
 					parameter : parameterNameMap.values() ) {
 			parameter.resetUserProfiles();
 		}
@@ -166,9 +166,9 @@ public abstract class Abstract_Group<ClientClass> extends WriteUtil {
 	 * @param profileList the profile name
 	 */
 	public void overrideGuiParameters(
-				ClientClass clientObject, List<String> profileList) {
+				C clientObject, List<String> profileList) {
 		// Loop thru settings
-		for (Abstract_Parameter<?, ?, ClientClass>
+		for (AbstractParameter<?, ?, C>
 						parameter : parameterNameMap.values() ) {
 			parameter.overrideGuiParameters(clientObject, profileList);
 		}
@@ -179,9 +179,9 @@ public abstract class Abstract_Group<ClientClass> extends WriteUtil {
 	 * @param profileList the profile name
 	 */
 	public void changeGameFileParameters(
-				ClientClass runObject, List<String> profileList) {
+				C runObject, List<String> profileList) {
 		// Loop thru settings
-		for (Abstract_Parameter<?, ?, ClientClass> 
+		for (AbstractParameter<?, ?, C> 
 					parameter : parameterNameMap.values() ) {
 			parameter.changeGameFileParameters(runObject, profileList);
 		}
@@ -191,8 +191,8 @@ public abstract class Abstract_Group<ClientClass> extends WriteUtil {
 	 * @param history  Field to get from
 	 * @param clientObject The class that manage GUI parameters
 	 */
-	public void setGuiParameters(History history, ClientClass clientObject) {
-		for (Abstract_Parameter<?, ?, ClientClass> 
+	public void setGuiParameters(History history, C clientObject) {
+		for (AbstractParameter<?, ?, C> 
 					parameter : parameterNameMap.values() ) {
 			parameter.putHistoryToGUI(history, clientObject);
 		}

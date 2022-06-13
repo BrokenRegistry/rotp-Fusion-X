@@ -500,8 +500,8 @@ public final class SetupRaceUI extends BasePanel implements MouseListener, Mouse
                 goToGalaxySetup();
                 return;
             default: // BR:
-            	if (Profiles.processKey(
-            			k, e.isShiftDown(), "Race", newGameOptions())) {
+            	if (Profiles.processKey(k, e.isShiftDown(), "Race",
+            							options(), newGameOptions())) {
 	            	buttonClick();
 	       			raceChanged();
 	       			repaint();

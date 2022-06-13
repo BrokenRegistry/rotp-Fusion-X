@@ -47,19 +47,19 @@ public class ClientClassesTest extends ClientClasses{
 	 * @return the guiObject
 	 */
 	@Override
-	public IGameOptions getOptionsObject() {
+	public IGameOptions options() {
 		return guiObject;
 	}
 
-	/**
-	 * @param guiObject the guiObject to set
-	 * @return this
-	 */
-	@Override
-	public ClientClasses setOptionsObject(IGameOptions guiObject) {
-		this.guiObject = guiObject;
-		return this;
-	}
+//	/**
+//	 * @param guiObject the guiObject to set
+//	 * @return this
+//	 */
+//	@Override
+//	public ClientClasses setOptionsObject(IGameOptions guiObject) {
+//		this.guiObject = guiObject;
+//		return this;
+//	}
 	
 	// ==============================================================
 	// Nested Classes Fake IGameOptions

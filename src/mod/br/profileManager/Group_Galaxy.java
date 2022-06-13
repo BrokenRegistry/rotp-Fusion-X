@@ -17,20 +17,19 @@
 
 package mod.br.profileManager;
 
-import java.util.List;
-
-import br.profileManager.src.main.java.Abstract_Group;
-import br.profileManager.src.main.java.Abstract_Parameter;
-import br.profileManager.src.main.java.Valid_Integer;
-import br.profileManager.src.main.java.Valid_String;
-import br.profileManager.src.main.java.ValidationCriteria;
+import br.profileManager.src.main.java.AbstractGroup;
+import br.profileManager.src.main.java.AbstractParameter;
+import br.profileManager.src.main.java.AbstractT;
+import br.profileManager.src.main.java.Validation;
+import br.profileManager.src.main.java.T_Integer;
+import br.profileManager.src.main.java.T_String;
 import static br.profileManager.src.main.java.WriteUtil.History.*;
 
 /**
  * @author BrokenRegistry
  * For Parameters in Galaxy GUI
  */
-public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
+public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 
 	Group_Galaxy(ClientClasses go) {
 	   super(go);
@@ -47,57 +46,37 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 	// ==============================================================
 	// GALAXY SHAPE
 	//
-	static class Valid_GalaxyShape extends Valid_String {
-
-		Valid_GalaxyShape() {
-			super();
-			init();
-		}
-		
-		Valid_GalaxyShape(List<String> options) {
-			super(options);
-			init();
-		}
-		
-		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria());
-		}
-		
-		private void init() {
-			initCriteria();
-		}
-	}
-	
-	// ========== Parameter Section ==========
-	//
 	static class GalaxyShape extends 
-			Abstract_Parameter <String, Valid_GalaxyShape, ClientClasses> {
+			AbstractParameter <String, Validation<String>, ClientClasses> {
 
 	    // ========== Constructors and initializer ==========
 	    //
 		GalaxyShape(ClientClasses go) { 
 			super("GALAXY SHAPE",
-					new Valid_GalaxyShape(go.getOptionsObject().galaxyShapeOptions()));
-			setHistoryCodeView(Initial, go.getOptionsObject().selectedGalaxyShape());
-			setHistoryUserView(Default, "Rectangle"); // Ray
+					new Validation<String>(
+							new T_String(go.options().selectedGalaxyShape()),
+							go.options().galaxyShapeOptions()));			
+
+			setHistory(Default, "Rectangle"); // Ray Choice
 		}
 		
 	    // ========== Overriders ==========
 	    //
-		@Override public String getFromGame (ClientClasses go) {
-			return go.getOptionsObject().selectedGalaxyShape();
+		@Override public AbstractT<String> getFromGame (ClientClasses go) {
+			return new T_String(go.options().selectedGalaxyShape());
 		}
 		
-		@Override public void putToGame(ClientClasses go, String codeView) {
+		@Override public void putToGame(ClientClasses go, AbstractT<String> value) {
 
 		}
 		
-		@Override public String getFromUI (ClientClasses go) {
-			return go.getOptionsObject().selectedGalaxyShape();
+		@Override public AbstractT<String> getFromUI (ClientClasses go) {
+			return new T_String(go.options().selectedGalaxyShape());
 		}
 		
-		@Override public void putToGUI(ClientClasses go, String codeView) {
-			go.getOptionsObject().selectedGalaxyShape(codeView);
+		@Override public void putToGUI(ClientClasses go, AbstractT<String> value) {
+			go.options().selectedGalaxyShape(value.codeView());
+			go.option2().selectedGalaxyShape(value.codeView());
 		}
 		
 		@Override public void initComments() {
@@ -110,57 +89,37 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 	// ==============================================================
 	// GALAXY SIZE
 	//
-	static class Valid_GalaxySize extends Valid_String {
-
-		Valid_GalaxySize() {
-			super();
-			init();
-		}
-		
-		Valid_GalaxySize(List<String> options) {
-			super(options);
-			init();
-		}
-		
-		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria());
-		}
-		
-		private void init() {
-			initCriteria();
-		}
-	}
-	
-	// ========== Parameter Section ==========
-	//
 	static class GalaxySize extends 
-			Abstract_Parameter <String, Valid_GalaxySize, ClientClasses> {
+			AbstractParameter <String, Validation<String>, ClientClasses> {
 
 	    // ========== Constructors and initializer ==========
 	    //
 		GalaxySize(ClientClasses go) {
 			super("GALAXY SIZE",
-					new Valid_GalaxySize(go.getOptionsObject().galaxySizeOptions()));
-		setHistoryCodeView(Initial, go.getOptionsObject().selectedGalaxySize());
-		setHistoryUserView(Default, "Small"); // Ray
+					new Validation<String>(
+							new T_String(go.options().selectedGalaxySize()),
+							go.options().galaxySizeOptions()));			
+
+		setHistory(Default, "Small"); // Ray Choice
 		}
 		
 	    // ========== Overriders ==========
 	    //
-		@Override public String getFromGame (ClientClasses go) {
-			return go.getOptionsObject().selectedGalaxySize();
+		@Override public AbstractT<String> getFromGame (ClientClasses go) {
+			return new T_String(go.options().selectedGalaxySize());
 		}
 		
-		@Override public void putToGame(ClientClasses go, String codeView) {
+		@Override public void putToGame(ClientClasses go, AbstractT<String> value) {
 
 		}
 		
-		@Override public String getFromUI (ClientClasses go) {
-			return go.getOptionsObject().selectedGalaxySize();
+		@Override public AbstractT<String> getFromUI (ClientClasses go) {
+			return new T_String(go.options().selectedGalaxySize());
 		}
 		@Override
-		public void putToGUI(ClientClasses go, String codeView) {
-			go.getOptionsObject().selectedGalaxySize(codeView);
+		public void putToGUI(ClientClasses go, AbstractT<String> value) {
+			go.options().selectedGalaxySize(value.codeView());
+			go.option2().selectedGalaxySize(value.codeView());
 		}
 		
 		@Override public void initComments() {}
@@ -169,57 +128,37 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 	// ==============================================================
 	// DIFFICULTY
 	//
-	static class Valid_Difficulty extends Valid_String {
-
-		Valid_Difficulty() {
-			super();
-			init();
-		}
-		
-		Valid_Difficulty(List<String> options) {
-			super(options);
-			init();
-		}
-		
-		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria());
-		}
-		
-		private void init() {
-			initCriteria();
-		}
-	}
-	
-	// ========== Parameter Section ==========
-	//
 	static class Difficulty extends 
-			Abstract_Parameter <String, Valid_Difficulty, ClientClasses> {
+			AbstractParameter <String, Validation<String>, ClientClasses> {
 
 	    // ========== Constructors and initializer ==========
 	    //
 		Difficulty(ClientClasses go) {
 			super("DIFFICULTY",
-				  new Valid_Difficulty(go.getOptionsObject().gameDifficultyOptions()));
-		setHistoryCodeView(Initial, go.getOptionsObject().selectedGameDifficulty());
-		setHistoryUserView(Default, "Easy"); // Ray
+					new Validation<String>(
+							new T_String(go.options().selectedGameDifficulty()),
+							go.options().gameDifficultyOptions()));			
+
+		setHistory(Default, "Easy"); // Ray Choice
 		}
 		
 	    // ========== Overriders ==========
 	    //
-		@Override public String getFromGame (ClientClasses go) {
-			return go.getOptionsObject().selectedGameDifficulty();
+		@Override public AbstractT<String> getFromGame (ClientClasses go) {
+			return new T_String(go.options().selectedGameDifficulty());
 		}
 		
-		@Override public void putToGame(ClientClasses go, String codeView) {
+		@Override public void putToGame(ClientClasses go, AbstractT<String> value) {
 //			go.getGuiObject().selectedGameDifficulty(codeView);
 		}
 		
-		@Override public String getFromUI (ClientClasses go) {
-			return go.getOptionsObject().selectedGameDifficulty();
+		@Override public AbstractT<String> getFromUI (ClientClasses go) {
+			return new T_String(go.options().selectedGameDifficulty());
 		}
 		
-		@Override public void putToGUI(ClientClasses go, String codeView) {
-			go.getOptionsObject().selectedGameDifficulty(codeView);
+		@Override public void putToGUI(ClientClasses go, AbstractT<String> value) {
+			go.options().selectedGameDifficulty(value.codeView());
+			go.option2().selectedGameDifficulty(value.codeView());
 		}
 		
 		@Override public void initComments() {
@@ -229,57 +168,37 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 	// ==============================================================
 	// OPPONENT AI
 	//
-	static class Valid_OpponentAI extends Valid_String {
-
-		Valid_OpponentAI() {
-			super();
-			init();
-		}
-		
-		Valid_OpponentAI(List<String> options) {
-			super(options);
-			init();
-		}
-		
-		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria());
-		}
-		
-		private void init() {
-			initCriteria();
-		}
-	}
-	
-	// ========== Parameter Section ==========
-	//
 	static class OpponentAI extends 
-			Abstract_Parameter <String, Valid_OpponentAI, ClientClasses> {
+			AbstractParameter <String, Validation<String>, ClientClasses> {
 
 	    // ========== Constructors and initializer ==========
 	    //
 		OpponentAI(ClientClasses go) {
 			super("OPPONENT AI", 
-					new Valid_OpponentAI(go.getOptionsObject().opponentAIOptions()));
-			setHistoryCodeView(Initial, go.getOptionsObject().selectedOpponentAIOption());
-			setHistoryUserView(Default, "Base"); // Ray
+					new Validation<String>(
+							new T_String(go.options().selectedOpponentAIOption()),
+							go.options().opponentAIOptions()));			
+
+			setHistory(Default, "Base"); // Ray Choice
 		}
 		
 	    // ========== Overriders ==========
 	    //
-		@Override public String getFromGame (ClientClasses go) {
-			return go.getOptionsObject().selectedOpponentAIOption();
+		@Override public AbstractT<String> getFromGame (ClientClasses go) {
+			return new T_String(go.options().selectedOpponentAIOption());
 		}
 		
-		@Override public void putToGame(ClientClasses go, String codeView) {
+		@Override public void putToGame(ClientClasses go, AbstractT<String> value) {
 
 		}
 		
-		@Override public String getFromUI (ClientClasses go) {
-			return go.getOptionsObject().selectedOpponentAIOption();
+		@Override public AbstractT<String> getFromUI (ClientClasses go) {
+			return new T_String(go.options().selectedOpponentAIOption());
 		}
 		
-		@Override public void putToGUI(ClientClasses go, String codeView) {
-			go.getOptionsObject().selectedOpponentAIOption(codeView);
+		@Override public void putToGUI(ClientClasses go, AbstractT<String> value) {
+			go.options().selectedOpponentAIOption(value.codeView());
+			go.option2().selectedOpponentAIOption(value.codeView());
 		}
 		
 		@Override public void initComments() {}
@@ -288,61 +207,43 @@ public class Group_Galaxy extends  Abstract_Group <ClientClasses> {
 	// ==============================================================
 	// NB OPPONENTS
 	//
-	static class Valid_NbOpponent extends Valid_Integer {
-
-		Valid_NbOpponent() {
-			super();
-			initCriteria();
-			initNbOpponent();
-		}
-		
-		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false));
-		}
-		
-		private void initNbOpponent() {
-		}
-	}
-	
-	// ========== Parameter Section ==========
-	//
    static class NbOpponent extends
-			Abstract_Parameter <Integer, Valid_NbOpponent, ClientClasses> {
+			AbstractParameter <Integer, Validation<Integer>, ClientClasses> {
 
 	    // ========== Constructors and initializer ==========
 	    //
 		NbOpponent(ClientClasses go) {
-			super("NB OPPONENTS", new Valid_NbOpponent());
-			setHistoryCodeView(Initial, go.getOptionsObject().selectedNumberOpponents());
-			setHistoryCodeView(Default, 3); // Ray
+			super("NB OPPONENTS", 
+					new Validation<Integer>(
+							new T_Integer(go.options().selectedNumberOpponents())));			
+
+			setHistoryCodeView(Default, 3); // Ray Choice
 			Integer min = 0;
-			Integer max = go.getOptionsObject().maximumOpponentsOptions();
+			Integer max = go.options().maximumOpponentsOptions();
 			setLimits(min, max);
 			setDefaultRandomLimits(1, max);
 		}
 
 	    // ========== Overriders ==========
 	    //
-		@Override public Integer getFromGame (ClientClasses go) {
-			return go.getOptionsObject().selectedNumberOpponents();
+		@Override public AbstractT<Integer> getFromGame (ClientClasses go) {
+			return new T_Integer(go.options().selectedNumberOpponents());
 		}
 		
-		@Override public void putToGame(ClientClasses go, Integer codeView) {
-
+		@Override public void putToGame(ClientClasses go, AbstractT<Integer> value) {}
+		
+		@Override public AbstractT<Integer> getFromUI (ClientClasses go) {
+			return new T_Integer(go.options().selectedNumberOpponents());
 		}
 		
-		@Override public Integer getFromUI (ClientClasses go) {
-			return go.getOptionsObject().selectedNumberOpponents();
-		}
-		
-		@Override public void putToGUI(ClientClasses go, Integer codeView) {
+		@Override public void putToGUI(ClientClasses go, AbstractT<Integer> value) {
 			// the limits may have changed from previous settings
 			Integer min = 0;
-			Integer max = go.getOptionsObject().maximumOpponentsOptions();
+			Integer max = go.options().maximumOpponentsOptions();
 			setLimits(min, max);
 			setDefaultRandomLimits(1, max);
-			go.getOptionsObject().selectedNumberOpponents(Math.min(max, codeView));
+			go.options().selectedNumberOpponents(Math.min(max, value.codeView()));
+			go.option2().selectedNumberOpponents(Math.min(max, value.codeView()));
 		}
 
 		@Override public void initComments() {}

@@ -7,19 +7,20 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import static br.profileManager.src.main.java.Valid_ProfileAction.*;
 
-class Generic_BlockTest {
+class BlockTest {
 
-	private Generic_Block<String, Valid_ProfileAction> block;
-	private Generic_Line<String, Abstract_ValidData<String>> line;
+	private Block<String, Valid_ProfileAction> block;
+	private Lines<String, Validation<String>> line;
 
 	
-	Generic_Block<String, Valid_ProfileAction> newBlock() {
-		return new Generic_Block<String, Valid_ProfileAction>(
+	Block<String, Valid_ProfileAction> newBlock() {
+		return new Block<String, Valid_ProfileAction>(
 				new Valid_ProfileAction());
 	}
 	private String NL = System.lineSeparator();
 	private String line1 = "key1 : " + ACTION_FILE_TO_GUI.toLowerCase();
-	private String out1  = "key1            : " + ACTION_FILE_TO_GUI;
+	private String out1  = "key1            : " + ACTION_FILE_TO_GUI.toLowerCase();
+	private String out1a = "key1            : " + ACTION_FILE_TO_GUI;
 	private String line2 = "key2 : xxx";
 	private String out2  = "key2            : ";
 	private String line3 = "key3 : " + ACTION_FILE_TO_GAME + "  ;  bla bla bla";
@@ -60,8 +61,8 @@ class Generic_BlockTest {
 	void add_StringString() {
 		block = newBlock();
 		block.add("key1", ACTION_FILE_TO_GUI);
-		assertEquals(out1, block.toString()
-				, "should have been «\"key1                : GUI\"»");
+		assertEquals(out1a, block.toString()
+				, "should have been «\"key1                : LOAD\"»");
 		block = newBlock();
 		block.add("key2 ", "xxx");
 		assertEquals(out2, block.toString()
@@ -75,7 +76,7 @@ class Generic_BlockTest {
 	void add_StringStringString() {
 		block = newBlock();
 		block.add("key1", ACTION_FILE_TO_GUI, null);
-		assertEquals(out1, block.toString()
+		assertEquals(out1a, block.toString()
 				, "should have been «\"key1            : \"»");
 		block = newBlock();
 		block.add("key2 ", "xxx", "");
@@ -126,51 +127,51 @@ class Generic_BlockTest {
 	}
 
 	// ========== Testers ==========
-	@Test
-	void isValid_String() {
-		block = newBlock();
-		block.add(line1);
-		assertEquals(true, block.isValid("key1")
-				, "should have been «true»");	
-		assertEquals(false, block.isValid("key2")
-				, "should have been «false»");	
-		line = block.getLine("key1");
-		line.setValue("xxx");
-		block = newBlock();
-		block.add(line);
-		assertEquals(false, block.isValid("key1")
-				, "should have been «false»");	
-		out1 ="key1            : xxx";
-		assertEquals(out1, block.toString()
-				, "should have been «\"key1            : xxx\"»");	
-		line.setValue("");
-		block = newBlock();
-		block.add(line);
-		assertEquals(true, block.isValid("key1")
-				, "should have been «true»");	
-		out1 ="key1            : ";
-		assertEquals(out1, block.toString()
-				, "should have been «\"key1            : \"»");	
-	}
+//	@Test
+//	void isValid_String() {
+//		block = newBlock();
+//		block.add(line1);
+//		assertEquals(true, block.isValid("key1")
+//				, "should have been «true»");	
+//		assertEquals(false, block.isValid("key2")
+//				, "should have been «false»");	
+//		line = block.getLine("key1");
+//		line.setValue("xxx");
+//		block = newBlock();
+//		block.add(line);
+//		assertEquals(false, block.isValid("key1")
+//				, "should have been «false»");	
+//		out1 ="key1            : xxx";
+//		assertEquals(out1, block.toString()
+//				, "should have been «\"key1            : xxx\"»");	
+//		line.setValue("");
+//		block = newBlock();
+//		block.add(line);
+//		assertEquals(true, block.isValid("key1")
+//				, "should have been «true»");	
+//		out1 ="key1            : ";
+//		assertEquals(out1, block.toString()
+//				, "should have been «\"key1            : \"»");	
+//	}
 
-	@Test
-	void isBlankValue_String() {
-		block = newBlock();
-		block.add(line1);
-		assertEquals(false, block.isBlankValue("key1")
-				, "should have been «false»");	
-		assertEquals(null, block.isBlankValue("key2")
-				, "should have been «null»");
-		line = block.getLine("key1");
-		line.setValue("");
-		block = newBlock();
-		block.add(line);
-		assertEquals(true, block.isBlankValue("key1")
-				, "should have been «true»");	
-		out1 ="key1            : ";
-		assertEquals(out1, block.toString()
-				, "should have been «\"key1            : \"»");			
-	}
+//	@Test
+//	void isBlankValue_String() {
+//		block = newBlock();
+//		block.add(line1);
+//		assertEquals(false, block.isBlankValue("key1")
+//				, "should have been «false»");	
+//		assertEquals(null, block.isBlankValue("key2")
+//				, "should have been «null»");
+//		line = block.getLine("key1");
+//		line.setValue("");
+//		block = newBlock();
+//		block.add(line);
+//		assertEquals(true, block.isBlankValue("key1")
+//				, "should have been «true»");	
+//		out1 ="key1            : ";
+//		assertEquals(out1, block.toString()
+//				, "should have been «\"key1            : \"»");			
+//	}
 
 	// ========== Getters ==========
 	@Test
@@ -179,8 +180,8 @@ class Generic_BlockTest {
 		block.add(line1);
 		block.add(line2);
 		block.add(line3);
-		assertEquals("Load", block.getValue("key1")
-				, "should have been «\"Load\"»");	
+		assertEquals("load", block.getValue("key1")
+				, "should have been «\"load\"»");	
 		assertEquals("", block.getValue("key2")
 				, "should have been «\"\"»");	
 		assertEquals("Change", block.getValue("key3")
@@ -189,29 +190,29 @@ class Generic_BlockTest {
 				, "should have been «null»");	
 	}
 
-	@Test
-	void getValue_StringValueClass() {
-		block = newBlock();
-		block.add(line1);
-		block.add(line2);
-		block.add(line3);
-		assertEquals("Load", block.getValue("key1", "zzz")
-				, "should have been «\"Load\"»");	
-		assertEquals("zzz", block.getValue("key2", "zzz")
-				, "should have been «\"zzz\"»");	
-		assertEquals("Change", block.getValue("key3", "zzz")
-				, "should have been «\"Change\"»");	
-		assertEquals("zzz", block.getValue("key4", "zzz")
-				, "should have been «\"zzz\"»");	
-	}
+//	@Test
+//	void getValue_StringValueClass() {
+//		block = newBlock();
+//		block.add(line1);
+//		block.add(line2);
+//		block.add(line3);
+//		assertEquals("load", block.getValue("key1", "zzz")
+//				, "should have been «\"load\"»");	
+//		assertEquals("zzz", block.getValue("key2", "zzz")
+//				, "should have been «\"zzz\"»");	
+//		assertEquals("Change", block.getValue("key3", "zzz")
+//				, "should have been «\"Change\"»");	
+//		assertEquals("zzz", block.getValue("key4", "zzz")
+//				, "should have been «\"zzz\"»");	
+//	}
 
 	@Test
 	void getLine_String() {
 		block = newBlock();
 		block.add(line1);
 		line = block.getLine("key1");
-		assertEquals("Load", line.getValue()
-				, "should have been «\"Load\"»");	
+		assertEquals("load", line.getValue()
+				, "should have been «\"load\"»");	
 	}
 
 	@Test
@@ -282,12 +283,12 @@ class Generic_BlockTest {
 		block.add(line1);
 		block.add(line2);
 		block.add(line3);
-		assertEquals("[key2]",
-				block.getProfileListForValueInFilter("GUI SAVE").toString()
+		assertEquals("[key1, key3]",
+				block.getProfileListForValueInFilter("LOAD CHANGE").toString()
 				, "should have been «\"[key2]\"»");	
-		assertEquals("[key2]",
-				block.getProfileListForValueInFilter("SAVE GAME").toString()
-				, "should have been «\"[key2]\"»");	
+		assertEquals("[key3]",
+				block.getProfileListForValueInFilter("SAVE CHANGE").toString()
+				, "should have been «\"[key3]\"»");	
 	}
 
 	@Test

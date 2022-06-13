@@ -17,6 +17,7 @@ package br.profileManager.src.main.java;
 
 import java.util.ArrayList;
 import java.util.List;
+import static br.profileManager.src.main.java.PMconfig.*;
 
 /**
  * Contains the interface and the tools for toComment Methods
@@ -49,36 +50,15 @@ public class WriteUtil {
 	}
 	
 	/**
-	 * a condensed access to System.lineSeparator()
+	 * an easier access to System.lineSeparator()
 	 */
 	protected static final String NL = System.lineSeparator();
 
-	private static final String COMMENT_KEY = ";";
-
-	private static final String COMMENT_SPACER = " ";
-
-	private static final String COMMENT_PRT = COMMENT_KEY + COMMENT_SPACER;
-	
-	private static final String EMPTY_COMMENT_LINE = COMMENT_KEY + COMMENT_SPACER + NL;
-
-	private static final int LINE_SPLIT_POSITION = 16;
-
-	private static final int COMMENT_END_POSITION = 30;
-
-	private static final int MAX_LINE_LENGTH = 80;
-
-	/**
-	 * The {@code String} to be recognized as Comment starter
-	 */
-	protected static String commentKey() {
-		return COMMENT_KEY;
-	}
-	
 	/**
 	 * @return The {@code String} to be added to the toString
 	 */
 	protected static String commentPrt() {
-		return COMMENT_PRT;
+		return commentKey() + commentSpacer();
 	}
 	
 	/**
@@ -86,37 +66,15 @@ public class WriteUtil {
 	 * @return a batch of empty comment lines
 	 */
 	protected static String emptyCommentLines(int quantity) {
-		return EMPTY_COMMENT_LINE.repeat(quantity);
+		return emptyCommentLines().repeat(quantity);
 	}
 	
 	/**
 	 * @return an empty comment lines
 	 */
 	protected static String emptyCommentLines() {
-		return EMPTY_COMMENT_LINE;
-	}
-	
-	/**
-	 * @return Label - Value Separator Position
-	 */
-	protected static int lineSplitPosition() {
-		return LINE_SPLIT_POSITION;
-	}
-	
-	/**
-	 * @return End of line comment position
-	 */
-	protected static int commentEndPosition() {
-		return COMMENT_END_POSITION;
-	}
-	
-	/**
-	 * @return Default maximum line length
-	 */
-	protected static int maxLineLength() {
-		return MAX_LINE_LENGTH;
-	}
-	
+		return commentKey() + commentSpacer() + NL;
+	}	
 	//===============================================================
 	// Methods using the Abstract methods
 	//

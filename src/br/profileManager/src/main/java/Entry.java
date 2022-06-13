@@ -20,23 +20,16 @@ import static br.profileManager.src.main.java.PMutil.clean;
 import static br.profileManager.src.main.java.WriteUtil.History.Default;
 
 /**
- * @param <ValueClass> The class of Values
+ * @param <T>  the Base Type for Code View
+ * @param <V>  the Base Type for Validation Data
  */
-class Generic_Entry<
-		ValueClass,
-		ValidClass extends Abstract_ValidData<ValueClass>>
+public class Entry<
+		T, V extends  Validation<T>>
 		extends WriteUtil {
 
-	private static final String RANDOM_ID = "RANDOM";
-	private static final String PARAMETERS_SEPARATOR  = ",";
-
 	private String userEntry = "";  // what we get from the file
-	private String outputStr = "";  // what will be the outputStr
-	                                // To make the common code easier to manage
-
-//	private PrintFormat printFormat = PrintFormat.HOLD; // The default format for outputStr
-	private ValueClass value = null;
-	private Abstract_ValidData<ValueClass> validationData;
+	private AbstractT<T> value;
+	private Validation<T> validation;
 	
     // ==================================================
     // Constructors
@@ -45,39 +38,36 @@ class Generic_Entry<
 	 * No empty class creation allowed!
 	 */
 	@SuppressWarnings("unused")
-	private  Generic_Entry() {}
+	private Entry() {}
 
 	/**
 	 * create and initialize a new {@code EntryValid} with default value
-	 * @param validationData the {@code Abstract_ValidData<ValueClass>} validationData
+	 * @param validation the {@code Abstract_ValidData<T>} validation
 	 */
-	Generic_Entry(Abstract_ValidData<ValueClass> validationData) {
-		setValidationData(validationData);
-		setValue(validationData.getHistoryCodeView(Default));
+	public Entry(Validation<T> validation) {
+		setValidationData(validation);
+		setValue(validation.getHistory(Default));
 	}
-
 	/**
 	 * create and initialize a new {@code EntryValid}
-	 * @param validationData the {@code Abstract_ValidData<ValueClass>} validationData
+	 * @param validation the {@code Abstract_ValidData<T>} validation
 	 * @param userEntry the {@code String} userEntry
 	 */
-	Generic_Entry(Abstract_ValidData<ValueClass> validationData,
+	public Entry(Validation<T> validation,
 			  String userEntry) {
-		setValidationData(validationData);
+		setValidationData(validation);
 		set(userEntry);
 	}
-
 	/**
 	 * create and initialize a new {@code EntryValid}
-	 * @param validationData the {@code Abstract_ValidData<ValueClass>} validationData
-	 * @param value the {@code ValueClass} userEntry
+	 * @param validation the {@code Abstract_ValidData<T>} validation
+	 * @param value the {@code T} userEntry
 	 */
-	Generic_Entry(Abstract_ValidData<ValueClass> validationData,
-			ValueClass value) {
-		setValidationData(validationData);
+	public Entry(Validation<T> validation,
+			AbstractT<T> value) {
+		setValidationData(validation);
 		setValue(value);
 	}
-
 	// ==================================================
     // Overriders
     //
@@ -89,29 +79,36 @@ class Generic_Entry<
     // Methods to be Overridden
     //
 	/**
+	 * Set a new codeView and analyze it
+	 * @param codeView the new codeView
+	 * @return this for chaining purpose 
+	 */
+	public Entry<T, V> setCodeView(T codeView) {
+		value = getValidation().newValue(codeView);
+		return this;
+	}
+	/**
 	 * Set a new {@code String} userEntry and analyze it
 	 * @param newValue the new {@code String} userEntry
 	 * @return this for chaining purpose 
 	 */
-	Generic_Entry<ValueClass, ValidClass> set(String newValue) {
+	public Entry<T, V> set(String newValue) {
 		userEntry = clean(newValue);
-		outputStr = userEntry;
 		entryAnalysis();
 		return this;
 	}
-
 	/**
 	 * Clear the content of the element,
-	 * But not the {@code PrintFormat} neither the {@code validationData}
+	 * But not the {@code PrintFormat} neither the {@code validation}
 	 * @return this for chaining purpose
 	 */
-	Generic_Entry<ValueClass, ValidClass> reset() {
+	public Entry<T, V> reset() {
 		userEntry = "";
-		outputStr = "";
-		value = null;
+		if (value != null) {
+			value.reset();
+		}	
 		return this;
 	}
-
 	/**
 	 * Ask if something has been set by user entry
 	 * @return {@code boolean}
@@ -119,62 +116,62 @@ class Generic_Entry<
 	boolean isBlankUserEntry() { 
 		return userEntry == null || userEntry.isBlank();
 	}
-
 	/**
 	 * Ask if about the value state (code view)
 	 * @return {@code boolean}
 	 */
-	boolean isBlankValue() { 
-		return value == null || value.toString().isBlank();
+	boolean isBlankValue() {
+		return value == null || value.isBlank();
 	}
-
 	/**
 	 * Ask if about the value state (code view)
 	 * @return {@code boolean}
 	 */
 	boolean isValidValue() {
-		return validationData.isValidCodeView(value);
+		return validation.isValid(value);
 	}
 
 	// ==================================================
     // Setters simple
     //
-	void setValidationData(Abstract_ValidData<ValueClass> newValidationData) {
-		validationData = newValidationData;
+	void setValidationData(Validation<T> newValidationData) {
+		validation = newValidationData;
 	}
 
-	void setValue(ValueClass newValue) {
-		value = newValue;
-		if (value != null) {
-			setOutputStr(validationData.getUserView(newValue));
+	void setValue(AbstractT<T> newValue) {
+		if (newValue != null) {
+			value = newValue;
+			setOutputStr(value.toString());
 		} else {
+			value = validation.newValue();
 			setOutputStr(getUserEntry());
 		}
 	}
-
 	/**
 	 * Set the new preformatted output {@code String}
 	 * @param newOutputStr the new value
 	 */
 	void setOutputStr(String newOutputStr) {
-		outputStr = PMutil.neverNull(newOutputStr);
+		if (value == null) {
+			value = validation.newValue();
+		}
+		value.userView(newOutputStr);
 	}
 
 	// ==================================================
     // Getters simple
     //
 	/**
-	 * ask for value as {@code ValueClass}
+	 * ask for value as {@code T}
 	 * @return the value
 	 */
-	ValueClass getValue() {
+	public AbstractT<T> getValue() {
 		return value;
 	}
 
-	Abstract_ValidData<ValueClass> getValidationData() {
-		return validationData;
+	Validation<T> getValidation() {
+		return validation;
 	}
-
 	/**
 	 * Ask for userEntry as {@code String}
 	 * @return the {@code String}
@@ -182,15 +179,16 @@ class Generic_Entry<
 	String getUserEntry() { 
 		return userEntry;
 	}	
-
 	/**
 	 * Ask for preformatted outputStr as {@code String}
 	 * @return the {@code String}
 	 */
 	String getOutputStr() { 
-		return outputStr;
+		if (value == null) {
+			return "";
+		}
+		return value.userView();
 	}	
-
 	/**
 	 * ask for value in lower case, with first char to upper case,
 	 * with every word capitalized if eachWord is true
@@ -200,7 +198,6 @@ class Generic_Entry<
 	String toCapitalized(Boolean onlyFirstWord) { 
 		return capitalize(getOutputStr(), onlyFirstWord);
 	}
-
 	/**
 	 * ask for value in lower case, with first char to upper case,
 	 * with every word capitalized
@@ -209,7 +206,6 @@ class Generic_Entry<
 	String toCapitalized() { 
 		return capitalize(getOutputStr());
 	}
-
 	/**
 	 * ask for a stripped in lower case with first char to upper case, never null
 	 * @return a {@code String} as requested
@@ -225,90 +221,9 @@ class Generic_Entry<
 	 * Analyze user Entry content
 	 */
 	private void entryAnalysis() {
-		Abstract_ValidData<ValueClass>.CodeAndUserView result = 
-				validationData.entryAnalysis(getUserEntry());
-		setValue(result.codeView);
-		if (result.userView != null) {
-			setOutputStr(result.userView);
+		value = validation.entryAnalysis(getUserEntry());
 		}
-//		
-//		if ( validationData.getValidationCriteria().isRandomAllowed()
-//				&& isRandom(getUserEntry())) {
-//			if (hasExtraParameters(getUserEntry())) {
-//				setValue(validationData.randomWithParameters(
-//						splitParameters(removeRandomId(getUserEntry()))));
-//				setOutputStr(getUserEntry());
-//				return;
-//			}
-//			setValue(validationData.randomWithoutParameters());
-//			setOutputStr(getUserEntry());
-//			return;
-//		}
-//		setValue(validationData.entryValidation(getUserEntry()));
-	}
 	
-	// ==================================================
-    // Random Management Methods
-    //
-	/**
-	 * Test if user Entry is asking for a random parameter
-	 * @param userEntry the {@code String} to analyze
-	 * @return <b>true</b> if is random
-	 */
-	private static boolean isRandom(String userEntry) {
-		userEntry = PMutil.clean(userEntry).toUpperCase();
-		if (userEntry.length() >= RANDOM_ID.length()) {
-			return userEntry.substring(0, RANDOM_ID.length()).equals(RANDOM_ID); 
-		}
-		return false;
-	}
-	
-	/**
-	 * Check for extra parameter in Random request
-	 * @param userEntry the {@code String} to analyze
-	 * @return <b>true</b> if has extra parameters
-	 */
-	private static boolean hasExtraParameters(String userEntry) {
-		return !removeRandomId(userEntry).isBlank();
-	}
-
-	/**
-	 * Remove the Random word and return the extra parameters
-	 * @param userEntry the {@code String} to analyze
-	 * @return the extra parameters
-	 */
-	private static String removeRandomId(String userEntry) {
-		userEntry = PMutil.clean(userEntry);
-		userEntry = userEntry.substring(RANDOM_ID.length()).strip();
-		// Check for misplaced PARAMETERS_SEPARATOR
-		if (!userEntry.isEmpty() &&
-				userEntry.charAt(0) == PARAMETERS_SEPARATOR.charAt(0)) {
-			userEntry = userEntry.substring(1).strip();
-		}
-		return userEntry;
-	}
-
-	/**
-	 * Remove the Random word and return the extra parameters
-	 * @param userEntry the {@code String} to analyze
-	 * @return the extra parameters
-	 */
-	private static String[] splitParameters(String parameters) {
-		// parameters should already be tested
-		return parameters.split(PARAMETERS_SEPARATOR);
-	}
-
-	// ==================================================
-    // Tests Methods
-    //
-	/**
-	 * check if a valid numeric value may be extracted
-	 * @return true if is Numeric
-	 */
-	Boolean testForNumeric() {
-		return PMutil.testForNumeric(getUserEntry());
-	}
-
 	// ==================================================
     // Other Methods
     //
@@ -316,7 +231,7 @@ class Generic_Entry<
 	 * Remove the comments and clean
 	 * @return this for chaining purpose
 	 */
-	Generic_Entry<ValueClass, ValidClass> removeComment() {
+	Entry<T, V> removeComment() {
 		set(WriteUtil.removeComment(getUserEntry()));
 		return this;
 	}
@@ -331,29 +246,27 @@ class Generic_Entry<
 	 * @param defaultValue value to <b>return</b if <b>null</b>, <i>empty</i> or <i>blank</i> 
 	 * @return the value, following the conditions
 	 */
-	ValueClass getValue(ValueClass defaultValue) {
+	AbstractT<T> getValue(AbstractT<T> defaultValue) {
 		if (isBlankValue()) {
 			return defaultValue;
 		}
 		return getValue();
 	}
-
 	// Other name for compatibility
 	/**
 	 * Ask for a non <b>null</b> nor <i>empty</i> nor <i>blank</i> value
 	 * @param defaultValue value to <b>return</b if <b>null</b>, <i>empty</i> or <i>blank</i> 
 	 * @return the value, following the conditions
 	 */
-	ValueClass getOrDefault(ValueClass defaultValue) {
+	AbstractT<T> getOrDefault(AbstractT<T> defaultValue) {
 			return getValue(defaultValue);
 	}
-
 	/**
 	 * Ask for a non <b>null</b> nor <i>empty</i> nor <i>blank</i> value
 	 * @param defaultValue class object to <b>return</b if <b>null</b>, <i>empty</i> or <i>blank</i> 
 	 * @return the class object, following the conditions
 	 */
-	ValueClass getOrDefault(Generic_Entry<ValueClass, ValidClass> defaultValue) {
+	AbstractT<T> getOrDefault(Entry<T, V> defaultValue) {
 		return getValue(defaultValue.getValue());
 	}
 }

@@ -15,59 +15,39 @@
 
 package br.profileManager.src.main.java;
 
+import static br.profileManager.src.main.java.PMconfig.separatorSymbol;
+import static br.profileManager.src.main.java.PMconfig.separatorSpacer;
+import static br.profileManager.src.main.java.PMconfig.lineSplitPosition;
+import static br.profileManager.src.main.java.PMutil.suggestedUserViewFromCodeView;
+import static br.profileManager.src.main.java.PMutil.genericTest;
+
 /**
  * Single element for validation list
- * @param <ValueClass> the Value's Code View Class
+ * @param <T> the Value's Code View Class
  */
-public class ValidationElement<ValueClass> extends WriteUtil {
+public class Options<T> extends WriteUtil {
 
-	// ------------------------------------------------------------------------
-	// Constant Properties
-    //
-	private final Integer SEPARATOR_POSITION = lineSplitPosition() - commentPrt().length();
-	private final String  SEPARATOR_SYMBOL   = "=";
-	private final String  SEPARATOR_SPACER   = " ";
-	private final String  KEY_FORMAT = "%-" 
-                                    + SEPARATOR_POSITION.toString()
-                                    + "s"
-                                    + SEPARATOR_SYMBOL 
-                                    + SEPARATOR_SPACER;
-	private final String  EXT_FORMAT = "%-" 
-						            + SEPARATOR_POSITION.toString()
-						            + "s"
-						            + SEPARATOR_SPACER 
-						            + SEPARATOR_SPACER;
-	
 	private String description;
 	private String category ;
-	private ValueClass codeView; // Computer Format
+	private T codeView; // Computer Format
 	private String userView; // Human Format
 	
     // ------------------------------------------------
     // Constructors
     //
-	ValidationElement(ValueClass codeView) {
-		setCategory("");
-		setDescription("");
-		setCodeView(codeView);
-		setUserView(PMutil.suggestedUserViewFromCodeView(codeView));
+	Options(T codeView) {
+		this(codeView, suggestedUserViewFromCodeView(codeView), "", "");
 	}
 
-	ValidationElement(ValueClass codeView, String userView) {
-		setCategory("");
-		setDescription("");
-		setCodeView(codeView);
-		setUserView(userView);
+	Options(T codeView, String userView) {
+		this(codeView, userView, "", "");
 	}
 
-	ValidationElement(ValueClass codeView, String description, String category) {
-		setCategory(category);
-		setDescription(description);
-		setCodeView(codeView);
-		setUserView(PMutil.suggestedUserViewFromCodeView(codeView));
+	Options(T codeView, String description, String category) {
+		this(codeView, suggestedUserViewFromCodeView(codeView), description, category);
 	}
 
-	ValidationElement(ValueClass codeView, String userView, String description, String category) {
+	Options(T codeView, String userView, String description, String category) {
 		setCategory(category);
 		setDescription(description);
 		setCodeView(codeView);
@@ -83,22 +63,22 @@ public class ValidationElement<ValueClass> extends WriteUtil {
 	 * @param criteria {@code ValidationCriteria} test criteria
 	 * @return {@code boolean} <b>true</b> if recognized
 	 */
-	boolean isValidCodeView(ValueClass codeViewToTest,
+	boolean isValidCodeView(T codeViewToTest,
 							ValidationCriteria criteria) {
-		return PMutil.genericTest(codeViewToTest.toString(),
-								  codeView.toString(),
-								  criteria.codeViewIsCaseSensitive(),
-								  criteria.codeViewEquals());
+		return genericTest(codeViewToTest.toString(),
+						   codeView.toString(),
+						   criteria.codeViewIsCaseSensitive(),
+						   criteria.codeViewEquals());
 	}
 
 	/**
 	 * Test if codeView is part of the category validation list
-	 * @param codeViewToTest the {@code ValueClass} to test
+	 * @param codeViewToTest the {@code T} to test
 	 * @param category the {@code String} category filter
 	 * @param criteria {@code ValidationCriteria} test criteria
 	 * @return  {@code boolean} <b>true</b> if recognized
 	 */
-	boolean isValidCodeView(ValueClass codeViewToTest,
+	boolean isValidCodeView(T codeViewToTest,
 							String category,
 							ValidationCriteria criteria) {
 		return isValidCodeView(codeViewToTest, criteria)
@@ -113,10 +93,10 @@ public class ValidationElement<ValueClass> extends WriteUtil {
 	 */
 	boolean isValidUserEntry(String userEntry,
 							 ValidationCriteria criteria) {
-		return PMutil.genericTest(userEntry,
-								  userView,
-								  criteria.userViewIsCaseSensitive(),
-								  criteria.userViewEquals());
+		return genericTest(userEntry,
+						   userView,
+						   criteria.userViewIsCaseSensitive(),
+						   criteria.userViewEquals());
 	}
 
 	/**
@@ -141,10 +121,10 @@ public class ValidationElement<ValueClass> extends WriteUtil {
 	 */
 	boolean isValidCategory(String categoryToTest,
 							ValidationCriteria criteria) {
-		return PMutil.genericTest(category,
-								  categoryToTest,
-								  criteria.categoryIsCaseSensitive(),
-								  criteria.categoryEquals());
+		return genericTest(category,
+						   categoryToTest,
+						   criteria.categoryIsCaseSensitive(),
+						   criteria.categoryEquals());
 	}
 
 	/**
@@ -155,10 +135,10 @@ public class ValidationElement<ValueClass> extends WriteUtil {
 	 */
 	boolean isMember(String categoryToTest, 
 					 ValidationCriteria criteria) {
-		return PMutil.genericTest(category,
-								  categoryToTest,
-								  criteria.categoryIsCaseSensitive(),
-								  false);
+		return genericTest(category,
+						   categoryToTest,
+						   criteria.categoryIsCaseSensitive(),
+						   false);
 	}
 	
 	/**
@@ -170,8 +150,8 @@ public class ValidationElement<ValueClass> extends WriteUtil {
 			return "";
 		}
 		return multiLines(description,
-				String.format(KEY_FORMAT, userView),
-				String.format(EXT_FORMAT, " ".repeat(userView.length())));
+				String.format(keyFormat(), userView),
+				String.format(extFormat(), " ".repeat(userView.length())));
 	}
 	// ------------------------------------------------
     // Getters
@@ -184,7 +164,7 @@ public class ValidationElement<ValueClass> extends WriteUtil {
 		return description;
 	}
 
-	ValueClass getCodeView() {
+	T getCodeView() {
 		return codeView;
 	}
 
@@ -201,10 +181,25 @@ public class ValidationElement<ValueClass> extends WriteUtil {
 	private void setDescription(String newDescription) {
 		description = newDescription;
 	}
-	private void setCodeView(ValueClass newCodeView) {
+	private void setCodeView(T newCodeView) {
 		codeView = newCodeView;
 	}
 	private void setUserView(String newUserView) {
 		userView = newUserView;
+	}
+
+	// ==========================================================
+    // Other Private Methods
+    //
+	private static Integer separatorPosition() {
+		return lineSplitPosition() - commentPrt().length();
+	}	
+    private static String keyFormat() { 
+		return  "%-"  + separatorPosition().toString() + "s"
+                + separatorSymbol() + separatorSpacer();
+	}
+    private static String extFormat() { 
+		return  "%-"  + separatorPosition().toString() + "s"
+                + separatorSpacer() + separatorSpacer();
 	}
 }

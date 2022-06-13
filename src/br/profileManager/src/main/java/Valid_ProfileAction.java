@@ -21,7 +21,7 @@ import static br.profileManager.src.main.java.WriteUtil.History.*;
  * For the validation of the profiles Action
  */
 
-public class Valid_ProfileAction extends Valid_String {
+public class Valid_ProfileAction extends Validation<String> {
 	static final String LOAD_ENABLED    = "ENABLE_LOAD_LIST";
 	static final String RANDOM_ENABLED  = "ENABLE_RANDOM_LIST";
 	static final String WRITE_ENABLED   = "ENABLE_WRITE_LIST";
@@ -79,8 +79,9 @@ public class Valid_ProfileAction extends Valid_String {
 	private static final String DEFAULT_VALUE  = "";
 
 	Valid_ProfileAction() {
+		super(new T_String(DEFAULT_VALUE));
 		setDefaultName("None!");
-		setHistoryUserView(Default, DEFAULT_VALUE);
+		setHistory(Default, DEFAULT_VALUE);
 		setShowHistory(false);
 		setShowLocalEnable(false);
 		
@@ -134,7 +135,7 @@ public class Valid_ProfileAction extends Valid_String {
 	/**
 	 * Base for every profile line Action declaration
 	 */
-	static class Line_ProfileAction extends Generic_Line<String, Valid_ProfileAction>{
+	static class Line_ProfileAction extends Lines<String, Valid_ProfileAction>{
 
 	 	// --------------------------------------------------------------
 	    // Constructors
@@ -144,14 +145,6 @@ public class Valid_ProfileAction extends Valid_String {
 		 */
 		Line_ProfileAction() {
 			super(new Valid_ProfileAction());
-		}
-
-		/**
-		 * Create a new standard ProfileAction with a custom value
-		 */
-		Line_ProfileAction(String value) {
-			super(new Valid_ProfileAction());
-			setValue(value);
 		}
 
 		// --------------------------------------------------------------

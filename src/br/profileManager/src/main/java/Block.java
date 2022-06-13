@@ -2,33 +2,33 @@ package br.profileManager.src.main.java;
 
 import java.util.ArrayList;
 import java.util.List;
+import static br.profileManager.src.main.java.WriteUtil.History.*;
+
 
 /**
- * @param <ValueClass> The class of Values
+ * @param <T> The class of Values
  */
-class Generic_Block<
-		ValueClass, 
-		ValidClass extends Abstract_ValidData<ValueClass>> extends WriteUtil {
+class Block<T, V extends Validation<T>> extends WriteUtil {
 
-	private List<Generic_Line<ValueClass, Abstract_ValidData<ValueClass>>> lineList;
-	private Abstract_ValidData<ValueClass> valueValidation;
+	private List<Lines<T, Validation<T>>> lineList;
+	private Validation<T> valueValidation;
 
 	// ==================================================
     // Constructors
     //
 	/**
-	 * New Abstract_Block<ValueClass> with the validation parameter Type
+	 * New Abstract_Block<T> with the validation parameter Type
 	 */	
 	@SuppressWarnings("unused")
-	private Generic_Block() {} // no empty block allowed
+	private Block() {} // no empty block allowed
 
 	/**
-	 * New Abstract_Block<ValueClass> with the validation parameter Type
+	 * New Abstract_Block<T> with the validation parameter Type
 	 * @param valueValidationData  the values validation parameters
 	 */	
-	Generic_Block(Abstract_ValidData<ValueClass> valueValidationData) {	
+	Block(Validation<T> valueValidationData) {	
 		valueValidation = valueValidationData;
-		lineList = new ArrayList<Generic_Line<ValueClass, Abstract_ValidData<ValueClass>>>();
+		lineList = new ArrayList<Lines<T, Validation<T>>>();
 	}
 
 	// ==================================================
@@ -39,7 +39,7 @@ class Generic_Block<
 	 * @param profile profile name
 	 * @return this for chaining purpose
 	 */
-	protected Generic_Block<ValueClass, ValidClass> remove(String profile) {
+	protected Block<T, V> remove(String profile) {
 		if (exist(profile)) {
 			lineList.remove(get(profile));
 		}
@@ -51,10 +51,8 @@ class Generic_Block<
 	 * @param    newLine the new {@code String} profile line
 	 * @return   This for chaining purpose
 	 */
-	Generic_Block<ValueClass, ValidClass> add(String newLine) {
-		add(new Generic_Line<ValueClass,
-				Abstract_ValidData<ValueClass>>(
-						valueValidation, newLine));
+	Block<T, V> add(String newLine) {
+		add(new Lines<T, Validation<T>>(valueValidation, newLine));
 		return this;
 	}
 
@@ -65,10 +63,10 @@ class Generic_Block<
 	 * @param    comment   the {@code String} the comment
 	 * @return   This for chaining purpose
 	 */
-	Generic_Block<ValueClass, ValidClass> add(
+	Block<T, V> add(
 			String profile, String userEntry, String comment) {
 		remove(profile);
-		lineList.add(new Generic_Line<ValueClass, Abstract_ValidData<ValueClass>>(
+		lineList.add(new Lines<T, Validation<T>>(
 				valueValidation,
 				profile,
 				userEntry,
@@ -82,9 +80,9 @@ class Generic_Block<
 	 * @param    userEntry the {@code String} entry value
 	 * @return   This for chaining purpose
 	 */
-	Generic_Block<ValueClass, ValidClass> add(String profile, String userEntry) {
+	Block<T, V> add(String profile, String userEntry) {
 		remove(profile);
-		lineList.add(new Generic_Line<ValueClass, Abstract_ValidData<ValueClass>>(
+		lineList.add(new Lines<T, Validation<T>>(
 				valueValidation,
 				profile,
 				userEntry));
@@ -93,11 +91,11 @@ class Generic_Block<
 
 	/**
 	 * add a new user profile  (overwrite)
-	 * @param    newLine the new {@code Line<ValueClass>} profile line
+	 * @param    newLine the new {@code Line<T>} profile line
 	 * @return   This for chaining purpose
 	 */
-	Generic_Block<ValueClass, ValidClass> 
-			add(Generic_Line<ValueClass, Abstract_ValidData<ValueClass>> newLine) {
+	Block<T, V> 
+			add(Lines<T, Validation<T>> newLine) {
 		remove(newLine.getName());
 		lineList.add(newLine);
 		return this;
@@ -109,7 +107,7 @@ class Generic_Block<
 	 * @param newLine Missing profiles template
 	 */
 	void addMissing(String profile) {
-		Generic_Line<ValueClass, Abstract_ValidData<ValueClass>> line = get(profile);
+		Lines<T, Validation<T>> line = get(profile);
 		if (PMutil.getForceCreationMissingProfile() 
 				&& line == null) { // none exist...
 			add(profile);           // add the missing one
@@ -122,7 +120,7 @@ class Generic_Block<
 	 * @param newLine Missing profiles template
 	 */
 	void addMissing(List<String> profileList) {
-		Generic_Line<ValueClass, Abstract_ValidData<ValueClass>> line;
+		Lines<T, Validation<T>> line;
 		for (String profile : profileList) {
 			line = get(profile);
 			if (PMutil.getForceCreationMissingProfile() 
@@ -140,7 +138,7 @@ class Generic_Block<
 	 * @return {@code Boolean} <b>true</b> if user profile is valid
 	 */
 	protected Boolean isValid(String profile) {
-		Generic_Line<ValueClass, Abstract_ValidData<ValueClass>> line = get(profile);
+		Lines<T, Validation<T>> line = get(profile);
 		if (line != null) {
 			return line.isValidValue();
 		}
@@ -154,7 +152,7 @@ class Generic_Block<
 	 *                         <b>null</b> if none 
 	 */
 	protected Boolean isBlankValue(String profile) {
-		Generic_Line<ValueClass, Abstract_ValidData<ValueClass>> line = get(profile);
+		Lines<T, Validation<T>> line = get(profile);
 		if (line != null) {
 			return line.isBlankValue();
 		}
@@ -176,10 +174,10 @@ class Generic_Block<
 	/**
 	 * Get the profile value
 	 * @param profile profile name
-	 * @return the value as {@code ValueClass} or null if none
+	 * @return the value as {@code T} or null if none
 	 */	
-	 ValueClass getValue(String profile) {
-		Generic_Line<ValueClass, Abstract_ValidData<ValueClass>> line = get(profile);
+	 AbstractT<T> getValue(String profile) {
+		Lines<T, Validation<T>> line = get(profile);
 		if (line == null) { // none exist... so empty
 			return null;
 		}
@@ -189,23 +187,36 @@ class Generic_Block<
 	/**
 	 * Get the profile value or return the default one
 	 * @param profile profile name
-	 * @param defaultValue The value to return if none
-	 * @return the value as {@code ValueClass}
+	 * @return the value as {@code T}
 	 */	
-	 ValueClass getValue(String profile, ValueClass defaultValue) {
-		Generic_Line<ValueClass, Abstract_ValidData<ValueClass>> line = get(profile);
+	 AbstractT<T> getValueOrDefault(String profile) {
+		Lines<T, Validation<T>> line = get(profile);
 		if (line == null || line.isBlankValue()) { // none exist... so empty
-			return defaultValue;
+			return this.valueValidation.getHistory(Default);
 		}
 		return line.getValue();
 	}
 		
 	/**
+	 * Get the profile value or return the default one
+	 * @param profile profile name
+	 * @param defaultValue The value to return if none
+	 * @return the value as {@code T}
+	 */	
+	 AbstractT<T> getValueOrDefault(String profile, AbstractT<T> defaultValue) {
+		Lines<T, Validation<T>> line = get(profile);
+		if (line == null || line.isBlankValue()) { // none exist... so empty
+			return defaultValue;
+		}
+		return line.getValue();
+	}
+			
+	/**
 	 * Get the profile Line or return the default one
 	 * @param profile profile name
 	 * @return the profile Line as {@code Gen_Line} or null if none
 	 */	
-	 Generic_Line<ValueClass, Abstract_ValidData<ValueClass>> getLine(String profile) {
+	 Lines<T, Validation<T>> getLine(String profile) {
 		 return get(profile);
 	}
 			
@@ -214,7 +225,7 @@ class Generic_Block<
 	 */	
 	@Override public String toString() {
 		String out = "";
-		for (Generic_Line<ValueClass, Abstract_ValidData<ValueClass>> line : lineList) {
+		for (Lines<T, Validation<T>> line : lineList) {
 			if (out.isBlank()) {
 				out = line.toString();
 			} else {
@@ -225,7 +236,7 @@ class Generic_Block<
 	}
 
 	void forceCreationMissingProfile(List<String> profileList) {
-		Generic_Line<ValueClass, Abstract_ValidData<ValueClass>> line;
+		Lines<T, Validation<T>> line;
 		if (PMutil.getForceCreationMissingProfile()) {
 			for (String profile : profileList) {
 				line = get(profile);
@@ -242,7 +253,7 @@ class Generic_Block<
 	 */	
 	String toString(List<String> profileList) {
 		String out = "";
-		Generic_Line<ValueClass, Abstract_ValidData<ValueClass>> line;
+		Lines<T, Validation<T>> line;
 		for (String profile : profileList) {
 			line = get(profile);
 			if (line == null &&         // none exist...
@@ -265,7 +276,7 @@ class Generic_Block<
 	 */	
 	List<String> getProfileList() {
 		List<String> profiles = new ArrayList<String>();
-		for (Generic_Line<ValueClass, Abstract_ValidData<ValueClass>> line : lineList) {
+		for (Lines<T, Validation<T>> line : lineList) {
 			if (line.getName() != null) {
 				profiles.add(line.getName());
 			}
@@ -281,7 +292,7 @@ class Generic_Block<
 	List<String> getProfileListForValueEqualsFilter(String filter) {
 		List<String> profiles = new ArrayList<String>();
 		if (filter != null) {
-			for (Generic_Line<ValueClass, Abstract_ValidData<ValueClass>> line : lineList) {
+			for (Lines<T, Validation<T>> line : lineList) {
 				if (line.isValueAsFilter(filter)) {
 					profiles.add(line.getName());
 				}
@@ -298,7 +309,7 @@ class Generic_Block<
 	List<String> getProfileListForValueContainsFilter(String filter) {
 		List<String> profiles = new ArrayList<String>();
 		if (filter != null) {
-			for (Generic_Line<ValueClass, Abstract_ValidData<ValueClass>> line : lineList) {
+			for (Lines<T, Validation<T>> line : lineList) {
 				if (line.isFilterInValue(filter)) {
 					profiles.add(line.getName());
 				}
@@ -315,7 +326,7 @@ class Generic_Block<
 	List<String> getProfileListForValueInFilter(String filter) {
 		List<String> profiles = new ArrayList<String>();
 		if (filter != null) {
-			for (Generic_Line<ValueClass, Abstract_ValidData<ValueClass>> line : lineList) {
+			for (Lines<T, Validation<T>> line : lineList) {
 				if (line.isValueInFilter(filter)) {
 					profiles.add(line.getName());
 				}
@@ -332,7 +343,7 @@ class Generic_Block<
 	List<String> getProfileListForCategory(String category) {
 		List<String> profiles = new ArrayList<String>();
 		if (category != null) {
-			for (Generic_Line<ValueClass, Abstract_ValidData<ValueClass>> line : lineList) {
+			for (Lines<T, Validation<T>> line : lineList) {
 				if (line.isValueFromCategory(category)) {
 					profiles.add(line.getName());
 				}
@@ -349,9 +360,9 @@ class Generic_Block<
 	 * @param profile {@code String} profile name
 	 * @return the profile line, or null if none
 	 */
-	private Generic_Line<ValueClass, Abstract_ValidData<ValueClass>> get(String profile) {
+	private Lines<T, Validation<T>> get(String profile) {
 		if (profile != null) {
-			for (Generic_Line<ValueClass, Abstract_ValidData<ValueClass>> line : lineList) {
+			for (Lines<T, Validation<T>> line : lineList) {
 				if (line.getName().equalsIgnoreCase(profile)) {
 					return(line);
 				}

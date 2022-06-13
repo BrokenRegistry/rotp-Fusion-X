@@ -20,7 +20,7 @@ import static br.profileManager.src.main.java.WriteUtil.History.*;
 /**
  * For the validation of the configurations Action
  */
-class Valid_Verbose extends Valid_String {
+class Valid_Verbose extends Validation<String> {
 	
 	private static final String OPTION_ENABLED  = "OPTION";
 	private static final String PARAMETER_ENABLED = "PARAMETER";
@@ -30,9 +30,10 @@ class Valid_Verbose extends Valid_String {
 	private static final String DEFAULT_VALUE  = "FULL";
 
 	Valid_Verbose() {
+		super(new T_String(DEFAULT_VALUE));
 		setDefaultName(PARAMETER_NAME);
-		setHistoryUserView(Default, DEFAULT_VALUE);
-		setHistoryUserView(Current, DEFAULT_VALUE);
+		setHistory(Default, DEFAULT_VALUE);
+		setHistory(Current, DEFAULT_VALUE);
 		
 		setValidationCriteria(new ValidationCriteria()
 				.isRandomAllowed(false)
@@ -59,7 +60,7 @@ class Valid_Verbose extends Valid_String {
 	/**
 	 * Base for every User Entry Lines
 	 */
-	static class Line_Verbose extends Generic_Line<String, Valid_Verbose>{
+	static class Line_Verbose extends Lines<String, Valid_Verbose>{
 
 	 	// ==========================================================
 	    // Constructors
@@ -83,6 +84,10 @@ class Valid_Verbose extends Valid_String {
 		// ==========================================================
 		// Getters and Setters
 		//
+		void setValue(String value) {
+			setValue(new T_String(value));
+		}
+		
 		boolean isOptionEnabled() {
 			return isValueFromCategory(OPTION_ENABLED);
 		}

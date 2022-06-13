@@ -21,11 +21,14 @@ import static br.profileManager.src.main.java.WriteUtil.History.*;
 
 import java.util.List;
 
-import br.profileManager.src.main.java.Abstract_Group;
-import br.profileManager.src.main.java.Abstract_Parameter;
-import br.profileManager.src.main.java.Valid_Boolean;
-import br.profileManager.src.main.java.Valid_Float;
-import br.profileManager.src.main.java.Valid_Integer;
+import br.profileManager.src.main.java.AbstractGroup;
+import br.profileManager.src.main.java.AbstractParameter;
+import br.profileManager.src.main.java.AbstractT;
+import br.profileManager.src.main.java.Validation;
+import br.profileManager.src.main.java.PMconfig;
+import br.profileManager.src.main.java.T_Boolean;
+import br.profileManager.src.main.java.T_Float;
+import br.profileManager.src.main.java.T_Integer;
 import rotp.model.empires.Empire;
 import rotp.ui.UserPreferences;
 
@@ -33,7 +36,7 @@ import rotp.ui.UserPreferences;
  * @author BrokenRegistry
  * For Parameters in Modnar GUI
  */
-class Group_Modnar extends  Abstract_Group <ClientClasses> {
+class Group_Modnar extends  AbstractGroup <ClientClasses> {
 
 	Group_Modnar(ClientClasses go) {
 	   super(go);
@@ -55,42 +58,44 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 	// ALWAYS STAR GATES
 	//
 	static class AlwaysStarGates extends 
-			Abstract_Parameter <Boolean, Valid_Boolean, ClientClasses> {
+			AbstractParameter <Boolean, Validation<Boolean>, ClientClasses> {
 
 		private String StarGateId = "Stargate:0";
 		private int StarGateCategory = 4;
 
 		AlwaysStarGates(ClientClasses go) {
-			super( "ALWAYS STAR GATES", new Valid_Boolean());
-			setHistoryCodeView(Initial, UserPreferences.alwaysStarGates());
+			super( "ALWAYS STAR GATES",
+					new Validation<Boolean>(
+							new T_Boolean(UserPreferences.alwaysStarGates())));
+
 			setHistoryCodeView(Default, false); // MODNAR DEFAULT
 		}
 		
-		@Override public Boolean getFromGame (ClientClasses go) {
-			for (Empire empire : go.getSessionObject().galaxy().empires()) {
+		@Override public AbstractT<Boolean> getFromGame (ClientClasses go) {
+			for (Empire empire : go.session().galaxy().empires()) {
 				List<String> techList = empire.tech()
 						.category(StarGateCategory).possibleTechs();			
 				if (!techList.contains(StarGateId)) {
-					return false;
+					return new T_Boolean(false);
 				}
 			}
-			return true;
+			return new T_Boolean(true);
 		}
 
-		@Override public void putToGame(ClientClasses go, Boolean codeView) {
-			if (codeView) {
-				for (Empire empire : go.getSessionObject().galaxy().empires()) {
+		@Override public void putToGame(ClientClasses go, AbstractT<Boolean> value) {
+			if (value.codeView()) {
+				for (Empire empire : go.session().galaxy().empires()) {
 				empire.tech().category(StarGateCategory).insertPossibleTech(StarGateId);
 				}
 			}
 		}
 		
-		@Override public Boolean getFromUI (ClientClasses go) {
-			return UserPreferences.alwaysStarGates();
+		@Override public AbstractT<Boolean> getFromUI (ClientClasses go) {
+			return new T_Boolean(UserPreferences.alwaysStarGates());
 		}
 		
-		@Override public void putToGUI(ClientClasses go, Boolean codeView) {
-			UserPreferences.setAlwaysStarGates(codeView);;
+		@Override public void putToGUI(ClientClasses go, AbstractT<Boolean> value) {
+			UserPreferences.setAlwaysStarGates(value.codeView());;
 		}
 		
 		@Override public void initComments() {
@@ -98,7 +103,7 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 				" " + NL +
 				"------------- Modnar's Options -------------" + NL +
 				" ");
-			setBottomComments(AVAILABLE_FOR_CHANGE);
+			setBottomComments(PMconfig.availableForChange());
 		}
 	}
 	
@@ -106,46 +111,48 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 	// ALWAYS THORIUM
 	//
 	static class AlwaysThorium extends 
-			Abstract_Parameter <Boolean, Valid_Boolean, ClientClasses> {
+			AbstractParameter <Boolean, Validation<Boolean>, ClientClasses> {
 
 		private String ThoriumCellId = "FuelRange:8";
 		private int ThoriumCellCategory = 4;
 
 		AlwaysThorium(ClientClasses go) { 
-			super("ALWAYS THORIUM", new Valid_Boolean());
-			setHistoryCodeView(Initial, UserPreferences.alwaysThorium());
+			super("ALWAYS THORIUM",
+					new Validation<Boolean>(
+							new T_Boolean(UserPreferences.alwaysThorium())));
+
 			setHistoryCodeView(Default, false); // MODNAR DEFAULT
 		}
 		
-		@Override public Boolean getFromGame (ClientClasses go) {
-			for (Empire empire : go.getSessionObject().galaxy().empires()) {
+		@Override public AbstractT<Boolean> getFromGame (ClientClasses go) {
+			for (Empire empire : go.session().galaxy().empires()) {
 				List<String> techList = empire.tech()
 						.category(ThoriumCellCategory).possibleTechs();
 				if (!techList.contains(ThoriumCellId)) {
-					return false;
+					return new T_Boolean(false);
 				}
 			}
-			return true;
+			return new T_Boolean(true);
 		}
 		
-		@Override public void putToGame(ClientClasses go, Boolean codeView) {
-			if (codeView) {
-				for (Empire empire : go.getSessionObject().galaxy().empires()) {
+		@Override public void putToGame(ClientClasses go, AbstractT<Boolean> value) {
+			if (value.codeView()) {
+				for (Empire empire : go.session().galaxy().empires()) {
 					empire.tech().category(ThoriumCellCategory).insertPossibleTech(ThoriumCellId);
 				}
 			}
 		}
 		
-		@Override public Boolean getFromUI (ClientClasses go) {
-			return UserPreferences.alwaysThorium();
+		@Override public AbstractT<Boolean> getFromUI (ClientClasses go) {
+			return new T_Boolean(UserPreferences.alwaysThorium());
 		}
 		
-		@Override public void putToGUI(ClientClasses go, Boolean codeView) {
-			UserPreferences.setAlwaysThorium(codeView);
+		@Override public void putToGUI(ClientClasses go, AbstractT<Boolean> value) {
+			UserPreferences.setAlwaysThorium(value.codeView());
 		}
 		
 		@Override public void initComments() {
-			setBottomComments(AVAILABLE_FOR_CHANGE);
+			setBottomComments(PMconfig.availableForChange());
 		}
 	}
 	
@@ -153,26 +160,28 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 	// CHALLENGE MODE
 	//
 	static class ChallengeMode extends 
-			Abstract_Parameter <Boolean, Valid_Boolean, ClientClasses> {
+			AbstractParameter <Boolean, Validation<Boolean>, ClientClasses> {
 
 		ChallengeMode(ClientClasses go) {
-			super("CHALLENGE MODE", new Valid_Boolean());
-			setHistoryCodeView(Initial, UserPreferences.challengeMode());
+			super("CHALLENGE MODE", 
+					new Validation<Boolean>(
+							new T_Boolean(UserPreferences.challengeMode())));
+
 			setHistoryCodeView(Default, false); // MODNAR DEFAULT
 		}
 		
-		@Override public Boolean getFromGame (ClientClasses go) {
-			return go.getSessionObject().galaxy().empire(0).isChallengeMode();
+		@Override public AbstractT<Boolean> getFromGame (ClientClasses go) {
+			return new T_Boolean(go.session().galaxy().empire(0).isChallengeMode());
 		}
 		
-		@Override public void putToGame(ClientClasses go, Boolean codeView) {}
+		@Override public void putToGame(ClientClasses go, AbstractT<Boolean> value) {}
 		
-		@Override public Boolean getFromUI (ClientClasses go) {
-			return UserPreferences.challengeMode();
+		@Override public AbstractT<Boolean> getFromUI (ClientClasses go) {
+			return new T_Boolean(UserPreferences.challengeMode());
 		}
 		
-		@Override public void putToGUI(ClientClasses go, Boolean codeView) {
-			UserPreferences.setChallengeMode(codeView);
+		@Override public void putToGUI(ClientClasses go, AbstractT<Boolean> value) {
+			UserPreferences.setChallengeMode(value.codeView());
 		}
 		
 		@Override public void initComments() {}
@@ -182,26 +191,28 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 	// BATTLE SCOUT
 	//
 	static class BattleScouts extends 
-			Abstract_Parameter <Boolean, Valid_Boolean, ClientClasses> {
+			AbstractParameter <Boolean, Validation<Boolean>, ClientClasses> {
 
 		BattleScouts(ClientClasses go) {
-			super("BATTLE SCOUT", new Valid_Boolean());
-			setHistoryCodeView(Initial, UserPreferences.battleScout());
+			super("BATTLE SCOUT", 
+					new Validation<Boolean>(
+							new T_Boolean(UserPreferences.battleScout())));
+
 			setHistoryCodeView(Default, false); // MODNAR DEFAULT
 		}
 		
-		@Override public Boolean getFromGame (ClientClasses go) {
+		@Override public AbstractT<Boolean> getFromGame (ClientClasses go) {
 			return null; // There is no way to know!
 		}
 		
-		@Override public void putToGame(ClientClasses go, Boolean codeView) {}		
+		@Override public void putToGame(ClientClasses go, AbstractT<Boolean> value) {}		
 		
-		@Override public Boolean getFromUI (ClientClasses go) {
-			return UserPreferences.battleScout();
+		@Override public AbstractT<Boolean> getFromUI (ClientClasses go) {
+			return new T_Boolean(UserPreferences.battleScout());
 		}
 		
-		@Override public void putToGUI(ClientClasses go, Boolean codeView) {
-			UserPreferences.setBattleScout(codeView);
+		@Override public void putToGUI(ClientClasses go, AbstractT<Boolean> value) {
+			UserPreferences.setBattleScout(value.codeView());
 		}
 		
 		@Override public void initComments() {}
@@ -211,28 +222,30 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 	// COMPANION WORLDS
 	//
 	static class CompanionWorlds extends 
-			Abstract_Parameter <Integer, Valid_Integer, ClientClasses> {
+			AbstractParameter <Integer, Validation<Integer>, ClientClasses> {
 
 		CompanionWorlds(ClientClasses go) {
-			super("COMPANION WORLDS", new Valid_Integer());
-			setHistoryCodeView(Initial, UserPreferences.companionWorlds());
+			super("COMPANION WORLDS", 
+					new Validation<Integer>(
+							new T_Integer(UserPreferences.companionWorlds())));
+
 			setHistoryCodeView(Default, 0); // MODNAR DEFAULT
 			setLimits(0 , 4);
 			setDefaultRandomLimits(0 , 4);
 		}
 		
-		@Override public Integer getFromGame (ClientClasses go) {
-			return go.getSessionObject().galaxy().empire(0).getCompanionWorldsNumber();
+		@Override public AbstractT<Integer> getFromGame (ClientClasses go) {
+			return new T_Integer(go.session().galaxy().empire(0).getCompanionWorldsNumber());
 		}
 		
-		@Override public void putToGame(ClientClasses go, Integer codeView) {}
+		@Override public void putToGame(ClientClasses go, AbstractT<Integer> value) {}
 		
-		@Override public Integer getFromUI (ClientClasses go) {
-			return UserPreferences.companionWorlds();
+		@Override public AbstractT<Integer> getFromUI (ClientClasses go) {
+			return new T_Integer(UserPreferences.companionWorlds());
 		}
 		
-		@Override public void putToGUI(ClientClasses go, Integer codeView) {
-			UserPreferences.setCompanionWorlds(codeView);
+		@Override public void putToGUI(ClientClasses go, AbstractT<Integer> value) {
+			UserPreferences.setCompanionWorlds(value.codeView());
 		}
 
 		@Override public void initComments() {}
@@ -242,27 +255,28 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 	// RANDOM TECH START
 	//
 	static class RandomTechStart extends 
-			Abstract_Parameter <Boolean, Valid_Boolean, ClientClasses> {
+	AbstractParameter <Boolean, Validation<Boolean>, ClientClasses> {
 
 		RandomTechStart(ClientClasses go) { 
-			super("RANDOM TECH START", new Valid_Boolean());
-			setHistoryCodeView(Initial, UserPreferences.randomTechStart());
+			super("RANDOM TECH START", 
+					new Validation<Boolean>(
+							new T_Boolean(UserPreferences.randomTechStart())));
+
 			setHistoryCodeView(Default, false); // MODNAR DEFAULT
 		}
 		
-		@Override public Boolean getFromGame (ClientClasses go) {
+		@Override public AbstractT<Boolean> getFromGame (ClientClasses go) {
 			return null; // There is no way to know!
-//			return UserPreferences.randomTechStart();
 		}
 		
-		@Override public void putToGame(ClientClasses go, Boolean codeView) {}
+		@Override public void putToGame(ClientClasses go, AbstractT<Boolean> value) {}
 		
-		@Override public Boolean getFromUI (ClientClasses go) {
-			return UserPreferences.randomTechStart();
+		@Override public AbstractT<Boolean> getFromUI (ClientClasses go) {
+			return new T_Boolean(UserPreferences.randomTechStart());
 		}
 		
-		@Override public void putToGUI(ClientClasses go, Boolean codeView) {
-			UserPreferences.setRandomTechStart(codeView);
+		@Override public void putToGUI(ClientClasses go, AbstractT<Boolean> value) {
+			UserPreferences.setRandomTechStart(value.codeView());
 		}
 		
 		@Override public void initComments() {}
@@ -272,34 +286,37 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 	// CUSTOM DIFFICULTY
 	//
 	static class CustomDifficulty extends
-			Abstract_Parameter <Integer, Valid_Integer, ClientClasses> {
+			AbstractParameter <Integer, Validation<Integer>, ClientClasses> {
 
 		CustomDifficulty(ClientClasses go) { 
-			super("CUSTOM DIFFICULTY", new Valid_Integer());
+			super("CUSTOM DIFFICULTY", 
+					new Validation<Integer>(
+							new T_Integer(UserPreferences.customDifficulty())));
+
 			setHistoryCodeView(Initial, UserPreferences.customDifficulty());
 			setHistoryCodeView(Default, 100); // MODNAR DEFAULT
 			setLimits(20 , 500);
 			setDefaultRandomLimits(20 , 500);
 		}
 
-		@Override public Integer getFromGame (ClientClasses go) {
-			return UserPreferences.customDifficulty(); // Dynamic: Same as UserPreferences
+		@Override public AbstractT<Integer> getFromGame (ClientClasses go) {
+			return new T_Integer(UserPreferences.customDifficulty()); // Dynamic: Same as UserPreferences
 		}
 
-		@Override public void putToGame(ClientClasses go, Integer codeView) {
-			UserPreferences.setCustomDifficulty(codeView); // Dynamic: Same as UserPreferences
+		@Override public void putToGame(ClientClasses go, AbstractT<Integer> value) {
+			UserPreferences.setCustomDifficulty(value.codeView()); // Dynamic: Same as UserPreferences
 		}		
 
-		@Override public Integer getFromUI (ClientClasses go) {
-			return UserPreferences.customDifficulty();
+		@Override public AbstractT<Integer> getFromUI (ClientClasses go) {
+			return new T_Integer(UserPreferences.customDifficulty());
 		}
 
-		@Override public void putToGUI(ClientClasses go, Integer codeView) {
-			UserPreferences.setCustomDifficulty(codeView);
+		@Override public void putToGUI(ClientClasses go, AbstractT<Integer> value) {
+			UserPreferences.setCustomDifficulty(value.codeView());
 		}
 
 		@Override public void initComments() {
-			setBottomComments(DYNAMIC_PARAMETER);
+			setBottomComments(PMconfig.dynamicParameter());
 		}
 	}
 
@@ -307,32 +324,34 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 	// DYNAMIC DIFFICULTY
 	//
    static class DynamicDifficulty extends
-			Abstract_Parameter <Boolean, Valid_Boolean, ClientClasses> {
+			AbstractParameter <Boolean, Validation<Boolean>, ClientClasses> {
 
 		DynamicDifficulty(ClientClasses go) {
-			super("DYNAMIC DIFFICULTY", new Valid_Boolean());
-			setHistoryCodeView(Initial, UserPreferences.dynamicDifficulty());
+			super("DYNAMIC DIFFICULTY", 
+					new Validation<Boolean>(
+							new T_Boolean(UserPreferences.dynamicDifficulty())));
+
 			setHistoryCodeView(Default, false); // MODNAR DEFAULT
 		}
 		
-		@Override public Boolean getFromGame (ClientClasses go) {
-			return UserPreferences.dynamicDifficulty(); // Dynamic: Same as UserPreferences
+		@Override public AbstractT<Boolean> getFromGame (ClientClasses go) {
+			return new T_Boolean(UserPreferences.dynamicDifficulty()); // Dynamic: Same as UserPreferences
 		}
 		
-		@Override public void putToGame(ClientClasses go, Boolean codeView) {
-			UserPreferences.setDynamicDifficulty(codeView); // Dynamic: Same as UserPreferences
+		@Override public void putToGame(ClientClasses go, AbstractT<Boolean> value) {
+			UserPreferences.setDynamicDifficulty(value.codeView()); // Dynamic: Same as UserPreferences
 		}
 		
-		@Override public Boolean getFromUI (ClientClasses go) {
-			return UserPreferences.dynamicDifficulty();
+		@Override public AbstractT<Boolean> getFromUI (ClientClasses go) {
+			return new T_Boolean(UserPreferences.dynamicDifficulty());
 		}
 		
-		@Override public void putToGUI(ClientClasses go, Boolean codeView) {
-			UserPreferences.setDynamicDifficulty(codeView);
+		@Override public void putToGUI(ClientClasses go, AbstractT<Boolean> value) {
+			UserPreferences.setDynamicDifficulty(value.codeView());
 		}
 
 		@Override public void initComments() {
-			setBottomComments(DYNAMIC_PARAMETER);
+			setBottomComments(PMconfig.dynamicParameter());
 		}
 	}
 
@@ -340,34 +359,36 @@ class Group_Modnar extends  Abstract_Group <ClientClasses> {
 	// MISSILE SIZE MODIFIER
 	//
 	static class MissileSizeModifier extends
-			Abstract_Parameter <Float, Valid_Float, ClientClasses> {
+			AbstractParameter <Float, Validation<Float>, ClientClasses> {
 
 		MissileSizeModifier(ClientClasses go) { 
-			super("MISSILE SIZE MODIFIER", new Valid_Float());
-			setHistoryCodeView(Initial, UserPreferences.missileSizeModifier());
+			super("MISSILE SIZE MODIFIER", 
+					new Validation<Float>(
+							new T_Float(UserPreferences.missileSizeModifier())));
+			
 			setHistoryCodeView(Default, 0.66f); // XILMI DEFAULT
 			setLimits(0.1f , 1.0f);
 			setDefaultRandomLimits(0.1f , 1.0f);
 		}
 
-		@Override public Float getFromGame (ClientClasses go) {
-			return UserPreferences.missileSizeModifier(); // Dynamic: Same as UserPreferences
+		@Override public AbstractT<Float> getFromGame (ClientClasses go) {
+			return new T_Float(UserPreferences.missileSizeModifier()); // Dynamic: Same as UserPreferences
 		}
 
-		@Override public void putToGame(ClientClasses go, Float codeView) {
-			UserPreferences.setMissileSizeModifier(codeView); // Dynamic: Same as UserPreferences
+		@Override public void putToGame(ClientClasses go, AbstractT<Float> value) {
+			UserPreferences.setMissileSizeModifier(value.codeView()); // Dynamic: Same as UserPreferences
 		}		
 
-		@Override public Float getFromUI (ClientClasses go) {
-			return UserPreferences.missileSizeModifier();
+		@Override public AbstractT<Float> getFromUI (ClientClasses go) {
+			return new T_Float(UserPreferences.missileSizeModifier());
 		}
 
-		@Override public void putToGUI(ClientClasses go, Float codeView) {
-			UserPreferences.setMissileSizeModifier(codeView);
+		@Override public void putToGUI(ClientClasses go, AbstractT<Float> value) {
+			UserPreferences.setMissileSizeModifier(value.codeView());
 		}
 
 		@Override public void initComments() {
-			setBottomComments(DYNAMIC_PARAMETER);
+			setBottomComments(PMconfig.dynamicParameter());
 		}
 	}
 }

@@ -875,8 +875,8 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
                 goToMainMenu();
                 break;
             default: // BR:
-            	if (Profiles.processKey(
-            			k, e.isShiftDown(), "Galaxy", newGameOptions())) {
+            	if (Profiles.processKey(k, e.isShiftDown(), "Galaxy",
+            							options(), newGameOptions())) {
 	            	buttonClick();
 	                playerRaceImg = null;
 	                playerRaceImg = playerRaceImg();

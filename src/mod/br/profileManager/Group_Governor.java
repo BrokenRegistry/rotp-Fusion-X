@@ -17,16 +17,15 @@
 
 package mod.br.profileManager;
 
-import java.util.List;
+import br.profileManager.src.main.java.AbstractGroup;
+import br.profileManager.src.main.java.AbstractParameter;
+import br.profileManager.src.main.java.AbstractT;
+import br.profileManager.src.main.java.Validation;
+import br.profileManager.src.main.java.T_Boolean;
+import br.profileManager.src.main.java.T_Integer;
 
-import br.profileManager.src.main.java.Abstract_Group;
-import br.profileManager.src.main.java.Abstract_Parameter;
-import br.profileManager.src.main.java.Valid_Boolean;
-import br.profileManager.src.main.java.Valid_Integer;
-import br.profileManager.src.main.java.ValidationCriteria;
 
-
-class Group_Governor extends Abstract_Group <ClientClasses> {
+class Group_Governor extends AbstractGroup <ClientClasses> {
 	
 	// TODO ALL
 
@@ -45,27 +44,25 @@ class Group_Governor extends Abstract_Group <ClientClasses> {
 	// GOVERNOR ON BY DEFAULT
 	//
 	public static class GovernorOnByDefault extends 
-			Abstract_Parameter <Boolean, Valid_Boolean, ClientClasses> {
+			AbstractParameter <Boolean, Validation<Boolean>, ClientClasses> {
 
 		GovernorOnByDefault(ClientClasses go) { 
-			super("GOVERNOR ON BY DEFAULT", new Valid_Boolean());
+			super("GOVERNOR ON BY DEFAULT", 
+					new Validation<Boolean>(
+							new T_Boolean()));
 		}
 		
-		@Override public Boolean getFromGame (ClientClasses go) {
+		@Override public AbstractT<Boolean> getFromGame (ClientClasses go) {
 			return null;
-//			return go.getGuiObject().selectedGalaxyShape();
 		}
 		
-		@Override public void putToGame(ClientClasses go, Boolean userOption) {
+		@Override public void putToGame(ClientClasses go, AbstractT<Boolean> value) {}
 
-		}	
-
-		@Override public Boolean getFromUI (ClientClasses go) {
+		@Override public AbstractT<Boolean> getFromUI (ClientClasses go) {
 			return null;
-//			return go.getGuiObject().selectedGalaxyShape();
 		}
 
-		@Override public void putToGUI(ClientClasses go, Boolean userOption) {
+		@Override public void putToGUI(ClientClasses go, AbstractT<Boolean> value) {
 		}
 		
 		@Override public void initComments() {
@@ -78,28 +75,30 @@ class Group_Governor extends Abstract_Group <ClientClasses> {
 	// ==============================================================
 	// AUTOSPEND ON BY DEFAULT
 	//
-	public static class AutospendOnByDefault extends
-			Abstract_Parameter <Boolean, Valid_Boolean, ClientClasses> {
+	static class AutospendOnByDefault extends
+			AbstractParameter <Boolean, Validation<Boolean>, ClientClasses> {
 
 		AutospendOnByDefault(ClientClasses go) {
-			super("AUTOSPEND ON BY DEFAULT", new Valid_Boolean());
+			super("AUTOSPEND ON BY DEFAULT", 
+					new Validation<Boolean>(
+							new T_Boolean()));
 		}
 
-		@Override public Boolean getFromGame (ClientClasses go) {
+		@Override public AbstractT<Boolean> getFromGame (ClientClasses go) {
 			return null;
 //			return go.getGuiObject().selectedGalaxyShape();
 		}
 
-		@Override public void putToGame(ClientClasses go, Boolean userOption) {
+		@Override public void putToGame(ClientClasses go, AbstractT<Boolean> value) {
 
 		}	
 
-		@Override public Boolean getFromUI (ClientClasses go) {
+		@Override public AbstractT<Boolean> getFromUI (ClientClasses go) {
 			return null;
 //			return go.getGuiObject().selectedGalaxyShape();
 		}
 
-		@Override public void putToGUI(ClientClasses go, Boolean userOption) {
+		@Override public void putToGUI(ClientClasses go, AbstractT<Boolean> value) {
 		}
 
 		@Override public void initComments() {}
@@ -107,54 +106,30 @@ class Group_Governor extends Abstract_Group <ClientClasses> {
 	// ==============================================================
 	// DEFAULT MAX BASES
 	//
-	static class Valid_DefaultMaxBases extends Valid_Integer {
-
-		// ========== Constructors and initializer ==========
-		//
-		Valid_DefaultMaxBases() {
-			super();
-			init();
-		}
-		
-		Valid_DefaultMaxBases(List<Integer> options) {
-			super(options);
-			init();
-		}
-		
-		private void initCriteria() {
-			setValidationCriteria(new ValidationCriteria()
-					.isNullAllowed(false));
-		}
-		
-		private void init() {
-			initCriteria();
-		}
-	}
-	
-	// ========== Parameter Section ==========
-	//
-	public static class DefaultMaxBases extends 
-			Abstract_Parameter <Integer, Valid_DefaultMaxBases, ClientClasses> {
+	static class DefaultMaxBases extends 
+			AbstractParameter <Integer, Validation<Integer>, ClientClasses> {
 
 		DefaultMaxBases(ClientClasses go) { 
-			super("DEFAULT MAX BASES", new Valid_DefaultMaxBases());
+			super("DEFAULT MAX BASES", 
+					new Validation<Integer>(
+							new T_Integer()));
 		}
 
-		@Override public Integer getFromGame (ClientClasses go) {
+		@Override public AbstractT<Integer> getFromGame (ClientClasses go) {
 			return null;
 //			return go.getGuiObject().selectedGalaxyShape();
 		}
 
-		@Override public void putToGame(ClientClasses go, Integer userOption) {
+		@Override public void putToGame(ClientClasses go, AbstractT<Integer> value) {
 
 		}	
 
-		@Override public Integer getFromUI (ClientClasses go) {
+		@Override public AbstractT<Integer> getFromUI (ClientClasses go) {
 			return null;
 //			return go.getGuiObject().selectedGalaxyShape();
 		}
 
-		@Override public void putToGUI(ClientClasses go, Integer userOption) {
+		@Override public void putToGUI(ClientClasses go, AbstractT<Integer> value) {
 		}
 
 		@Override public void initComments() {}
@@ -162,28 +137,30 @@ class Group_Governor extends Abstract_Group <ClientClasses> {
 	// ==============================================================
 	// DIVERT EXCESS TO RESEARCH
 	//
-	public static class DivertExcessToResearch extends
-			Abstract_Parameter <Boolean, Valid_Boolean, ClientClasses> {
+	static class DivertExcessToResearch extends
+			AbstractParameter <Boolean, Validation<Boolean>, ClientClasses> {
 
 		DivertExcessToResearch(ClientClasses go) {
-			super("DIVERT EXCESS TO RESEARCH", new Valid_Boolean());
+			super("DIVERT EXCESS TO RESEARCH", 
+					new Validation<Boolean>(
+							new T_Boolean()));
 		}
 
-		@Override public Boolean getFromGame (ClientClasses go) {
+		@Override public AbstractT<Boolean> getFromGame (ClientClasses go) {
 			return null;
 //			return go.getGuiObject().selectedGalaxyShape();
 		}
 
-		@Override public void putToGame(ClientClasses go, Boolean userOption) {
+		@Override public void putToGame(ClientClasses go, AbstractT<Boolean> value) {
 
 		}	
 
-		@Override public Boolean getFromUI (ClientClasses go) {
+		@Override public AbstractT<Boolean> getFromUI (ClientClasses go) {
 			return null;
 //			return go.getGuiObject().selectedGalaxyShape();
 		}
 
-		@Override public void putToGUI(ClientClasses go, Boolean userOption) {
+		@Override public void putToGUI(ClientClasses go, AbstractT<Boolean> value) {
 		}
 
 		@Override public void initComments() {}

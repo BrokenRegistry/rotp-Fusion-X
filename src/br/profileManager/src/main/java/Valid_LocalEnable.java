@@ -21,7 +21,7 @@ import static br.profileManager.src.main.java.WriteUtil.History.*;
  * For the validation of the configurations Action
  */
 //class Valid_LocalEnable extends Valid_ProfileAction {
-class Valid_LocalEnable extends Valid_String {
+class Valid_LocalEnable extends Validation<String> {
 
 	// From Valid_ConfigAction
 		static final String LOAD_ENABLED    = "ENABLE_LOAD_LIST";
@@ -34,9 +34,10 @@ class Valid_LocalEnable extends Valid_String {
 	private static final String DEFAULT_VALUE  = "ALL";
 
 	Valid_LocalEnable() {
+		super(new T_String(DEFAULT_VALUE));
 		setDefaultName(PARAMETER_NAME);
-		setHistoryUserView(Default, DEFAULT_VALUE);
-		setHistoryUserView(Current, DEFAULT_VALUE);
+		setHistory(Default, DEFAULT_VALUE);
+		setHistory(Current, DEFAULT_VALUE);
 		setShowWithOptions(true);
 		
 		setValidationCriteria(new ValidationCriteria()
@@ -46,19 +47,15 @@ class Valid_LocalEnable extends Valid_String {
 
 		addElement("NO",
 				"No actions are allowed in this Setting" ,
-//				LOCAL_ENABLED
 				"");
 		addElement("ALL",
 				"All actions are allowed in this Setting" ,
-//				LOCAL_ENABLED + " " + 
 				LOAD_ENABLED + " " + WRITE_ENABLED);
 		addElement("WRITE", 
 				"Allows actions that change the file" ,
-//				LOCAL_ENABLED + " " + 
 				WRITE_ENABLED);
 		addElement("LOAD", 
 				"Allows actions Get from GUI and Save to file" ,
-//				LOCAL_ENABLED + " " + 
 				LOAD_ENABLED);
 	}
 
@@ -68,7 +65,7 @@ class Valid_LocalEnable extends Valid_String {
 	/**
 	 * Base for every User Entry Lines
 	 */
-	static class Line_LocalEnable extends Generic_Line<String, Valid_LocalEnable>{
+	static class Line_LocalEnable extends Lines<String, Valid_LocalEnable>{
 
 	 	// ==========================================================
 	    // Constructors
@@ -92,6 +89,10 @@ class Valid_LocalEnable extends Valid_String {
 		// ==========================================================
 		// Getters and Setters
 		//
+		void setValue(String value) {
+			setValue(new T_String(value));
+		}
+		
 		boolean isLoadEnabled() {
 			return isValueFromCategory(LOAD_ENABLED);
 		}

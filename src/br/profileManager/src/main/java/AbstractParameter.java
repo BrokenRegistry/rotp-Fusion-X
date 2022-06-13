@@ -18,33 +18,26 @@ package br.profileManager.src.main.java;
 import java.util.List;
 
 import br.profileManager.src.main.java.Valid_LocalEnable.Line_LocalEnable;
-import br.profileManager.src.main.java.Valid_String.Line_String;
 import static br.profileManager.src.main.java.WriteUtil.History.*;
+import static br.profileManager.src.main.java.LineString.lineFormat;
+import static br.profileManager.src.main.java.PMconfig.*;
 
 /**
- * @param <ValueClass>  the Value's Code View Class
- * @param <ValidClass>  The Value's validation class
- * @param <ClientClass> The class that have to go thru the profile manager
+ * @param <T>  the Base Code View Class
+ * @param <V>  The Value's validation class
+ * @param <O> The class that have to go thru the profile manager
  */
-public abstract class Abstract_Parameter<
-		ValueClass,
-		ValidClass extends Abstract_ValidData<ValueClass>,
-		ClientClass> extends WriteUtil {
+public abstract class AbstractParameter<
+		T, V extends Validation<T>, O> extends WriteUtil {
 
-	// ------------------------------------------------------------------------
-	// Constant Properties
-	//
-	private static final String HEAD_OF_PARAMETER = "¦ Parameter";
-	private static final String HEAD_OF_HISTORY	  = "¦ History";
-	private static final String HDEF = " : ";
-	private static final String HSEP = " / ";
-	private static final String HEAD_OF_OPTIONS = new Line_String(
-								toComment("Options"), "", null).toString();
-	private static final String OPTIONS_NEWLINE   = new Line_String(
-								toComment("  \" \" "), "", null).toString();
-	protected static final String AVAILABLE_FOR_CHANGE = "---- Available for changes in game saves";
-	protected static final String DYNAMIC_PARAMETER    = "---- Dynamically change game";
-
+	// Former Constant
+	private static String optionsHead() {
+		return lineFormat(toComment(optionsKey()), "");
+	}
+	private static String optionsSubHead() {
+		return lineFormat(toComment(optionsSubKey()), "");
+	}
+	
 	// ------------------------------------------------------------------------
 	// Variables Properties
 	//
@@ -55,39 +48,35 @@ public abstract class Abstract_Parameter<
 	
 	private String parameterName;
 	private Line_LocalEnable localEnable = new Line_LocalEnable();
-	private Abstract_ValidData<ValueClass> dataValidation;
-	private Generic_Block<ValueClass, ValidClass> userProfiles;
-	// from Generic_Block
-	//	private List<Gen_Line<ValidClass>> lineList;
-	//	private Abstract_ValidData<?>	  valueValidation;
-	//	private Abstract_ValidData<String> profileValidation;
+	private Validation<T> validation;
+	private Block<T, V> userProfiles;
 	
 	// ==================================================
 	// Constructors and helpers
 	//
-	protected Abstract_Parameter(String parameterName,
-				  Abstract_ValidData<ValueClass> valueValidationData) {
+	protected AbstractParameter(String parameterName,
+				  Validation<T> valueValidationData) {
 		setParameterName(parameterName);
-		dataValidation = valueValidationData;
+		validation = valueValidationData;
 		resetUserProfiles();
 		initComments ();
 	}
 	
 	void resetUserProfiles() {
- 	userProfiles = new Generic_Block<ValueClass, ValidClass>(dataValidation);
+ 	userProfiles = new Block<T, V>(validation);
 	}
 
 	// ========================================================================
 	// Abstract Methods
 	//
 	
-	protected abstract ValueClass getFromUI (ClientClass clientObject);
+	protected abstract AbstractT<T> getFromUI (O clientObject);
 
-	protected abstract void putToGUI (ClientClass clientObject, ValueClass value);
+	protected abstract void putToGUI (O clientObject, AbstractT<T> value);
 
-	protected abstract ValueClass getFromGame (ClientClass clientObject);
+	protected abstract AbstractT<T> getFromGame (O clientObject);
 
-	protected abstract void putToGame (ClientClass clientObject, ValueClass value);
+	protected abstract void putToGame (O clientObject, AbstractT<T> value);
 
 	protected abstract void initComments ();
 
@@ -97,8 +86,8 @@ public abstract class Abstract_Parameter<
 	/**
 	 * @return the value validation class
 	 */
-	public Abstract_ValidData<ValueClass> getDataValidation() {
- 	return dataValidation;
+	public Validation<T> getValidation() {
+ 	return validation;
 	}
 	
 	/**
@@ -106,26 +95,26 @@ public abstract class Abstract_Parameter<
 	 * @param profileNames  List of names to check
 	 * @return The Value, if one.
 	 */
-	private ValueClass getWinningCodeView (List<String> profileNames) {
- 	ValueClass value = null;
- 	if (localEnable.isLoadEnabled()) {
-			// Loop thru profiles, last valid win
-	 	for (String profile : profileNames) {	   
-	 		value = userProfiles.getValue(profile, value);
+	private AbstractT<T> getWinningCodeView (List<String> profileNames) {
+ 	AbstractT<T> value = null;
+	 	if (localEnable.isLoadEnabled()) {
+				// Loop thru profiles, last valid win
+		 	for (String profile : profileNames) {	   
+		 		value = userProfiles.getValueOrDefault(profile, value);
 			}
-  	}
+	  	}
 		return value;
 	}
 
 	/**
 	 * Search for the winning code View and
 	 * Override the Game File parameter with it
-	 * @param clientObject   the {@code ClientClass Object}
+	 * @param clientObject   the {@code O Object}
 	 * @param profileNames  List of names to check
 	 */
 	public void changeGameFileParameters(
- 		ClientClass clientObject, List<String> profileNames) {
-	 	ValueClass value = getWinningCodeView (profileNames);
+ 		O clientObject, List<String> profileNames) {
+	 	AbstractT<T> value = getWinningCodeView (profileNames);
 	 	// if one valid code View is found: set it
 	 	if (value != null) {
 	 		putToGame(clientObject, value);
@@ -133,7 +122,7 @@ public abstract class Abstract_Parameter<
 	}
 
 	private void overrideGuiParameters(
-	 		ClientClass clientObject, ValueClass value) {
+	 		O clientObject, AbstractT<T> value) {
 	 	// if one valid value is found: set it
 	 	if (!PMutil.neverNull(value).isBlank()) {
 	 		putToGUI(clientObject, value);
@@ -143,48 +132,69 @@ public abstract class Abstract_Parameter<
 	/**
 	 * Search for the winning Value and
 	 * Override the GUI parameter with it 
-	 * @param clientObject   the {@code ClientClass Object}
+	 * @param clientObject   the {@code O Object}
 	 * @param profileNames  List of names to check
 	 */
 	public void overrideGuiParameters(
-	 		ClientClass clientObject, List<String> profileNames) {
+	 		O clientObject, List<String> profileNames) {
 		overrideGuiParameters(clientObject, getWinningCodeView (profileNames));
 	}
 
-	protected void putHistoryToGUI(History history, ClientClass clientObject) {
-		overrideGuiParameters (clientObject, getHistoryCodeView(history));
+	protected void putHistoryToGUI(History history, O clientObject) {
+		overrideGuiParameters (clientObject, validation.getHistory(history));
 	}
 
 	/**
-	 * Set "history" Code View
+	 * Check if the "history" Exist
+	 * @param history  Field to be retrieved
+	 * @return true if not null
+	 */
+	protected boolean historyIsNull(History history) {
+		return validation.historyIsNull(history);
+	}
+
+	/**
+	 * Set "history" codeView
+	 * @param history   The History case to fill
+	 * @param codeView the new codeView
+	 */
+	protected void setHistoryCodeView(History history, T codeView) {
+		validation.setHistoryCodeView(history, codeView);
+	}
+
+	/**
+	 * Set "history" Value
+	 * @param history   The History case to fill
 	 * @param value the new value
 	 */
-	protected void setHistoryCodeView(History history, ValueClass newValue) {
-		dataValidation.setHistoryCodeView(history, newValue);
+	protected void setHistory(History history, AbstractT<T> newValue) {
+		validation.setHistory(history, newValue);
+	}
+
+	/**
+	 * Copy one History to another
+	 * @param history   The History case to fill
+	 * @param source    The History to copy
+	 */
+	protected void setHistory(History history, History source) {
+		validation.setHistory(history, source);
 	}
 
 	/**
 	 * Set "history" User View
+	 * @param history   The History case to fill
 	 * @param value the new value
 	 */
-	protected void setHistoryUserView(History history, String newValue) {
-		dataValidation.setHistoryUserView(history, newValue);
+	protected void setHistory(History history, String newValue) {
+		validation.setHistory(history, newValue);
 	}
 	
 	/**
-	 * Get "history" Code View
-	 * @return The "history" Code View
+	 * Get "history" value
+	 * @return The "history" value
 	 */
-	protected ValueClass getHistoryCodeView(History history) {
-		return dataValidation.getHistoryCodeView(history);
-	}
-
-	/**
-	 * Get "history" User View
-	 * @return The "history" User View
-	 */
-	protected String getHistoryUserView(History history) {
-		return dataValidation.getHistoryUserView(history);
+	protected AbstractT<T> getHistory(History history) {
+		return validation.getHistory(history);
 	}
 
 	/**
@@ -196,7 +206,7 @@ public abstract class Abstract_Parameter<
 	 * @param profile the profile to set
 	 */
 	public void actionToFile(History history, String profile) {
-			actionToFile(profile, dataValidation.getHistoryUserView(history));
+			actionToFile(profile, validation.getHistory(history).userView());
 	}
 
 	/**
@@ -208,47 +218,42 @@ public abstract class Abstract_Parameter<
 	 * @param profile the profile to set
 	 */
 	public void actionUpdateFile(History history, String profile) {
-			actionUpdateFile(profile, dataValidation.getHistoryUserView(history));
+			actionUpdateFile(profile, validation.getHistory(history).userView());
 	}
 
 	/**
 	 * Set Limits Value
 	 * @param value the new values
 	 */
-	protected void setLimits(ValueClass Limit1, ValueClass Limit2) {
-		dataValidation.setLimits(Limit1, Limit2);
+	protected void setLimits(T Limit1, T Limit2) {
+		validation.setLimits(Limit1, Limit2);
 	}
 
 	/**
 	 * Set Default Random Limits Value
 	 * @param value the new values
 	 */
-	protected void setDefaultRandomLimits(ValueClass Limit1, ValueClass Limit2) {
-		dataValidation.setDefaultRandomLimits(Limit1, Limit2);
+	protected void setDefaultRandomLimits(T Limit1, T Limit2) {
+		validation.setDefaultRandomLimits(Limit1, Limit2);
 	}
 
 	/**
 	 * Update Last GUI code View 
-	 * @param clientObject   the {@code ClientClass Object}
+	 * @param clientObject   the {@code O Object}
  	 */
-	public void setGuiCodeView(ClientClass clientObject) {
-		setGuiValue(getFromUI(clientObject));
-	}
-	
-	private void setGuiValue(ValueClass value) {
-		dataValidation.setHistoryCodeView(Current, value);
+	public void setFromGuiCodeView(O clientObject) {
+		validation.setHistory(Current, getFromUI(clientObject));
+//		validation.setHistoryCodeView(Current, 
+//				getFromUI(clientObject).codeView());
+		// Thru code view to force new validation
 	}
 	
 	/**
 	 * Update Last Game CodeView (Computer friendly) 
-	 * @param clientObject   the {@code ClientClass Object}
+	 * @param clientObject   the {@code O Object}
  	 */
-	public void setGameCodeView(ClientClass clientObject) {
-		setGameValue(getFromGame(clientObject));
-	}
-
-	private void setGameValue(ValueClass value) {
-		dataValidation.setHistoryCodeView(Game, value);
+	public void setFromGameCodeView(O clientObject) {
+		validation.setHistory(Game, getFromGame(clientObject));
 	}
 
 	/**
@@ -282,12 +287,21 @@ public abstract class Abstract_Parameter<
 	}
 
 	/**
-	 * Ask for profile line, or initial
-	 * @return  selected Profile as Gen_Line
+	 * Ask for profile codeView, or initial codeView
 	 * @param   profile the profile name 
+	 * @return  selected Profile user View
 	 */
-	public ValueClass getProfileValue(String profile) {
-		return getProfileLine(profile).getValue();
+	public T getProfileCodeView(String profile) {
+		return getProfileLine(profile).getValue().codeView();
+	}
+
+	/**
+	 * Ask for profile userView, or initial
+	 * @param   profile the profile name 
+	 * @return  selected Profile user View
+	 */
+	public String getProfileUserView(String profile) {
+		return getProfileLine(profile).getValue().userView();
 	}
 
 	/**
@@ -295,25 +309,34 @@ public abstract class Abstract_Parameter<
 	 * @return  selected Profile as Gen_Line
 	 * @param   profile the profile name 
 	 */
-	private Generic_Line<ValueClass, Abstract_ValidData<ValueClass>> getProfileLine(String profile) {
+	private Lines<T, Validation<T>> getProfileLine(String profile) {
 		if (profile != null) { 
 			if (userProfiles.isValid(profile)) {
 				return userProfiles.getLine(profile);
 			}
 		}
 		profile = "Initial";
-		return new Generic_Line<ValueClass, Abstract_ValidData<ValueClass>>(
-				dataValidation)
+		return new Lines<T, Validation<T>>(
+				validation)
 				.setName(profile)
-				.setValue(getHistoryCodeView(Initial));
+				.setValue(validation.getHistory(Initial));
 	}
 
 	// for default parameters and internal use
+	/**
+	 * @param name Key
+	 * @param value User Entry
+	 */
 	public void addLine (String name, String value) {
 		userProfiles.add(name, value);
 	}
 
 	// for default parameters and internal use
+	/**
+	 * @param name Key
+	 * @param value User Entry
+	 * @param comment Any comment, or null
+	 */
 	public void addLine (String name, String value, String comment) {
 		userProfiles.add(name, value, comment);
 	}
@@ -334,22 +357,35 @@ public abstract class Abstract_Parameter<
 	 * @return isHistory?
 	 */
 	private boolean isHistory(String line) {
-		if (HEAD_OF_HISTORY.equalsIgnoreCase(Generic_Line.getKey(line))) {
-			for (String element : 
-					Generic_Line.getValueAsString(line).split(HSEP)) {
-				String[] param = element.split(HDEF);
-				if (param[0].strip().equalsIgnoreCase(Current.toString())) {
-					if (param.length >= 2) {
-						setHistoryUserView(Last, param[1].strip());
-						return true;
+		boolean result = false;
+		if (historyKey().equalsIgnoreCase(Lines.getKey(line))) {
+			result = true;
+			String key;
+			String value;
+			// Split the history elements
+			for (String historyElement : 
+					Lines.getValueAsString(line).split(historyElementsSeparator())) {
+				// Split key and value
+				String[] keyValue = historyElement.split(historyNameValueSeparator());
+				key = keyValue[0].strip();
+				value = "";
+				if (keyValue.length >= 2
+						&& !keyValue[1].isBlank()) {
+					value = keyValue[1].strip();
+					// The past history "Current" value become the Last
+					if (key.equalsIgnoreCase(Current.toString())) {
+						setHistory(Last, value);
 					}
-					return true;
+					// The past history "Game" is refreshed
+					else if (key.equalsIgnoreCase(Game.toString())
+							&& historyIsNull(Game)) {
+						setHistory(Game, value);
+					}
 				}
 				// loop
 			}
-			return true;
 		}
-		return false;
+		return result;
 	}
 	
 	/**
@@ -385,48 +421,47 @@ public abstract class Abstract_Parameter<
 		String out = "";
 
 		// HEAD COMMENTS
-		out += toCommentLine(headComments) ;
+		out += toCommentLine(headComments);
 
 		// SETTING NAME
-		out += new Line_String(HEAD_OF_PARAMETER, parameterName, (String)null)
+		out += lineFormat(parameterKey(), parameterName)
 				.toString() + NL;
 
 		// SETTING COMMENTS
 		out += toCommentLine(settingComments) ;
 
 		// OPTIONS LIST
-		out += multiLines(dataValidation.getOptionsRange(),
-				HEAD_OF_OPTIONS, OPTIONS_NEWLINE) + NL;
+		out += multiLines(validation.getOptionsRange(),
+				optionsHead(), optionsSubHead()) + NL;
 
 		// OPTIONS DESCRIPTION
-		out += toCommentLine(dataValidation.getOptionsDescription(), 1, 1);
+		out += toCommentLine(validation.getOptionsDescription(), 1, 1);
 		
 		// OPTIONS COMMENTS
 		out += toCommentLine(optionsComments) ;
 
 		// HISTORY
-		if (dataValidation.isShowHistory()) {
-			out += new Line_String(HEAD_OF_HISTORY,
-					Current.toString() + HDEF
-					+ getHistoryUserView(Current)
-					+ HSEP
-					+ Last.toString() + HDEF
-					+ getHistoryUserView(Last)
-					+ HSEP
-					+ Initial.toString() + HDEF
-					+ getHistoryUserView(Initial)
-					+ HSEP
-					+ Default.toString() + HDEF
-					+ getHistoryUserView(Default)
-					+ HSEP
-					+ Game.toString() + HDEF
-					+ getHistoryUserView(Game),
-					(String)null)
+		if (validation.isShowHistory()) {
+			out += lineFormat(historyKey(),
+					Current.toString() + historyNameValueSeparator()
+					+ getHistory(Current).userView()
+					+ historyElementsSeparator()
+					+ Last.toString() + historyNameValueSeparator()
+					+ getHistory(Last).userView()
+					+ historyElementsSeparator()
+					+ Initial.toString() + historyNameValueSeparator()
+					+ getHistory(Initial).userView()
+					+ historyElementsSeparator()
+					+ Default.toString() + historyNameValueSeparator()
+					+ getHistory(Default).userView()
+					+ historyElementsSeparator()
+					+ Game.toString() + historyNameValueSeparator()
+					+ getHistory(Game).userView())
 					.toString() + NL;
 		}
 
 		// LOCAL ENABLE
-		if (dataValidation.isShowLocalEnabled()) {
+		if (validation.isShowLocalEnabled()) {
 			out += localEnable.toString() + NL;
 		}
 
@@ -501,6 +536,6 @@ public abstract class Abstract_Parameter<
 	 */
 	static boolean isHeadOfParameter(String key) {
 		key = PMutil.clean(key);
-		return key.equalsIgnoreCase(HEAD_OF_PARAMETER);
+		return key.equalsIgnoreCase(parameterKey());
 	}
 }

@@ -620,7 +620,8 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
                 goToMainMenu();
                 break;
             default: // BR:
-            	if (Profiles.processKey(k, e.isShiftDown(), "Advanced", newGameOptions())) {
+            	if (Profiles.processKey(k, e.isShiftDown(), "Advanced",
+            			options(), newGameOptions())) {
                     buttonClick();
                     galaxyAgeText.repaint(galaxyAgeStr());
                     starDensityText.repaint(starDensityStr());

@@ -55,16 +55,16 @@ public class Profiles {
 		return userProfiles.isInitialized();
 	}
 
-	/**
-   	 * Load the configuration file to update the Action
-   	 * Update with last Loaded Game options values
-   	 * Save the new configuration file
-	 * @param options 
-   	 */
-	public static void saveGameOptionsToFile(IGameOptions options) {
-		userProfiles.saveGameToFile(new ClientClasses(options));
-	}
-	
+//	/**
+//   	 * Load the configuration file to update the Action
+//   	 * Update with last Loaded Game options values
+//   	 * Save the new configuration file
+//	 * @param options 
+//   	 */
+//	public static void saveGameOptionsToFile(IGameOptions options) {
+//		userProfiles.saveGameToFile(new ClientClasses(options));
+//	}
+//	
 	/**
    	 * Load the configuration file to update the Action
    	 * Update with last Loaded Game options values
@@ -95,7 +95,25 @@ public class Profiles {
    	 */
 	public static boolean processKey(int key, boolean global,
 			String group, IGameOptions options) {
-		return userProfiles.processKey(key, global, group, new ClientClasses(options));
+		return userProfiles.processKey(key, global, group, 
+							new ClientClasses(options));
+	}
+
+	/**
+   	 * Load the configuration file to update the Action
+   	 * Update with last Loaded Game options values
+   	 * Save the new configuration file
+	 * @param key the key to process
+	 * @param global Global or Local ?
+	 * @param group group name
+	 * @param options class containing info
+	 * @param optionsCopy class containing info
+	 * @return <b>true</b> if something has been changed
+   	 */
+	public static boolean processKey(int key, boolean global,
+			String group, IGameOptions options, IGameOptions optionsCopy) {
+		return userProfiles.processKey(key, global, group,
+							new ClientClasses(options, optionsCopy));
 	}
 
 	/**

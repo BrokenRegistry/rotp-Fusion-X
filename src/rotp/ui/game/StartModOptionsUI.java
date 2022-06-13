@@ -445,8 +445,8 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
                 parent.advanceHelp();
                 break;
             default: // BR:
-            	if(Profiles.processKey(k, e.isShiftDown()
-            			, "Modnar", newGameOptions())) {
+            	if(Profiles.processKey(k, e.isShiftDown(), "Modnar",
+            			options(), newGameOptions())) {
             		alwaysStarGatesText.repaint(alwaysStarGatesStr());
             		alwaysThoriumText.repaint(alwaysThoriumStr());
             		challengeModeText.repaint(challengeModeStr());

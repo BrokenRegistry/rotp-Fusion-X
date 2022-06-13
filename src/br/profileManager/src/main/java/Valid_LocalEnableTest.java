@@ -12,9 +12,9 @@ class Valid_LocalEnableTest {
 		assertEquals(Valid_LocalEnable.PARAMETER_NAME, 
 				new Line_LocalEnable().getName()
 				, "should have been \"¦ LOCAL ENABLE\"");
-		assertEquals("ALL", 
-				new Line_LocalEnable().getValue()
-				, "should have been \"ALL\"");
+		assertEquals("All", 
+				new Line_LocalEnable().getValue().userView()
+				, "should have been \"All\"");
 	}
 
 	@Test

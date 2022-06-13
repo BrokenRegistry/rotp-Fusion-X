@@ -18,16 +18,16 @@ import static br.profileManager.src.main.java.Valid_ProfileAction.*;
 
 import java.awt.event.KeyEvent;
 import java.util.LinkedHashMap;
-import br.profileManager.src.main.java.Abstract_Group;
-import br.profileManager.src.main.java.Abstract_Parameter;
-import br.profileManager.src.main.java.Abstract_Profiles;
+import br.profileManager.src.main.java.AbstractGroup;
+import br.profileManager.src.main.java.AbstractParameter;
+import br.profileManager.src.main.java.AbstractProfiles;
 import rotp.Rotp;
 import rotp.ui.UserPreferences;
 
 /**
  * <ClientClass> The class that have to go thru the profile manager
  */
-public class UserProfiles extends Abstract_Profiles<ClientClasses> {
+public class UserProfiles extends AbstractProfiles<ClientClasses> {
     
 	static enum BaseMod {
 		Original, Governor, Modnar, Xilmi, BrokenRegistry
@@ -51,7 +51,7 @@ public class UserProfiles extends Abstract_Profiles<ClientClasses> {
 	 * Add all the groups to the Map with an easy key
 	 */
 	@Override protected void initGroupMap(ClientClasses options) {
-      groupMap = new LinkedHashMap<String, Abstract_Group<ClientClasses>>();
+      groupMap = new LinkedHashMap<String, AbstractGroup<ClientClasses>>();
       groupMap.put("RACE",        new Group_Race(options));
       groupMap.put("GALAXY",      new Group_Galaxy(options));
       groupMap.put("ADVANCED",    new Group_Advanced(options));
@@ -71,53 +71,66 @@ public class UserProfiles extends Abstract_Profiles<ClientClasses> {
    	 */
 	public boolean processKey(int key, boolean global,
 			String group, ClientClasses clientObject) {
+		boolean refresh = false;
 		switch (key) {
 		case KeyEvent.VK_B: // "B" = Load Broken Registry User Presets
 			loadLocalGroupSettings(BR_GROUP_NAME, clientObject);
-			return false;
+			break;
 		case KeyEvent.VK_D: // "D" = Reload Default Presets
 			if(global) {
 				resetGlobalDefaultOptions(clientObject);
-				return true;
+				refresh = true;
+				break;
 			} else {
 				resetLocalDefaultOptions(group, clientObject);
-				return true;            		
+				refresh = true;
+				break;            		
 			}
 		case KeyEvent.VK_G: // "G" = Reload User Presets
 			loadGlobalGroupSettings(clientObject);
-			return true;
+			refresh = true;
+			break;
 		case KeyEvent.VK_I: // "I" = Reload Initial Presets
 			if(global) {
 				resetGlobalInitialOptions(clientObject);
-				return true;
+				refresh = true;
+				break;
 			} else {
 				resetLocalInitialOptions(group, clientObject);
-				return true;            		
+				refresh = true;
+				break;            		
 			}
 		case KeyEvent.VK_L: // "L" = Load GUI User Presets
 			if(global) {
 				loadGlobalGroupSettings(clientObject);
-				return true;
+				refresh = true;
+				break;
 			} else {
 				loadLocalGroupSettings(group, clientObject);
-				return true;
+				refresh = true;
+				break;
 			}
 		case KeyEvent.VK_R: // "R" = Load GUI Surprise Presets
 			if(global) {
 				loadSurpriseGlobalGroupSettings(clientObject);
-				return true;
+				refresh = true;
+				break;
 			} else {
 				loadSurpriseLocalGroupSettings(group, clientObject);
-				return true;
+				refresh = true;
+				break;
 			}
 		case KeyEvent.VK_S: // "S = Save Remnant.cfg
 			UserPreferences.save();
-			return false;
+			break;
 		case KeyEvent.VK_U: // "U" = Update User Presets
 			saveGuiToFile(clientObject);
-			return false;
+			break;
 		}
-		return false;
+		if (refresh) {
+			UserPreferences.save();
+		}
+		return refresh;
 	}
 	
 	@Override protected void createDefaultUserProfiles() {
@@ -130,12 +143,15 @@ public class UserProfiles extends Abstract_Profiles<ClientClasses> {
 		parameterProfileAction().addLine("LastGame",
 				ACTION_GAME_TO_FILE,
 				"This profile will keep the loaded Game configuration");
+		parameterProfileAction().addLine("ChangeGame",
+				ACTION_GUI_TO_FILE + " " + ACTION_FILE_TO_GAME,
+				"This profile change Game When Loaded by pressing \"X\"");
 		parameterProfileAction().addLine("Random", 
 				ACTION_RANDOM,
 				"Loaded by pressing \"R\", add or replace by "
 						+ ACTION_FILE_TO_GUI + " to allow it to be loaded");
 		// Fill the Random
-		for (Abstract_Parameter<?, ?, ClientClasses> parameter : parameterNameMap().values()) {
+		for (AbstractParameter<?, ?, ClientClasses> parameter : parameterNameMap().values()) {
 			parameter.addLine("Random", "Random");
 		}
 		getParameter("AUTOPLAY").addLine("Random", "Off", "Not Random!");
@@ -143,27 +159,27 @@ public class UserProfiles extends Abstract_Profiles<ClientClasses> {
 				"Not Random, not yet");
 		
 		// Special random with comments
-//		getParameter("PLAYER RACE").addLine("Random", "Random",
-//				"Full random");
-//		getParameter("PLAYER COLOR").addLine("Random", "Random Green, Lime",
-//				"2 values = a range from option list");
-//		getParameter("GALAXY SHAPE").addLine("Random",
-//				"Random Rectangle, Ellipse, Spiral, Spiralarms",
-//				"a limited choice");
-//		getParameter("GALAXY SIZE").addLine("Random", "",
-//				"Nothing changed by this profile");
-//		getParameter("DIFFICULTY").addLine("Random", "Random 1, 4",
-//				"a range from option list");
-//		getParameter("OPPONENT AI").addLine("Random", 
-//				"Random Base, Xilmi, Xilmi",
-//				"2 chances to have Xilmi vs Base");
-//		getParameter("NB OPPONENTS").addLine("Random", "Random 3, 6",
-//				"a custom range");
-//		getParameter("GALAXY AGE").addLine("Random",
-//				"Random Young, Young, Old, Old",
-//				"Only 2 choices... Not a range");
-//		getParameter("NEBULAE").addLine("Random","Random 1, 4",
-//				"Range = Rare .. Common (first option = 0)");
+		getParameter("PLAYER RACE").addLine("Random", "Random",
+				"Full random");
+		getParameter("PLAYER COLOR").addLine("Random", "Random Green, Lime",
+				"2 values = a range from option list");
+		getParameter("GALAXY SHAPE").addLine("Random",
+				"Random Rectangle, Ellipse, Spiral, Spiralarms",
+				"a limited choice");
+		getParameter("GALAXY SIZE").addLine("Random", "",
+				"Nothing changed by this profile");
+		getParameter("DIFFICULTY").addLine("Random", "Random 1, 4",
+				"a range from option list");
+		getParameter("OPPONENT AI").addLine("Random", 
+				"Random Base, Xilmi, Xilmi",
+				"2 chances to have Xilmi vs Base");
+		getParameter("NB OPPONENTS").addLine("Random", "Random 3, 6",
+				"a custom range");
+		getParameter("GALAXY AGE").addLine("Random",
+				"Random Young, Young, Old, Old",
+				"Only 2 choices... Not a range");
+		getParameter("NEBULAE").addLine("Random","Random 1, 4",
+				"Range = Rare .. Common (first option = 0)");
 
 		
 //		getParameter("AI HOSTILITY").addLine("Random", "Random 0, 3");

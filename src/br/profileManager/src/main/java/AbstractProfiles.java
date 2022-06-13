@@ -17,6 +17,7 @@ package br.profileManager.src.main.java;
 
 import static br.profileManager.src.main.java.Valid_ProfileAction.*;
 import static br.profileManager.src.main.java.WriteUtil.History.*;
+import static br.profileManager.src.main.java.PMutil.containsIgnoreCase;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -32,24 +33,24 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
- * @param <ClientClass> The class that have to go thru the profile manager
+ * @param <C> The class that have to go thru the profile manager
  */
-public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
+public abstract class AbstractProfiles<C> extends WriteUtil {
 	// ------------------------------------------------------------------------
 	// Variables Properties
 	//
 	private List<String> defaultUserSettingKeys = new ArrayList<String>(List.of("User", "Last", "Cryslonoid"));
 	private boolean firstInit = true;
 
-	private LinkedHashMap<String, Abstract_Parameter<?, ?, ClientClass>> parameterNameMap;
-	private LinkedHashMap<String, Abstract_Group<ClientClass>> groupNameMap;
-	protected LinkedHashMap<String, Abstract_Group<ClientClass>> groupMap;
+	private LinkedHashMap<String, AbstractParameter<?, ?, C>> parameterNameMap;
+	private LinkedHashMap<String, AbstractGroup<C>> groupNameMap;
+	protected LinkedHashMap<String, AbstractGroup<C>> groupMap;
 	private Parameter_ProfileAction parameterProfileAction;
 	private boolean cleanUserKeys = true;
 
-	private Abstract_Parameter<?, ?, ClientClass> currentParameter;
+	private AbstractParameter<?, ?, C> currentParameter;
 	private String currentParameterName;
-	private Abstract_Group<ClientClass> currentGroup;
+	private AbstractGroup<C> currentGroup;
 		
 	// ========================================================================
 	//  Abstract Methods
@@ -57,7 +58,7 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 	/**
 	 * Add all the groups to the Map with an easy key
 	 */
-	protected abstract void initGroupMap(ClientClass clientObject);
+	protected abstract void initGroupMap(C clientObject);
 
 	protected abstract String getFilePath();
 
@@ -72,7 +73,7 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 		return parameterProfileAction;
 	}
 
-	protected LinkedHashMap<String, Abstract_Parameter<?, ?, ClientClass>> parameterNameMap() {
+	protected LinkedHashMap<String, AbstractParameter<?, ?, C>> parameterNameMap() {
 		return parameterNameMap;
 	}
 	// ========================================================================
@@ -93,7 +94,7 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
    	 */
 	public boolean isParameterEnabled (String parameter) {
 		if (isInitialized()) {
-			Abstract_Parameter<?, ?, ClientClass> param = getParameter(parameter);
+			AbstractParameter<?, ?, C> param = getParameter(parameter);
 			if (param != null) {
 				return param.isLoadEnabled();
 			}
@@ -105,7 +106,7 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 	 * @param name ID of the group
 	 * @return the group instance
 	 */
-	public Abstract_Group<ClientClass> getGroup (String name) {
+	public AbstractGroup<C> getGroup (String name) {
 		return groupNameMap.get(name.toUpperCase());
 	}
 
@@ -113,7 +114,7 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 	 * @param name ID of the parameter
 	 * @return the parameter instance
 	 */
-	public Abstract_Parameter<?, ?, ClientClass> getParameter (String name) {
+	public AbstractParameter<?, ?, C> getParameter (String name) {
 		return parameterNameMap.get(PMutil.neverNull(name).toUpperCase());
 	}
 	
@@ -123,18 +124,18 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
    	 * Save the new profile file
 	 * @param clientObject The class that manage GUI parameters
    	 */
-	public void saveGameToFile(ClientClass clientObject) {
+	public void saveGameToFile(C clientObject) {
 		loadProfilesCfg(); // in case the user changed load or save actions
-		updateGameValue(clientObject);
+		updateFromGameValue(clientObject);
 		for (String profile : getGameToFileProfiles()) {
-			String action = parameterProfileAction.getProfileValue(profile.toUpperCase());
-			if (action.contains(ACTION_GAME_TO_FILE)) {
-				for (Abstract_Group<ClientClass> group : groupMap.values()) {
+			String action = parameterProfileAction.getProfileCodeView(profile.toUpperCase());
+			if (containsIgnoreCase(action, ACTION_GAME_TO_FILE)) {
+				for (AbstractGroup<C> group : groupMap.values()) {
 					group.actionToFile(Game, profile);
 				}
 			}
-			if (action.contains(ACTION_GAME_UPDATE_FILE)) {
-				for (Abstract_Group<ClientClass> group : groupMap.values()) {
+			if (containsIgnoreCase(action, ACTION_GAME_UPDATE_FILE)) {
+				for (AbstractGroup<C> group : groupMap.values()) {
 					group.actionUpdateFile(Game, profile);
 				}
 			}
@@ -146,7 +147,7 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
    	 * Load the profile file and memorize first options
 	 * @param clientObject The class that manage GUI parameters
    	 */
-	public void initAndLoadProfiles(ClientClass clientObject) {
+	public void initAndLoadProfiles(C clientObject) {
 		if (firstInit) {
 			parameterProfileAction = new Parameter_ProfileAction();
 			initGroupMap(clientObject);
@@ -160,10 +161,10 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 	/**
 	 * @param runObject The class that manage Game parameters
 	 */
-	public void changeGameSettings(ClientClass runObject) {
+	public void changeGameSettings(C runObject) {
 		loadProfilesCfg();
 		List<String> settingKeys = getGameChangingProfiles();
-		for (Abstract_Group<ClientClass> group : groupMap.values()) {
+		for (AbstractGroup<C> group : groupMap.values()) {
 			group.changeGameFileParameters(runObject, settingKeys);
 		}
 		//Settings.ChangeGameFile = false;
@@ -176,9 +177,9 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
    	 * Save the new profile file
 	 * @param clientObject The class that manage GUI parameters
    	 */
-	protected void saveGuiToFile(ClientClass clientObject) {
+	protected void saveGuiToFile(C clientObject) {
 		loadProfilesCfg(); // in case the user changed load or save actions
-		updateGuiValue(clientObject);
+		updateFromGuiValue(clientObject);
 		doUserUpdateActions();
 		saveProfilesCfg();
 	}
@@ -189,9 +190,9 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
    	 * Save the new profile file (without User Action)
 	 * @param clientObject The class that manage GUI parameters
    	 */
-	public void saveLastGuiToFile(ClientClass clientObject) {
+	public void saveLastGuiToFile(C clientObject) {
 		loadProfilesCfg(); // in case the user changed load or save actions
-		updateGuiValue(clientObject);
+		updateFromGuiValue(clientObject);
 		saveProfilesCfg();
 	}
 
@@ -201,7 +202,7 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 	 * @param group group name
 	 * @param clientObject The class that manage GUI parameters
    	 */
-	protected void loadLocalGroupSettings(String group, ClientClass clientObject) {
+	protected void loadLocalGroupSettings(String group, C clientObject) {
 		loadProfilesCfg();
 		List<String> settingKeys = getReadableProfiles();
 		currentGroup = groupMap.get(group.toUpperCase());
@@ -212,10 +213,10 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
    	 * Load and execute the profile file
 	 * @param clientObject The class that manage GUI parameters
    	 */
-	protected void loadGlobalGroupSettings(ClientClass clientObject) {
+	protected void loadGlobalGroupSettings(C clientObject) {
 		loadProfilesCfg();
 		List<String> settingKeys = getReadableProfiles();
-		for (Abstract_Group<ClientClass> group : groupMap.values()) {
+		for (AbstractGroup<C> group : groupMap.values()) {
 			group.overrideGuiParameters(clientObject, settingKeys);
 		}
 	}
@@ -226,7 +227,7 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 	 * @param group group name
 	 * @param clientObject The class that manage GUI parameters
    	 */
-	protected void loadSurpriseLocalGroupSettings(String group, ClientClass clientObject) {
+	protected void loadSurpriseLocalGroupSettings(String group, C clientObject) {
 		loadProfilesCfg();
 		List<String> settingKeys = getSurpriseProfiles();
 		currentGroup = groupMap.get(group.toUpperCase());
@@ -237,10 +238,10 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
    	 * Load and execute "Surprise" profile file
 	 * @param clientObject The class that manage GUI parameters
    	 */
-	protected void loadSurpriseGlobalGroupSettings(ClientClass clientObject) {
+	protected void loadSurpriseGlobalGroupSettings(C clientObject) {
 		loadProfilesCfg();
 		List<String> settingKeys = getSurpriseProfiles();
-		for (Abstract_Group<ClientClass> group : groupMap.values()) {
+		for (AbstractGroup<C> group : groupMap.values()) {
 			group.overrideGuiParameters(clientObject, settingKeys);
 		}
 	}
@@ -250,8 +251,8 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
    	 * for all GUI
 	 * @param clientObject The class that manage GUI parameters
    	 */
-	protected void resetGlobalInitialOptions(ClientClass clientObject) {
-		for (Abstract_Group<ClientClass> group : groupMap.values()) {
+	protected void resetGlobalInitialOptions(C clientObject) {
+		for (AbstractGroup<C> group : groupMap.values()) {
 			group.setGuiParameters(Initial, clientObject);
 		}
 	}
@@ -261,8 +262,8 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
    	 * for all GUI
 	 * @param clientObject The class that manage GUI parameters
    	 */
-	protected void resetGlobalDefaultOptions(ClientClass clientObject) {
-		for (Abstract_Group<ClientClass> group : groupMap.values()) {
+	protected void resetGlobalDefaultOptions(C clientObject) {
+		for (AbstractGroup<C> group : groupMap.values()) {
 			group.setGuiParameters(Default, clientObject);
 		}
 	}
@@ -273,7 +274,7 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 	 * @param group group name
 	 * @param clientObject The class that manage GUI parameters
    	 */
-	protected void resetLocalInitialOptions(String group, ClientClass clientObject) {
+	protected void resetLocalInitialOptions(String group, C clientObject) {
 		currentGroup = groupMap.get(group.toUpperCase());
 		currentGroup.setGuiParameters(Initial, clientObject);
 	}
@@ -284,7 +285,7 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 	 * @param group group name
 	 * @param clientObject The class that manage GUI parameters
    	 */
-	protected void resetLocalDefaultOptions(String group, ClientClass clientObject) {
+	protected void resetLocalDefaultOptions(String group, C clientObject) {
 		currentGroup = groupMap.get(group.toUpperCase());
 		currentGroup.setGuiParameters(Default, clientObject);
 	}
@@ -296,8 +297,8 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 	 * Key Map the group list 
 	 */
 	private void initGroupNameMap() {
-		groupNameMap = new LinkedHashMap<String, Abstract_Group<ClientClass>>();
-		for (Abstract_Group<ClientClass> group : groupMap.values()) {
+		groupNameMap = new LinkedHashMap<String, AbstractGroup<C>>();
+		for (AbstractGroup<C> group : groupMap.values()) {
 			for (String profile : group.profileList()) {
 				groupNameMap.put(profile, group);
 			}
@@ -308,8 +309,8 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 	 * Add all the Settings to the Map with an easy key
 	 */
 	private void initParameterNameMap() {
-		parameterNameMap = new LinkedHashMap<String, Abstract_Parameter<?, ?, ClientClass>>();
-		for (Abstract_Group<ClientClass> group : groupMap.values()) {
+		parameterNameMap = new LinkedHashMap<String, AbstractParameter<?, ?, C>>();
+		for (AbstractGroup<C> group : groupMap.values()) {
 			for (String profile : group.profileList()) {
 				parameterNameMap.put(profile, group.getParameter(profile));
 			}
@@ -378,13 +379,13 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 			return;
 		}
 		// Test for new setting
-		String key = Generic_Line.getKey(line);
+		String key = Lines.getKey(line);
 		if (key.isBlank()) {
 			return;
 		}
 		// Test for New Setting Section
-		if (Abstract_Parameter.isHeadOfParameter(key) ) {
-			currentParameterName = Generic_Line.getValueAsString(line).toUpperCase();
+		if (AbstractParameter.isHeadOfParameter(key) ) {
+			currentParameterName = Lines.getValueAsString(line).toUpperCase();
 			// Test if initial profile list declaration
 			if (parameterProfileAction.getParameterName()
 					.equalsIgnoreCase(currentParameterName)) {
@@ -416,7 +417,7 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 			// SETTING :PRESET ACTIONS
 			out.print(parameterProfileAction.toString(settingKeys));
 			// Loop thru settings
-			for (Abstract_Group<ClientClass> group : groupMap.values()) {
+			for (AbstractGroup<C> group : groupMap.values()) {
 				out.print(group.toString(settingKeys, cleanUserKeys));
 			}
 			return 0;
@@ -428,14 +429,14 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 	}
 	
 	private void resetAllUserSettings() {
-		for (Abstract_Group<ClientClass> group : groupMap.values()) {
+		for (AbstractGroup<C> group : groupMap.values()) {
 			group.resetAllUserSettings();
 		}
 	}
 	
 	private void forceCreationMissingProfile(List<String> profileList) {
 		if (PMutil.getForceCreationMissingProfile()) {
-			for (Abstract_Group<ClientClass> group : groupMap.values()) {
+			for (AbstractGroup<C> group : groupMap.values()) {
 				group.forceCreationMissingProfile(profileList);
 			}
 		}
@@ -444,44 +445,44 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 	void doUserUpdateActions() {
 		// Loop Thru User's Keys and perform requested action
 		for (String profile : getAllProfiles()) {
-			String action = parameterProfileAction.getProfileValue(profile.toUpperCase());
-			if (action.contains(ACTION_GUI_TO_FILE)) {
-				for (Abstract_Group<ClientClass> group : groupMap.values()) {
+			String action = parameterProfileAction.getProfileUserView(profile.toUpperCase());
+			if (containsIgnoreCase(action, ACTION_GUI_TO_FILE)) {
+				for (AbstractGroup<C> group : groupMap.values()) {
 					group.actionToFile(Current, profile);
 				}
 			}
-			if (action.contains(ACTION_GAME_TO_FILE)) {
-				for (Abstract_Group<ClientClass> group : groupMap.values()) {
+			if (containsIgnoreCase(action, ACTION_GAME_TO_FILE)) {
+				for (AbstractGroup<C> group : groupMap.values()) {
 					group.actionToFile(Game, profile);
 				}
 			}
-			if (action.contains(ACTION_INITIAL_TO_FILE)) {
-				for (Abstract_Group<ClientClass> group : groupMap.values()) {
+			if (containsIgnoreCase(action, ACTION_INITIAL_TO_FILE)) {
+				for (AbstractGroup<C> group : groupMap.values()) {
 					group.actionToFile(Initial, profile);
 				}
 			}
-			if (action.contains(ACTION_DEFAULT_TO_FILE)) {
-				for (Abstract_Group<ClientClass> group : groupMap.values()) {
+			if (containsIgnoreCase(action, ACTION_DEFAULT_TO_FILE)) {
+				for (AbstractGroup<C> group : groupMap.values()) {
 					group.actionToFile(Default, profile);
 				}
 			}
-			if (action.contains(ACTION_GUI_UPDATE_FILE)) {
-				for (Abstract_Group<ClientClass> group : groupMap.values()) {
+			if (containsIgnoreCase(action, ACTION_GUI_UPDATE_FILE)) {
+				for (AbstractGroup<C> group : groupMap.values()) {
 					group.actionUpdateFile(Current, profile);
 				}
 			}
-			if (action.contains(ACTION_GAME_UPDATE_FILE)) {
-				for (Abstract_Group<ClientClass> group : groupMap.values()) {
+			if (containsIgnoreCase(action, ACTION_GAME_UPDATE_FILE)) {
+				for (AbstractGroup<C> group : groupMap.values()) {
 					group.actionUpdateFile(Game, profile);
 				}
 			}
-			if (action.contains(ACTION_INITIAL_UPDATE_FILE)) {
-				for (Abstract_Group<ClientClass> group : groupMap.values()) {
+			if (containsIgnoreCase(action, ACTION_INITIAL_UPDATE_FILE)) {
+				for (AbstractGroup<C> group : groupMap.values()) {
 					group.actionUpdateFile(Initial, profile);
 				}
 			}
-			if (action.contains(ACTION_DEFAULT_UPDATE_FILE)) {
-				for (Abstract_Group<ClientClass> group : groupMap.values()) {
+			if (containsIgnoreCase(action, ACTION_DEFAULT_UPDATE_FILE)) {
+				for (AbstractGroup<C> group : groupMap.values()) {
 					group.actionUpdateFile(Default, profile);
 				}
 			}
@@ -489,15 +490,15 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 		saveProfilesCfg();
 	}
 	
-	void updateGuiValue(ClientClass clientObject) {
-		for (Abstract_Group<ClientClass> group : groupMap.values()) {
-			group.actionGetGuiCodeView(clientObject);
+	void updateFromGuiValue(C clientObject) {
+		for (AbstractGroup<C> group : groupMap.values()) {
+			group.actionTakeGuiCodeView(clientObject);
 		}
 	}
 	
-	void updateGameValue(ClientClass clientObject) {
-		for (Abstract_Group<ClientClass> group : groupMap.values()) {
-			group.actionGetGameCodeView(clientObject);
+	void updateFromGameValue(C clientObject) {
+		for (AbstractGroup<C> group : groupMap.values()) {
+			group.actionTakeGameCodeView(clientObject);
 		}
 	}
 	
@@ -505,8 +506,8 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 	// Nested Classes
 	//
 	protected class Parameter_ProfileAction extends 
-			Abstract_Parameter<String, Valid_ProfileAction, ClientClass> {
-		// The Class ClientClass is not used, but needed for compatibility
+			AbstractParameter<String, Valid_ProfileAction, C> {
+		// The Class C is not used, but needed for compatibility
 
 		// ------------------------------------------------------------------------
 		// Constructors
@@ -529,16 +530,16 @@ public abstract class Abstract_Profiles<ClientClass> extends WriteUtil {
 				"(---- The last loaded Win)" );
 		  }
 		
-		@Override public String getFromGame(ClientClass clientObject) { 
-			return "-";
+		@Override public AbstractT<String> getFromGame(C clientObject) { 
+			return null; // Should never happen
 		}
 	
-		@Override public void putToGame(ClientClass runObject, String userOption) {}
+		@Override public void putToGame(C runObject, AbstractT<String> userOption) {}
 	
-		@Override public String getFromUI(ClientClass gO) { 
-			return "-";
+		@Override public AbstractT<String> getFromUI(C gO) { 
+			return null; // Should never happen
 		}
 	
-		@Override public void putToGUI(ClientClass gO, String userOption) {}
+		@Override public void putToGUI(C gO, AbstractT<String> userOption) {}
 	}
 }
