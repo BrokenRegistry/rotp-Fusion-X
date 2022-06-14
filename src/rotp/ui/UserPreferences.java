@@ -444,11 +444,13 @@ public class UserPreferences {
     }
     public static void toggleYearDisplay()    { displayYear = !displayYear; save(); }
     public static boolean displayYear()       { return displayYear; }
+    public static void setDefaultMaxBases(int bases)    { defaultMaxBases = bases; }
     public static int defaultMaxBases()    { return defaultMaxBases; }
     public static void setGovernorOn(boolean governorOn)    { governorOnByDefault = governorOn; save(); }
     public static boolean governorOnByDefault() { return governorOnByDefault; }
     public static void setAutoSpendOn(boolean autospendOn)  { governorAutoSpendByDefault = autospendOn; save(); }
     public static boolean governorAutoSpendByDefault() { return governorAutoSpendByDefault; }
+    public static void setDivertColonyExcessToResearch(boolean divertOn)  {divertColonyExcessToResearch = divertOn; save(); }
     public static boolean divertColonyExcessToResearch()  { return divertColonyExcessToResearch; }
     public static boolean disableAdvisor() { return disableAdvisor; }
     public static void uiTexturePct(int i)    { uiTexturePct = i / 100.0f; }
