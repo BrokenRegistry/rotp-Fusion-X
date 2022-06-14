@@ -31,13 +31,13 @@ import rotp.model.game.IGameOptions;
 
 public class Profiles {
 	
+	private static UserProfiles userProfiles = new UserProfiles();
+	
 	/**
 	 * Global Parameter to allow or block the edition of game files
 	 * Pressing "X" to load the file make it <b>true</b> 
 	 */
 	public static boolean ChangeGameFile = false;
-	
-	private static UserProfiles userProfiles = new UserProfiles();
 	
 	/**
    	 * Load the configuration file and memorize first options
@@ -54,17 +54,6 @@ public class Profiles {
 	public static boolean isInitialized () {
 		return userProfiles.isInitialized();
 	}
-
-//	/**
-//   	 * Load the configuration file to update the Action
-//   	 * Update with last Loaded Game options values
-//   	 * Save the new configuration file
-//	 * @param options 
-//   	 */
-//	public static void saveGameOptionsToFile(IGameOptions options) {
-//		userProfiles.saveGameToFile(new ClientClasses(options));
-//	}
-//	
 	/**
    	 * Load the configuration file to update the Action
    	 * Update with last Loaded Game options values
@@ -74,7 +63,6 @@ public class Profiles {
 	public static void saveGameOptionsToFile(GameSession instance) {
 		userProfiles.saveGameToFile(new ClientClasses(instance));
 	}
-
 	/**
    	 * Load and execute the configuration file to Change the game file
 	 * @param instance 
@@ -82,7 +70,6 @@ public class Profiles {
 	public static void changeGameSettings(GameSession instance) {
 		userProfiles.changeGameSettings(new ClientClasses(instance));
 	}
-
 	/**
    	 * Load the configuration file to update the Action
    	 * Update with last Loaded Game options values
@@ -98,7 +85,6 @@ public class Profiles {
 		return userProfiles.processKey(key, global, group, 
 							new ClientClasses(options));
 	}
-
 	/**
    	 * Load the configuration file to update the Action
    	 * Update with last Loaded Game options values
@@ -115,7 +101,6 @@ public class Profiles {
 		return userProfiles.processKey(key, global, group,
 							new ClientClasses(options, optionsCopy));
 	}
-
 	/**
   	 * Check if it is OK to use Spacing
 	 * @return status
@@ -124,7 +109,6 @@ public class Profiles {
 		// Here because this is the Mod that knows the other Mods
 		return userProfiles.isParameterEnabled("MAXIMIZE EMPIRES SPACING");
 	}
-
 	/**
   	 * Check if it is OK to use NoPlanet
 	 * @return status
@@ -132,5 +116,21 @@ public class Profiles {
 	public static boolean isNoPlanetMultiplierEnabled() {
 		// Here because this is the Mod that knows the other Mods
 		return userProfiles.isParameterEnabled("NO PLANET MULTIPLIER");
+	}
+	/**
+  	 * Check if it is OK to use OpponentRaceList (for Random)
+	 * @return status
+	 */
+	public static boolean isOpponentRaceListEnabled() {
+		// Here because this is the Mod that knows the other Mods
+		return userProfiles.isParameterEnabled("OPPONENTS RACE LIST");
+	}
+	/**
+  	 * Check if it is OK to use GuiOpponentRaceList (for Random)
+	 * @return status
+	 */
+	public static boolean isGuiOpponentRaceListEnabled() {
+		// Here because this is the Mod that knows the other Mods
+		return userProfiles.isParameterEnabled("GUI OPPONENTS RACE LIST");
 	}
 }

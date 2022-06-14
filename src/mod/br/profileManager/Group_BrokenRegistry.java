@@ -21,12 +21,15 @@ import br.profileManager.src.main.java.AbstractGroup;
 import br.profileManager.src.main.java.AbstractParameter;
 import br.profileManager.src.main.java.AbstractT;
 import br.profileManager.src.main.java.Validation;
+import br.profileManager.src.main.java.ValidationList;
 import br.profileManager.src.main.java.T_Boolean;
 import br.profileManager.src.main.java.T_Float;
 import br.profileManager.src.main.java.T_Integer;
 import br.profileManager.src.main.java.T_String;
 import mod.br.Galaxy.GalaxySpacing;
 import mod.br.Galaxy.StarsOptions;
+import mod.br.Races.RaceFilter;
+
 import static br.profileManager.src.main.java.WriteUtil.History.*;
 
 
@@ -155,6 +158,7 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 		@Override public void initComments() {}
 
 	}
+
 	// ========================================================================
 	// NO PLANET MULTIPLIER
 	//
@@ -193,25 +197,21 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 	
 	// ==============================================================
 	// OPPONENTS RACE LIST
-		
+	//
 	static class OpponentRaceList extends
-			AbstractParameter <String, Validation<String>, ClientClasses> {
+			AbstractParameter <String, ValidationList<String>, ClientClasses> {
 
-		private static final boolean isEntryList = true;
 	    // ==================================================
 	    // Constructors and initializers
 	    //
 		OpponentRaceList(ClientClasses go) { 
 			super("OPPONENTS RACE LIST",
-					new Validation<String>(
-							new T_String(), 
-							go.options().startingRaceOptions(),
-							isEntryList));
+					new ValidationList<String>(new T_String(), 
+							go.options().startingRaceOptions()));
 			
 			T_String defaultValue = new T_String(go.options().startingRaceOptions());
 			setHistory(Initial, defaultValue);
 			setHistory(Default, defaultValue);
-			//getDataValidation().getValidationCriteria().isRandomAllowed(false);
 		}
 		
 	    // ========== Overriders ==========
@@ -223,12 +223,11 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 		@Override public void putToGame(ClientClasses go, AbstractT<String> value) {}
 		
 		@Override public AbstractT<String> getFromUI (ClientClasses go) {
-			// List<String> raceList = RaceFilter.getRaceList();
-			return new T_String(); // TODO
+			return new T_String().set(RaceFilter.selectedRaceList());
 		}
 		
 		@Override public void putToGUI(ClientClasses go, AbstractT<String> value) {
-			// TODO
+			RaceFilter.selectedRaceList(value.codeViewList());
 		}
 		
 		@Override public void initComments() {}
