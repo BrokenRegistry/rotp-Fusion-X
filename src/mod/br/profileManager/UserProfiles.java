@@ -56,6 +56,7 @@ public class UserProfiles extends AbstractProfiles<ClientClasses> {
       groupMap.put("GALAXY",      new Group_Galaxy(options));
       groupMap.put("ADVANCED",    new Group_Advanced(options));
       groupMap.put("MODNAR",      new Group_Modnar(options));
+      groupMap.put("GOVERNOR",    new Group_Governor(options));
       groupMap.put(BR_GROUP_NAME, new Group_BrokenRegistry(options));
 	}
 

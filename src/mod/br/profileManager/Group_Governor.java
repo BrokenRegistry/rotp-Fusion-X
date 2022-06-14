@@ -21,14 +21,13 @@ import br.profileManager.src.main.java.AbstractGroup;
 import br.profileManager.src.main.java.AbstractParameter;
 import br.profileManager.src.main.java.AbstractT;
 import br.profileManager.src.main.java.Validation;
+import rotp.ui.UserPreferences;
 import br.profileManager.src.main.java.T_Boolean;
 import br.profileManager.src.main.java.T_Integer;
 
 
 class Group_Governor extends AbstractGroup <ClientClasses> {
 	
-	// TODO ALL
-
 	Group_Governor(ClientClasses go) {
 	   super(go);
 	}
@@ -49,26 +48,27 @@ class Group_Governor extends AbstractGroup <ClientClasses> {
 		GovernorOnByDefault(ClientClasses go) { 
 			super("GOVERNOR ON BY DEFAULT", 
 					new Validation<Boolean>(
-							new T_Boolean()));
+							new T_Boolean(UserPreferences.governorOnByDefault())));
 		}
 		
 		@Override public AbstractT<Boolean> getFromGame (ClientClasses go) {
-			return null;
+			return new T_Boolean(UserPreferences.governorOnByDefault());
 		}
 		
 		@Override public void putToGame(ClientClasses go, AbstractT<Boolean> value) {}
 
 		@Override public AbstractT<Boolean> getFromUI (ClientClasses go) {
-			return null;
+			return new T_Boolean(UserPreferences.governorOnByDefault());
 		}
 
 		@Override public void putToGUI(ClientClasses go, AbstractT<Boolean> value) {
+			UserPreferences.setGovernorOn(value.codeView());
 		}
 		
 		@Override public void initComments() {
 			setHeadComments(
 				" " + NL +
-				"------------- Gouvernor Options -------------" + NL +
+				"------------- Governor Options -------------" + NL +
 				" ");
 		}
 	}
@@ -81,12 +81,11 @@ class Group_Governor extends AbstractGroup <ClientClasses> {
 		AutospendOnByDefault(ClientClasses go) {
 			super("AUTOSPEND ON BY DEFAULT", 
 					new Validation<Boolean>(
-							new T_Boolean()));
+							new T_Boolean(UserPreferences.governorAutoSpendByDefault())));
 		}
 
 		@Override public AbstractT<Boolean> getFromGame (ClientClasses go) {
-			return null;
-//			return go.getGuiObject().selectedGalaxyShape();
+			return new T_Boolean(UserPreferences.governorAutoSpendByDefault());
 		}
 
 		@Override public void putToGame(ClientClasses go, AbstractT<Boolean> value) {
@@ -94,11 +93,11 @@ class Group_Governor extends AbstractGroup <ClientClasses> {
 		}	
 
 		@Override public AbstractT<Boolean> getFromUI (ClientClasses go) {
-			return null;
-//			return go.getGuiObject().selectedGalaxyShape();
+			return new T_Boolean(UserPreferences.governorAutoSpendByDefault());
 		}
 
 		@Override public void putToGUI(ClientClasses go, AbstractT<Boolean> value) {
+			UserPreferences.setAutoSpendOn(value.codeView());
 		}
 
 		@Override public void initComments() {}
@@ -112,12 +111,11 @@ class Group_Governor extends AbstractGroup <ClientClasses> {
 		DefaultMaxBases(ClientClasses go) { 
 			super("DEFAULT MAX BASES", 
 					new Validation<Integer>(
-							new T_Integer()));
+							new T_Integer(UserPreferences.defaultMaxBases())));
 		}
 
 		@Override public AbstractT<Integer> getFromGame (ClientClasses go) {
-			return null;
-//			return go.getGuiObject().selectedGalaxyShape();
+			return new T_Integer(UserPreferences.defaultMaxBases());
 		}
 
 		@Override public void putToGame(ClientClasses go, AbstractT<Integer> value) {
@@ -125,11 +123,11 @@ class Group_Governor extends AbstractGroup <ClientClasses> {
 		}	
 
 		@Override public AbstractT<Integer> getFromUI (ClientClasses go) {
-			return null;
-//			return go.getGuiObject().selectedGalaxyShape();
+			return new T_Integer(UserPreferences.defaultMaxBases());
 		}
 
 		@Override public void putToGUI(ClientClasses go, AbstractT<Integer> value) {
+			UserPreferences.setDefaultMaxBases(value.codeView());
 		}
 
 		@Override public void initComments() {}
@@ -143,12 +141,11 @@ class Group_Governor extends AbstractGroup <ClientClasses> {
 		DivertExcessToResearch(ClientClasses go) {
 			super("DIVERT EXCESS TO RESEARCH", 
 					new Validation<Boolean>(
-							new T_Boolean()));
+							new T_Boolean(UserPreferences.divertColonyExcessToResearch())));
 		}
 
 		@Override public AbstractT<Boolean> getFromGame (ClientClasses go) {
-			return null;
-//			return go.getGuiObject().selectedGalaxyShape();
+			return new T_Boolean(UserPreferences.divertColonyExcessToResearch());
 		}
 
 		@Override public void putToGame(ClientClasses go, AbstractT<Boolean> value) {
@@ -156,11 +153,11 @@ class Group_Governor extends AbstractGroup <ClientClasses> {
 		}	
 
 		@Override public AbstractT<Boolean> getFromUI (ClientClasses go) {
-			return null;
-//			return go.getGuiObject().selectedGalaxyShape();
+			return new T_Boolean(UserPreferences.divertColonyExcessToResearch());
 		}
 
 		@Override public void putToGUI(ClientClasses go, AbstractT<Boolean> value) {
+			UserPreferences.setDivertColonyExcessToResearch(value.codeView());
 		}
 
 		@Override public void initComments() {}
