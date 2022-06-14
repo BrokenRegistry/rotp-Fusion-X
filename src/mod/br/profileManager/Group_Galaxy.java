@@ -21,6 +21,8 @@ import br.profileManager.src.main.java.AbstractGroup;
 import br.profileManager.src.main.java.AbstractParameter;
 import br.profileManager.src.main.java.AbstractT;
 import br.profileManager.src.main.java.Validation;
+import br.profileManager.src.main.java.ValidationList;
+import mod.br.Races.RaceFilter;
 import br.profileManager.src.main.java.T_Integer;
 import br.profileManager.src.main.java.T_String;
 import static br.profileManager.src.main.java.WriteUtil.History.*;
@@ -41,6 +43,7 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 		addParameter(new Difficulty(go));
 		addParameter(new OpponentAI(go));
 		addParameter(new NbOpponent(go));	
+		addParameter(new GuiOpponentRaceList(go));
 	}
 
 	// ==============================================================
@@ -246,6 +249,45 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 			go.option2().selectedNumberOpponents(Math.min(max, value.codeView()));
 		}
 
+		@Override public void initComments() {}
+	}
+   
+	// ==============================================================
+	// OPPONENTS RACE LIST
+   //
+
+	static class GuiOpponentRaceList extends
+			AbstractParameter <String, ValidationList<String>, ClientClasses> {
+
+	    // ==================================================
+	    // Constructors and initializers
+	    //
+		GuiOpponentRaceList(ClientClasses go) { 
+			super("GUI OPPONENTS RACE LIST",
+					new ValidationList<String>(new T_String(), 
+							go.options().startingRaceOptions()));
+			
+			T_String defaultValue = new T_String(go.options().startingRaceOptions());
+			setHistory(Initial, defaultValue);
+			setHistory(Default, defaultValue);
+		}
+		
+	    // ========== Overriders ==========
+	    //
+		@Override public AbstractT<String> getFromGame (ClientClasses go) {
+			return new T_String(); // No really possible
+		}
+		
+		@Override public void putToGame(ClientClasses go, AbstractT<String> value) {}
+		
+		@Override public AbstractT<String> getFromUI (ClientClasses go) {
+			return new T_String().set(RaceFilter.selectedGuiRaceList());
+		}
+		
+		@Override public void putToGUI(ClientClasses go, AbstractT<String> value) {
+			RaceFilter.selectedGuiRaceList(value.codeViewList());
+		}
+		
 		@Override public void initComments() {}
 	}
 }

@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static br.profileManager.src.main.java.PMconfig.listSeparator;
-import static br.profileManager.src.main.java.WriteUtil.History.*;
 
 /**
  * Common methods for validation of List of Parameters
@@ -46,7 +45,6 @@ public class ValidationList<T> extends	Validation<T>{
 	 */
 	public ValidationList(AbstractT<T> initialValue, List<T> options) {
 		super(initialValue, options, true);
-		// TODO Auto-generated constructor stub
 	}
 
 	// ==================================================
@@ -71,94 +69,5 @@ public class ValidationList<T> extends	Validation<T>{
 		value.codeViewList(codeViewList);
 		return value;
 	}
-
-//	/**
-//	 * Process non Random user entry
-//	 * @return {@code Code View List<String>} Validated Value
-//	 */
-//	@Override AbstractT<T> entryValidation(String userEntry) {
-//		userEntry = PMutil.clean(userEntry);
-//		// First Check for blank values
-//		if (userEntry.isBlank()) {
-//			if (getValidationCriteria().isBlankAllowed()) {
-//				return null;
-//			}
-//			return getHistoryCodeView(Default);
-//		}
-//		// Then Check if value is valid
-//		for (String element : splitUserView(userEntry)) {
-//			
-//		}
-//		Integer value = PMutil.toInteger(userEntry);
-//		if (value == null) {
-//			if (hasOptions() && isValidUserEntry(userEntry)) {
-//				return getCodeView(userEntry);
-//			}
-//			if (getValidationCriteria().isBlankAllowed()) {
-//				return null;
-//			}
-//			return getHistoryCodeView(Default);
-//		}
-//		return PMutil.validateLimits(value, getLimits(0), getLimits(1));
-
-//		
-//		// Then Check for a validation list
-//		if (!hasOptions()) {
-//			// No list = entry accepted
-//			return userEntry;
-//		}
-//		// Then check validity
-//		if (isValidUserEntry(userEntry)) {
-//			return toCodeView(userEntry);
-//		}
-//		return getHistoryUserView(Default);
-//
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-
-    //
-	// ===== No Random Allowed Yet =====
-	//
-//	/**
-//	 * Process Random with parameters
-//	 * @param parameters {@code String[]} the extra parameters
-//	 * @return {@code List<String>} OutputString
-//	 */
-//	@Override String randomWithLimit(String[] parameters) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	/**
-//	 * Process Random without parameters
-//	 * @return {@code String} OutputString
-//	 */
-//	@Override String randomWithoutParameters() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-
-//	/**
-//	 * Conversion from code view to user view
-//	 * <br> For already validated Data
-//	 * @param codeView {@code Code View} the value to convert
-//	 * @return {@code String} the user view
-//	 */
-//	@Override String toUserView(List<String> codeView) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	/**
-//	 * Conversion from user view to code view.
-//	 * <br> For already validated Data
-//	 * @param codeView {@code String} the value to convert
-//	 * @return {@code List<String>} the code view
-//	 */
-//	@Override List<String> toCodeView(String userView) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
 
 }

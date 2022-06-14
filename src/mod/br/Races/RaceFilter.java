@@ -25,20 +25,32 @@ import java.util.List;
  */
 public class RaceFilter {
 
-	private static List<String> raceList;
+	private static List<String> selectedRaceList;
+	private static List<String> selectedGuiRaceList;
 
 	/**
 	 * @return the raceList
 	 */
-	public static List<String> getRaceList() {
-		return raceList;
+	public static List<String> selectedRaceList() {
+		return selectedRaceList;
+	}
+	/**
+	 * @param newRaceList the raceList to set
+	 */
+	public static void selectedRaceList(List<String> newRaceList) {
+		selectedRaceList = newRaceList;
+	}
+	/**
+	 * @return the raceList
+	 */
+	public static List<String> selectedGuiRaceList() {
+		return selectedGuiRaceList;
+	}
+	/**
+	 * @param newRaceList the raceList to set
+	 */
+	public static void selectedGuiRaceList(List<String> newRaceList) {
+		selectedGuiRaceList = newRaceList;
 	}
 
-	/**
-	 * @param raceList the raceList to set
-	 */
-	public static void setRaceList(List<String> raceList) {
-		RaceFilter.raceList = raceList;
-	}
-	
 }

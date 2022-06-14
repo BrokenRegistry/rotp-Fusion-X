@@ -95,7 +95,7 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void putToGUI(ClientClasses go, AbstractT<Boolean> value) {
-			UserPreferences.setAlwaysStarGates(value.codeView());;
+			UserPreferences.setAlwaysStarGates(value.codeView());
 		}
 		
 		@Override public void initComments() {

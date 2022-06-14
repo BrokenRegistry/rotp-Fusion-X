@@ -175,6 +175,9 @@ public abstract class AbstractT <T> {
 
 	// ===== Other Methods =====
 	@Override public String toString() {
+		if (userViewList() != null) {
+			return getUserViewListString();
+		}	
 		if (userView() == null) {
 			return "";
 		}
@@ -220,7 +223,7 @@ public abstract class AbstractT <T> {
 	/**
 	 * @return The current codeView List
 	 */
-	protected List<T> codeViewList() { return codeViewList; }
+	public List<T> codeViewList() { return codeViewList; }
 	/**
 	 * @return The current userView List
 	 */
@@ -312,7 +315,13 @@ public abstract class AbstractT <T> {
 		if (userViewList() == null) {
 			return "";
 		}
-		return String.join(listSeparator(), userViewList);
+		List<String> noNull = new ArrayList<String>();
+		for (String element : userViewList()) {
+			if (element != null) {
+				noNull.add(element);
+			}
+		}
+		return String.join(listSeparator(), noNull);
 	}
 	/**
 	 * Set userView List and codeView List from value List
@@ -337,9 +346,10 @@ public abstract class AbstractT <T> {
 	}
 	/**
 	 * Set userView List and codeView List from codeView List
+	 * @param codeViewList the new codeView List
 	 * @return This for chaining purpose
 	 */	
-	protected AbstractT <T> set(List<T> codeViewList) {
+	public AbstractT <T> set(List<T> codeViewList) {
 		codeViewList(codeViewList);
 		userViewList(getUserViewList());
 		return This();
