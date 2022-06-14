@@ -34,14 +34,12 @@ public abstract class AbstractT <T> {
 	private T       codeView;
 	private List<T> codeViewList;
 	private List<String> userViewList;
-	private List<AbstractT <T>> valueList;
+//	private List<AbstractT <T>> valueList;
 	
 	// ===== Constructors =====
 	AbstractT() {
-	//	blankCodeView(New().blankCodeView);
 		set(blankCodeView());
 	}
-
 	/**
 	 * Constructor with direct value initialization
 	 * @param value the initial value
@@ -119,10 +117,6 @@ public abstract class AbstractT <T> {
 	/**
 	 * @return The default blank / empty codeView
 	 */
-	protected List<AbstractT <T>> valueList() { return valueList; }
-	protected List<T> codeViewList() { return codeViewList; }
-	protected List<String> userViewList() { return userViewList; }
-
 	protected AbstractT <T> nextRandom(AbstractT <T> min, AbstractT <T> max) {
 		set(random(min.codeView(), max.codeView()));
 		return this;
@@ -134,16 +128,6 @@ public abstract class AbstractT <T> {
 				|| equals(codeView, blankCodeView());
 	}
 
-	protected String getUserViewList() {
-		if (valueList() == null) {
-			return "";
-		}
-		List<String> userViewList = new ArrayList<String>();
-		for (AbstractT<T> element : valueList()) {
-			userViewList.add(element.userView());
-		}
-		return String.join(listSeparator(), userViewList);
-	}
 	// ===== Setters =====
 	protected AbstractT <T> userView(String str) {
 		userView = str;
@@ -157,25 +141,6 @@ public abstract class AbstractT <T> {
 		blankCodeView = val;
 		return This();
 	}
-	protected AbstractT <T> valueList(List<AbstractT <T>> list) {
-		valueList = list; 
-		return This();
-	}
-	protected AbstractT <T> codeViewList(List<T> list) { 
-		codeViewList = list; 
-		return This();
-	}
-	protected AbstractT <T> userViewList(List<String> list) { 
-		userViewList = list; 
-		return This();
-	}
-	
-	protected AbstractT <T> set(List<T> initialValue) {
-		codeViewList(initialValue);
-//		userView(toUserView(codeView)); TODO List Management
-		return This();
-	}
-
 	protected AbstractT <T> set(T initialValue) {
 		codeView(initialValue);
 		userView(toUserView(codeView));
@@ -184,7 +149,7 @@ public abstract class AbstractT <T> {
 
 	protected AbstractT <T> set(AbstractT<T> value) {
 		userView      = value.userView;
-//		blankCodeView = value.blankCodeView;
+		blankCodeView = value.blankCodeView;
 		codeView      = value.codeView;
 		if (codeViewList != null) {
 			codeViewList = new ArrayList<T>(value.codeViewList);
@@ -192,9 +157,9 @@ public abstract class AbstractT <T> {
 		if (userViewList != null) {
 			userViewList = new ArrayList<String>(value.userViewList);
 		}
-		if (valueList != null) {
-			valueList = new ArrayList<AbstractT <T>>(value.valueList);
-		}
+//		if (valueList != null) {
+//			valueList = new ArrayList<AbstractT <T>>(value.valueList);
+//		}
 		return This();
 	}
 
@@ -240,8 +205,152 @@ public abstract class AbstractT <T> {
 		}
 	return value.toString();
 	}
+	protected String toUserViewNeverNull(T value) {
+		String userView = toUserView(value);
+		if (userView == null) {
+		return "";
+		}
+	return userView;
+	}
 
 	protected boolean equals(AbstractT<T> value) {
 		return equals(codeView(), value.codeView());
+	}
+	// ===== List Management  Methods =====
+	/**
+	 * @return The current codeView List
+	 */
+	protected List<T> codeViewList() { return codeViewList; }
+	/**
+	 * @return The current userView List
+	 */
+	protected List<String> userViewList() { return userViewList; }
+	/**
+	 * set the codeView List only (no change to userView List)
+	 * @parameter list The new codeView List
+	 */
+	protected AbstractT <T> codeViewList(List<T> list) { 
+		codeViewList = list; 
+		return This();
+	}
+	/**
+	 * set the userView List only (no change to codeView List)
+	 * @parameter list The new userView List
+	 */
+	protected AbstractT <T> userViewList(List<String> list) { 
+		userViewList = list; 
+		return This();
+	}
+
+	/**
+	 * @return The value List from the userView List and codeView List
+	 */
+	protected List<AbstractT <T>> getValueList() {
+		if (userViewList == null || codeViewList == null) {
+			return null;
+		}
+		ArrayList<AbstractT<T>> valueList = new ArrayList<AbstractT <T>>();
+		int length = Math.min(userViewList.size(), codeViewList.size());
+		for(int i = 0; i < length; i++) {
+			valueList.add(New()
+					.codeView(codeViewList.get(i))
+					.userView(userViewList.get(i)));
+		}
+		return valueList; 
+	}
+
+	/**
+	 * @return The codeView List from the userView List
+	 */
+	protected List<T> getCodeViewList(List<String> userViewList) {
+		if (userViewList == null) {
+			return null;
+		}
+		List<T> codeViewList = new ArrayList<T>();
+		for (String element : userViewList) {
+			codeViewList.add(toCodeView(element));
+		}
+		return codeViewList;
+	}
+	/**
+	 * @return The codeView List from the userView List
+	 */
+	protected List<T> getCodeViewList() {
+		if (userViewList() == null) {
+			return null;
+		}
+		return getCodeViewList(userViewList());
+	}
+
+	/**
+	 * @return The userView List from the codeView List
+	 */
+	protected List<String> getUserViewList(List<T> codeViewList) {
+		if (codeViewList == null) {
+			return null;
+		}
+		List<String> userViewList = new ArrayList<String>();
+		for (T element : codeViewList) {
+			userViewList.add(toUserView(element));
+		}
+		return userViewList;
+	}
+	/**
+	 * @return The userView List from the codeView List
+	 */
+	protected List<String> getUserViewList() {
+		if (codeViewList() == null) {
+			return null;
+		}
+		return getUserViewList(codeViewList());
+	}
+
+	/**
+	 * @return a String from the userView List
+	 */
+	protected String getUserViewListString() {
+		if (userViewList() == null) {
+			return "";
+		}
+		return String.join(listSeparator(), userViewList);
+	}
+	/**
+	 * Set userView List and codeView List from value List
+	 * @return This for chaining purpose
+	 */	
+	protected AbstractT <T> setValue(List<AbstractT <T>> list) {
+		userViewList = new ArrayList<String>();
+		codeViewList = new ArrayList<T>();
+		if (list != null) {
+			for (AbstractT<T> element : list) {
+				if (element == null) {
+					userViewList.add(null);
+					codeViewList.add(null);
+				}
+				else {
+					userViewList.add(element.userView);
+					codeViewList.add(element.codeView);
+				}
+			}
+		}
+		return This();
+	}
+	/**
+	 * Set userView List and codeView List from codeView List
+	 * @return This for chaining purpose
+	 */	
+	protected AbstractT <T> set(List<T> codeViewList) {
+		codeViewList(codeViewList);
+		userViewList(getUserViewList());
+		return This();
+	}
+	/**
+	 * Set userView List and codeView List from userView List
+	 * @return This for chaining purpose
+	 */	
+	protected AbstractT <T> setFromUserView(List<String> userViewList) {
+		userViewList(userViewList);
+		codeViewList(getCodeViewList());
+		return This();
 	}
 }

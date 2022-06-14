@@ -27,7 +27,7 @@ public class Entry<
 		T, V extends  Validation<T>>
 		extends WriteUtil {
 
-	private String userEntry = "";  // what we get from the file
+	private String userEntry = "";  // what we get from the file, Never Null
 	private AbstractT<T> value;
 	private Validation<T> validation;
 	
@@ -94,7 +94,7 @@ public class Entry<
 	 */
 	public Entry<T, V> set(String newValue) {
 		userEntry = clean(newValue);
-		entryAnalysis();
+		value = validation.entryAnalysis(getUserEntry());
 		return this;
 	}
 	/**
@@ -174,7 +174,7 @@ public class Entry<
 	}
 	/**
 	 * Ask for userEntry as {@code String}
-	 * @return the {@code String}
+	 * @return the {@code String}, never null
 	 */
 	String getUserEntry() { 
 		return userEntry;
@@ -214,16 +214,6 @@ public class Entry<
 		return PMutil.toSentence(getOutputStr());
 	}
 
-	// ==================================================
-    // User Entry analysis Methods
-    //
-	/**
-	 * Analyze user Entry content
-	 */
-	private void entryAnalysis() {
-		value = validation.entryAnalysis(getUserEntry());
-		}
-	
 	// ==================================================
     // Other Methods
     //

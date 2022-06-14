@@ -39,7 +39,7 @@ public class Validation<T> extends WriteUtil{
 	private Map<History, AbstractT<T>> historyMap = new EnumMap<>(History.class);
 	private T blankCodeView = null;
 
-	private List<Options<T>> validationList =
+	private List<Options<T>> optionList =
 			new ArrayList<Options<T>>();
 	private ValidationCriteria criteria = new ValidationCriteria();
 	private List<T> defaultRandomLimits = new ArrayList<T>();
@@ -54,7 +54,7 @@ public class Validation<T> extends WriteUtil{
     // Constructors and initializers
     //
 	/**
-	 * Base Constructor for Abstract_U<T> Validation,
+	 * Base Generic Constructor for Validation,
 	 * is not an entry list
 	 * @param initialValue 
 	 */
@@ -62,7 +62,7 @@ public class Validation<T> extends WriteUtil{
 		this(initialValue, null, false);
 	}
 	/**
-	 * Constructor for Abstract_U<T> Validation, that set isEntryList
+	 * Generic Constructor for Validation, that set isEntryList
 	 * @param initialValue Initial setting
 	 * @param isEntryList true if list of entry expected
 	 */
@@ -70,7 +70,7 @@ public class Validation<T> extends WriteUtil{
 		this(initialValue, null, isEntryList);
 	}
 	/**
-	 * Constructor for Abstract_U<T> Validation with list initialization,
+	 * Generic Constructor for Validation with list initialization,
 	 * is not an entry list
 	 * @param initialValue  Initial setting
 	 * @param options the list to initialize
@@ -79,7 +79,7 @@ public class Validation<T> extends WriteUtil{
 		this(initialValue, options, false);
 	}
 	/**
-	 * Constructor for Abstract_U<T> Validation with list initialization
+	 * Generic Constructor for Validation with list initialization
 	 * @param initialValue  Initial setting
 	 * @param options the list to initialize
 	 * @param isEntryList true if list of entry expected
@@ -101,7 +101,7 @@ public class Validation<T> extends WriteUtil{
 			return;
 		}
 		for (T option : options) {
-			this.addElement(option,
+			this.addOption(option,
 					PMutil.suggestedUserViewFromCodeView(option));
 		}
 	}
@@ -289,20 +289,20 @@ public class Validation<T> extends WriteUtil{
 	 */
 	AbstractT<T> randomWithParameters(String[] parameters) {
 		if (parameters.length > 2) {
-			return randomWithList(parameters);
+			return randomWithOptions(parameters);
 		}
-		if (hasList() && isValidUserEntry(parameters[0])) {
+		if (hasOptions() && isValidUserEntry(parameters[0])) {
 			return randomWithInListLimit(parameters);
 		}
 		return randomWithLimit(parameters);
 	}
 	
 	/**
-	 * Process Random among the given list
+	 * Process Random among the given option list
 	 * @param parameters {@code String[]} the extra parameters
 	 * @return Random Value
 	 */
-	AbstractT<T> randomWithList(String[] parameters) {
+	AbstractT<T> randomWithOptions(String[] parameters) {
 		int id = PMutil.getRandom(0, parameters.length);
 		return entryValidation(parameters[id]);
 	}
@@ -370,7 +370,7 @@ public class Validation<T> extends WriteUtil{
 			return getHistory(Default);
 		}
 		// Then Check check if part of the list 
-		if (hasList()) {
+		if (hasOptions()) {
 			if (isValidUserEntry(userEntry)) {
 				return getValue(userEntry);
 			} 
@@ -436,7 +436,7 @@ public class Validation<T> extends WriteUtil{
 	 * @return {@code Code View} Output Value
 	 */
 	AbstractT<T> randomWithoutParameters() {
-		if (hasList()) {
+		if (hasOptions()) {
 			int id = PMutil.getRandom(
 					getCodeViewIndex(getDefaultRandomLimits(0), 0),
 					getCodeViewIndex(getDefaultRandomLimits(1), listSize()));
@@ -451,51 +451,52 @@ public class Validation<T> extends WriteUtil{
     //
 	/**
 	 * Analyze user Entry content
-	 * @return 
+	 * @return value
 	 */
-	protected AbstractT<T> baseAnalysis(String userEntry) {
-		AbstractT<T> out = newValue();
+	protected AbstractT<T> entryAnalysis(String userEntry) {
+		userEntry = PMutil.clean(userEntry);
+		AbstractT<T> value = newValue();
 		// Random Management
 		if ( getValidationCriteria().isRandomAllowed()
 				&& isRandom(userEntry)) {
 			if (hasExtraParameters(userEntry)) {
-				out = randomWithParameters(
+				value = randomWithParameters(
 						splitParameters(removeRandomId(userEntry)));
-				out.userView(userEntry);
-				return out;
+				value.userView(userEntry);
+				return value;
 			}
-			out = randomWithoutParameters();
-			out.userView(userEntry);
-			return out;
+			value = randomWithoutParameters();
+			value.userView(userEntry);
+			return value;
 		}
 		// Not Random
-		out = entryValidation(userEntry);
-		return out;
+		value = entryValidation(userEntry);
+		return value;
 	}
 	/**
 	 * Analyze user Entry content
 	 * @return value
 	 */
-	protected AbstractT<T> entryAnalysis(String userEntry) {
-		userEntry = PMutil.clean(userEntry);
-		// Not a list
-		if (!isEntryList) {
-			return baseAnalysis(userEntry);
-		}
-		// Is a list: Then split it to elements and manage them
-		AbstractT<T> element;
-		List<AbstractT<T>> valueList = new ArrayList<AbstractT<T>>();
-		for (String baseEntry : userEntry.split(listSeparator())) {
-			element = baseAnalysis(baseEntry);
-			if (element.codeView() != null
-					&& !element.isBlank()) {
-				valueList.add(element);
-			}
-		}
-		AbstractT<T> out = newValue();
-		out.valueList(valueList); ;
-		return out;
-	}
+//	protected AbstractT<T> entryAnalysis(String userEntry) {
+//		userEntry = PMutil.clean(userEntry);
+//		// Not a list
+//		if (!isEntryList) {
+//			return baseAnalysis(userEntry);
+//		}
+//		// Is a list: Then split it to elements and manage them
+//		AbstractT<T> element;
+//		List<AbstractT<T>> valueList = new ArrayList<AbstractT<T>>();
+//		for (String baseEntry : userEntry.split(listSeparator())) {
+//			element = baseAnalysis(baseEntry);
+//			if (element.codeView() != null
+//					&& !element.isBlank()) {
+//				valueList.add(element);
+//			}
+//		}
+//		AbstractT<T> out = newValue();
+//		out.valueList(valueList); ;
+//		return out;
+//	}
 
 	/**
 	 * Convert the user entry in a more useful format
@@ -601,7 +602,7 @@ public class Validation<T> extends WriteUtil{
 	 * @return the validationList
 	 */
 	protected List<Options<T>> getValidationList() {
-		return validationList;
+		return optionList;
 	}
 
 	/**
@@ -701,8 +702,8 @@ public class Validation<T> extends WriteUtil{
 	/**
 	 * @return <b>true</b> if the Validation List is not empty
 	 */
-	protected boolean hasList() {
-		return validationList.size() > 0;
+	protected boolean hasOptions() {
+		return optionList.size() > 0;
 	}
 
 	// ==================================================
@@ -716,7 +717,7 @@ public class Validation<T> extends WriteUtil{
 	 */
  	protected String getCategory(String userEntry) {
  		if (userEntry != null) {
- 			for (Options<T> element : validationList) {
+ 			for (Options<T> element : optionList) {
  				if (element.isValidUserEntry(userEntry, criteria)) {
  					return element.getCategory();
  				}
@@ -744,7 +745,7 @@ public class Validation<T> extends WriteUtil{
 	 */
  	protected T getCodeViewOrDefault(String userEntry, T onWrong) {
  		if (userEntry != null) {
- 			for (Options<T> element : validationList) {
+ 			for (Options<T> element : optionList) {
 				if (element.isValidUserEntry(userEntry, criteria)) {
 					return element.getCodeView();
 				}
@@ -778,7 +779,7 @@ public class Validation<T> extends WriteUtil{
 			return onWrong;
 		}
 		// Try the options list
-		for (Options<T> element : validationList) {
+		for (Options<T> element : optionList) {
 				if (element.isValidCodeView(codeView, criteria)) {
 				return element.getUserView();
 			}
@@ -801,7 +802,7 @@ public class Validation<T> extends WriteUtil{
 	protected int getUserViewIndex(String userView, int defaultIndex) {
 		userView = PMutil.clean(userView);
 		int index = 0;
-		for (Options<T> element : validationList) {
+		for (Options<T> element : optionList) {
 			if (element.isValidUserEntry(userView, criteria)) {
 				return index;
 			}
@@ -823,7 +824,7 @@ public class Validation<T> extends WriteUtil{
 			return defaultIndex;
 		}
 		int index = 0;
-		for (Options<T> element : validationList) {
+		for (Options<T> element : optionList) {
 			if (element.isValidCodeView(codeView, criteria)) {
 				return index;
 			}
@@ -837,23 +838,23 @@ public class Validation<T> extends WriteUtil{
 	 * @return The list size
 	 */
 	protected int listSize() {
-		return validationList.size();
+		return optionList.size();
 	}
 	
 	/**
 	 *  @return The CodeView from its index
 	 */
 	protected T getCodeView(int index) {
-		index = Math.max(0, Math.min(validationList.size()-1, index));
-		return validationList.get(index).getCodeView();
+		index = Math.max(0, Math.min(optionList.size()-1, index));
+		return optionList.get(index).getCodeView();
 	}
 	
 	/**
 	 *  @return The UserView from its index
 	 */
 	protected String getUserView(int index) {
-		index = Math.max(0, Math.min(validationList.size()-1, index));
-		return validationList.get(index).getUserView();
+		index = Math.max(0, Math.min(optionList.size()-1, index));
+		return optionList.get(index).getUserView();
 	}
 	
 	/**
@@ -865,7 +866,7 @@ public class Validation<T> extends WriteUtil{
 	 */
 	protected T getCodeView(String userEntry, String category) {
  		if (userEntry != null && userEntry != category) {
-			for (Options<T> element : validationList) {
+			for (Options<T> element : optionList) {
 				if (element.isValidUserEntry(userEntry, category, criteria)) {
 					return element.getCodeView();
 				}
@@ -880,7 +881,7 @@ public class Validation<T> extends WriteUtil{
 	 */
 	protected boolean isValidUserEntry(String userEntry) {
 		if (userEntry != null) {
-			for (Options<T> element : validationList) {
+			for (Options<T> element : optionList) {
 				if (element.isValidUserEntry(userEntry, criteria)) {
 					return true;
 				}
@@ -896,7 +897,7 @@ public class Validation<T> extends WriteUtil{
 	 */
 	protected boolean isValidUserEntry(String userEntry, String category) {
 		if (userEntry != null) {
-			for (Options<T> element : validationList) {
+			for (Options<T> element : optionList) {
 				if (element.isValidUserEntry(userEntry, category, criteria)) {
 					return true;
 				}
@@ -912,7 +913,7 @@ public class Validation<T> extends WriteUtil{
 	 */
 	protected boolean isValidCodeView(T codeView, String category) {
 		if (codeView != null) {
-			for (Options<T> element : validationList) {
+			for (Options<T> element : optionList) {
 				if (element.isValidCodeView(codeView, category, criteria)) {
 					return true;
 				}
@@ -930,7 +931,7 @@ public class Validation<T> extends WriteUtil{
 		if (value != null) {
 			T codeView = value.codeView();
 			if (codeView != null) {
-				for (Options<T> element : validationList) {
+				for (Options<T> element : optionList) {
 					if (element.isValidCodeView(codeView, category, criteria)) {
 						return true;
 					}
@@ -951,7 +952,7 @@ public class Validation<T> extends WriteUtil{
 			}	
 			T codeView = value.codeView();
 			if (codeView != null) {
-				for (Options<T> element : validationList) {
+				for (Options<T> element : optionList) {
 					if (element.isValidCodeView(codeView, criteria)) {
 						return true;
 					}
@@ -966,7 +967,7 @@ public class Validation<T> extends WriteUtil{
 	 */
 	protected List<String> getOptionsStringList() {
 		List<String> result = new ArrayList<String>();
-		for (Options<T> element : validationList) {
+		for (Options<T> element : optionList) {
 			result.add(element.getUserView());
 		}
 		return result;
@@ -977,7 +978,7 @@ public class Validation<T> extends WriteUtil{
 	 * @return UserView List in capitalized String
 	 */
 	public String getOptionsRange() {
-		if (hasList()) {
+		if (hasOptions()) {
 			return PMutil.capitalize(getOptionsStringList().toString());
 		}
 		if (isBoolean) {
@@ -998,7 +999,7 @@ public class Validation<T> extends WriteUtil{
 	public String getOptionsDescription() {
 		String result = "";
 		String line;
-		for (Options<T> element : validationList) {
+		for (Options<T> element : optionList) {
 			line = element.toString();
 			if (!line.isBlank()) {
 				result += line + NL;
@@ -1015,33 +1016,33 @@ public class Validation<T> extends WriteUtil{
 		setDefaultRandomLimits(getCodeView(0), getCodeView(getValidationList().size()-1));
 	}
 
-	protected void addElement(Options<T> element) {
-		validationList.add(element);
+	protected void addOption(Options<T> element) {
+		optionList.add(element);
 		autoUpdateLimits();
 	}
 	
-	protected void addElement(T codeView) {
-		addElement(new Options<T>(codeView));
+	protected void addOption(T codeView) {
+		addOption(new Options<T>(codeView));
 	}
 	
-	protected void addElement(T codeView, String userView) {
-		addElement(new Options<T>(
+	protected void addOption(T codeView, String userView) {
+		addOption(new Options<T>(
 									codeView, userView));
 	}
 	
-	protected void addElement(T codeView, String userView, 
+	protected void addOption(T codeView, String userView, 
 					String description, String category) {
-		addElement(new Options<T>(
+		addOption(new Options<T>(
 								codeView, userView, description, category));
 	}
 	
-	protected void addElement(T codeView, String description, String category) {
-		addElement(new Options<T>(
+	protected void addOption(T codeView, String description, String category) {
+		addOption(new Options<T>(
 									codeView, description, category));
 	}
 	
 	protected void setValidationList(List<Options<T>> list) {
-		validationList = list;
+		optionList = list;
 		autoUpdateLimits();
 	}
 }

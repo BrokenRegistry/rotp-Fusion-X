@@ -24,6 +24,7 @@ import rotp.model.galaxy.GalaxySwirlClustersShape;
 import rotp.model.galaxy.GalaxyTextShape;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.galaxy.StarType;
+import rotp.model.game.GameSession;
 // import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
 import rotp.model.game.NewPlayer;
@@ -40,26 +41,22 @@ import rotp.util.Base;
  * Could be replaced by using {@code Object} and casting the class
  */
 public class ClientClassesTest extends ClientClasses{
-	private IGameOptions  guiObject  = new Gui();
-//	private Game gameObject = new Game();
+	private IGameOptions options = new Gui();
+	private IGameOptions option2 = options;
+	private GameSession  session;
 
 	/**
 	 * @return the guiObject
 	 */
-	@Override
-	public IGameOptions options() {
-		return guiObject;
+	@Override public IGameOptions options() {
+		return options;
 	}
-
-//	/**
-//	 * @param guiObject the guiObject to set
-//	 * @return this
-//	 */
-//	@Override
-//	public ClientClasses setOptionsObject(IGameOptions guiObject) {
-//		this.guiObject = guiObject;
-//		return this;
-//	}
+	@Override public IGameOptions option2() {
+		return option2;
+	}
+	@Override public GameSession session() {
+		return session;
+	}
 	
 	// ==============================================================
 	// Nested Classes Fake IGameOptions
@@ -113,19 +110,6 @@ public class ClientClassesTest extends ClientClasses{
 	        randomizeColors();
 	        setDefaultOptionValues();
 	    }
-//	    private void resetSelectedOpponentRaces() {
-//	        for (int i=0;i<opponentRaces.length;i++)
-//	            selectedOpponentRace(i,null);
-//	    }
- 
-//		@Override public String selectedPlayerRace()       { return "RACE_HUMAN"; }
-//		@Override public int    selectedPlayerColor()      { return 3; } // Blue
-//		@Override public int    selectedNumberOpponents()  { return 5; }
-//		@Override public String selectedOpponentAIOption() { return "SETUP_OPPONENT_AI_BASE"; }
-//		@Override public String selectedGameDifficulty()   { return "SETUP_DIFFICULTY_EASY"; }
-//		@Override public String selectedGalaxySize()       { return "SETUP_GALAXY_SIZE_AVERAGE"; }
-//		@Override public String selectedGalaxyShape()      { return "SETUP_GALAXY_SHAPE_ELLIPSE"; }
-
 	    @Override
 	    public int numPlayers()                      { return 1; }
 	    @Override
@@ -294,7 +278,7 @@ public class ClientClassesTest extends ClientClasses{
 	                galaxyShape = new GalaxyEllipticalShape(this); break;
 	            case SHAPE_SPIRAL:
 	                galaxyShape = new GalaxySpiralShape(this); break;
-	            // mondar: add new map shapes
+	            // modnar: add new map shapes
 	            case SHAPE_TEXT:
 	                galaxyShape = new GalaxyTextShape(this); break;
 	            case SHAPE_CLUSTER:

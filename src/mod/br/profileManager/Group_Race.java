@@ -123,7 +123,7 @@ public class Group_Race extends AbstractGroup <ClientClasses> {
 		private void init() {
 			initCriteria();
 			for (String color : EMPIRECOLORS) {
-				addElement(EMPIRECOLORS.indexOf(color), color);
+				addOption(EMPIRECOLORS.indexOf(color), color);
 			}
 			setLimits(0 , EMPIRECOLORS.size());
 			setDefaultRandomLimits(0 , EMPIRECOLORS.size());

@@ -10,7 +10,7 @@ import rotp.model.game.IGameOptions;
  */
 public class ClientClasses {
 	private IGameOptions options;
-	private IGameOptions options2;
+	private IGameOptions option2;
 	private GameSession  session;
 //	private boolean Initial = false;
 
@@ -23,24 +23,24 @@ public class ClientClasses {
 	 * @param guiObject {@code IGameOptions} to set
 	 */
 	public ClientClasses(IGameOptions guiObject) {
-		options  = guiObject;
-		options2 = guiObject;
+		options = guiObject;
+		option2 = guiObject;
 	}
 	/**
 	 * @param guiObject2 {@code IGameOptions} to set
 	 * @param guiObject {@code IGameOptions} to set
 	 */
 	public ClientClasses(IGameOptions guiObject2, IGameOptions guiObject) {
-		options  = guiObject;
-		options2 = guiObject2;
+		options = guiObject;
+		option2 = guiObject2;
 	}
 	/**
 	 * @param gameObject {@code GameSession} to set
 	 */
 	public ClientClasses(GameSession gameObject) {
-		session  = gameObject;
-		options  = gameObject.options();
-		options2 = options;
+		session = gameObject;
+		options = gameObject.options();
+		option2 = options;
 	}
 	/**
 	 * @return the guiObject
@@ -52,7 +52,7 @@ public class ClientClasses {
 	 * @return the second guiObject
 	 */
 	public IGameOptions option2() {
-		return options2;
+		return option2;
 	}
 //	/**
 //	 * @param guiObject the guiObject to set

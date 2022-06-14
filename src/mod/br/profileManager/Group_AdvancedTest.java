@@ -21,8 +21,8 @@ class Group_AdvancedTest {
 			";  " + NL +
 			"¦ Parameter     : GALAXY AGE" + NL +
 			"; Options       : [Young, Normal, Old]" + NL +
-			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game : " + NL + 
-			"¦ LOCAL ENABLE  : All" + NL +
+			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game :" + NL + 
+			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
 			"Profile 1       : " + NL +
 			"Random          : " + NL +
 			"" + NL;
@@ -30,8 +30,8 @@ class Group_AdvancedTest {
 	private String starDensityPrt = 
 			"¦ Parameter     : STAR DENSITY" + NL +
 			"; Options       : [Lowest, Lower, Low, Normal, High, Higher, Highest]" + NL +
-			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game : " + NL + 
-			"¦ LOCAL ENABLE  : All" + NL +
+			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game :" + NL + 
+			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
 			"Profile 1       : " + NL +
 			"Random          : " + NL +
 			"" + NL;
@@ -39,8 +39,8 @@ class Group_AdvancedTest {
 	private String nebulaePrt = 
 			"¦ Parameter     : NEBULAE" + NL +
 			"; Options       : [None, Rare, Uncommon, Normal, Common, Frequent]" + NL +
-			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game : " + NL + 
-			"¦ LOCAL ENABLE  : All" + NL +
+			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game :" + NL + 
+			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
 			"Profile 1       : " + NL +
 			"Random          : " + NL +
 			"" + NL;
@@ -48,8 +48,8 @@ class Group_AdvancedTest {
 	private String planetQualityPrt = 
 			"¦ Parameter     : PLANET QUALITY" + NL +
 			"; Options       : [Normal, Larger, Richer]" + NL +
-			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game : " + NL + 
-			"¦ LOCAL ENABLE  : All" + NL +
+			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game :" + NL + 
+			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
 			"Profile 1       : " + NL +
 			"Random          : " + NL +
 			"" + NL;
@@ -57,8 +57,8 @@ class Group_AdvancedTest {
 	private String terraformingPrt = 
 			"¦ Parameter     : TERRAFORMING" + NL +
 			"; Options       : [Normal, Reduced, None]" + NL +
-			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game : "  + NL +
-			"¦ LOCAL ENABLE  : All" + NL +
+			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game :"  + NL +
+			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
 			"Profile 1       : " + NL +
 			"Random          : " + NL+
 			"" + NL;
@@ -66,8 +66,8 @@ class Group_AdvancedTest {
 	private String randomEventsPrt = 
 			"¦ Parameter     : RANDOM EVENTS" + NL +
 			"; Options       : [On, Monsters, Off]" + NL +
-			"¦ History       : Current : Monsters / Last :  / Initial : Monsters / Default : On / Game : " + NL + 
-			"¦ LOCAL ENABLE  : All" + NL +
+			"¦ History       : Current : Monsters / Last :  / Initial : Monsters / Default : On / Game :" + NL + 
+			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
 			"Profile 1       : " + NL +
 			"Random          : " + NL +
 			"; ---- Available for changes in game saves" + NL +
@@ -76,8 +76,8 @@ class Group_AdvancedTest {
 	private String AIHostilityPrt = 
 			"¦ Parameter     : AI HOSTILITY" + NL +
 			"; Options       : [Lowest, Lower, Low, Normal, High, Higher, Highest]" + NL +
-			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game : " + NL + 
-			"¦ LOCAL ENABLE  : All" + NL +
+			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game :" + NL + 
+			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
 			"Profile 1       : " + NL +
 			"Random          : " + NL +
 			"" + NL;
@@ -85,8 +85,8 @@ class Group_AdvancedTest {
 	private String councilPrt = 
 			"¦ Parameter     : COUNCIL" + NL +
 			"; Options       : [Immediate, Rebels, None]" + NL +
-			"¦ History       : Current : Rebels / Last :  / Initial : Rebels / Default : Rebels / Game : " + NL + 
-			"¦ LOCAL ENABLE  : All" + NL +
+			"¦ History       : Current : Rebels / Last :  / Initial : Rebels / Default : Rebels / Game :" + NL + 
+			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
 			"Profile 1       : " + NL +
 			"Random          : " + NL +
 			"; ---- Available for changes in game saves" + NL +
@@ -95,8 +95,8 @@ class Group_AdvancedTest {
 	private String randomizeAIPrt = 
 			"¦ Parameter     : RANDOMIZE AI" + NL +
 			"; Options       : [None, Personality, Ability, Both]" + NL +
-			"¦ History       : Current : None / Last :  / Initial : None / Default : None / Game : " + NL + 
-			"¦ LOCAL ENABLE  : All" + NL +
+			"¦ History       : Current : None / Last :  / Initial : None / Default : None / Game :" + NL + 
+			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
 			"Profile 1       : " + NL +
 			"Random          : " + NL +
 			"" + NL;
@@ -104,8 +104,8 @@ class Group_AdvancedTest {
 	private String autoPlayPrt = 
 			"¦ Parameter     : AUTOPLAY" + NL +
 			"; Options       : [Off, Base, Xilmi, Cruel, Random]" + NL +
-			"¦ History       : Current : Off / Last :  / Initial : Off / Default : Off / Game : "  + NL +
-			"¦ LOCAL ENABLE  : All" + NL +
+			"¦ History       : Current : Off / Last :  / Initial : Off / Default : Off / Game :"  + NL +
+			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
 			"Profile 1       : " + NL +
 			"Random          : " + NL+
 			"" + NL;
@@ -113,8 +113,8 @@ class Group_AdvancedTest {
 	private String researchPrt = 
 			"¦ Parameter     : RESEARCH" + NL +
 			"; Options       : [Normal, Slow, Slower, Slowest, Fast]" + NL +
-			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game : "  + NL +
-			"¦ LOCAL ENABLE  : All" + NL +
+			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game :"  + NL +
+			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
 			"Profile 1       : " + NL +
 			"Random          : " + NL+
 			"" + NL;
@@ -122,8 +122,8 @@ class Group_AdvancedTest {
 	private String warpSpeedPrt = 
 			"¦ Parameter     : WARP SPEED" + NL +
 			"; Options       : [Normal, Fast]" + NL +
-			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game : "  + NL +
-			"¦ LOCAL ENABLE  : All" + NL +
+			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game :"  + NL +
+			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
 			"Profile 1       : " + NL +
 			"Random          : " + NL+
 			"" + NL;
@@ -131,8 +131,8 @@ class Group_AdvancedTest {
 	private String fuelRangePrt = 
 			"¦ Parameter     : FUEL RANGE" + NL +
 			"; Options       : [Normal]" + NL +
-			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game : "  + NL +
-			"¦ LOCAL ENABLE  : All" + NL +
+			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game :"  + NL +
+			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
 			"Profile 1       : " + NL +
 			"Random          : " + NL+
 			"" + NL;
@@ -140,8 +140,8 @@ class Group_AdvancedTest {
 	private String techTradingPrt = 
 			"¦ Parameter     : TECH TRADING" + NL +
 			"; Options       : [Yes, Allies, No]" + NL +
-			"¦ History       : Current : Yes / Last :  / Initial : Yes / Default : Yes / Game : "  + NL +
-			"¦ LOCAL ENABLE  : All" + NL +
+			"¦ History       : Current : Yes / Last :  / Initial : Yes / Default : Yes / Game :"  + NL +
+			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
 			"Profile 1       : " + NL +
 			"Random          : " + NL+
 			"; ---- Available for changes in game saves" + NL +
@@ -150,8 +150,8 @@ class Group_AdvancedTest {
 	private String colonizingPrt = 
 			"¦ Parameter     : COLONIZING" + NL +
 			"; Options       : [Normal, Restricted]" + NL +
-			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game : "  + NL +
-			"¦ LOCAL ENABLE  : All" + NL +
+			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Normal / Game :"  + NL +
+			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
 			"Profile 1       : " + NL +
 			"Random          : " + NL+
 			"; ---- Available for changes in game saves" + NL +

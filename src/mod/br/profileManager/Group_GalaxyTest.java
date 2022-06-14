@@ -24,8 +24,8 @@ class Group_GalaxyTest {
 			"¦ Parameter     : GALAXY SHAPE" + NL +
 			"; Options       : [Rectangle, Ellipse, Spiral, Text, Cluster, Swirlclusters," + NL +
 			";   \" \"         : Grid, Spiralarms, Maze, Shuriken, Bullseye, Lorenz, Fractal]" + NL +
-			"¦ History       : Current : Rectangle / Last :  / Initial : Rectangle / Default : Rectangle / Game : " + NL + 
-			"¦ LOCAL ENABLE  : All" + NL +
+			"¦ History       : Current : Rectangle / Last :  / Initial : Rectangle / Default : Rectangle / Game :" + NL + 
+			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
 			"Profile 1       : " + NL +
 			"Random          : " + NL +
 			"" + NL;
@@ -35,8 +35,8 @@ class Group_GalaxyTest {
 			"; Options       : [Tiny, Small, Small2, Average, Average2, Large, Large2, Huge," + NL +
 			";   \" \"         : Huge2, Massive, Massive2, Massive3, Massive4, Massive5," + NL +
 			";   \" \"         : Insane, Ludicrous, Maximum]" + NL +
-			"¦ History       : Current : Small / Last :  / Initial : Small / Default : Small / Game : " + NL + 
-			"¦ LOCAL ENABLE  : All" + NL +
+			"¦ History       : Current : Small / Last :  / Initial : Small / Default : Small / Game :" + NL + 
+			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
 			"Profile 1       : " + NL +
 			"Random          : " + NL +
 			"" + NL;
@@ -44,8 +44,8 @@ class Group_GalaxyTest {
 	private String difficultyPrt = 
 			"¦ Parameter     : DIFFICULTY" + NL +
 			"; Options       : [Easiest, Easier, Easy, Normal, Hard, Harder, Hardest, Custom]" + NL +
-			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Easy / Game : " + NL + 
-			"¦ LOCAL ENABLE  : All" + NL +
+			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Easy / Game :" + NL + 
+			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
 			"Profile 1       : " + NL +
 			"Random          : " + NL +
 			"" + NL;
@@ -53,8 +53,8 @@ class Group_GalaxyTest {
 	private String opponentAIPrt = 
 			"¦ Parameter     : OPPONENT AI" + NL +
 			"; Options       : [Base, Xilmi, Cruel, Unfair, Random, Allrandom, Select]" + NL +
-			"¦ History       : Current : Cruel / Last :  / Initial : Cruel / Default : Base / Game : " + NL + 
-			"¦ LOCAL ENABLE  : All" + NL +
+			"¦ History       : Current : Cruel / Last :  / Initial : Cruel / Default : Base / Game :" + NL + 
+			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
 			"Profile 1       : " + NL +
 			"Random          : " + NL +
 			"" + NL;
@@ -62,8 +62,8 @@ class Group_GalaxyTest {
 	private String nbOpponentPrt = 
 			"¦ Parameter     : NB OPPONENTS" + NL +
 			"; Options       : [Min=0, Max=15, Rnd Low=1, Rnd Up=15]" + NL +
-			"¦ History       : Current : 4 / Last :  / Initial : 4 / Default : 3 / Game : "  + NL +
-			"¦ LOCAL ENABLE  : All" + NL +
+			"¦ History       : Current : 4 / Last :  / Initial : 4 / Default : 3 / Game :"  + NL +
+			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
 			"Profile 1       : " + NL +
 			"Random          : " + NL+
 			"" + NL;

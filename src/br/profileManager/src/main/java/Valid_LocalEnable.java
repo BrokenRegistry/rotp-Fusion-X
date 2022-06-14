@@ -45,16 +45,16 @@ class Valid_LocalEnable extends Validation<String> {
 				.userViewEquals(false)
 				.codeViewEquals(false));
 
-		addElement("NO",
+		addOption("NO",
 				"No actions are allowed in this Setting" ,
 				"");
-		addElement("ALL",
+		addOption("ALL",
 				"All actions are allowed in this Setting" ,
 				LOAD_ENABLED + " " + WRITE_ENABLED);
-		addElement("WRITE", 
+		addOption("WRITE", 
 				"Allows actions that change the file" ,
 				WRITE_ENABLED);
-		addElement("LOAD", 
+		addOption("LOAD", 
 				"Allows actions Get from GUI and Save to file" ,
 				LOAD_ENABLED);
 	}

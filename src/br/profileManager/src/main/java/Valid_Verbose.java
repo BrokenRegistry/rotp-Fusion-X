@@ -40,16 +40,16 @@ class Valid_Verbose extends Validation<String> {
 				.userViewEquals(false)
 				.codeViewEquals(false));
 
-		addElement("NO",
+		addOption("NO",
 				"No option comments, No parameter comments, no option" ,
 				"");
-		addElement("OPTION",
+		addOption("OPTION",
 				"No option comments, No parameter comments, Show Options" ,
 				OPTION_ENABLED);
-		addElement("PARAMETER", 
+		addOption("PARAMETER", 
 				"No option comments, Parameter comments, Show Options" ,
 				OPTION_ENABLED + " " + PARAMETER_ENABLED);
-		addElement("FULL", 
+		addOption("FULL", 
 				"Option comments, Parameter Comments, Show Options",
 				OPTION_ENABLED + " " + PARAMETER_ENABLED + " " + COMMENT_ENABLED);
 	}

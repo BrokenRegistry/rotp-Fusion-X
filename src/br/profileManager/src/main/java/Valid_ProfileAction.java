@@ -90,38 +90,38 @@ public class Valid_ProfileAction extends Validation<String> {
 				.userViewEquals(false)
 				.codeViewEquals(false));
 		
-		addElement(ACTION_FILE_TO_GUI,
+		addOption(ACTION_FILE_TO_GUI,
 				"If the key \"L\" is pressed, this profile will change the GUI" ,
 				LOAD_ENABLED);
-		addElement(ACTION_RANDOM,
+		addOption(ACTION_RANDOM,
 				"If the key \"R\" is pressed, this profile will change the GUI..." + NL
 				+ "I use it to Randomize, but could be alternate load!" ,
 				RANDOM_ENABLED);
-		addElement(ACTION_FILE_TO_GAME, 
+		addOption(ACTION_FILE_TO_GAME, 
 				"If the key \"X\" is pressed in Load Menu, the loaded Game will be changed" ,
 				GAME_ENABLED + " " + LOAD_ENABLED);
-		addElement(ACTION_GUI_TO_FILE, 
+		addOption(ACTION_GUI_TO_FILE, 
 				"When a Game is started or if the key \"U\" is pressed, this profile will get the GUI settings" ,
 				WRITE_ENABLED);
-		addElement(ACTION_GAME_TO_FILE,
+		addOption(ACTION_GAME_TO_FILE,
 				"When a Game is started, this profile will get the Game settings" ,
 				WRITE_ENABLED + " " + LAST_ENABLED);
-		addElement(ACTION_INITIAL_TO_FILE,
+		addOption(ACTION_INITIAL_TO_FILE,
 				"When a Game is started or if the key \"U\" is pressed, this profile will get the initial settings" ,
 				WRITE_ENABLED);
-		addElement(ACTION_DEFAULT_TO_FILE,
+		addOption(ACTION_DEFAULT_TO_FILE,
 				"When a Game is started or if the key \"U\" is pressed, this profile will get the default settings" ,
 				WRITE_ENABLED);
-		addElement(ACTION_GUI_UPDATE_FILE,
+		addOption(ACTION_GUI_UPDATE_FILE,
 				"When a Game is started or if the key \"U\" is pressed, non empty parameters of this profile will get the GUI settings" ,
 				WRITE_ENABLED);
-		addElement(ACTION_GAME_UPDATE_FILE, 
+		addOption(ACTION_GAME_UPDATE_FILE, 
 				"When a Game is started, non empty parameters of this profile will get the Game settings" ,
 				WRITE_ENABLED + " " + LAST_ENABLED);
-		addElement(ACTION_INITIAL_UPDATE_FILE,
+		addOption(ACTION_INITIAL_UPDATE_FILE,
 				"When a Game is started or if the key \"U\" is pressed, non empty parameters of this profile will get the initial settings" ,
 				WRITE_ENABLED);
-		addElement(ACTION_DEFAULT_UPDATE_FILE,
+		addOption(ACTION_DEFAULT_UPDATE_FILE,
 				"When a Game is started or if the key \"U\" is pressed, non empty parameters of this profile will get the default settings" ,
 				WRITE_ENABLED);
 //		list.addElement("CLEAR",

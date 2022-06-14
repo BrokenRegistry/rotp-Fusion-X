@@ -180,11 +180,11 @@ class BlockTest {
 		block.add(line1);
 		block.add(line2);
 		block.add(line3);
-		assertEquals("load", block.getValue("key1")
+		assertEquals("load", block.getValue("key1").userView()
 				, "should have been «\"load\"»");	
-		assertEquals("", block.getValue("key2")
+		assertEquals("", block.getValue("key2").userView()
 				, "should have been «\"\"»");	
-		assertEquals("Change", block.getValue("key3")
+		assertEquals("Change", block.getValue("key3").userView()
 				, "should have been «\"Change\"»");	
 		assertEquals(null, block.getValue("key4")
 				, "should have been «null»");	
@@ -211,7 +211,7 @@ class BlockTest {
 		block = newBlock();
 		block.add(line1);
 		line = block.getLine("key1");
-		assertEquals("load", line.getValue()
+		assertEquals("load", line.getValue().userView()
 				, "should have been «\"load\"»");	
 	}
 

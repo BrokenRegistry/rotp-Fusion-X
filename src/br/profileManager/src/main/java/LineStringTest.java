@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 import static br.profileManager.src.main.java.Lines.*;
+import static br.profileManager.src.main.java.PMconfig.*;
 
 class LineStringTest {
 
@@ -14,7 +15,7 @@ class LineStringTest {
 	}
 
 	@Test void Line_String_String() {
-		LineString line = new LineString("Key " + KEY_VALUE_SEPARATOR
+		LineString line = new LineString("Key " + keyValueSeparator()
 						+ " Value " + PMconfig.commentKey() + "comment");
 		assertEquals("Key", line.key()
 				, "This String should have been \"Key\"");

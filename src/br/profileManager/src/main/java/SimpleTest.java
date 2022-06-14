@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-public class SimpleTest {
+class SimpleTest {
 
 	@Test void ValidationElement_String() {
 		assertEquals("XXX", new Options<String>("XXX")
