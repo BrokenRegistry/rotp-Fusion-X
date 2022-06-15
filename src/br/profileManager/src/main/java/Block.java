@@ -80,6 +80,21 @@ class Block<T, V extends Validation<T>> extends WriteUtil {
 	 * @param    userEntry the {@code String} entry value
 	 * @return   This for chaining purpose
 	 */
+	Block<T, V> add(String profile, AbstractT<T> value) {
+		remove(profile);
+		lineList.add(new Lines<T, Validation<T>>(
+				valueValidation,
+				profile,
+				value));
+		return this;
+	}
+
+	/**
+	 * add a new user profile  (overwrite)
+	 * @param    profile   the {@code String} profile name
+	 * @param    userEntry the {@code String} entry value
+	 * @return   This for chaining purpose
+	 */
 	Block<T, V> add(String profile, String userEntry) {
 		remove(profile);
 		lineList.add(new Lines<T, Validation<T>>(
@@ -94,8 +109,7 @@ class Block<T, V extends Validation<T>> extends WriteUtil {
 	 * @param    newLine the new {@code Line<T>} profile line
 	 * @return   This for chaining purpose
 	 */
-	Block<T, V> 
-			add(Lines<T, Validation<T>> newLine) {
+	Block<T, V> add(Lines<T, Validation<T>> newLine) {
 		remove(newLine.getName());
 		lineList.add(newLine);
 		return this;

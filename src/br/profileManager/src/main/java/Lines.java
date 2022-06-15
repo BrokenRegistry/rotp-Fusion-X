@@ -26,7 +26,7 @@ import static br.profileManager.src.main.java.PMconfig.keyValueSeparator;
  * @param <T> the Value's Code View Class
  * @param <V>  The Value's validation class
  */
-class Lines<T, V extends Validation<T>>
+public class Lines<T, V extends Validation<T>>
 		extends WriteUtil {
 	
     // ==================================================
@@ -167,7 +167,7 @@ class Lines<T, V extends Validation<T>>
 	/**
 	 * @return the entryValue value as {@code Abstract_U<T>}
 	 */
-	AbstractT<T> getValue() {
+	public AbstractT<T> getValue() {
 		return entryValue.getValue();
 	}
 
@@ -315,7 +315,7 @@ class Lines<T, V extends Validation<T>>
 	@Override public String toString() {
 		String out = "";
 		out += String.format(KEY_FORMAT, entryName.toString());
-		out += PMutil.neverNull(entryValue);
+		out += PMutil.neverNull(entryValue.toString());
 		if (getValidationData().isShowWithOptions()) {
 			comment = getValidationData().getOptionsRange();
 		}

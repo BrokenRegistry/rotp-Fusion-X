@@ -320,7 +320,10 @@ public abstract class AbstractProfiles<C> extends WriteUtil {
 	// ========================================================================
 	// Other Methods
 	//
-	private List<String> getAllProfiles() {
+	/**
+	 * @return All the current profiles, loaded from file
+	 */
+	public List<String> getAllProfiles() {
 		return parameterProfileAction.getProfileList();
 	}
 	

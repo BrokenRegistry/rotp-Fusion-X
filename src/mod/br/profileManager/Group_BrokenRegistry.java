@@ -206,18 +206,20 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 	    //
 		OpponentRaceList(ClientClasses go) { 
 			super("OPPONENTS RACE LIST",
-					new ValidationList<String>(new T_String(), 
+					new ValidationList<String>(
+							new T_String(go.options().selectedPlayerRace()), 
 							go.options().startingRaceOptions()));
 			
 			T_String defaultValue = new T_String(go.options().startingRaceOptions());
-			setHistory(Initial, defaultValue);
+			setHistory(Initial, defaultValue); // set Current too
 			setHistory(Default, defaultValue);
+			RaceFilter.defaultRaceList(defaultValue.codeViewList());
 		}
 		
 	    // ========== Overriders ==========
 	    //
 		@Override public AbstractT<String> getFromGame (ClientClasses go) {
-			return new T_String(); // No really possible
+			return new T_String(); // Not really possible
 		}
 		
 		@Override public void putToGame(ClientClasses go, AbstractT<String> value) {}

@@ -32,7 +32,7 @@ public class PMconfig {
 	private static String optionsKey        = "Options";
 	private static String optionsSubKey	    = "  \" \" ";
 	private static String historyNameValueSeparator = " : ";
-	private static String historyElementsSeparator  = " / ";
+	private static String historyElementsSeparator  = " ¦ ";
 	private static String parametersSeparator  = ",";
 	private static String listSeparator        = "/";
 	private static String randomId             = "RANDOM";
@@ -47,7 +47,7 @@ public class PMconfig {
 	/**
 	 * @return The {@code String} to be used as Comment starter
 	 */
-	public static String commentKey() {
+	static String commentKey() {
 		return commentKey;
 	}
 	/**
@@ -59,7 +59,7 @@ public class PMconfig {
 	/**
 	 * @return The {@code String} to be used as Comment Spacer
 	 */
-	public static String commentSpacer() {
+	static String commentSpacer() {
 		return commentSpacer;
 	}
 	/**
@@ -71,7 +71,7 @@ public class PMconfig {
 	/**
 	 * @return The {@code String} to be used as Key - Value Separator
 	 */
-	public static String keyValueSeparator() {
+	static String keyValueSeparator() {
 		return keyValueSeparator;
 	}
 	/**
@@ -83,7 +83,7 @@ public class PMconfig {
 	/**
 	 * @return The {@code String} to be used as Value Spacer
 	 */
-	public static String valueSpacer() {
+	static String valueSpacer() {
 		return valueSpacer;
 	}
 	/**
@@ -95,7 +95,7 @@ public class PMconfig {
 	/**
 	 * @return The {@code String} to be used as Option Definition Symbol
 	 */
-	public static String separatorSymbol() {
+	static String separatorSymbol() {
 		return separatorSymbol;
 	}
 	/**
@@ -107,7 +107,7 @@ public class PMconfig {
 	/**
 	 * @return The {@code String} to be used as Definition Spacer
 	 */
-	public static String separatorSpacer() {
+	static String separatorSpacer() {
 		return separatorSpacer;
 	}
 	/**
@@ -119,7 +119,7 @@ public class PMconfig {
 	/**
 	 * @return The {@code String} to be used as Parameter Key
 	 */
-	public static String parameterKey() {
+	static String parameterKey() {
 		return parameterKey;
 	}
 	/**
@@ -131,7 +131,7 @@ public class PMconfig {
 	/**
 	 * @return The {@code String} to be used as history Key
 	 */
-	public static String historyKey() {
+	static String historyKey() {
 		return historyKey;
 	}
 	/**
@@ -143,7 +143,7 @@ public class PMconfig {
 	/**
 	 * @return The {@code String} to be used as Options Key
 	 */
-	public static String optionsKey() {
+	static String optionsKey() {
 		return optionsKey;
 	}
 	/**
@@ -156,7 +156,7 @@ public class PMconfig {
 	 * @return The {@code String} to be used as Options subKey
 	 * (to start new line when long lines have been cut)
 	 */
-	public static String optionsSubKey() {
+	static String optionsSubKey() {
 		return optionsSubKey;
 	}
 	/**
@@ -170,7 +170,7 @@ public class PMconfig {
 	 * @return The {@code String} to be used as 
 	 * History Name - Value Separator (Definition)
 	 */
-	public static String historyNameValueSeparator() {
+	static String historyNameValueSeparator() {
 		return historyNameValueSeparator;
 	}
 	/**
@@ -184,7 +184,7 @@ public class PMconfig {
 	 * @return The {@code String} to be used as 
 	 * History elements Separator
 	 */
-	public static String historyElementsSeparator() {
+	static String historyElementsSeparator() {
 		return historyElementsSeparator;
 	}
 	/**
@@ -198,7 +198,7 @@ public class PMconfig {
 	 * @return The {@code String} to be used as
 	 * elements separator for random parameters list
 	 */
-	public static String parametersSeparator() {
+	static String parametersSeparator() {
 		return parametersSeparator;
 	}
 	/**
@@ -212,7 +212,7 @@ public class PMconfig {
 	 * @return The {@code String} to be used as 
 	 * elements separator for parameters list
 	 */
-	public static String listSeparator() {
+	static String listSeparator() {
 		return listSeparator;
 	}
 	/**
@@ -225,7 +225,7 @@ public class PMconfig {
 	/**
 	 * @return The {@code String} to be used as Identifier for Random parameters
 	 */
-	public static String randomId() {
+	static String randomId() {
 		return randomId;
 	}
 	/**

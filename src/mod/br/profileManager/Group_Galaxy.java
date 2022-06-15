@@ -27,6 +27,8 @@ import br.profileManager.src.main.java.T_Integer;
 import br.profileManager.src.main.java.T_String;
 import static br.profileManager.src.main.java.WriteUtil.History.*;
 
+import java.util.List;
+
 /**
  * @author BrokenRegistry
  * For Parameters in Galaxy GUI
@@ -264,18 +266,20 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 	    //
 		GuiOpponentRaceList(ClientClasses go) { 
 			super("GUI OPPONENTS RACE LIST",
-					new ValidationList<String>(new T_String(), 
+					new ValidationList<String>(
+							new T_String(go.options().selectedPlayerRace()), 
 							go.options().startingRaceOptions()));
 			
-			T_String defaultValue = new T_String(go.options().startingRaceOptions());
-			setHistory(Initial, defaultValue);
-			setHistory(Default, defaultValue);
+			List<String> defaultValue = go.options().startingRaceOptions();
+			setHistoryCodeView(Initial, defaultValue); // set Current too
+			setHistoryCodeView(Default, defaultValue);
+			RaceFilter.defaultRaceList(defaultValue);
 		}
 		
 	    // ========== Overriders ==========
 	    //
 		@Override public AbstractT<String> getFromGame (ClientClasses go) {
-			return new T_String(); // No really possible
+			return new T_String(); // Not really possible
 		}
 		
 		@Override public void putToGame(ClientClasses go, AbstractT<String> value) {}

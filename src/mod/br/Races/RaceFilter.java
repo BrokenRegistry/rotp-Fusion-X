@@ -25,6 +25,7 @@ import java.util.List;
  */
 public class RaceFilter {
 
+	private static List<String> defaultRaceList;
 	private static List<String> selectedRaceList;
 	private static List<String> selectedGuiRaceList;
 
@@ -32,6 +33,10 @@ public class RaceFilter {
 	 * @return the raceList
 	 */
 	public static List<String> selectedRaceList() {
+		if (selectedRaceList == null 
+				|| selectedRaceList.toString().isBlank()) {
+			return defaultRaceList;
+		}
 		return selectedRaceList;
 	}
 	/**
@@ -44,6 +49,10 @@ public class RaceFilter {
 	 * @return the raceList
 	 */
 	public static List<String> selectedGuiRaceList() {
+		if (selectedGuiRaceList == null 
+				|| selectedGuiRaceList.toString().isBlank()) {
+			return defaultRaceList;
+		}
 		return selectedGuiRaceList;
 	}
 	/**
@@ -51,6 +60,18 @@ public class RaceFilter {
 	 */
 	public static void selectedGuiRaceList(List<String> newRaceList) {
 		selectedGuiRaceList = newRaceList;
+	}
+	/**
+	 * @return the raceList
+	 */
+	public static List<String> defaultRaceList() {
+		return defaultRaceList;
+	}
+	/**
+	 * @param newRaceList the raceList to set
+	 */
+	public static void defaultRaceList(List<String> newRaceList) {
+		defaultRaceList = newRaceList;
 	}
 
 }

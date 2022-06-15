@@ -116,7 +116,7 @@ public class WriteUtil {
 							String firstHeader, String otherHeader) {
 		firstHeader = PMutil.neverNull(firstHeader);
 		otherHeader = PMutil.neverNull(otherHeader);
-		splitter = PMutil.neverNull(splitter);
+		splitter    = PMutil.neverNull(splitter);
 		if (splitter.isEmpty()) {
 			splitter = " ";
 		}
@@ -125,6 +125,7 @@ public class WriteUtil {
 		String[] elements;
 		String line = firstHeader;
 		boolean firstLineElement = true;
+		boolean firstElement = true;
 		
 		elements = PMutil.neverNull(string)
 						 .replace(NL, splitter + NL + splitter)
@@ -135,7 +136,8 @@ public class WriteUtil {
 				line = otherHeader;
 				firstLineElement = true;
 			} 
-			else if (line.length() + slen + element.length() > maxLineLength()) {
+			else if (line.length() + slen + element.length() > maxLineLength()
+					&& !firstElement) {
 				lines.add(line);
 				line = otherHeader + element;
 				firstLineElement = false;
@@ -146,6 +148,7 @@ public class WriteUtil {
 			} else {
 				line += splitter + element;
 			}
+			firstElement = false;
 		}
 		lines.add(line);
 		return String.join(NL, lines);

@@ -37,6 +37,9 @@ public abstract class AbstractParameter<
 	private static String optionsSubHead() {
 		return lineFormat(toComment(optionsSubKey()), "");
 	}
+	private static String historyHead() {
+		return lineFormat(historyKey(), "");
+	}
 	
 	// ------------------------------------------------------------------------
 	// Variables Properties
@@ -163,6 +166,15 @@ public abstract class AbstractParameter<
 	}
 
 	/**
+	 * Set "history" codeView List
+	 * @param history  The History case to fill
+	 * @param codeView the new codeView
+	 */
+	protected void setHistoryCodeView(History history, List<T> codeView) {
+		validation.setHistoryCodeView(history, codeView);
+	}
+
+	/**
 	 * Set "history" Value
 	 * @param history   The History case to fill
 	 * @param value the new value
@@ -206,7 +218,7 @@ public abstract class AbstractParameter<
 	 * @param profile the profile to set
 	 */
 	public void actionToFile(History history, String profile) {
-			actionToFile(profile, validation.getHistory(history).userView());
+			actionToFile(profile, validation.getHistory(history));
 	}
 
 	/**
@@ -309,7 +321,7 @@ public abstract class AbstractParameter<
 	 * @return  selected Profile as Gen_Line
 	 * @param   profile the profile name 
 	 */
-	private Lines<T, Validation<T>> getProfileLine(String profile) {
+	public Lines<T, Validation<T>> getProfileLine(String profile) {
 		if (profile != null) { 
 			if (userProfiles.isValid(profile)) {
 				return userProfiles.getLine(profile);
@@ -323,6 +335,14 @@ public abstract class AbstractParameter<
 	}
 
 	// for default parameters and internal use
+	/**
+	 * @param name Key
+	 * @param value User Entry
+	 */
+	public void addLine (String name,  AbstractT<T> value) {
+		userProfiles.add(name, value);
+	}
+
 	/**
 	 * @param name Key
 	 * @param value User Entry
@@ -431,8 +451,8 @@ public abstract class AbstractParameter<
 		out += toCommentLine(settingComments) ;
 
 		// OPTIONS LIST
-		out += multiLines(validation.getOptionsRange(),
-				optionsHead(), optionsSubHead()) + NL;
+		out += multiLines(validation.getOptionsRange()
+				,optionsHead(), optionsSubHead()) + NL;
 
 		// OPTIONS DESCRIPTION
 		out += toCommentLine(validation.getOptionsDescription(), 1, 1);
@@ -442,22 +462,40 @@ public abstract class AbstractParameter<
 
 		// HISTORY
 		if (validation.isShowHistory()) {
-			out += lineFormat(historyKey(),
+			out += multiLines(
 					Current.toString() + historyNameValueSeparator()
-					+ getHistory(Current).userView()
+					+ getHistory(Current).toString()
 					+ historyElementsSeparator()
 					+ Last.toString() + historyNameValueSeparator()
-					+ getHistory(Last).userView()
+					+ getHistory(Last).toString()
 					+ historyElementsSeparator()
 					+ Initial.toString() + historyNameValueSeparator()
-					+ getHistory(Initial).userView()
+					+ getHistory(Initial).toString()
 					+ historyElementsSeparator()
 					+ Default.toString() + historyNameValueSeparator()
-					+ getHistory(Default).userView()
+					+ getHistory(Default).toString()
 					+ historyElementsSeparator()
 					+ Game.toString() + historyNameValueSeparator()
-					+ getHistory(Game).userView())
-					.toString() + NL;
+					+ getHistory(Game).toString()
+					, historyElementsSeparator()
+					, historyHead()
+					, historyHead()) + NL;
+//			out += lineFormat(historyKey(),
+//					Current.toString() + historyNameValueSeparator()
+//					+ getHistory(Current).toString()
+//					+ historyElementsSeparator()
+//					+ Last.toString() + historyNameValueSeparator()
+//					+ getHistory(Last).toString()
+//					+ historyElementsSeparator()
+//					+ Initial.toString() + historyNameValueSeparator()
+//					+ getHistory(Initial).toString()
+//					+ historyElementsSeparator()
+//					+ Default.toString() + historyNameValueSeparator()
+//					+ getHistory(Default).toString()
+//					+ historyElementsSeparator()
+//					+ Game.toString() + historyNameValueSeparator()
+//					+ getHistory(Game).toString())
+//					.toString() + NL;
 		}
 
 		// LOCAL ENABLE
@@ -487,9 +525,9 @@ public abstract class AbstractParameter<
 	 * @param profile the profile to set
 	 * @param value  the value to set
 	 */
-	private void actionToFile(String profile, String value) {
+	private void actionToFile(String profile, AbstractT<T> value) {
 		if (localEnable.isWriteEnabled()) {
-			addLine(profile, value);
+			addLine(profile, value.toString());
 		}
 	}
 

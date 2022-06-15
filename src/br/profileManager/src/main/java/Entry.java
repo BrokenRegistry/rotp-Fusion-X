@@ -187,7 +187,8 @@ public class Entry<
 		if (value == null) {
 			return "";
 		}
-		return value.userView();
+		return value.toString();
+//		return value.userView();
 	}	
 	/**
 	 * ask for value in lower case, with first char to upper case,

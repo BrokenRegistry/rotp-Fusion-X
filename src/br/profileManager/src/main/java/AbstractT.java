@@ -123,9 +123,12 @@ public abstract class AbstractT <T> {
 	}
 
 	protected Boolean isBlank() {
-		return codeView == null 
+		boolean test1 = codeView == null 
 				|| codeView.toString().isBlank()
 				|| equals(codeView, blankCodeView());
+		boolean test2 = codeViewList == null 
+				|| codeViewList.toString().isBlank();
+		return test1 && test2;
 	}
 
 	// ===== Setters =====
@@ -151,15 +154,12 @@ public abstract class AbstractT <T> {
 		userView      = value.userView;
 		blankCodeView = value.blankCodeView;
 		codeView      = value.codeView;
-		if (codeViewList != null) {
+		if (value.codeViewList != null) {
 			codeViewList = new ArrayList<T>(value.codeViewList);
 		}
-		if (userViewList != null) {
+		if (value.userViewList != null) {
 			userViewList = new ArrayList<String>(value.userViewList);
 		}
-//		if (valueList != null) {
-//			valueList = new ArrayList<AbstractT <T>>(value.valueList);
-//		}
 		return This();
 	}
 
@@ -175,10 +175,10 @@ public abstract class AbstractT <T> {
 
 	// ===== Other Methods =====
 	@Override public String toString() {
-		if (userViewList() != null) {
-			return getUserViewListString();
-		}	
-		if (userView() == null) {
+		if (userView() == null || userView().isBlank()) {
+			if (userViewList() != null) {
+				return getUserViewListString();
+			}
 			return "";
 		}
 		return userView();
@@ -189,6 +189,10 @@ public abstract class AbstractT <T> {
 	}
 
 	protected AbstractT<T> New(T value) {
+		return New().set(value);
+	}
+
+	protected AbstractT<T> New(List<T> value) {
 		return New().set(value);
 	}
 
@@ -238,10 +242,11 @@ public abstract class AbstractT <T> {
 	}
 	/**
 	 * set the userView List only (no change to codeView List)
+	 * update userView to image the List
 	 * @parameter list The new userView List
 	 */
 	protected AbstractT <T> userViewList(List<String> list) { 
-		userViewList = list; 
+		userViewList = list;
 		return This();
 	}
 
@@ -328,19 +333,22 @@ public abstract class AbstractT <T> {
 	 * @return This for chaining purpose
 	 */	
 	protected AbstractT <T> setValue(List<AbstractT <T>> list) {
-		userViewList = new ArrayList<String>();
-		codeViewList = new ArrayList<T>();
+		reset();
+		List<String> userList = new ArrayList<String>();
+		List<T> codeList = new ArrayList<T>();
 		if (list != null) {
 			for (AbstractT<T> element : list) {
 				if (element == null) {
-					userViewList.add(null);
-					codeViewList.add(null);
+					userList.add(null);
+					codeList.add(null);
 				}
 				else {
-					userViewList.add(element.userView);
-					codeViewList.add(element.codeView);
+					userList.add(element.userView);
+					codeList.add(element.codeView);
 				}
 			}
+			codeViewList(codeList);
+			userViewList(userList);
 		}
 		return This();
 	}
@@ -350,6 +358,7 @@ public abstract class AbstractT <T> {
 	 * @return This for chaining purpose
 	 */	
 	public AbstractT <T> set(List<T> codeViewList) {
+		reset();
 		codeViewList(codeViewList);
 		userViewList(getUserViewList());
 		return This();
@@ -359,6 +368,7 @@ public abstract class AbstractT <T> {
 	 * @return This for chaining purpose
 	 */	
 	protected AbstractT <T> setFromUserView(List<String> userViewList) {
+		reset();
 		userViewList(userViewList);
 		codeViewList(getCodeViewList());
 		return This();

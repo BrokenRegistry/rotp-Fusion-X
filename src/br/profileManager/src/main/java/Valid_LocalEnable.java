@@ -51,11 +51,11 @@ class Valid_LocalEnable extends Validation<String> {
 		addOption("ALL",
 				"All actions are allowed in this Setting" ,
 				LOAD_ENABLED + " " + WRITE_ENABLED);
-		addOption("WRITE", 
+		addOption("SAVE", 
 				"Allows actions that change the file" ,
 				WRITE_ENABLED);
 		addOption("LOAD", 
-				"Allows actions Get from GUI and Save to file" ,
+				"Allows actions that change GUI and GAMES" ,
 				LOAD_ENABLED);
 	}
 

@@ -15,12 +15,10 @@
  * limitations under the License.
  */
 
-package rotp.mod.br.Galaxy;
+package rotp.mod.br.Addon;
 
 import mod.br.Galaxy.GalaxySpacing;
 import mod.br.Galaxy.StarsOptions;
-
-//import mod.br.alteration.GalaxySpacing;
 
 /**
  * @author BrokenRegistry
@@ -36,28 +34,24 @@ public class GalaxyOptions {
 	public static void initSpacing(int maxStars, int numOpps, float sysBuffer) {
 		GalaxySpacing.initSpacing(maxStars, numOpps, sysBuffer);
 	}
-
 	/**
 	 * @return minEmpireBuffer {@code float} value
 	 */
     public static float getMinEmpireBuffer() {
          return GalaxySpacing.getMinEmpireBuffer();
     }
-
     /**
 	 * @return maxMinEmpireBuffer {@code float} value
 	 */
 	public static float getMaxMinEmpireBuffer() {
          return GalaxySpacing.getMaxMinEmpireBuffer();
     }
-
 	/**
 	 * @return minOrionBuffer {@code float} value
 	 */
 	public static float getMinOrionBuffer() {
 		return GalaxySpacing.getMinOrionBuffer();
     }
-	
 	/**
 	 * @param cumSum the Cumulative Probability
 	 * @return the new Cumulative Probability
@@ -65,5 +59,4 @@ public class GalaxyOptions {
 	public static float[] changeCumulativeProbability(float[] cumSum) {
 		return StarsOptions.changeCumulativeProbability(cumSum);
 	}
-		
 }

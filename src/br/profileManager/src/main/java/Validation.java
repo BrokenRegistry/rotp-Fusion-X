@@ -192,6 +192,16 @@ public class Validation<T> extends WriteUtil{
 		setHistory(history, value);
 	}
 
+	/**
+	 * Set the "history" Code View
+	 * @param history  Field to be filled
+	 * @param codeView the new "history" codeView
+	 */
+	protected void setHistoryCodeView(History history, List<T> codeView) {
+		AbstractT<T> value = newValue(codeView);
+		setHistory(history, value);
+	}
+
 	// ==================================================
     // Getters
     //
@@ -241,12 +251,21 @@ public class Validation<T> extends WriteUtil{
 	}
 
 	/**
-	 * Factory create a new Abstract_T<T> and set code View
+	 * Factory create a new Value and set code View
 	 * @param codeView  the value
 	 * @return the new Abstract_T<T>
 	 */
 	public AbstractT<T> newValue(T codeView) {
 		return factory.New(codeView).userView(getUserView(codeView));
+	}
+
+	/**
+	 * Factory create a new Value and set code View List
+	 * @param codeView  the value
+	 * @return the new Abstract_T<T>
+	 */
+	public AbstractT<T> newValue(List<T> codeView) {
+		return factory.New(codeView);
 	}
 
 	// ==================================================

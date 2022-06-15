@@ -99,7 +99,7 @@ public class Valid_ProfileAction extends Validation<String> {
 				RANDOM_ENABLED);
 		addOption(ACTION_FILE_TO_GAME, 
 				"If the key \"X\" is pressed in Load Menu, the loaded Game will be changed" ,
-				GAME_ENABLED + " " + LOAD_ENABLED);
+				GAME_ENABLED);
 		addOption(ACTION_GUI_TO_FILE, 
 				"When a Game is started or if the key \"U\" is pressed, this profile will get the GUI settings" ,
 				WRITE_ENABLED);

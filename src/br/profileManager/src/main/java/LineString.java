@@ -69,7 +69,7 @@ class LineString {
 	/**
 	 * Reset the line
 	 */
-	protected LineString set() {
+	private LineString set() {
 		key = "";
 		value = "";
 		comment = "";
@@ -79,7 +79,7 @@ class LineString {
 	 * Reset the line with the new line
 	 * @param line the new line {@code String}
 	 */
-	protected LineString set(String line) {
+	private LineString set(String line) {
  		if (PMutil.isBlank(line)) {
  			set();
  			}
@@ -101,7 +101,7 @@ class LineString {
 	 * @param key   the key or name {@code String}
 	 * @param value the value {@code String}
 	 */
-	protected LineString set(String key, String value) {
+	private LineString set(String key, String value) {
 		key(key);
 		value(value);
 		comment = "";
@@ -113,7 +113,7 @@ class LineString {
 	 * @param value   the value {@code String}
 	 * @param comment a comment {@code String}
 	 */
-	protected LineString set(String key, String value, String comment) {
+	private LineString set(String key, String value, String comment) {
 		key(key);
 		value(value);
 		comment(comment);
