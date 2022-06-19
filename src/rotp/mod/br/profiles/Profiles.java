@@ -78,28 +78,13 @@ public class Profiles {
 	 * @param global Global or Local ?
 	 * @param group group name
 	 * @param options class containing info
+	 * @param newOptions class containing info
 	 * @return <b>true</b> if something has been changed
    	 */
 	public static boolean processKey(int key, boolean global,
-			String group, IGameOptions options) {
-		return userProfiles.processKey(key, global, group, 
-							new ClientClasses(options));
-	}
-	/**
-   	 * Load the configuration file to update the Action
-   	 * Update with last Loaded Game options values
-   	 * Save the new configuration file
-	 * @param key the key to process
-	 * @param global Global or Local ?
-	 * @param group group name
-	 * @param options class containing info
-	 * @param optionsCopy class containing info
-	 * @return <b>true</b> if something has been changed
-   	 */
-	public static boolean processKey(int key, boolean global,
-			String group, IGameOptions options, IGameOptions optionsCopy) {
+			String group, IGameOptions options, IGameOptions newOptions) {
 		return userProfiles.processKey(key, global, group,
-							new ClientClasses(options, optionsCopy));
+							new ClientClasses(options, newOptions));
 	}
 	/**
   	 * Check if it is OK to use Spacing
@@ -123,7 +108,7 @@ public class Profiles {
 	 */
 	public static boolean isOpponentRaceListEnabled() {
 		// Here because this is the Mod that knows the other Mods
-		return userProfiles.isParameterEnabled("OPPONENTS RACE LIST");
+		return userProfiles.isParameterEnabled("GUI PRESET OPPONENT");
 	}
 	/**
   	 * Check if it is OK to use GuiOpponentRaceList (for Random)
@@ -131,6 +116,14 @@ public class Profiles {
 	 */
 	public static boolean isGuiOpponentRaceListEnabled() {
 		// Here because this is the Mod that knows the other Mods
-		return userProfiles.isParameterEnabled("GUI OPPONENTS RACE LIST");
+		return userProfiles.isParameterEnabled("GUI RACE FILTER");
+	}
+	/**
+  	 * Check if it is OK to use GameOpponentRaceList (for Random)
+	 * @return status
+	 */
+	public static boolean isGameOpponentRaceListEnabled() {
+		// Here because this is the Mod that knows the other Mods
+		return userProfiles.isParameterEnabled("GAME RACE FILTER");
 	}
 }

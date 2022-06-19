@@ -16,7 +16,7 @@
 package br.profileManager.src.main.java;
 
 import static br.profileManager.src.main.java.Valid_ProfileAction.*;
-import static br.profileManager.src.main.java.WriteUtil.History.*;
+import static br.profileManager.src.main.java.Validation.History.*;
 import static br.profileManager.src.main.java.PMutil.containsIgnoreCase;
 
 import java.io.BufferedReader;

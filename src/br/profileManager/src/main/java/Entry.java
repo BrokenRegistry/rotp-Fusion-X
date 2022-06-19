@@ -17,7 +17,7 @@ package br.profileManager.src.main.java;
 
 import static br.profileManager.src.main.java.PMutil.capitalize;
 import static br.profileManager.src.main.java.PMutil.clean;
-import static br.profileManager.src.main.java.WriteUtil.History.Default;
+import static br.profileManager.src.main.java.Validation.History.Default;
 
 /**
  * @param <T>  the Base Type for Code View
@@ -128,7 +128,7 @@ public class Entry<
 	 * @return {@code boolean}
 	 */
 	boolean isValidValue() {
-		return validation.isValid(value);
+		return validation.isValidCodeView(value);
 	}
 
 	// ==================================================
@@ -155,7 +155,7 @@ public class Entry<
 		if (value == null) {
 			value = validation.newValue();
 		}
-		value.userView(newOutputStr);
+		value.setUserViewOnly(newOutputStr);
 	}
 
 	// ==================================================

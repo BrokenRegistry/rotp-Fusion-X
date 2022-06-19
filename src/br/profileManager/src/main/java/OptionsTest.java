@@ -63,19 +63,19 @@ class OptionsTest {
 	void isValidUserEntry_String_VC() {
 		assertEquals(true, 
 				new Options<String>("XXX", "yyy", "Bla bla", "Test")
-				.isValidUserEntry("yyy", new ValidationCriteria())
+				.isValidUserView("yyy", new ValidationCriteria())
 				, "should have been «true»");
 		assertEquals(true, 
 				new Options<String>("XXX", "yyy", "Bla bla", "Test")
-				.isValidUserEntry("Yyy", new ValidationCriteria())
+				.isValidUserView("Yyy", new ValidationCriteria())
 				, "should have been «true»");
 		assertEquals(false, 
 				new Options<String>("XXX", "yyy", "Bla bla", "Test")
-				.isValidUserEntry("yy", new ValidationCriteria())
+				.isValidUserView("yy", new ValidationCriteria())
 				, "should have been «false»");
 		assertEquals(true, 
 				new Options<String>("XXX", "yyy", "Bla bla", "Test")
-				.isValidUserEntry("Yyy, zzz",
+				.isValidUserView("Yyy, zzz",
 						new ValidationCriteria().userViewEquals(false))
 				, "should have been «true»");
 	}
@@ -84,19 +84,19 @@ class OptionsTest {
 	void isValidUserEntry_String2_VC() {
 		assertEquals(true, 
 				new Options<String>("XXX", "yyy", "Bla bla", "Test")
-				.isValidUserEntry("yyy", "Test", new ValidationCriteria())
+				.isValidUserView("yyy", "Test", new ValidationCriteria())
 				, "should have been «true»");
 		assertEquals(false, 
 				new Options<String>("XXX", "yyy", "Bla bla", "Test")
-				.isValidUserEntry("yy", "Test", new ValidationCriteria())
+				.isValidUserView("yy", "Test", new ValidationCriteria())
 				, "should have been «false»");
 		assertEquals(true, 
 				new Options<String>("XXX", "yyy", "Bla bla", "Test")
-				.isValidUserEntry("yyy", "te", new ValidationCriteria())
+				.isValidUserView("yyy", "te", new ValidationCriteria())
 				, "should have been «true»");
 		assertEquals(false, 
 				new Options<String>("XXX", "yyy", "Bla bla", "Test")
-				.isValidUserEntry("yyy", "ttt", new ValidationCriteria())
+				.isValidUserView("yyy", "ttt", new ValidationCriteria())
 				, "should have been «false»");
 	}
 	

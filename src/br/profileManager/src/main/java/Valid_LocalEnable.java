@@ -15,7 +15,7 @@
 
 package br.profileManager.src.main.java;
 
-import static br.profileManager.src.main.java.WriteUtil.History.*;
+import static br.profileManager.src.main.java.Validation.History.*;
 
 /**
  * For the validation of the configurations Action
@@ -40,7 +40,7 @@ class Valid_LocalEnable extends Validation<String> {
 		setHistory(Current, DEFAULT_VALUE);
 		setShowWithOptions(true);
 		
-		setValidationCriteria(new ValidationCriteria()
+		setCriteria(new ValidationCriteria()
 				.isRandomAllowed(false)
 				.userViewEquals(false)
 				.codeViewEquals(false));

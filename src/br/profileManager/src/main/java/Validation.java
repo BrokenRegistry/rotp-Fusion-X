@@ -20,7 +20,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-import static br.profileManager.src.main.java.WriteUtil.History.*;
+import static br.profileManager.src.main.java.Validation.History.*;
 import static br.profileManager.src.main.java.PMconfig.randomId;
 import static br.profileManager.src.main.java.PMconfig.parametersSeparator;
 import static br.profileManager.src.main.java.PMconfig.listSeparator;
@@ -29,21 +29,39 @@ import static br.profileManager.src.main.java.PMconfig.listSeparator;
  * Common methods for data validation
  * @param <T>  the Base Type for Code View
  */
-public class Validation<T> extends WriteUtil{
+public class Validation<T> extends OptionValidation<T> {
 
-	private final boolean isEntryList;
+	/**
+	 * List of memorized Values
+	 */
+	public enum History {
+	    /**
+	     * The very default settings, whit new installation 
+	     */
+	    Default,
+	    /**
+	     * GUI settings from the last time the program was launched
+	     */
+	    Last,
+	    /**
+	     * GUI settings at the current launch
+	     */
+	    Initial,
+	    /**
+	     * The current GUI settings
+	     */
+	    Current,
+	    /**
+	     * Settings from the last time a game was launched
+	     */
+	    Game
+	}
+
 	private final AbstractT<T> factory;
 	private final boolean isString;
 	private final boolean isBoolean;
 
-	private Map<History, AbstractT<T>> historyMap = new EnumMap<>(History.class);
-	private T blankCodeView = null;
-
-	private List<Options<T>> optionList =
-			new ArrayList<Options<T>>();
-	private ValidationCriteria criteria = new ValidationCriteria();
-	private List<T> defaultRandomLimits = new ArrayList<T>();
-	private List<T> limits = new ArrayList<T>();
+	private Map<Validation.History, AbstractT<T>> historyMap = new EnumMap<>(History.class);
 
 	private String  defaultName     = "none";
 	private boolean showWithOptions = false;
@@ -59,90 +77,29 @@ public class Validation<T> extends WriteUtil{
 	 * @param initialValue 
 	 */
 	public Validation(AbstractT<T> initialValue) {
-		this(initialValue, null, false);
-	}
-	/**
-	 * Generic Constructor for Validation, that set isEntryList
-	 * @param initialValue Initial setting
-	 * @param isEntryList true if list of entry expected
-	 */
-	public Validation(AbstractT<T> initialValue, boolean isEntryList) {
-		this(initialValue, null, isEntryList);
-	}
-	/**
-	 * Generic Constructor for Validation with list initialization,
-	 * is not an entry list
-	 * @param initialValue  Initial setting
-	 * @param options the list to initialize
-	 */
-	public Validation(AbstractT<T> initialValue, List<T> options) {
-		this(initialValue, options, false);
+		this(initialValue, null);
 	}
 	/**
 	 * Generic Constructor for Validation with list initialization
 	 * @param initialValue  Initial setting
 	 * @param options the list to initialize
-	 * @param isEntryList true if list of entry expected
 	 */
-	public Validation(AbstractT<T> initialValue, List<T> options, boolean isEntryList) {
+	public Validation(AbstractT<T> initialValue, List<T> options) {
+		super(options);
 		factory   = initialValue.New();
-		isString  = initialValue.codeView() instanceof String;
-		isBoolean = initialValue.codeView() instanceof Boolean;
+		isString  = initialValue.getCodeView() instanceof String;
+		isBoolean = initialValue.getCodeView() instanceof Boolean;
 		setBlankCodeView(initialValue.blankCodeView());
-		setHistory(Initial, initialValue.clone());
-		setHistory(Default, initialValue.clone()); // better not be null!
-		this.isEntryList = isEntryList;
-		initOptions(options);
+		setHistory(Initial, initialValue);
+		setHistory(Default, initialValue); // better not be null!
 	}
-	
-	private void initOptions(List<T> options) {
-		initEntryList();
-		if (options == null) {
-			return;
-		}
-		for (T option : options) {
-			this.addOption(option,
-					PMutil.suggestedUserViewFromCodeView(option));
-		}
-	}
-	
-	protected void initEntryList() {
-		if (isEntryList) {
-			this.getValidationCriteria().isBlankAllowed(false);
-		}
-	}
-	
+
 	private AbstractT<T> clone(AbstractT<T> t) {
 		if (t == null) {
 			return t;
 			}
 		return t.clone();
 	}
-	// ------------------------------------------------
-    // Former Overriders
-    //	
-	/**
-	 * Get the default limit value
-	 * @return the default limit Code View, never <b>null</b>
-	 */
-	T getDefaultLimit() {
-		return getHistory(Default).codeView();
-	}
-
-	/**
-	 * @return the blankCodeView
-	 */
-	protected T getBlankCodeView() {
-		return blankCodeView;
-	}
-
-	/**
-	 * @param blankCodeView the new Code View to set
-	 */
-	protected void setBlankCodeView(T blankCodeView) {
-		this.blankCodeView = blankCodeView;
-	}    
-
 	// ==================================================
     // Setters
     //
@@ -151,7 +108,7 @@ public class Validation<T> extends WriteUtil{
 	 * @param history  Field to be filled
 	 * @param newValue the new "history" Value
 	 */
-	protected void setHistory(History history, AbstractT<T> newValue) {
+	protected void setHistory(Validation.History history, AbstractT<T> newValue) {
 		if (history == Last) { // if in two step to allow breakpoint
 			if (historyMap.get(Last) != null) {
 				return; // Last was already assigned	
@@ -162,86 +119,86 @@ public class Validation<T> extends WriteUtil{
 			historyMap.put(Current, clone(newValue));
 		}
 	}
-
 	/**
 	 * Copy one History to another
 	 * @param history   The History case to fill
 	 * @param source    The History to copy
 	 */
-	protected void setHistory(History history, History source) {
+	void setHistory(Validation.History history, Validation.History source) {
 		setHistory(history, getHistory(source));
 	}
-
 	/**
 	 * Set the "history" User View
 	 * @param history  Field to be filled
 	 * @param userView the new "history" Value
 	 */
-	protected void setHistory(History history, String userView) {
+	protected void setHistory(Validation.History history, String userView) {
 		AbstractT<T> value = newValue(getCodeView(userView));
 		setHistory(history, value);
 	}
-
 	/**
 	 * Set the "history" Code View
 	 * @param history  Field to be filled
 	 * @param codeView the new "history" codeView
 	 */
-	protected void setHistoryCodeView(History history, T codeView) {
+	protected void setHistoryCodeView(Validation.History history, T codeView) {
 		AbstractT<T> value = newValue(codeView);
 		setHistory(history, value);
 	}
-
 	/**
 	 * Set the "history" Code View
 	 * @param history  Field to be filled
 	 * @param codeView the new "history" codeView
 	 */
-	protected void setHistoryCodeView(History history, List<T> codeView) {
+	protected void setHistoryCodeView(Validation.History history, List<T> codeView) {
 		AbstractT<T> value = newValue(codeView);
 		setHistory(history, value);
 	}
-
 	// ==================================================
     // Getters
     //
+	/**
+	 * Get the default limit value
+	 * Nothing better than the default value!
+	 * @return the default limit Code View, never <b>null</b>
+	 */
+	private T getDefaultLimit() {
+		return getHistory(Default).getCodeView();
+	}
 	/**
 	 * Get the "history" Value
 	 * @param history  Field to be retrieved
 	 * @return the "history" Value
 	 */
-	protected AbstractT<T> getHistory(History history) {
+	protected AbstractT<T> getHistory(Validation.History history) {
 		AbstractT<T> out = historyMap.get(history);
 		if (out == null) {
 			return newValue();
 		}
 		return out.clone();
 	}
-
 	/**
 	 * Check if the "history" Exist
 	 * @param history  Field to be retrieved
 	 * @return true if null
 	 */
-	protected boolean historyIsNull(History history) {
+	protected boolean historyIsNull(Validation.History history) {
 		return historyMap.get(history) == null;
 	}
-
 	/**
 	 * Get the code view from User View then set the value
 	 * @param userView  the user entry
 	 * @return the validated Value
 	 */
-	protected AbstractT<T> getValue(String userView) {
+	protected AbstractT<T> toValue(String userView) {
 		AbstractT<T> value = newValue();
 		if (userView == null) {
 			return value;
 		}
-		value.userView(userView);
-		value.codeView(getCodeView(userView));
+		value.setUserViewOnly(userView);
+		value.setCodeViewOnly(getCodeView(userView));
 		return value;
 	}
-
 	/**
 	 * Factory create a new empty Abstract_T<T>
 	 * @return the new Abstract_T<T>
@@ -249,111 +206,123 @@ public class Validation<T> extends WriteUtil{
 	protected AbstractT<T> newValue() {
 		return factory.New(getBlankCodeView());
 	}
-
 	/**
 	 * Factory create a new Value and set code View
 	 * @param codeView  the value
 	 * @return the new Abstract_T<T>
 	 */
 	public AbstractT<T> newValue(T codeView) {
-		return factory.New(codeView).userView(getUserView(codeView));
+		return factory.New(codeView).setUserViewOnly(getUserView(codeView));
 	}
-
 	/**
 	 * Factory create a new Value and set code View List
 	 * @param codeView  the value
 	 * @return the new Abstract_T<T>
 	 */
-	public AbstractT<T> newValue(List<T> codeView) {
+	private AbstractT<T> newValue(List<T> codeView) {
 		return factory.New(codeView);
 	}
-
 	// ==================================================
     // Random Management Methods
     //
 	/**
+	 * Process Random within Given Limits
+	 * @param parameters {@code String[]} the extra parameters
+	 * @return valid Limits
+	 */
+	protected int[] validateLimits(String[] parameters) {
+		int absMin = getOptionLimitIndex(0);
+		int absMax = getOptionLimitIndex(1);
+		int min = absMin;
+		int max = absMax;
+		// First Limit
+		if (parameters.length >= 1) {
+			if (isValidUserView(parameters[0])) {
+				min = getUserViewIndex(parameters[0], min);
+			} else {
+				min = PMutil.toIntegerOrDefault(parameters[0], min);
+			}
+			min = Math.max(min, absMin);
+		}
+		// Second Limit
+		if (parameters.length >= 2) {
+			if (isValidUserView(parameters[1])) {
+				max = getUserViewIndex(parameters[1], max);
+			} else {
+				max = PMutil.toIntegerOrDefault(parameters[1], max);
+			}
+			max = Math.min(max, absMax);
+		}
+		return new int[] {min, max};
+	}
+	/**
 	 * Process Random without parameters
 	 * @return {@code Integer} OutputString
 	 */
-	protected AbstractT<T> getRandom(T lim1, T lim2) {
+	private AbstractT<T> getRandom(T lim1, T lim2) {
 		T codeView = factory.random(lim1, lim2);
 		return factory.New(codeView);
 	}
-
 	/**
 	 * Process Random within Given Limits
 	 * @param parameters {@code String[]} the extra parameters
 	 * @return Random Value
 	 */
 	protected AbstractT<T> randomWithInListLimit(String[] parameters) {
-		int min = 0;
-		int max = listSize();
-		// First Limit
-		if (parameters.length >= 1) {
-			min = getUserViewIndex(parameters[0], min);
-		}
-		// Second Limit
-		if (parameters.length >= 2) {
-			max = getUserViewIndex(parameters[1], max);
-		}
+		int[] limits = validateLimits(parameters);
 		// get Random
-		int id = PMutil.getRandom(min, max);
+		int id = PMutil.getRandom(limits[0], limits[1]+1);
 		return factory.New(getCodeView(id));
 	}
-
 	/**
 	 * Process Random with parameters
 	 * @param parameters {@code String[]} the extra parameters
 	 * @return Random Value
 	 */
-	AbstractT<T> randomWithParameters(String[] parameters) {
+	private AbstractT<T> randomWithParameters(String[] parameters) {
 		if (parameters.length > 2) {
 			return randomWithOptions(parameters);
 		}
-		if (hasOptions() && isValidUserEntry(parameters[0])) {
+		if (hasOptions()) {
 			return randomWithInListLimit(parameters);
 		}
 		return randomWithLimit(parameters);
 	}
-	
 	/**
 	 * Process Random among the given option list
 	 * @param parameters {@code String[]} the extra parameters
 	 * @return Random Value
 	 */
-	AbstractT<T> randomWithOptions(String[] parameters) {
+	protected AbstractT<T> randomWithOptions(String[] parameters) {
 		int id = PMutil.getRandom(0, parameters.length);
 		return entryValidation(parameters[id]);
 	}
-
 	/**
 	 * Test if user Entry is asking for a random parameter
 	 * @param userEntry the {@code String} to analyze
 	 * @return <b>true</b> if is random
 	 */
-	protected static boolean isRandom(String userEntry) {
+	public static boolean isRandom(String userEntry) {
 		userEntry = PMutil.clean(userEntry).toUpperCase();
 		if (userEntry.length() >= randomId().length()) {
 			return userEntry.substring(0, randomId().length()).equals(randomId()); 
 		}
 		return false;
 	}
-
 	/**
 	 * Check for extra parameter in Random request
 	 * @param userEntry the {@code String} to analyze
 	 * @return <b>true</b> if has extra parameters
 	 */
-	protected static boolean hasExtraParameters(String userEntry) {
+	private static boolean hasExtraParameters(String userEntry) {
 		return !removeRandomId(userEntry).isBlank();
 	}
-
 	/**
 	 * Remove the Random word and return the extra parameters
 	 * @param userEntry the {@code String} to analyze
 	 * @return the extra parameters
 	 */
-	protected static String removeRandomId(String userEntry) {
+	private static String removeRandomId(String userEntry) {
 		userEntry = PMutil.clean(userEntry);
 		userEntry = userEntry.substring(randomId().length()).strip();
 		// Check for misplaced parametersSeparator()
@@ -363,72 +332,21 @@ public class Validation<T> extends WriteUtil{
 		}
 		return userEntry;
 	}
-
 	/**
 	 * Remove the Random word and return the extra parameters
 	 * @param userEntry the {@code String} to analyze
 	 * @return the extra parameters
 	 */
-	protected static String[] splitParameters(String parameters) {
+	private static String[] splitParameters(String parameters) {
 		// parameters should already be tested
 		return parameters.split(parametersSeparator());
 	}
-
-	/**
-	 * Process non Random user entry
-	 * @return {@code Code View} Validated Value
-	 */
-	@SuppressWarnings("unchecked")
-	AbstractT<T> entryValidation(String userEntry) {
-		userEntry = PMutil.clean(userEntry);
-		// First Check for blank values
-		if (userEntry.isBlank()) {
-			if (getValidationCriteria().isBlankAllowed()) {
-				return newValue(getBlankCodeView());
-			}
-			return getHistory(Default);
-		}
-		// Then Check check if part of the list 
-		if (hasOptions()) {
-			if (isValidUserEntry(userEntry)) {
-				return getValue(userEntry);
-			} 
-			// Bad entry, then either blank or default
-			else if (getValidationCriteria().isBlankAllowed()) {
-				return newValue(getBlankCodeView());
-			}
-			else {
-				return getHistory(Default);
-			}
-			// end of hasList
-		}
-		// Not on the list! check for String entry
-		if (isString) {
-			return newValue((T)userEntry);
-		}
-		// Then Check if value is valid
-		T codeView = factory.toCodeView(userEntry); // Raw conversion
-		if (codeView != null) {
-			AbstractT<T> value = newValue(codeView);
-			// Check for limit before returning the value
-			value.validBound(getLimits(0), getLimits(1));
-			return value;
-		}
-		// No list! No codeView, Not a String, then either blank or default
-		if (getValidationCriteria().isBlankAllowed()) {
-			return newValue();
-		}
-		else {
-			return getHistory(Default);
-		}
-	}
-
 	/**
 	 * Process Random with parameters
 	 * @param parameters {@code String[]} the extra parameters
 	 * @return {@code Code View} OutputString
 	 */
-	AbstractT<T> randomWithLimit(String[] parameters) {
+	private AbstractT<T> randomWithLimit(String[] parameters) {
 		T lim1 = getLimits(0);
 		T lim2 = getLimits(1);
 		if (parameters.length >= 1) {
@@ -449,43 +367,59 @@ public class Validation<T> extends WriteUtil{
 		// get Random
 		return getRandom(lim1, lim2);
 	}
-
 	/**
 	 * Process Random without parameters
 	 * @return {@code Code View} Output Value
 	 */
-	AbstractT<T> randomWithoutParameters() {
+	protected AbstractT<T> randomWithoutParameters() {
 		if (hasOptions()) {
 			int id = PMutil.getRandom(
-					getCodeViewIndex(getDefaultRandomLimits(0), 0),
-					getCodeViewIndex(getDefaultRandomLimits(1), listSize()));
+					getOptionDefaultRandomIndex(0),
+					getOptionDefaultRandomIndex(1));
 			return newValue(getCodeView(id));
-
 		}
 		return getRandom(getDefaultRandomLimits(0), getDefaultRandomLimits(1));
 	}
-
 	// ==================================================
-    // Other Methods
+    // Main Analysis Methods
     //
 	/**
-	 * Analyze user Entry content
+	 * Analyze List user Entry content
 	 * @return value
 	 */
 	protected AbstractT<T> entryAnalysis(String userEntry) {
 		userEntry = PMutil.clean(userEntry);
+		AbstractT<T> value;
+		List<String> userViewList = new ArrayList<String>();
+		List<T> codeViewList      = new ArrayList<T>();
+		for (String element : userEntry.split(listSeparator())) {
+			value = elementAnalysis(element); // Never null
+			userViewList.add(value.getUserView());
+			codeViewList.add(value.getCodeView());
+			}
+		value = newValue();
+		value.setUserViewOnly(userViewList);
+		value.setCodeViewOnly(codeViewList);
+		return value;
+	}
+	/**
+	 * Analyze user Entry element content
+	 * @return value
+	 */
+	protected AbstractT<T> elementAnalysis(String userEntry) {
+		userEntry = PMutil.clean(userEntry);
 		AbstractT<T> value = newValue();
 		// Random Management
-		if ( getValidationCriteria().isRandomAllowed()
+		if ( getCriteria().isRandomAllowed()
 				&& isRandom(userEntry)) {
 			if (hasExtraParameters(userEntry)) {
-				value = randomWithParameters(
-						splitParameters(removeRandomId(userEntry)));
-				value.userView(userEntry);
+				String[] parameters = splitParameters(removeRandomId(userEntry));
+				value = randomWithParameters(parameters);
+				value.setUserViewOnly(userEntry);
 				return value;
 			}
 			value = randomWithoutParameters();
-			value.userView(userEntry);
+			value.setUserViewOnly(userEntry);
 			return value;
 		}
 		// Not Random
@@ -493,56 +427,56 @@ public class Validation<T> extends WriteUtil{
 		return value;
 	}
 	/**
-	 * Analyze user Entry content
-	 * @return value
+	 * Process non Random user entry
+	 * @return {@code Code View} Validated Value
 	 */
-//	protected AbstractT<T> entryAnalysis(String userEntry) {
-//		userEntry = PMutil.clean(userEntry);
-//		// Not a list
-//		if (!isEntryList) {
-//			return baseAnalysis(userEntry);
-//		}
-//		// Is a list: Then split it to elements and manage them
-//		AbstractT<T> element;
-//		List<AbstractT<T>> valueList = new ArrayList<AbstractT<T>>();
-//		for (String baseEntry : userEntry.split(listSeparator())) {
-//			element = baseAnalysis(baseEntry);
-//			if (element.codeView() != null
-//					&& !element.isBlank()) {
-//				valueList.add(element);
-//			}
-//		}
-//		AbstractT<T> out = newValue();
-//		out.valueList(valueList); ;
-//		return out;
-//	}
-
-	/**
-	 * Convert the user entry in a more useful format
-	 * @param userEntry  The {@code String} to convert
-	 * @return {@code String[]} from user entry list
-	 */
-	public String[] getArrayUserViewArray (String userEntry) {
-		if (userEntry == null) {
-			return null;
+	protected @SuppressWarnings("unchecked")
+	AbstractT<T> entryValidation(String userEntry) {
+		userEntry = PMutil.clean(userEntry);
+		// First Check for blank values
+		if (userEntry.isBlank()) {
+			if (getCriteria().isBlankAllowed()) {
+				return newValue(getBlankCodeView());
+			}
+			return getHistory(Default);
 		}
-		return userEntry.split(listSeparator());
+		// Then Check check if part of the list 
+		if (hasOptions()) {
+			if (isValidUserView(userEntry)) {
+				return toValue(userEntry);
+			} 
+			// Bad entry, then either blank or default
+			else if (getCriteria().isBlankAllowed()) {
+				return newValue(getBlankCodeView());
+			}
+			else {
+				return getHistory(Default);
+			}
+			// end of hasList
+		}
+		// Not on the list! check for String entry
+		if (isString) {
+			return newValue((T)userEntry);
+		}
+		// Then Check if value is valid
+		T codeView = factory.toCodeView(userEntry); // Raw conversion
+		if (codeView != null) {
+			AbstractT<T> value = newValue(codeView);
+			// Check for limit before returning the value
+			value.validBound(getLimits(0), getLimits(1));
+			return value;
+		}
+		// No list! No codeView, Not a String, then either blank or default
+		if (getCriteria().isBlankAllowed()) {
+			return newValue();
+		}
+		else {
+			return getHistory(Default);
+		}
 	}
-	
-	// ==================================================
-    // FORMER ABSTRACT_OPTION --- INTEGRATED
-    //
 	// ==================================================
     // Setters
     //
-	/**
-	 * Set the {@code ValidationCriteria} criteria
-	 * @param newCriteria
-	 */
-	protected void setValidationCriteria(ValidationCriteria newCriteria) {
-		criteria = newCriteria;
-	}
-
 	/**
 	 * Set the showWithOptions parameter value
 	 * @param newValue
@@ -550,7 +484,6 @@ public class Validation<T> extends WriteUtil{
 	protected void setShowWithOptions(boolean newValue) {
 		showWithOptions = newValue;
 	}
-
 	/**
 	 * Set the showHistory parameter value
 	 * @param newValue
@@ -558,7 +491,6 @@ public class Validation<T> extends WriteUtil{
 	protected void setShowHistory(boolean newValue) {
 		showHistory = newValue;
 	}
-
 	/**
 	 * Set the showLocalEnable parameter value
 	 * @param newValue
@@ -566,7 +498,6 @@ public class Validation<T> extends WriteUtil{
 	protected void setShowLocalEnable(boolean newValue) {
 		showLocalEnable = newValue;
 	}
-
 	/**
 	 * Set the default parameter Name 
 	 * @param newValue the new default Parameter
@@ -574,64 +505,9 @@ public class Validation<T> extends WriteUtil{
 	protected void setDefaultName(String newName) {
 		defaultName = newName;
 	}
-
-	/**
-	 * Set the {@code Code View} limits
-	 * @param newLimits
-	 */
-	protected void setLimits(List<T> newLimits) {
-		limits = newLimits;
-	}
-
-	/**
-	 * Set the {@code Code View} limits
-	 * @param Limit1
-	 * @param Limit2
-	 */
-	protected void setLimits(T Limit1, T Limit2) {
-		limits = new ArrayList<T>();
-		limits.add(Limit1);
-		limits.add(Limit2);
-	}
-
-	/**
-	 * Set the {@code Code View} defaultRandomLimits
-	 * @param newLimits
-	 */
-	protected void setDefaultRandomLimits(List<T> newLimits) {
-		defaultRandomLimits = newLimits;
-	}
-
-	/**
-	 * Set the {@code Code View} defaultRandomLimits
-	 * @param Limit1
-	 * @param Limit2
-	 */
-	protected void setDefaultRandomLimits(T Limit1, T Limit2) {
-		defaultRandomLimits = new ArrayList<T>();
-		defaultRandomLimits.add(Limit1);
-		defaultRandomLimits.add(Limit2);
-	}
-
 	// ==================================================
     // Getters
     //
-	/**
-	 * Get the {@code Code View} validationList
-	 * @return the validationList
-	 */
-	protected List<Options<T>> getValidationList() {
-		return optionList;
-	}
-
-	/**
-	 * Get the {@code ValidationCriteria}
-	 * @return the criteria
-	 */
-	public ValidationCriteria getValidationCriteria() {
-		return criteria;
-	}
-
 	/**
 	 * Get the showWithOptions parameter value
 	 * @return newValue
@@ -639,7 +515,6 @@ public class Validation<T> extends WriteUtil{
 	protected boolean isShowWithOptions() {
 		return showWithOptions;
 	}
-
 	/**
 	 * Get the showHistory parameter value
 	 * @return newValue
@@ -647,7 +522,6 @@ public class Validation<T> extends WriteUtil{
 	protected boolean isShowHistory() {
 		return showHistory;
 	}
-
 	/**
 	 * Get the showLocalEnable parameter value
 	 * @return newValue
@@ -655,7 +529,6 @@ public class Validation<T> extends WriteUtil{
 	protected boolean isShowLocalEnabled() {
 		return showLocalEnable;
 	}
-
 	/**
 	 * Get the default parameter name
 	 * @return the current value
@@ -663,129 +536,54 @@ public class Validation<T> extends WriteUtil{
 	protected String getDefaultName() {
 		return defaultName;
 	}
-
 	/**
 	 * Get the {@code Code View} limits
 	 * @return the limits
 	 */
-	protected List<T> getLimits() {
-		return limits;
-	}
-
-	/**
-	 * Get the {@code Code View} limits
-	 * @return the limits
-	 */
-	protected T getLimits(int index) {
-		if (limits.isEmpty()) {
+	private T getLimits(int index) {
+		if (limits().isEmpty()) {
 			return getDefaultLimit();
 		}
 		if (index < 0) {
-			return limits.get(0);
+			return limits().get(0);
 		}
-		if (index > limits.size()-1) {
-			return limits.get(limits.size()-1);
+		if (index > limits().size()-1) {
+			return limits().get(limits().size()-1);
 		}
-		return limits.get(index);
+		return limits().get(index);
 	}
-
-	/**
-	 * Get the {@code Code View} defaultRandomLimits
-	 * @return the limits
-	 */
-	protected List<T> getDefaultRandomLimits() {
-		return defaultRandomLimits;
-	}
-
 	/**
 	 * Get the {@code Code View} defaultRandomLimits
 	 * index the limit index
 	 * @return the limit
 	 */
-	protected T getDefaultRandomLimits(int index) {
-		if (defaultRandomLimits.isEmpty()) {
+	private T getDefaultRandomLimits(int index) {
+		if (defaultRandomLimits().isEmpty()) {
 			return getDefaultLimit();
 		}
 		if (index < 0) {
-			return defaultRandomLimits.get(0);
+			return defaultRandomLimits().get(0);
 		}
-		if (index > defaultRandomLimits.size()-1) {
-			return defaultRandomLimits.get(defaultRandomLimits.size()-1);
+		if (index > defaultRandomLimits().size()-1) {
+			return defaultRandomLimits().get(defaultRandomLimits().size()-1);
 		}
-		return defaultRandomLimits.get(index);
+		return defaultRandomLimits().get(index);
 	}
-
-	// ==================================================
-    // Test Methods
-    //
-	/**
-	 * @return <b>true</b> if the Validation List is not empty
-	 */
-	protected boolean hasOptions() {
-		return optionList.size() > 0;
-	}
-
 	// ==================================================
     // Other Methods
     //
-	/**
-	 * Test if the user entry is part of the validation list
-	 * and return the category
-	 * @param userEntry the {@code User View} value to test
-	 * @return the category, "" if none
-	 */
- 	protected String getCategory(String userEntry) {
- 		if (userEntry != null) {
- 			for (Options<T> element : optionList) {
- 				if (element.isValidUserEntry(userEntry, criteria)) {
- 					return element.getCategory();
- 				}
- 			}
- 		}
-		return "";
-	}
-
  	/**
-	 * Test if the user entry is part of the validation list
-	 * and return the {@code Code View} value as {@code String}
-	 * @param userEntry the value to test
-	 * @return the code view, "" if none
-	 */
- 	protected T getCodeView(String userEntry) {
-		return getCodeViewOrDefault(userEntry, getBlankCodeView());
-	}
-	
- 	/**
-	 * Test if the user entry is part of the validation list
-	 * and return the {@code Code View} value as {@code String} or default Value
-	 * @param userEntry the value to test
-	 * @param onWrong   the value to return if not on the list
-	 * @return the code view, onWrong if none
-	 */
- 	protected T getCodeViewOrDefault(String userEntry, T onWrong) {
- 		if (userEntry != null) {
- 			for (Options<T> element : optionList) {
-				if (element.isValidUserEntry(userEntry, criteria)) {
-					return element.getCodeView();
-				}
-			}
- 		}
-		return onWrong;
-	}
-	
-	/**
 	 * Test if the code view is part of the validation list
 	 * and return the user view
 	 * @param codeView the code view to test
 	 * @return the user view, "" if none
 	 */
-	protected String getUserView(T codeView) {
+	private String getUserView(T codeView) {
 		if (codeView == null) {
 			return getUserViewOrDefault(codeView, "");
 		}
 		return getUserViewOrDefault(codeView, codeView.toString()); // Not in the list
 	}
-	
 	/**
 	 * Test if the code view is part of the validation list
 	 * and return the user view or default Value
@@ -793,13 +591,13 @@ public class Validation<T> extends WriteUtil{
 	 * @param onWrong  the value to return if not on the list
 	 * @return the user view, "" if none
 	 */
-	protected String getUserViewOrDefault(T codeView, String onWrong) {
+	private String getUserViewOrDefault(T codeView, String onWrong) {
 		if (codeView == null) {
 			return onWrong;
 		}
 		// Try the options list
-		for (Options<T> element : optionList) {
-				if (element.isValidCodeView(codeView, criteria)) {
+		for (Options<T> element : optionList()) {
+				if (element.isValidCodeView(codeView, getCriteria())) {
 				return element.getUserView();
 			}
 		}
@@ -810,188 +608,6 @@ public class Validation<T> extends WriteUtil{
 		}	
 		return userView;
 	}
-	
-	/**
-	 * Test if the user view is part of the validation list
-	 * and return its index, or the default one if none
-	 * @param userView the {@code String} to search
-	 * @param defaultIndex the {@code int} default returned value
-	 * @return the {@code int} index
-	 */
-	protected int getUserViewIndex(String userView, int defaultIndex) {
-		userView = PMutil.clean(userView);
-		int index = 0;
-		for (Options<T> element : optionList) {
-			if (element.isValidUserEntry(userView, criteria)) {
-				return index;
-			}
-			index++;
-		}
-		// Not in the List, then it's either a given index or default
-		return PMutil.toIntegerOrDefault(userView, defaultIndex);
-	}
-	
-	/**
-	 * Test if the code view is part of the validation list
-	 * and return its index, or the default one if none
-	 * @param userView the {@code T Class} to search
-	 * @param defaultIndex the {@code int} default returned value
-	 * @return the {@code int} index
-	 */
-	protected int getCodeViewIndex(T codeView, int defaultIndex) {
-		if (codeView == null) {
-			return defaultIndex;
-		}
-		int index = 0;
-		for (Options<T> element : optionList) {
-			if (element.isValidCodeView(codeView, criteria)) {
-				return index;
-			}
-			index++;
-		}
-		// Not in the List, then it's either a given index or default
-		return PMutil.toIntegerOrDefault(codeView.toString(), defaultIndex);
-	}
-	
-	/**
-	 * @return The list size
-	 */
-	protected int listSize() {
-		return optionList.size();
-	}
-	
-	/**
-	 *  @return The CodeView from its index
-	 */
-	protected T getCodeView(int index) {
-		index = Math.max(0, Math.min(optionList.size()-1, index));
-		return optionList.get(index).getCodeView();
-	}
-	
-	/**
-	 *  @return The UserView from its index
-	 */
-	protected String getUserView(int index) {
-		index = Math.max(0, Math.min(optionList.size()-1, index));
-		return optionList.get(index).getUserView();
-	}
-	
-	/**
-	 * Test if the user view is part of the category list
-	 * and return the code view
-	 * @param userEntry the user view to check
-	 * @param category the filter to apply
-	 *  @return The CodeView, "" if none
-	 */
-	protected T getCodeView(String userEntry, String category) {
- 		if (userEntry != null && userEntry != category) {
-			for (Options<T> element : optionList) {
-				if (element.isValidUserEntry(userEntry, category, criteria)) {
-					return element.getCodeView();
-				}
-			}
- 		}
-		return getBlankCodeView();
-	}
-	
-	/**
-	 * Test if the user view is part of the category list
-	 * @param userEntry the user view to check
-	 */
-	protected boolean isValidUserEntry(String userEntry) {
-		if (userEntry != null) {
-			for (Options<T> element : optionList) {
-				if (element.isValidUserEntry(userEntry, criteria)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * Test if the user view is part of the category validation list
-	 * @param userEntry the user view to check
-	 * @param category the filter to apply
-	 */
-	protected boolean isValidUserEntry(String userEntry, String category) {
-		if (userEntry != null) {
-			for (Options<T> element : optionList) {
-				if (element.isValidUserEntry(userEntry, category, criteria)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * Test if the user view is part of the category validation list
-	 * @param codeView the user view to check
-	 * @param category the filter to apply
-	 */
-	protected boolean isValidCodeView(T codeView, String category) {
-		if (codeView != null) {
-			for (Options<T> element : optionList) {
-				if (element.isValidCodeView(codeView, category, criteria)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * Test if the value is part of the category validation list
-	 * @param value the value to check
-	 * @param category the filter to apply
-	 */
-	protected boolean isValid(AbstractT<T> value, String category) {
-		if (value != null) {
-			T codeView = value.codeView();
-			if (codeView != null) {
-				for (Options<T> element : optionList) {
-					if (element.isValidCodeView(codeView, category, criteria)) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * Test if the value is valid
-	 * @param value the value to check
-	 */
-	protected boolean isValid(AbstractT<T> value) {
-		if (value != null) {
-			if (criteria.isBlankAllowed() && value.isBlank()) {
-				return true;
-			}	
-			T codeView = value.codeView();
-			if (codeView != null) {
-				for (Options<T> element : optionList) {
-					if (element.isValidCodeView(codeView, criteria)) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * @return UserViewList to String List
-	 */
-	protected List<String> getOptionsStringList() {
-		List<String> result = new ArrayList<String>();
-		for (Options<T> element : optionList) {
-			result.add(element.getUserView());
-		}
-		return result;
-	}
-
 	/**
 	 * Generate UserViewList as String
 	 * @return UserView List in capitalized String
@@ -1004,64 +620,10 @@ public class Validation<T> extends WriteUtil{
 			return PMutil.BOOLEAN_LIST.toString();
 		}
 		// Then it's Numeric
-		return ("[Min=" + this.getLimits(0).toString()
-				+ ", Max=" + this.getLimits(1).toString()
-				+ ", Rnd Low=" + this.getDefaultRandomLimits(0).toString()
-				+ ", Rnd Up=" + this.getDefaultRandomLimits(1).toString()
+		return ("[Min=" + getLimits(0).toString()
+				+ ", Max=" + getLimits(1).toString()
+				+ ", Rnd Low=" + getDefaultRandomLimits(0).toString()
+				+ ", Rnd Up=" + getDefaultRandomLimits(1).toString()
 				+ "]");
-	}
-
-	/**
-	 * Generate String with all Options and their = description
-	 * @return the String, never null
-	 */
-	public String getOptionsDescription() {
-		String result = "";
-		String line;
-		for (Options<T> element : optionList) {
-			line = element.toString();
-			if (!line.isBlank()) {
-				result += line + NL;
-			}
-		}
-		return result;
-	}
-	
-	// ------------------------------------------------
-    // Validation List Setters & Getters
-    //	
-	protected void autoUpdateLimits() {
-		setLimits(getCodeView(0), getCodeView(getValidationList().size()-1));
-		setDefaultRandomLimits(getCodeView(0), getCodeView(getValidationList().size()-1));
-	}
-
-	protected void addOption(Options<T> element) {
-		optionList.add(element);
-		autoUpdateLimits();
-	}
-	
-	protected void addOption(T codeView) {
-		addOption(new Options<T>(codeView));
-	}
-	
-	protected void addOption(T codeView, String userView) {
-		addOption(new Options<T>(
-									codeView, userView));
-	}
-	
-	protected void addOption(T codeView, String userView, 
-					String description, String category) {
-		addOption(new Options<T>(
-								codeView, userView, description, category));
-	}
-	
-	protected void addOption(T codeView, String description, String category) {
-		addOption(new Options<T>(
-									codeView, description, category));
-	}
-	
-	protected void setValidationList(List<Options<T>> list) {
-		optionList = list;
-		autoUpdateLimits();
 	}
 }

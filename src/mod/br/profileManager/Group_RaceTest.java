@@ -11,32 +11,33 @@ import mod.br.profileManager.Group_Race.PlayerRace;
 
 class Group_RaceTest {
 	private ClientClassesTest cct = new ClientClassesTest();
-	private String NL = System.lineSeparator();
 	
 	private String racePrt = 
-			";  " + NL +
-			"; --------- Races Game Options ---------" + NL +
-			";  " + NL +
-			"¦ Parameter     : PLAYER RACE" + NL +
-			"; Options       : [Human, Alkari, Silicoid, Mrrshan, Klackon, Meklar, Psilon," + NL +
-			";   \" \"         : Darlok, Sakkra, Bulrathi]" + NL +
-			"¦ History       : Current : Human / Last :  / Initial : Human / Default : Human / Game :" + NL + 
-			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
-			"Profile 1       : " + NL +
-			"Random          : " + NL +
-			"; ---- Available for changes in game saves" + NL +
-			"" + NL;
+			";  \r\n"
+			+ "; --------- Races Game Options ---------\r\n"
+			+ ";  \r\n"
+			+ "¦ Parameter     : PLAYER RACE\r\n"
+			+ "; Options       : [Human, Alkari, Silicoid, Mrrshan, Klackon, Meklar, Psilon,\r\n"
+			+ ";   \" \"         : Darlok, Sakkra, Bulrathi]\r\n"
+			+ "¦ History       : Current : Human ¦ Last :  ¦ Initial : Human ¦ Default : Human\r\n"
+			+ "¦ History       : Game : \r\n"
+			+ "¦ LOCAL ENABLE  : All         ; [No, All, Save, Load]\r\n"
+			+ "Profile 1       : \r\n"
+			+ "Random          : \r\n"
+			+ "; ---- Available for changes in game saves\r\n"
+			+ "\r\n";
 
 	private String colorPrt = 
-			"¦ Parameter     : PLAYER COLOR" + NL +
-			"; Options       : [Red, Green, Yellow, Blue, Orange, Purple, Aqua, Fuchsia," + NL +
-			";   \" \"         : Brown, White, Lime, Grey, Plum, Light Blue, Mint, Olive]" + NL +
-			"¦ History       : Current : Blue / Last :  / Initial : Blue / Default : Red / Game :"  + NL +
-			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
-			"Profile 1       : " + NL +
-			"Random          : " + NL+
-			"; ---- Available for changes in game saves" + NL + 
-			"" + NL;
+			"¦ Parameter     : PLAYER COLOR\r\n"
+			+ "; Options       : [Red, Green, Yellow, Blue, Orange, Purple, Aqua, Fuchsia,\r\n"
+			+ ";   \" \"         : Brown, White, Lime, Grey, Plum, Light Blue, Mint, Olive]\r\n"
+			+ "¦ History       : Current : Blue ¦ Last :  ¦ Initial : Blue ¦ Default : Red\r\n"
+			+ "¦ History       : Game : \r\n"
+			+ "¦ LOCAL ENABLE  : All         ; [No, All, Save, Load]\r\n"
+			+ "Profile 1       : \r\n"
+			+ "Random          : \r\n"
+			+ "; ---- Available for changes in game saves\r\n"
+			+ "\r\n";
 	
 	@Test void PlayerRace_ClientClasses() {
 		PlayerRace param;

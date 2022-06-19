@@ -24,32 +24,6 @@ import static br.profileManager.src.main.java.PMconfig.*;
  */
 public class WriteUtil {
 	/**
-	 * List of memorized Values
-	 */
-	public enum History {
-	    /**
-	     * The very default settings, whit new installation 
-	     */
-	    Default,
-	    /**
-	     * GUI settings from the last time the program was launched
-	     */
-	    Last,
-	    /**
-	     * GUI settings at the current launch
-	     */
-	    Initial,
-	    /**
-	     * The current GUI settings
-	     */
-	    Current,
-	    /**
-	     * Settings from the last time a game was launched
-	     */
-	    Game
-	}
-	
-	/**
 	 * an easier access to System.lineSeparator()
 	 */
 	protected static final String NL = System.lineSeparator();

@@ -62,7 +62,7 @@ class Group_Governor extends AbstractGroup <ClientClasses> {
 		}
 
 		@Override public void putToGUI(ClientClasses go, AbstractT<Boolean> value) {
-			UserPreferences.setGovernorOn(value.codeView());
+			UserPreferences.setGovernorOn(value.getCodeView());
 		}
 		
 		@Override public void initComments() {
@@ -97,7 +97,7 @@ class Group_Governor extends AbstractGroup <ClientClasses> {
 		}
 
 		@Override public void putToGUI(ClientClasses go, AbstractT<Boolean> value) {
-			UserPreferences.setAutoSpendOn(value.codeView());
+			UserPreferences.setAutoSpendOn(value.getCodeView());
 		}
 
 		@Override public void initComments() {}
@@ -127,7 +127,7 @@ class Group_Governor extends AbstractGroup <ClientClasses> {
 		}
 
 		@Override public void putToGUI(ClientClasses go, AbstractT<Integer> value) {
-			UserPreferences.setDefaultMaxBases(value.codeView());
+			UserPreferences.setDefaultMaxBases(value.getCodeView());
 		}
 
 		@Override public void initComments() {}
@@ -157,7 +157,7 @@ class Group_Governor extends AbstractGroup <ClientClasses> {
 		}
 
 		@Override public void putToGUI(ClientClasses go, AbstractT<Boolean> value) {
-			UserPreferences.setDivertColonyExcessToResearch(value.codeView());
+			UserPreferences.setDivertColonyExcessToResearch(value.getCodeView());
 		}
 
 		@Override public void initComments() {}

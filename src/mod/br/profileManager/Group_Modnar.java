@@ -17,7 +17,7 @@
 
 package mod.br.profileManager;
 
-import static br.profileManager.src.main.java.WriteUtil.History.*;
+import static br.profileManager.src.main.java.Validation.History.*;
 
 import java.util.List;
 
@@ -83,7 +83,7 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 		}
 
 		@Override public void putToGame(ClientClasses go, AbstractT<Boolean> value) {
-			if (value.codeView()) {
+			if (value.getCodeView()) {
 				for (Empire empire : go.session().galaxy().empires()) {
 				empire.tech().category(StarGateCategory).insertPossibleTech(StarGateId);
 				}
@@ -95,7 +95,7 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void putToGUI(ClientClasses go, AbstractT<Boolean> value) {
-			UserPreferences.setAlwaysStarGates(value.codeView());
+			UserPreferences.setAlwaysStarGates(value.getCodeView());
 		}
 		
 		@Override public void initComments() {
@@ -136,7 +136,7 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void putToGame(ClientClasses go, AbstractT<Boolean> value) {
-			if (value.codeView()) {
+			if (value.getCodeView()) {
 				for (Empire empire : go.session().galaxy().empires()) {
 					empire.tech().category(ThoriumCellCategory).insertPossibleTech(ThoriumCellId);
 				}
@@ -148,7 +148,7 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void putToGUI(ClientClasses go, AbstractT<Boolean> value) {
-			UserPreferences.setAlwaysThorium(value.codeView());
+			UserPreferences.setAlwaysThorium(value.getCodeView());
 		}
 		
 		@Override public void initComments() {
@@ -181,7 +181,7 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void putToGUI(ClientClasses go, AbstractT<Boolean> value) {
-			UserPreferences.setChallengeMode(value.codeView());
+			UserPreferences.setChallengeMode(value.getCodeView());
 		}
 		
 		@Override public void initComments() {}
@@ -212,7 +212,7 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void putToGUI(ClientClasses go, AbstractT<Boolean> value) {
-			UserPreferences.setBattleScout(value.codeView());
+			UserPreferences.setBattleScout(value.getCodeView());
 		}
 		
 		@Override public void initComments() {}
@@ -245,7 +245,7 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void putToGUI(ClientClasses go, AbstractT<Integer> value) {
-			UserPreferences.setCompanionWorlds(value.codeView());
+			UserPreferences.setCompanionWorlds(value.getCodeView());
 		}
 
 		@Override public void initComments() {}
@@ -276,7 +276,7 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void putToGUI(ClientClasses go, AbstractT<Boolean> value) {
-			UserPreferences.setRandomTechStart(value.codeView());
+			UserPreferences.setRandomTechStart(value.getCodeView());
 		}
 		
 		@Override public void initComments() {}
@@ -304,7 +304,7 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 		}
 
 		@Override public void putToGame(ClientClasses go, AbstractT<Integer> value) {
-			UserPreferences.setCustomDifficulty(value.codeView()); // Dynamic: Same as UserPreferences
+			UserPreferences.setCustomDifficulty(value.getCodeView()); // Dynamic: Same as UserPreferences
 		}		
 
 		@Override public AbstractT<Integer> getFromUI (ClientClasses go) {
@@ -312,7 +312,7 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 		}
 
 		@Override public void putToGUI(ClientClasses go, AbstractT<Integer> value) {
-			UserPreferences.setCustomDifficulty(value.codeView());
+			UserPreferences.setCustomDifficulty(value.getCodeView());
 		}
 
 		@Override public void initComments() {
@@ -339,7 +339,7 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void putToGame(ClientClasses go, AbstractT<Boolean> value) {
-			UserPreferences.setDynamicDifficulty(value.codeView()); // Dynamic: Same as UserPreferences
+			UserPreferences.setDynamicDifficulty(value.getCodeView()); // Dynamic: Same as UserPreferences
 		}
 		
 		@Override public AbstractT<Boolean> getFromUI (ClientClasses go) {
@@ -347,7 +347,7 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void putToGUI(ClientClasses go, AbstractT<Boolean> value) {
-			UserPreferences.setDynamicDifficulty(value.codeView());
+			UserPreferences.setDynamicDifficulty(value.getCodeView());
 		}
 
 		@Override public void initComments() {
@@ -376,7 +376,7 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 		}
 
 		@Override public void putToGame(ClientClasses go, AbstractT<Float> value) {
-			UserPreferences.setMissileSizeModifier(value.codeView()); // Dynamic: Same as UserPreferences
+			UserPreferences.setMissileSizeModifier(value.getCodeView()); // Dynamic: Same as UserPreferences
 		}		
 
 		@Override public AbstractT<Float> getFromUI (ClientClasses go) {
@@ -384,7 +384,7 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 		}
 
 		@Override public void putToGUI(ClientClasses go, AbstractT<Float> value) {
-			UserPreferences.setMissileSizeModifier(value.codeView());
+			UserPreferences.setMissileSizeModifier(value.getCodeView());
 		}
 
 		@Override public void initComments() {

@@ -75,8 +75,15 @@ public class UserProfiles extends AbstractProfiles<ClientClasses> {
 		boolean refresh = false;
 		switch (key) {
 		case KeyEvent.VK_B: // "B" = Load Broken Registry User Presets
-			loadLocalGroupSettings(BR_GROUP_NAME, clientObject);
-			break;
+			if(global) { // For Random
+				loadSurpriseLocalGroupSettings(BR_GROUP_NAME, clientObject);
+				refresh = true;
+				break;
+			} else {
+				loadLocalGroupSettings(BR_GROUP_NAME, clientObject);
+				refresh = true;
+				break;
+			}
 		case KeyEvent.VK_D: // "D" = Reload Default Presets
 			if(global) {
 				resetGlobalDefaultOptions(clientObject);

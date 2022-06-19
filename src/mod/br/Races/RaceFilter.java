@@ -26,52 +26,75 @@ import java.util.List;
 public class RaceFilter {
 
 	private static List<String> defaultRaceList;
-	private static List<String> selectedRaceList;
-	private static List<String> selectedGuiRaceList;
+	private static List<String> selectedGameRaceFilter;
+	private static List<String> selectedGuiRaceFilter;
+//	private static List<String> selectedGuiPresetOpponent;
 
+    // ========== Setters ==========
+    //
 	/**
-	 * @return the raceList
+	 * @param newRaceList the new default raceList to set
 	 */
-	public static List<String> selectedRaceList() {
-		if (selectedRaceList == null 
-				|| selectedRaceList.toString().isBlank()) {
-			return defaultRaceList;
-		}
-		return selectedRaceList;
+	public static void defaultRaceList(List<String> newRaceList) {
+		defaultRaceList = newRaceList;
 	}
 	/**
-	 * @param newRaceList the raceList to set
+	 * @param newRaceList the Race List to set
 	 */
-	public static void selectedRaceList(List<String> newRaceList) {
-		selectedRaceList = newRaceList;
+	public static void selectedGameRaceFilter(List<String> newRaceList) {
+		selectedGameRaceFilter = newRaceList;
 	}
 	/**
-	 * @return the raceList
+	 * @param newRaceList the Race Filter to set
 	 */
-	public static List<String> selectedGuiRaceList() {
-		if (selectedGuiRaceList == null 
-				|| selectedGuiRaceList.toString().isBlank()) {
-			return defaultRaceList;
-		}
-		return selectedGuiRaceList;
+	public static void selectedGuiRaceFilter(List<String> newRaceList) {
+		selectedGuiRaceFilter = newRaceList;
 	}
+//	/**
+//	 * @param newRaceList the Preset Opponents to set
+//	 */
+//	public static void selectedGuiPresetOpponent(List<String> newRaceList) {
+//		selectedGuiPresetOpponent = newRaceList;
+//	}
+    // ========== Getters ==========
+    //
 	/**
-	 * @param newRaceList the raceList to set
-	 */
-	public static void selectedGuiRaceList(List<String> newRaceList) {
-		selectedGuiRaceList = newRaceList;
-	}
-	/**
-	 * @return the raceList
+	 * @return the Default Race List
 	 */
 	public static List<String> defaultRaceList() {
 		return defaultRaceList;
 	}
 	/**
-	 * @param newRaceList the raceList to set
+	 * @return the race List
 	 */
-	public static void defaultRaceList(List<String> newRaceList) {
-		defaultRaceList = newRaceList;
+	public static List<String> selectedGameRaceFilter() {
+		if (selectedGameRaceFilter == null 
+				|| selectedGameRaceFilter.toString().isBlank()) {
+			return defaultRaceList;
+		}
+		return selectedGameRaceFilter;
 	}
+	/**
+	 * @return the Race Filter
+	 */
+	public static List<String> selectedGuiRaceFilter() {
+		if (selectedGuiRaceFilter == null 
+				|| selectedGuiRaceFilter.toString().isBlank()) {
+			return defaultRaceList;
+		}
+		return selectedGuiRaceFilter;
+	}
+//	/**
+//	 * @return the Preset Opponents
+//	 */
+//	public static List<String> selectedGuiPresetOpponent() {
+//		if (selectedGuiPresetOpponent == null 
+//				|| selectedGuiPresetOpponent.toString().isBlank()) {
+//			return defaultRaceList;
+//		}
+//		return selectedGuiPresetOpponent;
+//	}
+    // ========== Other Methods ==========
+    //
 
 }

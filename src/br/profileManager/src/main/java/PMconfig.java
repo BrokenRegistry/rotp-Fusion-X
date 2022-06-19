@@ -198,7 +198,7 @@ public class PMconfig {
 	 * @return The {@code String} to be used as
 	 * elements separator for random parameters list
 	 */
-	static String parametersSeparator() {
+	public static String parametersSeparator() {
 		return parametersSeparator;
 	}
 	/**
@@ -225,7 +225,7 @@ public class PMconfig {
 	/**
 	 * @return The {@code String} to be used as Identifier for Random parameters
 	 */
-	static String randomId() {
+	public static String randomId() {
 		return randomId;
 	}
 	/**

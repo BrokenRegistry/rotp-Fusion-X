@@ -2,7 +2,7 @@ package br.profileManager.src.main.java;
 
 import java.util.ArrayList;
 import java.util.List;
-import static br.profileManager.src.main.java.WriteUtil.History.*;
+import static br.profileManager.src.main.java.Validation.History.*;
 
 
 /**

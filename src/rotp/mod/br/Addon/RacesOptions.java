@@ -28,15 +28,21 @@ import mod.br.Races.RaceFilter;
 public class RacesOptions {
 	
 	/**
-	 * @return the raceList
+	 * @return the Gui Race Filter
 	 */
     public static List<String> getGuiFilteredRaceList() {
-         return RaceFilter.selectedGuiRaceList();
+         return RaceFilter.selectedGuiRaceFilter();
     }
+//	/**
+//	 * @return the preset opponent List
+//	 */
+//    public static List<String> getGuiPresetOpponents() {
+//         return RaceFilter.selectedGuiPresetOpponent();
+//    }
     /**
-	 * @return maxMinEmpireBuffer {@code float} value
+	 * @return Race Filter
 	 */
 	public static List<String> getFilteredRaceList() {
-         return RaceFilter.selectedRaceList();
+         return RaceFilter.selectedGameRaceFilter();
     }
 }

@@ -258,7 +258,7 @@ public class Lines<T, V extends Validation<T>>
 		if (getValueAsEntry() == null) {
 			return false;
 		}
-		return getValidationData().isValidCodeView(getValue().codeView(), category);
+		return getValidationData().isValidCodeView(getValue(), category);
 	}
 
 	/**

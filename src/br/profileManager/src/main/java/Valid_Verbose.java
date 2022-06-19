@@ -15,7 +15,7 @@
 
 package br.profileManager.src.main.java;
 
-import static br.profileManager.src.main.java.WriteUtil.History.*;
+import static br.profileManager.src.main.java.Validation.History.*;
 
 /**
  * For the validation of the configurations Action
@@ -35,7 +35,7 @@ class Valid_Verbose extends Validation<String> {
 		setHistory(Default, DEFAULT_VALUE);
 		setHistory(Current, DEFAULT_VALUE);
 		
-		setValidationCriteria(new ValidationCriteria()
+		setCriteria(new ValidationCriteria()
 				.isRandomAllowed(false)
 				.userViewEquals(false)
 				.codeViewEquals(false));

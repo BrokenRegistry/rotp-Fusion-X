@@ -3836,11 +3836,11 @@ public final class Empire implements Base, NamedObject, Serializable {
 	 * @param newRace the new race Name
 	 */
 	public void setRace(String newRace) {
-		// raceKey = newRace;   
+		// raceKey = newRace; 
 		race = Race.keyed(newRace);
         // dataRaceKey = newRace;
 		dataRace = Race.keyed(newRace);
-        // raceNameIndex = race.nameIndex(race.nextAvailableName());
+        raceNameIndex = race.nameIndex(race.nextAvailableName());
         leader = new Leader(this, race.nextAvailableLeader());
         shipImage = null;
         shipImageLarge = null;

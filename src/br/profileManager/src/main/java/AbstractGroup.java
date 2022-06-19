@@ -69,7 +69,7 @@ public abstract class AbstractGroup<C> extends WriteUtil {
 	 * @param history  Field to get from
 	 * @param profileName the profile name
 	 */
-	public void actionToFile(History history, String profileName) {
+	public void actionToFile(Validation.History history, String profileName) {
 		for (AbstractParameter<?, ?, C> 
 					parameter : parameterNameMap.values() ) {
 			parameter.actionToFile(history, profileName);
@@ -80,7 +80,7 @@ public abstract class AbstractGroup<C> extends WriteUtil {
 	 * @param history  Field to get from
 	 * @param profileName the profile name
 	 */
-	public void actionUpdateFile(History history, String profileName) {
+	public void actionUpdateFile(Validation.History history, String profileName) {
 		for (AbstractParameter<?, ?, C>
 					parameter : parameterNameMap.values() ) {
 			parameter.actionUpdateFile(history, profileName);
@@ -191,7 +191,7 @@ public abstract class AbstractGroup<C> extends WriteUtil {
 	 * @param history  Field to get from
 	 * @param clientObject The class that manage GUI parameters
 	 */
-	public void setGuiParameters(History history, C clientObject) {
+	public void setGuiParameters(Validation.History history, C clientObject) {
 		for (AbstractParameter<?, ?, C> 
 					parameter : parameterNameMap.values() ) {
 			parameter.putHistoryToGUI(history, clientObject);

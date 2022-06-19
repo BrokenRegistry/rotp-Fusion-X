@@ -25,7 +25,7 @@ import static br.profileManager.src.main.java.PMutil.genericTest;
  * Single element for validation list
  * @param <T> the Value's Code View Class
  */
-public class Options<T> extends WriteUtil {
+class Options<T> extends WriteUtil {
 
 	private String description;
 	private String category ;
@@ -91,7 +91,7 @@ public class Options<T> extends WriteUtil {
 	 * @param criteria {@code ValidationCriteria} test criteria
 	 * @return {@code boolean} <b>true</b> if recognized
 	 */
-	boolean isValidUserEntry(String userEntry,
+	boolean isValidUserView(String userEntry,
 							 ValidationCriteria criteria) {
 		return genericTest(userEntry,
 						   userView,
@@ -106,10 +106,10 @@ public class Options<T> extends WriteUtil {
 	 * @param criteria {@code ValidationCriteria} test criteria
 	 * @return  {@code boolean} <b>true</b> if recognized
 	 */
-	boolean isValidUserEntry(String userEntry,
+	boolean isValidUserView(String userEntry,
 							 String category,
 							 ValidationCriteria criteria) {
-		return isValidUserEntry(userEntry, criteria) 
+		return isValidUserView(userEntry, criteria) 
 				&& isValidCategory(category, criteria);
 	}
 	

@@ -500,7 +500,7 @@ public interface IGameOptions {
     }
     default void nextOpponent(int i) {
         String player = selectedPlayerRace();
-        // BR: 
+        // BR: Race filtration
         // List<String> allOpps = startingRaceOptions();
         List<String> allOpps;
         if (Profiles.isGuiOpponentRaceListEnabled()) {
@@ -532,7 +532,7 @@ public interface IGameOptions {
     }
     default void prevOpponent(int i) {
         String player = selectedPlayerRace();
-        // BR: 
+        // BR: Race filtration
         // List<String> allOpps = startingRaceOptions();
         List<String> allOpps;
         if (Profiles.isGuiOpponentRaceListEnabled()) {

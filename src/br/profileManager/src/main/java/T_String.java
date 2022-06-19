@@ -17,7 +17,6 @@
 
 package br.profileManager.src.main.java;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,7 +25,7 @@ import java.util.List;
  */
 public class T_String extends AbstractT<String> {
 	
-	private String blankCodeView = "";
+	private String localBlankCodeView = "";
 	
 	// ===== Constructors =====
 	/**
@@ -59,10 +58,10 @@ public class T_String extends AbstractT<String> {
 	// ===== Methods Overriders =====
 	@Override protected  T_String This() { return this; }
 	
-	@Override protected String blankCodeView() { return blankCodeView; }
+	@Override protected String blankCodeView() { return localBlankCodeView; }
 
-	@Override protected T_String blankCodeView(String val) {
-		blankCodeView = val;
+	@Override protected T_String blankCodeView(String value) {
+		localBlankCodeView = value;
 		return this;
 	}
 
@@ -87,17 +86,4 @@ public class T_String extends AbstractT<String> {
 	@Override protected boolean equals(String a, String b) {return a == b; }
 	
 	@Override protected T_String New() { return new T_String(blankCodeView()); }
-	
-	// ===== Other Methods =====
-	/**
-	 * @param list : list of values in their specific class
-	 * @return Same list wrapped in the class
-	 */
-	public List<T_String> TlistToClassList (List<String> list) {
-		List<T_String> classList = new ArrayList<T_String>();
-		for (String value : list) {
-			classList.add(new T_String(value));
-		}
-		return classList;
-	}
 }

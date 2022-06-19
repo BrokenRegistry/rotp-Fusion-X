@@ -48,10 +48,10 @@ public class ClientClassesTest extends ClientClasses{
 	/**
 	 * @return the guiObject
 	 */
-	@Override public IGameOptions options() {
+	@Override public IGameOptions newOptions() {
 		return options;
 	}
-	@Override public IGameOptions option2() {
+	@Override public IGameOptions options() {
 		return option2;
 	}
 	@Override public GameSession session() {

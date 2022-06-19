@@ -6,14 +6,11 @@ import java.awt.event.KeyEvent;
 
 import org.junit.jupiter.api.Test;
 
-import br.profileManager.src.main.java.AbstractParameter;
-
 class UserProfilesTest {
 
 	private ClientClasses clientObject = new ClientClassesTest();
-	private String NL = System.lineSeparator();
 	private UserProfiles userProfiles;
-	private AbstractParameter<?, ?, ClientClasses> param;
+//	private AbstractParameter<?, ?, ClientClasses> param;
 	
 	private void init() {
 		userProfiles = new UserProfiles();
@@ -39,13 +36,13 @@ class UserProfilesTest {
 				, "Should be initialized");
 	}
 
-	@Test
-	void getAllProfiles() {
-		init();
-		System.out.println("getAllProfiles()");
-		System.out.println(userProfiles.getAllProfiles().toString());
-		System.out.println();
-	}
+//	@Test
+//	void getAllProfiles() {
+//		init();
+//		System.out.println("getAllProfiles()");
+//		System.out.println(userProfiles.getAllProfiles().toString());
+//		System.out.println();
+//	}
 
 	@Test
 	void processKey_U() {
@@ -55,13 +52,12 @@ class UserProfilesTest {
 				, "This KeyEvent sould return false");
 	}
 
-	@Test
-	void GuiOpponentRaceList() {
-		init();
-		userProfiles.processKey(KeyEvent.VK_U, false, "", clientObject);
-		param = userProfiles.getParameter("GUI OPPONENTS RACE LIST");
-		String result = param.toString(userProfiles.getAllProfiles());
-		System.out.println(result);
+//	@Test void GuiOpponentRaceList() {
+//		init();
+//		userProfiles.processKey(KeyEvent.VK_U, false, "", clientObject);
+//		param = userProfiles.getParameter("GUI OPPONENTS RACE FILTER");
+//		String result = param.toString(userProfiles.getAllProfiles());
+//		System.out.println(result);
 //		Lines<?, ?> line = param.getProfileLine("User");
 //		AbstractT<?> value =line.getValue();
 //		System.out.println("List");
@@ -69,7 +65,7 @@ class UserProfilesTest {
 //		System.out.println(value.toString());
 //		System.out.println(value.toString());
 //		System.out.println(line.toString());
-	}
+//	}
 
 	@Test
 	void isParameterEnabled_String() {

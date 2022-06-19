@@ -9,11 +9,13 @@ import rotp.model.game.IGameOptions;
  * Could be replaced by using {@code Object} and casting the class
  */
 public class ClientClasses {
-	private IGameOptions options;
-	private IGameOptions option2;
+	private static IGameOptions newOption;
+	private static IGameOptions option;
 	private GameSession  session;
-//	private boolean Initial = false;
 
+	// ==================================================
+	// Constructors and initializers
+	//
 	/**
 	 * Just a new empty class!
 	 */
@@ -23,69 +25,59 @@ public class ClientClasses {
 	 * @param guiObject {@code IGameOptions} to set
 	 */
 	public ClientClasses(IGameOptions guiObject) {
-		options = guiObject;
-		option2 = guiObject;
+		newOption = guiObject;
+		option = guiObject;
 	}
 	/**
-	 * @param guiObject2 {@code IGameOptions} to set
-	 * @param guiObject {@code IGameOptions} to set
+	 * @param options {@code IGameOptions} to set
+	 * @param newOptions {@code IGameOptions} to set
 	 */
-	public ClientClasses(IGameOptions guiObject2, IGameOptions guiObject) {
-		options = guiObject;
-		option2 = guiObject2;
+	public ClientClasses(IGameOptions options, IGameOptions newOptions) {
+		newOption = newOptions;
+		option = options;
 	}
 	/**
 	 * @param gameObject {@code GameSession} to set
 	 */
 	public ClientClasses(GameSession gameObject) {
 		session = gameObject;
-		options = gameObject.options();
-		option2 = options;
+		newOption = gameObject.options();
+		option = newOption;
 	}
+	// ==================================================
+	// Getters
+	//
 	/**
 	 * @return the guiObject
 	 */
-	public IGameOptions options() {
-		return options;
+	public IGameOptions newOptions() {
+		return newOption;
 	}
 	/**
 	 * @return the second guiObject
 	 */
-	public IGameOptions option2() {
-		return option2;
+	public IGameOptions options() {
+		return option;
 	}
-//	/**
-//	 * @param guiObject the guiObject to set
-//	 * @return this for chaining purpose
-//	 */
-//	public ClientClasses setOptionsObject(IGameOptions guiObject) {
-//		this.options = guiObject;
-//		return this;
-//	}
 	/**
 	 * @return the gameObject
 	 */
 	public GameSession session() {
 		return session;
 	}
-//	/**
-//	 * @param gameObject the gameObject to set
-//	 * @return this for chaining purpose
-//	 */
-//	public ClientClasses setSessionObject(GameSession gameObject) {
-//		this.session = gameObject;
-//		return this;
-//	}
-//	/**
-//	 * @return the initial
-//	 */
-//	public boolean isInitial() {
-//		return Initial;
-//	}
-//	/**
-//	 * @param initial the boolean to set
-//	 */
-//	public void setInitial(boolean initial) {
-//		Initial = initial;
-//	}
+	// ==================================================
+	// Static Getters
+	//
+	/**
+	 * @return the guiObject
+	 */
+	public static IGameOptions getNewOptions() {
+		return newOption;
+	}
+	/**
+	 * @return the second guiObject
+	 */
+	public static IGameOptions getOptions() {
+		return option;
+	}
 }

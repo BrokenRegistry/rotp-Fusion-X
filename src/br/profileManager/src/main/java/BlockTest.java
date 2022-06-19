@@ -180,11 +180,11 @@ class BlockTest {
 		block.add(line1);
 		block.add(line2);
 		block.add(line3);
-		assertEquals("load", block.getValue("key1").userView()
+		assertEquals("load", block.getValue("key1").getUserView()
 				, "should have been «\"load\"»");	
-		assertEquals("", block.getValue("key2").userView()
+		assertEquals("", block.getValue("key2").getUserView()
 				, "should have been «\"\"»");	
-		assertEquals("Change", block.getValue("key3").userView()
+		assertEquals("Change", block.getValue("key3").getUserView()
 				, "should have been «\"Change\"»");	
 		assertEquals(null, block.getValue("key4")
 				, "should have been «null»");	
@@ -211,7 +211,7 @@ class BlockTest {
 		block = newBlock();
 		block.add(line1);
 		line = block.getLine("key1");
-		assertEquals("load", line.getValue().userView()
+		assertEquals("load", line.getValue().getUserView()
 				, "should have been «\"load\"»");	
 	}
 
@@ -297,9 +297,9 @@ class BlockTest {
 		block.add(line1);
 		block.add(line2);
 		block.add(line3);
-		assertEquals("[key1, key3]",
+		assertEquals("[key1]",
 				block.getProfileListForCategory(Valid_ProfileAction.LOAD_ENABLED).toString()
-				, "should have been «\"[key1, key3]\"»");	
+				, "should have been «\"[key1]\"»");	
 		assertEquals("[]",
 				block.getProfileListForCategory(Valid_ProfileAction.WRITE_ENABLED).toString()
 				, "should have been «\"[]\"»");	

@@ -17,6 +17,7 @@
 
 package br.profileManager.src.main.java;
 
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -34,14 +35,20 @@ public class T_Float extends AbstractT <Float> {
 	}
 	/**
 	 * Constructor with direct value initialization
-	 * @param value the {@code String} initial value
+	 * @param value the {@code Float} initial value
 	 */
 	public T_Float(Float value) {
 		super(value);
 	}
 	/**
-	 * Constructor with value initialization,
-	 * either from userView or CodeView
+	 * Constructor with direct value List initialization
+	 * @param value the {@code Float} initial value
+	 */
+	public T_Float(List<Float> value) {
+		super(value);
+	}
+	/**
+	 * Constructor with value initialization from userView
 	 * @param value either userView or CodeView
 	 */
 	public T_Float(String value) {

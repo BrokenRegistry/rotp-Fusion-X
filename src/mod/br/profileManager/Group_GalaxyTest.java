@@ -18,55 +18,74 @@ class Group_GalaxyTest {
 	private String NL = System.lineSeparator();
 	
 	private String galaxyShapePrt = 
-			";  " + NL +
-			"; ------------- Galaxy Options -------------" + NL +
-			";  " + NL +
-			"¦ Parameter     : GALAXY SHAPE" + NL +
-			"; Options       : [Rectangle, Ellipse, Spiral, Text, Cluster, Swirlclusters," + NL +
-			";   \" \"         : Grid, Spiralarms, Maze, Shuriken, Bullseye, Lorenz, Fractal]" + NL +
-			"¦ History       : Current : Rectangle / Last :  / Initial : Rectangle / Default : Rectangle / Game :" + NL + 
-			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
-			"Profile 1       : " + NL +
-			"Random          : " + NL +
-			"" + NL;
+			";  \r\n"
+			+ "; ------------- Galaxy Options -------------\r\n"
+			+ ";  \r\n"
+			+ "¦ Parameter     : GALAXY SHAPE\r\n"
+			+ "; Options       : [Rectangle, Ellipse, Spiral, Text, Cluster, Swirlclusters,\r\n"
+			+ ";   \" \"         : Grid, Spiralarms, Maze, Shuriken, Bullseye, Lorenz, Fractal]\r\n"
+			+ "¦ History       : Current : Rectangle ¦ Last :  ¦ Initial : Rectangle\r\n"
+			+ "¦ History       : Default : Rectangle ¦ Game : \r\n"
+			+ "¦ LOCAL ENABLE  : All         ; [No, All, Save, Load]\r\n"
+			+ "Profile 1       : \r\n"
+			+ "Random          : \r\n"
+			+ "\r\n";
 
 	private String galaxySizePrt = 
-			"¦ Parameter     : GALAXY SIZE" + NL +
-			"; Options       : [Tiny, Small, Small2, Average, Average2, Large, Large2, Huge," + NL +
-			";   \" \"         : Huge2, Massive, Massive2, Massive3, Massive4, Massive5," + NL +
-			";   \" \"         : Insane, Ludicrous, Maximum]" + NL +
-			"¦ History       : Current : Small / Last :  / Initial : Small / Default : Small / Game :" + NL + 
-			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
-			"Profile 1       : " + NL +
-			"Random          : " + NL +
-			"" + NL;
+			"¦ Parameter     : GALAXY SIZE\r\n"
+			+ "; Options       : [Tiny, Small, Small2, Average, Average2, Large, Large2, Huge,\r\n"
+			+ ";   \" \"         : Huge2, Massive, Massive2, Massive3, Massive4, Massive5,\r\n"
+			+ ";   \" \"         : Insane, Ludicrous, Maximum]\r\n"
+			+ "¦ History       : Current : Small ¦ Last :  ¦ Initial : Small ¦ Default : Small\r\n"
+			+ "¦ History       : Game : \r\n"
+			+ "¦ LOCAL ENABLE  : All         ; [No, All, Save, Load]\r\n"
+			+ "Profile 1       : \r\n"
+			+ "Random          : \r\n"
+			+ "\r\n";
 
 	private String difficultyPrt = 
-			"¦ Parameter     : DIFFICULTY" + NL +
-			"; Options       : [Easiest, Easier, Easy, Normal, Hard, Harder, Hardest, Custom]" + NL +
-			"¦ History       : Current : Normal / Last :  / Initial : Normal / Default : Easy / Game :" + NL + 
-			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
-			"Profile 1       : " + NL +
-			"Random          : " + NL +
-			"" + NL;
+			"¦ Parameter     : DIFFICULTY\r\n"
+			+ "; Options       : [Easiest, Easier, Easy, Normal, Hard, Harder, Hardest, Custom]\r\n"
+			+ "¦ History       : Current : Normal ¦ Last :  ¦ Initial : Normal ¦ Default : Easy\r\n"
+			+ "¦ History       : Game : \r\n"
+			+ "¦ LOCAL ENABLE  : All         ; [No, All, Save, Load]\r\n"
+			+ "Profile 1       : \r\n"
+			+ "Random          : \r\n"
+			+ "\r\n";
 
 	private String opponentAIPrt = 
-			"¦ Parameter     : OPPONENT AI" + NL +
-			"; Options       : [Base, Xilmi, Cruel, Unfair, Random, Allrandom, Select]" + NL +
-			"¦ History       : Current : Cruel / Last :  / Initial : Cruel / Default : Base / Game :" + NL + 
-			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
-			"Profile 1       : " + NL +
-			"Random          : " + NL +
-			"" + NL;
+			"¦ Parameter     : OPPONENT AI\r\n"
+			+ "; Options       : [Base, Xilmi, Cruel, Unfair, Random, Allrandom, Select]\r\n"
+			+ "¦ History       : Current : Cruel ¦ Last :  ¦ Initial : Cruel ¦ Default : Base\r\n"
+			+ "¦ History       : Game : \r\n"
+			+ "¦ LOCAL ENABLE  : All         ; [No, All, Save, Load]\r\n"
+			+ "Profile 1       : \r\n"
+			+ "Random          : \r\n"
+			+ "\r\n"
+			+ "";
 
 	private String nbOpponentPrt = 
 			"¦ Parameter     : NB OPPONENTS" + NL +
 			"; Options       : [Min=0, Max=15, Rnd Low=1, Rnd Up=15]" + NL +
-			"¦ History       : Current : 4 / Last :  / Initial : 4 / Default : 3 / Game :"  + NL +
-			"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]" + NL +
+			"¦ History       : Current : 4 ¦ Last :  ¦ Initial : 4 ¦ Default : 3 ¦ Game : "  + NL +
+			"¦ LOCAL ENABLE  : All         ; [No, All, Save, Load]" + NL +
 			"Profile 1       : " + NL +
 			"Random          : " + NL+
 			"" + NL;
+	
+	private String guiOpponentRaceListPrt = 
+			"¦ Parameter     : GUI RACE FILTER\r\n"
+			+ "; Options       : [Human, Alkari, Silicoid, Mrrshan, Klackon, Meklar, Psilon,\r\n"
+			+ ";   \" \"         : Darlok, Sakkra, Bulrathi]\r\n"
+			+ "¦ History       : Current : Human/Alkari/Silicoid/Mrrshan/Klackon/Meklar/Psilon/Darlok/Sakkra/Bulrathi\r\n"
+			+ "¦ History       : Last : \r\n"
+			+ "¦ History       : Initial : Human/Alkari/Silicoid/Mrrshan/Klackon/Meklar/Psilon/Darlok/Sakkra/Bulrathi\r\n"
+			+ "¦ History       : Default : Human/Alkari/Silicoid/Mrrshan/Klackon/Meklar/Psilon/Darlok/Sakkra/Bulrathi\r\n"
+			+ "¦ History       : Game : \r\n"
+			+ "¦ LOCAL ENABLE  : All         ; [No, All, Save, Load]\r\n"
+			+ "Profile 1       : \r\n"
+			+ "Random          : \r\n"
+			+ "\r\n";
 	
 	@Test void GalaxyShape_ClientClasses() {
 		GalaxyShape param;
@@ -112,8 +131,8 @@ class Group_GalaxyTest {
 		Group_Galaxy group;
 		group = new Group_Galaxy(cct);
 		String out = group.toString(List.of("Profile 1", "Random"));
-		String shouldBe = galaxyShapePrt + galaxySizePrt 
-				+ difficultyPrt + opponentAIPrt + nbOpponentPrt;
+		String shouldBe = galaxyShapePrt + galaxySizePrt + difficultyPrt
+				+ opponentAIPrt + nbOpponentPrt + guiOpponentRaceListPrt;
 		assertEquals(shouldBe, out, "should have been equals");
 		// System.out.println(out);
 	}
@@ -121,7 +140,8 @@ class Group_GalaxyTest {
 	@Test void profileList_None() {
 		Group_Galaxy group;
 		group = new Group_Galaxy(cct);
-		assertEquals("[GALAXY SHAPE, GALAXY SIZE, DIFFICULTY, OPPONENT AI, NB OPPONENTS]",
+		assertEquals("[GALAXY SHAPE, GALAXY SIZE, DIFFICULTY, OPPONENT AI"
+				+ ", NB OPPONENTS, GUI RACE FILTER]",
 				group.profileList().toString(),
 				"should have been a long list");
 	}

@@ -121,6 +121,12 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <!-- Add explicit java.desktop for import java.awt.*; -->
+                    <compilerArgs>
+                        <arg>--add-modules</arg>
+                        <arg>java.se,java.desktop</arg>
+                    </compilerArgs>
+
                 </configuration>
             </plugin>
 

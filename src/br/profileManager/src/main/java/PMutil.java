@@ -199,6 +199,21 @@ public class PMutil {
 	}
 
 	// ==================================================
+    // Some List Methods
+    //
+	
+	/**
+	 * Add an element to the list and return the list (instead of a boolean)
+	 * @param list
+	 * @param element
+	 * @return the new list
+	 */
+	public static List<String> addToList(List<String> list, String element) {
+		list.add(element);
+		return list;
+	}
+
+	// ==================================================
     // Some String Methods
     //
 	/**
@@ -318,7 +333,7 @@ public class PMutil {
 	 * @param obj the {@code objects} to process
 	 * @return the cleaned {@code String}
 	 */
-	static String clean(Object obj) {
+	public static String clean(Object obj) {
 		if (obj == null) { 
 			return "";
 		}
@@ -783,7 +798,7 @@ public class PMutil {
 	 * @return random {@code Integer} value in the specified range
 	 * <br> if min = max : return min
 	 */
-	static Integer getRandom(Integer min, Integer max) {
+	public static Integer getRandom(Integer min, Integer max) {
 		return nextRandomLong(min.longValue(), max.longValue()).intValue();
 	}
 	

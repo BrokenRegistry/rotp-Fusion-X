@@ -27,7 +27,7 @@ import br.profileManager.src.main.java.PMconfig;
 import br.profileManager.src.main.java.PMutil;
 import br.profileManager.src.main.java.T_Integer;
 import br.profileManager.src.main.java.T_String;
-import static br.profileManager.src.main.java.WriteUtil.History.*;
+import static br.profileManager.src.main.java.Validation.History.*;
 
 /**
  * @author BrokenRegistry
@@ -57,28 +57,28 @@ public class Group_Race extends AbstractGroup <ClientClasses> {
 		PlayerRace(ClientClasses go) { 
 			super("PLAYER RACE", 
 					new Validation<String>(
-							new T_String(go.options().selectedPlayerRace()),
-							go.options().startingRaceOptions()));			
+							new T_String(go.newOptions().selectedPlayerRace()),
+							go.newOptions().startingRaceOptions()));			
 		}
 		
 	    // ========== Overriders ==========
 	    //
 		@Override public AbstractT<String> getFromGame (ClientClasses go) {
-			return new T_String(go.options().selectedPlayerRace());
+			return new T_String(go.newOptions().selectedPlayerRace());
 		}
 		
 		@Override public void putToGame(ClientClasses go, AbstractT<String> value) {
-			go.options().selectedPlayer().race = value.codeView(); // Direct to avoid reseting opponents
-			go.session().galaxy().empire(0).setRace(value.codeView());
+			go.newOptions().selectedPlayer().race = value.getCodeView(); // Direct to avoid reseting opponents
+			go.session().galaxy().empire(0).setRace(value.getCodeView());
 		}
 		
 		@Override public AbstractT<String> getFromUI (ClientClasses go) {
-			return new T_String(go.options().selectedPlayerRace());
+			return new T_String(go.newOptions().selectedPlayerRace());
 		}
 		
 		@Override public void putToGUI(ClientClasses go, AbstractT<String> value) {
-			go.options().selectedPlayerRace(value.codeView());
-			go.option2().selectedPlayerRace(value.codeView());
+			go.newOptions().selectedPlayerRace(value.getCodeView());
+			go.options().selectedPlayerRace(value.getCodeView());
 		}
 		
 		@Override public void initComments() {
@@ -117,7 +117,7 @@ public class Group_Race extends AbstractGroup <ClientClasses> {
 		}
 
 		private void initCriteria() {
-			getValidationCriteria().isNullAllowed(false);
+			getCriteria().isNullAllowed(false);
 		}
 		
 		private void init() {
@@ -157,34 +157,34 @@ public class Group_Race extends AbstractGroup <ClientClasses> {
 	    // ========== Constructors and initializer ==========
 	    //
 		PlayerColor(ClientClasses go) {
-			super("PLAYER COLOR", new Valid_Color(go.options().selectedPlayerColor()));
-			setHistoryCodeView(Initial, go.options().selectedPlayerColor());
+			super("PLAYER COLOR", new Valid_Color(go.newOptions().selectedPlayerColor()));
+			setHistoryCodeView(Initial, go.newOptions().selectedPlayerColor());
 //			// Re do Default to force validation
-			Integer colorId = getHistory(Default).codeView();
+			Integer colorId = getHistory(Default).getCodeView();
 //			setHistoryCodeView(Default, colorId);
 			// Re do Current to force validation
-			colorId = getHistory(Current).codeView();
+			colorId = getHistory(Current).getCodeView();
 			setHistoryCodeView(Current, colorId);
 		}
 		
 	    // ========== Overriders ==========
 	    //
 		@Override public AbstractT<Integer> getFromGame (ClientClasses go) {
-			return new T_Integer(go.options().selectedPlayerColor());
+			return new T_Integer(go.newOptions().selectedPlayerColor());
 		}
 		
 		@Override public void putToGame(ClientClasses go, AbstractT<Integer> value) {
-			go.options().selectedPlayerColor(value.codeView());
-			go.session().galaxy().empire(0).changeColorId(value.codeView());
+			go.newOptions().selectedPlayerColor(value.getCodeView());
+			go.session().galaxy().empire(0).changeColorId(value.getCodeView());
 		}
 		
 		@Override public AbstractT<Integer> getFromUI (ClientClasses go) {
-			return getValidation().newValue(go.options().selectedPlayerColor());
+			return getValidation().newValue(go.newOptions().selectedPlayerColor());
 		}
 		
 		@Override public void putToGUI(ClientClasses go, AbstractT<Integer> value) {
-			go.options().selectedPlayerColor(value.codeView());
-			go.option2().selectedPlayerColor(value.codeView());
+			go.newOptions().selectedPlayerColor(value.getCodeView());
+			go.options().selectedPlayerColor(value.getCodeView());
 		}
 		
 		@Override public void initComments() {
@@ -203,9 +203,9 @@ public class Group_Race extends AbstractGroup <ClientClasses> {
 		PlayerHomeWorld(ClientClasses go) { 
 			super("PLAYER HOMEWORLD", 
 					new Validation<String>(
-							new T_String(go.options().selectedHomeWorldName())));			
+							new T_String(go.newOptions().selectedHomeWorldName())));			
 		
-			getValidation().getValidationCriteria().isRandomAllowed(false);
+			getValidation().getCriteria().isRandomAllowed(false);
 		}
 		
 	    // ========== Overriders ==========
@@ -215,17 +215,17 @@ public class Group_Race extends AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void putToGame(ClientClasses go, AbstractT<String> value) {
-			go.options().selectedHomeWorldName(value.codeView());
-			go.session().galaxy().empire(0).setHomeWorldName(value.codeView());
+			go.newOptions().selectedHomeWorldName(value.getCodeView());
+			go.session().galaxy().empire(0).setHomeWorldName(value.getCodeView());
 		}
 		
 		@Override public AbstractT<String> getFromUI (ClientClasses go) {
-			return new T_String(go.options().selectedHomeWorldName());
+			return new T_String(go.newOptions().selectedHomeWorldName());
 		}
 		
 		@Override public void putToGUI(ClientClasses go, AbstractT<String> value) {
-			go.options().selectedHomeWorldName(value.codeView());
-			go.option2().selectedHomeWorldName(value.codeView());
+			go.newOptions().selectedHomeWorldName(value.getCodeView());
+			go.options().selectedHomeWorldName(value.getCodeView());
 		}
 		
 		@Override public void initComments() {
@@ -244,9 +244,9 @@ public class Group_Race extends AbstractGroup <ClientClasses> {
 		PlayerName(ClientClasses go) { 
 			super("PLAYER NAME", 
 					new Validation<String>(
-							new T_String(go.options().selectedLeaderName())));			
+							new T_String(go.newOptions().selectedLeaderName())));			
 
-			getValidation().getValidationCriteria().isRandomAllowed(false);
+			getValidation().getCriteria().isRandomAllowed(false);
 		}
 		
 	    // ========== Overriders ==========
@@ -256,17 +256,17 @@ public class Group_Race extends AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void putToGame(ClientClasses go, AbstractT<String> value) {
-			go.options().selectedLeaderName(value.codeView());
-			go.session().galaxy().empire(0).leader().setName(value.codeView());
+			go.newOptions().selectedLeaderName(value.getCodeView());
+			go.session().galaxy().empire(0).leader().setName(value.getCodeView());
 		}
 		
 		@Override public AbstractT<String> getFromUI (ClientClasses go) {
-			return new T_String(go.options().selectedLeaderName());
+			return new T_String(go.newOptions().selectedLeaderName());
 		}
 		
 		@Override public void putToGUI(ClientClasses go, AbstractT<String> value) {
-			go.options().selectedLeaderName(value.codeView());
-			go.option2().selectedLeaderName(value.codeView());
+			go.newOptions().selectedLeaderName(value.getCodeView());
+			go.options().selectedLeaderName(value.getCodeView());
 		}
 		
 		@Override public void initComments() {

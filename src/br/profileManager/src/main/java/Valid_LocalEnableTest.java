@@ -13,7 +13,7 @@ class Valid_LocalEnableTest {
 				new Line_LocalEnable().getName()
 				, "should have been \"¦ LOCAL ENABLE\"");
 		assertEquals("All", 
-				new Line_LocalEnable().getValue().userView()
+				new Line_LocalEnable().getValue().getUserView()
 				, "should have been \"All\"");
 	}
 
@@ -69,8 +69,8 @@ class Valid_LocalEnableTest {
 
 	@Test
 	void toString_None() {
-		assertEquals("¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]", 
+		assertEquals("¦ LOCAL ENABLE  : All         ; [No, All, Save, Load]", 
 				new Line_LocalEnable().toString()
-				, "should have been \"¦ LOCAL ENABLE  : All         ; [No, All, Write, Load]\"");
+				, "should have been \"¦ LOCAL ENABLE  : All         ; [No, All, Save, Load]\"");
 	}
 }

@@ -15,7 +15,7 @@
 
 package br.profileManager.src.main.java;
 
-import static br.profileManager.src.main.java.WriteUtil.History.*;
+import static br.profileManager.src.main.java.Validation.History.*;
 
 /**
  * For the validation of the profiles Action
@@ -85,7 +85,7 @@ public class Valid_ProfileAction extends Validation<String> {
 		setShowHistory(false);
 		setShowLocalEnable(false);
 		
-		setValidationCriteria(new ValidationCriteria()
+		setCriteria(new ValidationCriteria()
 				.isRandomAllowed(false)
 				.userViewEquals(false)
 				.codeViewEquals(false));
@@ -101,28 +101,28 @@ public class Valid_ProfileAction extends Validation<String> {
 				"If the key \"X\" is pressed in Load Menu, the loaded Game will be changed" ,
 				GAME_ENABLED);
 		addOption(ACTION_GUI_TO_FILE, 
-				"When a Game is started or if the key \"U\" is pressed, this profile will get the GUI settings" ,
+				"When a Game is started or if the key \"U\" is pressed, this profile will save the GUI settings" ,
 				WRITE_ENABLED);
 		addOption(ACTION_GAME_TO_FILE,
-				"When a Game is started, this profile will get the Game settings" ,
+				"When a Game is started, this profile will save the Game settings" ,
 				WRITE_ENABLED + " " + LAST_ENABLED);
 		addOption(ACTION_INITIAL_TO_FILE,
-				"When a Game is started or if the key \"U\" is pressed, this profile will get the initial settings" ,
+				"When a Game is started or if the key \"U\" is pressed, this profile will save the initial settings" ,
 				WRITE_ENABLED);
 		addOption(ACTION_DEFAULT_TO_FILE,
-				"When a Game is started or if the key \"U\" is pressed, this profile will get the default settings" ,
+				"When a Game is started or if the key \"U\" is pressed, this profile will save the default settings" ,
 				WRITE_ENABLED);
 		addOption(ACTION_GUI_UPDATE_FILE,
-				"When a Game is started or if the key \"U\" is pressed, non empty parameters of this profile will get the GUI settings" ,
+				"When a Game is started or if the key \"U\" is pressed, non empty parameters of this profile will save the GUI settings" ,
 				WRITE_ENABLED);
 		addOption(ACTION_GAME_UPDATE_FILE, 
-				"When a Game is started, non empty parameters of this profile will get the Game settings" ,
+				"When a Game is started, non empty parameters of this profile will save the Game settings" ,
 				WRITE_ENABLED + " " + LAST_ENABLED);
 		addOption(ACTION_INITIAL_UPDATE_FILE,
-				"When a Game is started or if the key \"U\" is pressed, non empty parameters of this profile will get the initial settings" ,
+				"When a Game is started or if the key \"U\" is pressed, non empty parameters of this profile will save the initial settings" ,
 				WRITE_ENABLED);
 		addOption(ACTION_DEFAULT_UPDATE_FILE,
-				"When a Game is started or if the key \"U\" is pressed, non empty parameters of this profile will get the default settings" ,
+				"When a Game is started or if the key \"U\" is pressed, non empty parameters of this profile will save the default settings" ,
 				WRITE_ENABLED);
 //		list.addElement("CLEAR",
 //				"Remove every occurrence of this setting" ,

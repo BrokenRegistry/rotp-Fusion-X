@@ -18,7 +18,7 @@ package br.profileManager.src.main.java;
 import java.util.List;
 
 import br.profileManager.src.main.java.Valid_LocalEnable.Line_LocalEnable;
-import static br.profileManager.src.main.java.WriteUtil.History.*;
+import static br.profileManager.src.main.java.Validation.History.*;
 import static br.profileManager.src.main.java.LineString.lineFormat;
 import static br.profileManager.src.main.java.PMconfig.*;
 
@@ -143,7 +143,7 @@ public abstract class AbstractParameter<
 		overrideGuiParameters(clientObject, getWinningCodeView (profileNames));
 	}
 
-	protected void putHistoryToGUI(History history, O clientObject) {
+	protected void putHistoryToGUI(Validation.History history, O clientObject) {
 		overrideGuiParameters (clientObject, validation.getHistory(history));
 	}
 
@@ -152,7 +152,7 @@ public abstract class AbstractParameter<
 	 * @param history  Field to be retrieved
 	 * @return true if not null
 	 */
-	protected boolean historyIsNull(History history) {
+	protected boolean historyIsNull(Validation.History history) {
 		return validation.historyIsNull(history);
 	}
 
@@ -161,7 +161,7 @@ public abstract class AbstractParameter<
 	 * @param history   The History case to fill
 	 * @param codeView the new codeView
 	 */
-	protected void setHistoryCodeView(History history, T codeView) {
+	protected void setHistoryCodeView(Validation.History history, T codeView) {
 		validation.setHistoryCodeView(history, codeView);
 	}
 
@@ -170,7 +170,7 @@ public abstract class AbstractParameter<
 	 * @param history  The History case to fill
 	 * @param codeView the new codeView
 	 */
-	protected void setHistoryCodeView(History history, List<T> codeView) {
+	protected void setHistoryCodeView(Validation.History history, List<T> codeView) {
 		validation.setHistoryCodeView(history, codeView);
 	}
 
@@ -179,7 +179,7 @@ public abstract class AbstractParameter<
 	 * @param history   The History case to fill
 	 * @param value the new value
 	 */
-	protected void setHistory(History history, AbstractT<T> newValue) {
+	protected void setHistory(Validation.History history, AbstractT<T> newValue) {
 		validation.setHistory(history, newValue);
 	}
 
@@ -188,7 +188,7 @@ public abstract class AbstractParameter<
 	 * @param history   The History case to fill
 	 * @param source    The History to copy
 	 */
-	protected void setHistory(History history, History source) {
+	protected void setHistory(Validation.History history, Validation.History source) {
 		validation.setHistory(history, source);
 	}
 
@@ -197,7 +197,7 @@ public abstract class AbstractParameter<
 	 * @param history   The History case to fill
 	 * @param value the new value
 	 */
-	protected void setHistory(History history, String newValue) {
+	protected void setHistory(Validation.History history, String newValue) {
 		validation.setHistory(history, newValue);
 	}
 	
@@ -205,7 +205,7 @@ public abstract class AbstractParameter<
 	 * Get "history" value
 	 * @return The "history" value
 	 */
-	protected AbstractT<T> getHistory(History history) {
+	protected AbstractT<T> getHistory(Validation.History history) {
 		return validation.getHistory(history);
 	}
 
@@ -217,7 +217,7 @@ public abstract class AbstractParameter<
 	 * @param history the target Field
 	 * @param profile the profile to set
 	 */
-	public void actionToFile(History history, String profile) {
+	public void actionToFile(Validation.History history, String profile) {
 			actionToFile(profile, validation.getHistory(history));
 	}
 
@@ -229,8 +229,8 @@ public abstract class AbstractParameter<
 	 * @param history the target Field
 	 * @param profile the profile to set
 	 */
-	public void actionUpdateFile(History history, String profile) {
-			actionUpdateFile(profile, validation.getHistory(history).userView());
+	public void actionUpdateFile(Validation.History history, String profile) {
+			actionUpdateFile(profile, validation.getHistory(history).getUserView());
 	}
 
 	/**
@@ -304,7 +304,7 @@ public abstract class AbstractParameter<
 	 * @return  selected Profile user View
 	 */
 	public T getProfileCodeView(String profile) {
-		return getProfileLine(profile).getValue().codeView();
+		return getProfileLine(profile).getValue().getCodeView();
 	}
 
 	/**
@@ -313,7 +313,7 @@ public abstract class AbstractParameter<
 	 * @return  selected Profile user View
 	 */
 	public String getProfileUserView(String profile) {
-		return getProfileLine(profile).getValue().userView();
+		return getProfileLine(profile).getValue().getUserView();
 	}
 
 	/**
@@ -407,7 +407,6 @@ public abstract class AbstractParameter<
 		}
 		return result;
 	}
-	
 	/**
 	 * Get the Local Enable loading state 
 	 * @return loading status
@@ -415,7 +414,6 @@ public abstract class AbstractParameter<
 	public Boolean isLoadEnabled() {
 		return localEnable.isLoadEnabled();
 	}
-
 	/**
 	 * Get the Local Enable writing state 
 	 * @return writing status
@@ -423,7 +421,9 @@ public abstract class AbstractParameter<
 	public Boolean isWriteEnabled() {
 		return localEnable.isWriteEnabled();
 	}
-
+	protected AbstractT<T> elementAnalysis(String userEntry) {
+		return getValidation().elementAnalysis(userEntry);
+	}
 	// ==========================================================
 	// Other Methods
 	//		
@@ -480,22 +480,6 @@ public abstract class AbstractParameter<
 					, historyElementsSeparator()
 					, historyHead()
 					, historyHead()) + NL;
-//			out += lineFormat(historyKey(),
-//					Current.toString() + historyNameValueSeparator()
-//					+ getHistory(Current).toString()
-//					+ historyElementsSeparator()
-//					+ Last.toString() + historyNameValueSeparator()
-//					+ getHistory(Last).toString()
-//					+ historyElementsSeparator()
-//					+ Initial.toString() + historyNameValueSeparator()
-//					+ getHistory(Initial).toString()
-//					+ historyElementsSeparator()
-//					+ Default.toString() + historyNameValueSeparator()
-//					+ getHistory(Default).toString()
-//					+ historyElementsSeparator()
-//					+ Game.toString() + historyNameValueSeparator()
-//					+ getHistory(Game).toString())
-//					.toString() + NL;
 		}
 
 		// LOCAL ENABLE

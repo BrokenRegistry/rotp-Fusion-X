@@ -881,6 +881,7 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
 	                playerRaceImg = null;
 	                playerRaceImg = playerRaceImg();
 	                backImg = null;
+	                newGameOptions().galaxyShape().quickGenerate();
 	                repaint();
             	}
                 return;
