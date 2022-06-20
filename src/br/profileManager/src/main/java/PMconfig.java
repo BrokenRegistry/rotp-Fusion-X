@@ -212,7 +212,7 @@ public class PMconfig {
 	 * @return The {@code String} to be used as 
 	 * elements separator for parameters list
 	 */
-	static String listSeparator() {
+	public static String listSeparator() {
 		return listSeparator;
 	}
 	/**

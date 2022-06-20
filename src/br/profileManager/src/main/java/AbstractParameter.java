@@ -129,6 +129,8 @@ public abstract class AbstractParameter<
 	 	// if one valid value is found: set it
 	 	if (!PMutil.neverNull(value).isBlank()) {
 	 		putToGUI(clientObject, value);
+	 		// reload GUI and set History Current Value
+	 		setFromGuiCodeView(clientObject);
 	 	}
 	}
 
@@ -255,9 +257,6 @@ public abstract class AbstractParameter<
  	 */
 	public void setFromGuiCodeView(O clientObject) {
 		validation.setHistory(Current, getFromUI(clientObject));
-//		validation.setHistoryCodeView(Current, 
-//				getFromUI(clientObject).codeView());
-		// Thru code view to force new validation
 	}
 	
 	/**

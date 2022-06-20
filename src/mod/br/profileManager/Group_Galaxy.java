@@ -134,6 +134,7 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 		public void putToGUI(ClientClasses go, AbstractT<String> value) {
 			go.newOptions().selectedGalaxySize(value.getCodeView());
 			go.options().selectedGalaxySize(value.getCodeView());
+			go.newOptions().galaxyShape().quickGenerate();
 		}
 		
 		@Override public void initComments() {}
@@ -258,6 +259,7 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 			setDefaultRandomLimits(1, max);
 			go.newOptions().selectedNumberOpponents(Math.min(max, value.getCodeView()));
 			go.options().selectedNumberOpponents(Math.min(max, value.getCodeView()));
+			go.newOptions().galaxyShape().quickGenerate();
 		}
 
 		@Override public void initComments() {}
@@ -348,16 +350,23 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 	// GuiRaceFilter is required
 	// 
 	static class GuiPresetOpponent extends
-			AbstractParameter <String, Validation<String>, ClientClasses> {
+			AbstractParameter <String, Valid_RaceList, ClientClasses> {
 
 		// ==================================================
 		// Constructors and initializers
 		//
 		GuiPresetOpponent(ClientClasses go) { 
 			super("GUI PRESET OPPONENT",
-					new Validation<String>(
-							new T_String(go.newOptions().selectedPlayerRace()), 
-							getOptionList(go)));
+					new Valid_RaceList(
+							new T_String(go.newOptions().selectedPlayerRace())
+							, getOptionList(go)
+							, false	// null is allowed
+					)
+			);
+//			super("GUI PRESET OPPONENT",
+//					new Validation<String>(
+//							new T_String(go.newOptions().selectedPlayerRace()), 
+//							getOptionList(go)));
 			
 			List<String> defaultValue = go.newOptions().startingRaceOptions();
 			setHistoryCodeView(Initial, defaultValue); // set Current too
@@ -376,6 +385,7 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 			for (Empire empire : go.session().galaxy().empires()) {
 				list.add(empire.raceName());
 			}
+			list.remove(0); // remove player
 			return new T_String().setFromCodeView(list);
 		}
 		
@@ -386,14 +396,27 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void putToGUI(ClientClasses go, AbstractT<String> value) {
-			List<String> races = buildAlienRaces(go.newOptions());
-			setFromList(go, value.getCodeList(), value.getUserList());
+//			validation().entryAnalysis(value.getUserEntry()
+//									, IGameOptions.MAX_OPPONENT_TYPE);
+			int i=0;
+			for (String race : validation().selectedOpponents(
+									value.getUserList()
+									, IGameOptions.MAX_OPPONENT_TYPE)) {
+				go.newOptions().selectedOpponentRace(i, race);
+				go.options().selectedOpponentRace(i, race);
+				i++;
+			}
+//			List<String> races = buildAlienRaces(go.newOptions());
+//			setFromList(go, value.getCodeList(), value.getUserList());
 		}
 		
 		@Override public void initComments() {}
 		
 		// ========== Other Methods ==========
 		//
+		private Valid_RaceList validation() {
+			return (Valid_RaceList) getValidation();
+		}
 		private static List<String> getOptionList(ClientClasses go) {
 			List<String> list = go.newOptions().startingRaceOptions();
 			list.add("null");

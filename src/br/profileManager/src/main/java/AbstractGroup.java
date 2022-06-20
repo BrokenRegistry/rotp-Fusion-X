@@ -54,7 +54,6 @@ public abstract class AbstractGroup<C> extends WriteUtil {
 			parameter.setFromGuiCodeView(clientObject); 
 		}
 	}
-
 	/**
 	 * @param clientObject The class that manage GUI parameters
 	 */
@@ -64,7 +63,6 @@ public abstract class AbstractGroup<C> extends WriteUtil {
 			parameter.setFromGameCodeView(clientObject);
 		}
 	}
-
 	/**
 	 * @param history  Field to get from
 	 * @param profileName the profile name
@@ -75,7 +73,6 @@ public abstract class AbstractGroup<C> extends WriteUtil {
 			parameter.actionToFile(history, profileName);
 		}
 	}
-
 	/**
 	 * @param history  Field to get from
 	 * @param profileName the profile name
@@ -86,14 +83,12 @@ public abstract class AbstractGroup<C> extends WriteUtil {
 			parameter.actionUpdateFile(history, profileName);
 		}
 	}
-
 	/**
 	 * @return the profile name list
 	 */
 	public List<String> profileList() {
 		return new ArrayList<String>(parameterNameMap.keySet());
 	 }
-
 	/**
 	 * @param profileName the profile name
 	 * @return Selected parameter
@@ -101,7 +96,6 @@ public abstract class AbstractGroup<C> extends WriteUtil {
 	public AbstractParameter<?, ?, C> getParameter(String profileName) {
 		return parameterNameMap.get(profileName);
 	}
-
 	/**
 	 * @param profileList the profile name
 	 * @param cleanProfiles to remove the unlisted profiles
@@ -122,7 +116,6 @@ public abstract class AbstractGroup<C> extends WriteUtil {
 		}
 		return out;
 	}
-	
 	/**
 	 * @param profileList the profile name
 	 * @return parameters group as String, ready to be printed
@@ -139,7 +132,6 @@ public abstract class AbstractGroup<C> extends WriteUtil {
 			}
 		}
 	}
-
 	// ========================================================================
 	// Initialization Methods
 	//
@@ -150,7 +142,6 @@ public abstract class AbstractGroup<C> extends WriteUtil {
 			AbstractParameter<?, ?, C> parameter) {
 		parameterNameMap.put(parameter.getParameterName(), parameter);
 	}
-
 	/**
 	 * Partial reset, values only
 	 */
@@ -160,7 +151,6 @@ public abstract class AbstractGroup<C> extends WriteUtil {
 			parameter.resetUserProfiles();
 		}
 	}
-
 	/**
 	 * @param clientObject The class that manage GUI parameters
 	 * @param profileList the profile name
@@ -173,7 +163,6 @@ public abstract class AbstractGroup<C> extends WriteUtil {
 			parameter.overrideGuiParameters(clientObject, profileList);
 		}
 	}
-
 	/**
 	 * @param runObject The class that manage Game parameters
 	 * @param profileList the profile name
@@ -186,7 +175,6 @@ public abstract class AbstractGroup<C> extends WriteUtil {
 			parameter.changeGameFileParameters(runObject, profileList);
 		}
 	}
-
 	/**
 	 * @param history  Field to get from
 	 * @param clientObject The class that manage GUI parameters

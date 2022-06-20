@@ -33,6 +33,8 @@ import java.util.List; // modnar: change to cleaner icon set
 import java.util.ArrayList; // modnar: change to cleaner icon set
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
+import rotp.mod.br.profiles.BR_Main;
 import rotp.model.game.GameSession;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
@@ -142,6 +144,7 @@ public class Rotp {
             device.setFullScreenWindow(null);
             setFrameSize();
         }
+
 
         // this will not catch 32-bit JREs on all platforms, but better than nothing
         String bits = System.getProperty("sun.arch.data.model").trim();

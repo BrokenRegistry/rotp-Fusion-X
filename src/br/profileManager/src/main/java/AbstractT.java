@@ -261,11 +261,10 @@ public abstract class AbstractT <T> {
 
 	// ===== Public Setters =====
 	/**
-	 * This setter will only set the user view 
-	 * @param value the user View
+	 * To clear all fields
 	 * @return This for chaining purpose
 	 */
-	AbstractT<T> reset() {
+	public AbstractT<T> reset() {
 		codeList = new ArrayList<T>();
 		userList = new ArrayList<String>();
 		return This();
@@ -284,7 +283,7 @@ public abstract class AbstractT <T> {
 	 * @param value the user View
 	 * @return This for chaining purpose
 	 */
-	AbstractT<T> setFromUserView(String value) {
+	public AbstractT<T> setFromUserView(String value) {
 		init(toCodeView(value));
 		return This();
 	}
@@ -302,7 +301,7 @@ public abstract class AbstractT <T> {
 	 * @param value the user View List
 	 * @return This for chaining purpose
 	 */
-	AbstractT<T> setFromUserView(List<String> value) {
+	public AbstractT<T> setFromUserView(List<String> value) {
 		init(toCodeView(value));
 		return This();
 	}
@@ -311,7 +310,7 @@ public abstract class AbstractT <T> {
 	 * @param value the code View
 	 * @return This for Chaining purpose
 	 */
-	AbstractT<T> setCodeViewOnly(T value) {
+	public AbstractT<T> setCodeViewOnly(T value) {
 		codeView(value);
 		return This();
 	}
@@ -320,7 +319,7 @@ public abstract class AbstractT <T> {
 	 * @param value the code View
 	 * @return This for Chaining purpose
 	 */
-	AbstractT<T> setFromCodeView(T value) {
+	public AbstractT<T> setFromCodeView(T value) {
 		init(value);
 		return This();
 	}
@@ -329,7 +328,7 @@ public abstract class AbstractT <T> {
 	 * @param value the code View List
 	 * @return This for chaining purpose
 	 */
-	AbstractT<T> setCodeViewOnly(List<T> value) {
+	public AbstractT<T> setCodeViewOnly(List<T> value) {
 		codeView(value);
 		return This();
 	}
@@ -363,6 +362,12 @@ public abstract class AbstractT <T> {
 	}
 
 	// ===== Public Getters =====
+	/**
+	 * @return the full list as String with separators
+	 */
+	public String getUserEntry() {
+		return String.join(PMconfig.listSeparator(), userList);
+	}
 	/**
 	 * @return the full list of user view
 	 */
