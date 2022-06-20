@@ -458,6 +458,21 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
                     dynamicDifficultyText.repaint(dynamicDifficultyStr());
                     missileSizeModifierText.repaint(missileSizeModifierStr());
             	};
+            	// Needs to be done twice for the case both Galaxy size
+            	// and the number of opponents were changed !?
+            	if(Profiles.processKey(k, e.isShiftDown(), "Modnar",
+            			options(), newGameOptions())) {
+            		alwaysStarGatesText.repaint(alwaysStarGatesStr());
+            		alwaysThoriumText.repaint(alwaysThoriumStr());
+            		challengeModeText.repaint(challengeModeStr());
+                    battleScoutText.repaint(battleScoutStr());
+                    companionWorldsText.repaint(companionWorldsStr());
+                    randomTechStartText.repaint(randomTechStartStr());
+                    customDifficultyText.repaint(customDifficultyStr());
+                    customDifficultyText.repaint(customDifficultyStr());
+                    dynamicDifficultyText.repaint(dynamicDifficultyStr());
+                    missileSizeModifierText.repaint(missileSizeModifierStr());
+            	};
                 buttonClick();
                 return;
         }

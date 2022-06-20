@@ -865,27 +865,37 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
     public void keyPressed(KeyEvent e) {
         int k = e.getKeyCode();
         switch(k) {
-           case KeyEvent.VK_ESCAPE:
-                goToRaceSetup();
-                return;
-          case KeyEvent.VK_ENTER:
-                startGame();
-                return;
-            case KeyEvent.VK_M: // BR: "M" = Go to Main Menu
-                goToMainMenu();
-                break;
-            default: // BR:
-            	if (Profiles.processKey(k, e.isShiftDown(), "Galaxy",
-            							options(), newGameOptions())) {
-	            	buttonClick();
-	                playerRaceImg = null;
-	                playerRaceImg = playerRaceImg();
-	                backImg = null;
-//	                newGameOptions().galaxyShape().quickGenerate();
-	                repaint();
-            	}
-                return;
-        }
+        case KeyEvent.VK_ESCAPE:
+            goToRaceSetup();
+            return;
+        case KeyEvent.VK_ENTER:
+            startGame();
+            return;
+        case KeyEvent.VK_M: // BR: "M" = Go to Main Menu
+            goToMainMenu();
+            break;
+        default: // BR:
+        	if (Profiles.processKey(k, e.isShiftDown(), "Galaxy",
+        							options(), newGameOptions())) {
+            	buttonClick();
+                playerRaceImg = null;
+                playerRaceImg = playerRaceImg();
+                backImg = null;
+                repaint();
+        	}
+        	// Needs to be done twice for the case both Galaxy size
+        	// and the number of opponents were changed !?
+        	if (Profiles.processKey(k, e.isShiftDown(), "Galaxy",
+					options(), newGameOptions())) {
+				buttonClick();
+			    playerRaceImg = null;
+			    playerRaceImg = playerRaceImg();
+			    backImg = null;
+			    repaint();
+			}
+
+        	return;
+    }
     }
     @Override
     public void mouseDragged(MouseEvent e) {  }

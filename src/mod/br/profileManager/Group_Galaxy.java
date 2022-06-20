@@ -17,24 +17,21 @@
 
 package mod.br.profileManager;
 
+import static br.profileManager.src.main.java.Validation.History.Default;
+import static br.profileManager.src.main.java.Validation.History.Initial;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import br.profileManager.src.main.java.AbstractGroup;
 import br.profileManager.src.main.java.AbstractParameter;
 import br.profileManager.src.main.java.AbstractT;
+import br.profileManager.src.main.java.T_Integer;
+import br.profileManager.src.main.java.T_String;
 import br.profileManager.src.main.java.Validation;
 import mod.br.Races.RaceFilter;
 import rotp.model.empires.Empire;
 import rotp.model.game.IGameOptions;
-import br.profileManager.src.main.java.T_Integer;
-import br.profileManager.src.main.java.T_String;
-
-import static br.profileManager.src.main.java.PMconfig.parametersSeparator;
-import static br.profileManager.src.main.java.PMconfig.randomId;
-import static br.profileManager.src.main.java.Validation.History.*;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * @author BrokenRegistry
@@ -91,6 +88,8 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 		@Override public void putToGUI(ClientClasses go, AbstractT<String> value) {
 			go.newOptions().selectedGalaxyShape(value.getCodeView());
 			go.options().selectedGalaxyShape(value.getCodeView());
+//			go.newOptions().galaxyShape().quickGenerate();
+//			go.options().galaxyShape().quickGenerate();
 		}
 		
 		@Override public void initComments() {
@@ -134,7 +133,8 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 		public void putToGUI(ClientClasses go, AbstractT<String> value) {
 			go.newOptions().selectedGalaxySize(value.getCodeView());
 			go.options().selectedGalaxySize(value.getCodeView());
-			go.newOptions().galaxyShape().quickGenerate();
+//			go.newOptions().galaxyShape().quickGenerate();
+//			go.options().galaxyShape().quickGenerate();
 		}
 		
 		@Override public void initComments() {}
@@ -259,7 +259,8 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 			setDefaultRandomLimits(1, max);
 			go.newOptions().selectedNumberOpponents(Math.min(max, value.getCodeView()));
 			go.options().selectedNumberOpponents(Math.min(max, value.getCodeView()));
-			go.newOptions().galaxyShape().quickGenerate();
+//			go.newOptions().galaxyShape().quickGenerate();
+//			go.options().galaxyShape().quickGenerate();
 		}
 
 		@Override public void initComments() {}
@@ -360,13 +361,8 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 					new Valid_RaceList(
 							new T_String(go.newOptions().selectedPlayerRace())
 							, getOptionList(go)
-							, false	// null is allowed
 					)
 			);
-//			super("GUI PRESET OPPONENT",
-//					new Validation<String>(
-//							new T_String(go.newOptions().selectedPlayerRace()), 
-//							getOptionList(go)));
 			
 			List<String> defaultValue = go.newOptions().startingRaceOptions();
 			setHistoryCodeView(Initial, defaultValue); // set Current too
@@ -396,18 +392,16 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void putToGUI(ClientClasses go, AbstractT<String> value) {
-//			validation().entryAnalysis(value.getUserEntry()
-//									, IGameOptions.MAX_OPPONENT_TYPE);
+			String[] selectedOpponents = validation()
+										.analyze(value.getUserList()
+												, IGameOptions.MAX_OPPONENT_TYPE
+												, false);
 			int i=0;
-			for (String race : validation().selectedOpponents(
-									value.getUserList()
-									, IGameOptions.MAX_OPPONENT_TYPE)) {
+			for (String race : selectedOpponents) {
 				go.newOptions().selectedOpponentRace(i, race);
 				go.options().selectedOpponentRace(i, race);
 				i++;
 			}
-//			List<String> races = buildAlienRaces(go.newOptions());
-//			setFromList(go, value.getCodeList(), value.getUserList());
 		}
 		
 		@Override public void initComments() {}
@@ -438,123 +432,5 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 			}
 			return list;
 		}
-		
-		private void setFromList(ClientClasses go, 
-				List<String> codeView, List<String> userView) {
-			
-	        List<String> allOpps = go.newOptions().startingRaceOptions();
-	        int[] oppCount = new int[allOpps.size()];
-	        Arrays.fill(oppCount, 0);
-
-			
-			String randomGui  = randomSource(RaceFilter.selectedGuiRaceFilter());
-			String randomGame = randomSource(RaceFilter.selectedGameRaceFilter());
-			int iMax = go.newOptions().selectedNumberOpponents();
-			int iList = codeView.size();		
-			int lim = Math.min(iMax, iList);
-			
-			String userEntry = "";
-			String race;
-			// loop thru the list
-			for (int i=0; i<lim; i++) {
-				race = codeView.get(i).strip().toUpperCase();
-				switch(race) {
-				case "NULL":
-					race = null;
-					break;
-				case "GUI":
-					race = elementAnalysis(randomGui).getCodeView();
-					break;
-				case "GAME":
-					race = elementAnalysis(randomGame).getCodeView();
-					break;
-				}
-				// Blank entry = no change
-				if (!(race != null && race.isBlank())) {
-//					System.out.println("List: " + race);
-					go.newOptions().selectedOpponentRace(i, race);
-					go.options().selectedOpponentRace(i, race);
-				}
-			}
-			// if list is to small and last is random, fill with last random
-			if (iMax > iList) {
-				race = codeView.get(iList-1).strip().toUpperCase();
-				switch(race) {
-				case "NULL":
-					race = null;
-					for (int i=iList; i<iMax; i++) {
-						go.newOptions().selectedOpponentRace(i, race);
-						go.options().selectedOpponentRace(i, race);
-					}
-					return;
-				case "GUI":
-					for (int i=iList; i<iMax; i++) {
-						race = elementAnalysis(randomGui).getCodeView();
-						go.newOptions().selectedOpponentRace(i, race);
-						go.options().selectedOpponentRace(i, race);
-					}
-					return;
-				case "GAME":
-					for (int i=iList; i<iMax; i++) {
-						race = elementAnalysis(randomGame).getCodeView();
-						go.newOptions().selectedOpponentRace(i, race);
-						go.options().selectedOpponentRace(i, race);
-					}
-					return;
-				default:
-					userEntry = userView.get(iList-1);
-					if (Validation.isRandom(userEntry)) {
-						for (int i=iList; i<iMax; i++) {
-							race = elementAnalysis(userEntry).getCodeView();
-//							System.out.println("Extra: " + race);
-							go.newOptions().selectedOpponentRace(i, race);
-							go.options().selectedOpponentRace(i, race);
-						}
-					}
-				}
-			}
-		}
-		
-		private String randomSource(List<String> raceFilter) {
-			// convert code View filter to user View
-			raceFilter = new T_String().setFromCodeView(raceFilter).getUserList();
-			// Add random ID
-			String source = randomId() + " "
-					+ String.join(parametersSeparator(), raceFilter);
-			return source;
-		}
-		
-	    private List<String> buildAlienRaces(IGameOptions options) {
-	        List<String> raceList = new ArrayList<>();
-	        List<String> allRaceOptions = new ArrayList<>();
-	        List<String> baseRaces = options.startingRaceOptions();
-	        int maxRaces = options.selectedNumberOpponents();
-	        int mult = IGameOptions.MAX_OPPONENT_TYPE;
-
-	        // first, build randomized list of opponent races
-	        for (int i=0;i<mult;i++) {
-	            Collections.shuffle(baseRaces);
-	            allRaceOptions.addAll(baseRaces);
-	        }
-
-	        // next, remove from that list the player and any selected opponents
-	        String[] selectedOpponents = options.selectedOpponentRaces();
-	        allRaceOptions.remove(options.selectedPlayerRace());
-	        
-	        for (int i=0;i<maxRaces;i++) {
-	            if (selectedOpponents[i] != null)
-	                allRaceOptions.remove(selectedOpponents[i]);
-	        }
-	        // build alien race list, replacing unselected opponents (null)
-	        // with remaining options
-	        for (int i=0;i<maxRaces;i++) {
-	            if (selectedOpponents[i] == null)
-	                raceList.add(allRaceOptions.remove(0));
-	            else
-	                raceList.add(selectedOpponents[i]);
-	        }
-	        return raceList;
-	    }
-
-	}		
+	}
 }

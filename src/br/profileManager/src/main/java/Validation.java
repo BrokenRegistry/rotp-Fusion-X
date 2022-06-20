@@ -322,7 +322,7 @@ public class Validation<T> extends OptionValidation<T> {
 	 * @param userEntry the {@code String} to analyze
 	 * @return the extra parameters
 	 */
-	private static String removeRandomId(String userEntry) {
+	public static String removeRandomId(String userEntry) {
 		userEntry = PMutil.clean(userEntry);
 		userEntry = userEntry.substring(randomId().length()).strip();
 		// Check for misplaced parametersSeparator()
@@ -333,11 +333,11 @@ public class Validation<T> extends OptionValidation<T> {
 		return userEntry;
 	}
 	/**
-	 * Remove the Random word and return the extra parameters
-	 * @param userEntry the {@code String} to analyze
-	 * @return the extra parameters
+	 * Split the parameter String to a list of parameters
+	 * @param parameters the {@code String} to analyze
+	 * @return the parameter list
 	 */
-	private static String[] splitParameters(String parameters) {
+	public static String[] splitParameters(String parameters) {
 		// parameters should already be tested
 		return parameters.split(parametersSeparator());
 	}

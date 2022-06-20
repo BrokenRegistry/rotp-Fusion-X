@@ -639,7 +639,28 @@ public class StartOptionsUI extends BasePanel implements MouseListener, MouseMot
                     fuelRangeText.repaint(fuelRangeStr());
                     techTradingText.repaint(techTradingStr());           		
             	}
-               return;
+            	// Needs to be done twice for the case both Galaxy size
+            	// and the number of opponents were changed !?
+            	if (Profiles.processKey(k, e.isShiftDown(), "Advanced",
+            			options(), newGameOptions())) {
+                    buttonClick();
+                    galaxyAgeText.repaint(galaxyAgeStr());
+                    starDensityText.repaint(starDensityStr());
+                    aiHostilityText.repaint(aiHostilityStr());
+                    nebulaeText.repaint(nebulaeStr());
+                    randomEventsText.repaint(randomEventsStr());
+                    planetQualityText.repaint(planetQualityStr());
+                    terraformingText.repaint(terraformingStr());
+                    colonizingText.repaint(colonizingStr());
+                    councilWinText.repaint(councilWinStr());
+                    randomizeAIText.repaint(randomizeAIStr());
+                    autoplayText.repaint(autoplayStr());
+                    researchRateText.repaint(researchRateStr());
+                    warpSpeedText.repaint(warpSpeedStr());
+                    fuelRangeText.repaint(fuelRangeStr());
+                    techTradingText.repaint(techTradingStr());           		
+            	}
+            return;
        }
     }
     @Override
