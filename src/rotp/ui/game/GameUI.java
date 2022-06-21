@@ -682,7 +682,12 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
                 exitGame();     return;
             case KeyEvent.VK_ESCAPE:
                 if (canContinue())
-                    continueGame();
+                    continueGame(); return;
+            // BR: Load Profiles with option "Surprise" and start Game
+            case KeyEvent.VK_R:
+            	if (e.isShiftDown()) {
+            		RotPUI.instance().surpriseStart(); return;
+            	}
         }
     }
     private void shrinkFrame() {

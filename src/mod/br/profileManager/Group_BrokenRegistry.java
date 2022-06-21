@@ -17,16 +17,20 @@
 
 package mod.br.profileManager;
 
+import static br.profileManager.src.main.java.Validation.History.Current;
+import static br.profileManager.src.main.java.Validation.History.Default;
+import static br.profileManager.src.main.java.Validation.History.Initial;
+
 import br.profileManager.src.main.java.AbstractGroup;
 import br.profileManager.src.main.java.AbstractParameter;
 import br.profileManager.src.main.java.AbstractT;
-import br.profileManager.src.main.java.Validation;
+import br.profileManager.src.main.java.PMconfig;
 import br.profileManager.src.main.java.T_Boolean;
 import br.profileManager.src.main.java.T_Float;
 import br.profileManager.src.main.java.T_Integer;
+import br.profileManager.src.main.java.Validation;
 import mod.br.Galaxy.GalaxySpacing;
 import mod.br.Galaxy.StarsOptions;
-import static br.profileManager.src.main.java.Validation.History.*;
 
 
 /**
@@ -163,7 +167,7 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 		NoPlanetMultiplier(ClientClasses go) { 
 			super( "NO PLANET MULTIPLIER", 
 					new Validation<Float>(
-							new T_Float(StarsOptions.DEFAULT_NO_PLANET_MULTIPLIER)));
+							new T_Float(StarsOptions.defaultNoPlanetMultiplier)));
 
 			setHistoryCodeView(Default, 1f); // BR DEFAULT
 			setLimits(0f, 1000000f);
@@ -190,4 +194,52 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 		@Override public void initComments() {}
 	}
 
+	// ==============================================================
+	// STAR PROBABILITY
+	//
+	static class StarProbability extends 
+			AbstractParameter <Float, Valid_ProbabilityDensity, ClientClasses> {
+
+		private static final Float DEFAULT = StarsOptions.DefaultProbabilityMultiplier;
+	    // ========== Constructors and initializer ==========
+	    //
+		StarProbability(ClientClasses go) {
+			super("STAR PROBABILITY"
+					, new Valid_ProbabilityDensity(DEFAULT
+							, StarsOptions.starColorList));
+
+			setHistoryCodeView(Initial, StarsOptions.defaultStarProbability);
+			setHistoryCodeView(Default, StarsOptions.defaultStarProbability);
+			setHistoryCodeView(Current, StarsOptions.defaultStarProbability);
+		}
+		
+	    // ========== Overriders ==========
+	    //
+		@Override public AbstractT<Float> getFromGame (ClientClasses go) {
+			return null; // Too complicated to only guess!
+		}
+		
+		@Override public void putToGame(ClientClasses go, AbstractT<Float> value) {}
+		
+		@Override public AbstractT<Float> getFromUI (ClientClasses go) {
+			return new T_Float().setFromCodeView(
+					StarsOptions.selectedStarProbability());
+		}
+		
+		@Override public void putToGUI(ClientClasses go, AbstractT<Float> value) {
+			StarsOptions.selectedStarProbability(value.getCodeList());
+		}
+		
+		@Override public void initComments() {
+			setBottomComments(PMconfig.availableForChange());
+		}
+		// ========== Other Methods ==========
+		//
+		/**
+		 * @param go the ClientClass
+		 */
+		public void loadStarProbability(ClientClasses go) {
+			// TODO
+		}
+	}
 }

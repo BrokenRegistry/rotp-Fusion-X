@@ -18,6 +18,7 @@
 package rotp.mod.br.profiles;
 
 import mod.br.profileManager.ClientClasses;
+import mod.br.profileManager.Group_Galaxy.StartPresetOpponent;
 import mod.br.profileManager.UserProfiles;
 import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
@@ -106,9 +107,9 @@ public class Profiles {
   	 * Check if it is OK to use OpponentRaceList (for Random)
 	 * @return status
 	 */
-	public static boolean isOpponentRaceListEnabled() {
+	public static boolean isStartOpponentRaceListEnabled() {
 		// Here because this is the Mod that knows the other Mods
-		return userProfiles.isParameterEnabled("GUI PRESET OPPONENT");
+		return userProfiles.isParameterEnabled("START PRESET OPPONENT");
 	}
 	/**
   	 * Check if it is OK to use GuiOpponentRaceList (for Random)
@@ -119,11 +120,13 @@ public class Profiles {
 		return userProfiles.isParameterEnabled("GUI RACE FILTER");
 	}
 	/**
-  	 * Check if it is OK to use GameOpponentRaceList (for Random)
-	 * @return status
+	 * Set the starting opponents
+	 * @param options the {@code IGameOptions} containing the parameters
 	 */
-	public static boolean isGameOpponentRaceListEnabled() {
-		// Here because this is the Mod that knows the other Mods
-		return userProfiles.isParameterEnabled("GAME RACE FILTER");
+	public static void loadStartingOpponents(IGameOptions options) {
+		StartPresetOpponent startPresetOpponent;
+		startPresetOpponent = (StartPresetOpponent) 
+				userProfiles.getParameter("START PRESET OPPONENT");
+		startPresetOpponent.loadOpponents(new ClientClasses(options));
 	}
 }

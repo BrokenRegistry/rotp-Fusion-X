@@ -28,9 +28,8 @@ import mod.br.Races.RaceFilter;
 import rotp.model.game.IGameOptions;
 
 /**
- * For the validation of the configurations Action
+ * For the validation of the Race Lists
  */
-//class Valid_LocalEnable extends Valid_ProfileAction {
 class Valid_RaceList extends Validation<String> {
 
 	// ==================================================

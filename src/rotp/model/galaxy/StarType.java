@@ -20,7 +20,9 @@ import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import rotp.ui.sprites.RoundGradientPaint;
 import rotp.util.Base;
 
@@ -146,5 +148,13 @@ public class StarType implements Base {
             color = Color.magenta;
             break;
         }
+    }
+
+
+    /**
+     * @return the StarType colors as List    // BR:
+     */
+    public static List<String> getStarTypeColors() {
+    	return new ArrayList<String>(typeMap.keySet()) ;
     }
 }

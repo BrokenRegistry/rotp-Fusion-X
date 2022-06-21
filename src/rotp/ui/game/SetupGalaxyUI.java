@@ -557,6 +557,10 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
     }
     public void startGame() {
         starting = true;
+        // BR:
+        if (Profiles.isStartOpponentRaceListEnabled()) {
+        	Profiles.loadStartingOpponents(newGameOptions());
+        }
         Race r = Race.keyed(newGameOptions().selectedPlayerRace());
         GameUI.gameName = r.setupName()+ " - "+text(newGameOptions().selectedGalaxySize())+ " - "+text(newGameOptions().selectedGameDifficulty());
         // modnar: add custom difficulty level option, set in Remnants.cfg
@@ -893,9 +897,22 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
 			    backImg = null;
 			    repaint();
 			}
-
         	return;
+        }
     }
+    // BR:
+    /**
+     * Load Profiles with option "Surprise" and start Game
+     */
+    public void surpriseStart() {
+    	Profiles.processKey(KeyEvent.VK_R, true, "Galaxy",
+				options(), newGameOptions());
+		buttonClick();
+	    repaint();
+    	Profiles.processKey(KeyEvent.VK_R, true, "Galaxy",
+				options(), newGameOptions());
+	    repaint();
+	    startGame();
     }
     @Override
     public void mouseDragged(MouseEvent e) {  }

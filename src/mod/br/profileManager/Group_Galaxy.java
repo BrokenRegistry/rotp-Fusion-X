@@ -52,6 +52,31 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 		addParameter(new GuiRaceFilter(go));
 		addParameter(new GameRaceFilter(go));
 		addParameter(new GuiPresetOpponent(go));
+		addParameter(new StartPresetOpponent(go));
+	}
+
+	// ========== Common Methods ==========
+	//
+	private static List<String> getOptionList(ClientClasses go) {
+		List<String> list = go.newOptions().startingRaceOptions();
+		list.add("null");
+		list.add("gui");
+		list.add("game");
+		return list;
+	}
+
+	private static List<String> getFromGUI(IGameOptions options) {
+		List<String> list = new ArrayList<String>() ;
+		String race;
+		int lim = options.selectedNumberOpponents();
+		for (int i=0; i<lim; i++) {
+			race = options.selectedOpponentRace(i);
+			if (race == null) {
+				race = "null";
+			}
+			list .add(race);
+		}
+		return list;
 	}
 
 	// ==============================================================
@@ -388,11 +413,11 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 		@Override public void putToGame(ClientClasses go, AbstractT<String> value) {}
 		
 		@Override public AbstractT<String> getFromUI (ClientClasses go) {
-			return new T_String().setFromCodeView(getFromUI(go.newOptions()));
+			return new T_String().setFromCodeView(getFromGUI(go.newOptions()));
 		}
 		
 		@Override public void putToGUI(ClientClasses go, AbstractT<String> value) {
-			String[] selectedOpponents = validation()
+			String[] selectedOpponents = ((Valid_RaceList) getValidation())
 										.analyze(value.getUserList()
 												, IGameOptions.MAX_OPPONENT_TYPE
 												, false);
@@ -404,33 +429,81 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 			}
 		}
 		
-		@Override public void initComments() {}
+		@Override public void initComments() {}		
+	}
+	// ==============================================================
+	// START PRESET OPPONENT
+	//
+	// GuiRaceFilter is required
+	// 
+	/**
+	 * Management of random opponent filling at start
+	 */
+	public static class StartPresetOpponent extends
+			AbstractParameter <String, Valid_RaceList, ClientClasses> {
+
+		// ==================================================
+		// Constructors and initializers
+		//
+		StartPresetOpponent(ClientClasses go) { 
+			super("START PRESET OPPONENT",
+					new Valid_RaceList(
+							new T_String(go.newOptions().selectedPlayerRace())
+							, getOptionList(go)
+					)
+			);
+			
+			List<String> defaultValue = go.newOptions().startingRaceOptions();
+			setHistoryCodeView(Initial, defaultValue); // set Current too
+			setHistoryCodeView(Default, defaultValue);
+			// remove the "null" from randomize
+			setDefaultRandomLimits(defaultValue.get(0)
+					, defaultValue.get(defaultValue.size()-1));
+			setLimits(defaultValue.get(0)
+					, defaultValue.get(defaultValue.size()-1));
+		}
 		
+		// ========== Overriders ==========
+		//
+		@Override public AbstractT<String> getFromGame (ClientClasses go) {
+			List<String> list = new ArrayList<String>();
+			for (Empire empire : go.session().galaxy().empires()) {
+				list.add(empire.raceName());
+			}
+			list.remove(0); // remove player
+			return new T_String().setFromCodeView(list);
+		}
+		
+		@Override public void putToGame(ClientClasses go, AbstractT<String> value) {}
+		
+		@Override public AbstractT<String> getFromUI (ClientClasses go) {
+			return new T_String().setFromCodeView(getFromGUI(go.newOptions()));
+		}
+		
+		@Override public void putToGUI(ClientClasses go, AbstractT<String> value) {
+			String[] selectedOpponents = ((Valid_RaceList) getValidation())
+										.analyze(value.getUserList()
+												, IGameOptions.MAX_OPPONENT_TYPE
+												, true);
+			RaceFilter.startOpponentRace(selectedOpponents);
+		}
+		
+		@Override public void initComments() {}
 		// ========== Other Methods ==========
 		//
-		private Valid_RaceList validation() {
-			return (Valid_RaceList) getValidation();
-		}
-		private static List<String> getOptionList(ClientClasses go) {
-			List<String> list = go.newOptions().startingRaceOptions();
-			list.add("null");
-			list.add("gui");
-			list.add("game");
-			return list;
-		}
-
-		private List<String> getFromUI(IGameOptions options) {
-			List<String> list = new ArrayList<String>() ;
-			String race;
-			int lim = options.selectedNumberOpponents();
-			for (int i=0; i<lim; i++) {
-				race = options.selectedOpponentRace(i);
-				if (race == null) {
-					race = "null";
+		/**
+		 * @param go the ClientClass
+		 */
+		public void loadOpponents(ClientClasses go) {
+			String[] selectedOpponents = RaceFilter.startOpponentRace();
+			if (selectedOpponents != null) {
+				int i=0;
+				for (String race : selectedOpponents) {
+					go.newOptions().selectedOpponentRace(i, race);
+					go.options().selectedOpponentRace(i, race);
+					i++;
 				}
-				list .add(race);
 			}
-			return list;
 		}
 	}
 }

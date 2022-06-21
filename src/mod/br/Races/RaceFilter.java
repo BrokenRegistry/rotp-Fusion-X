@@ -28,7 +28,7 @@ public class RaceFilter {
 	private static List<String> defaultRaceList;
 	private static List<String> selectedGameRaceFilter;
 	private static List<String> selectedGuiRaceFilter;
-//	private static List<String> selectedGuiPresetOpponent;
+	private static String[]     startOpponentRace;
 
     // ========== Setters ==========
     //
@@ -50,12 +50,12 @@ public class RaceFilter {
 	public static void selectedGuiRaceFilter(List<String> newRaceList) {
 		selectedGuiRaceFilter = newRaceList;
 	}
-//	/**
-//	 * @param newRaceList the Preset Opponents to set
-//	 */
-//	public static void selectedGuiPresetOpponent(List<String> newRaceList) {
-//		selectedGuiPresetOpponent = newRaceList;
-//	}
+	/**
+	 * @param newRaceList the Preset Opponents to set
+	 */
+	public static void startOpponentRace(String[] newRaceList) {
+		startOpponentRace = newRaceList;
+	}
     // ========== Getters ==========
     //
 	/**
@@ -84,17 +84,12 @@ public class RaceFilter {
 		}
 		return selectedGuiRaceFilter;
 	}
-//	/**
-//	 * @return the Preset Opponents
-//	 */
-//	public static List<String> selectedGuiPresetOpponent() {
-//		if (selectedGuiPresetOpponent == null 
-//				|| selectedGuiPresetOpponent.toString().isBlank()) {
-//			return defaultRaceList;
-//		}
-//		return selectedGuiPresetOpponent;
-//	}
+	/**
+	 * @return the Preset Opponents
+	 */
+	public static String[] startOpponentRace() {
+		return startOpponentRace;
+	}
     // ========== Other Methods ==========
     //
-
 }
