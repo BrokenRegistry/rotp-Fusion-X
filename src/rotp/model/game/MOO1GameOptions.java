@@ -596,9 +596,12 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     /**
      * List of all stars Type Color key
      * in the sequence used by the cumulative probability arrays
+     * @return the list
      */
-    public static final List<String> starTypeColors = List.of(
-    		"RED", "ORANGE", "YELLOW", "BLUE", "WHITE", "PURPLE"); 
+    public static List<String> starTypeColors() {
+    	return List.of("RED", "ORANGE", "YELLOW"
+    				 , "BLUE", "WHITE", "PURPLE"); 
+    }
 
     // BR: Made this String Array public
     /**
@@ -647,25 +650,25 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
         int typeIndex = 0;
         switch (s.starType().key()) {
             case StarType.RED:    pcts = redPcts;    break;
-            case StarType.ORANGE:  pcts = greenPcts;  break;
+            case StarType.ORANGE: pcts = greenPcts;  break;
             case StarType.YELLOW: pcts = yellowPcts; break;
             case StarType.BLUE:   pcts = bluePcts;   break;
-            case StarType.WHITE:  pcts = whitePcts; break;
+            case StarType.WHITE:  pcts = whitePcts;  break;
             case StarType.PURPLE: pcts = purplePcts; break;
             default:
                 pcts = redPcts; break;
         }
 
-        // BR: modify the "PLANET TYPE PROBABILITY GLOBAL" probability
-        if(Profiles.isPlanetProbabilityGlobalEnabled()) {
-        	pcts = GalaxyOptions.modifyPlanetProbabilityGlobal(pcts);
-        } // \BR
+        // BR: Modify the "PLANET TYPE PROBABILITY GLOBAL" probability
+        if(Profiles.isPlanetProbabilityEnabled("GLOBAL")) {
+        	pcts = GalaxyOptions.modifyPlanetProbability(pcts, "GLOBAL");
+        }
+        // Modify the "PLANET TYPE PROBABILITY COLOR TYPE" probability
+        if(Profiles.isPlanetProbabilityEnabled(s.starType().key())) {
+        	pcts = GalaxyOptions.modifyPlanetProbability(pcts, s.starType().key());
+        }
+        // \BR
  
-//        // BR: adjust the "PLANET_NONE" quantity
-//        if(Profiles.isNoPlanetMultiplierEnabled()) {
-//        	pcts = GalaxyOptions.changeCumulativeProbability(pcts);
-//        } // \BR
-//        
         float r = random();
         
         // modnar: change PLANET_QUALITY settings, comment out poor to great settings

@@ -20,11 +20,11 @@ package mod.br.Galaxy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import br.profileManager.src.main.java.PMutil;
 import rotp.model.game.MOO1GameOptions;
-import rotp.model.planet.PlanetType;
 
 /**
  * @author BrokenRegistry
@@ -33,11 +33,38 @@ import rotp.model.planet.PlanetType;
 public class StarsOptions {
 
 	/**
-	 * Default value for every PROBABILITY_MULTIPLIER
+	 * List of all Planet types
 	 */
-	private static final List<String> PLANET_TYPES = 
-			Arrays.asList(MOO1GameOptions.planetTypes());
-
+	public static final List<String> PLANET_TYPES = 
+			PMutil.suggestedUserViewFromCodeView(
+					Arrays.asList(MOO1GameOptions.planetTypes()));
+	/**
+	 * List of all Star types
+	 */
+	public static final List<String> STAR_TYPES = 
+			MOO1GameOptions.starTypeColors();
+	/**
+	 * Probability Modifier KEY for All Planets
+	 */
+	public static final String ALL_PLANETS_KEY = "GLOBAL";
+	/**
+	 * Probability Modifier KEY for All Stars
+	 */
+	public static final String STARS_KEY       = "STARS";
+	
+	/**
+	 * PLANET TYPE MODIFIER for all color type
+	 */
+	private static HashMap<String, ProbabilityModifier> probabilityModifierMap;
+	static {	
+		probabilityModifierMap = new HashMap<String, ProbabilityModifier>();
+		probabilityModifierMap.put(STARS_KEY, new ProbabilityModifier(STAR_TYPES));
+		probabilityModifierMap.put(ALL_PLANETS_KEY, new ProbabilityModifier(PLANET_TYPES));
+		for (String color : STAR_TYPES) {
+			probabilityModifierMap.put(color, new ProbabilityModifier(PLANET_TYPES));
+		}
+	}
+	
 	// ========================================================================
 	// COMMON TOOLS
 	//
@@ -61,51 +88,19 @@ public class StarsOptions {
 		}
 		return Arrays.toString(probabilityDensity);
 	}
-	// ========================================================================
-	// NO PLANET MULTIPLIER
-	//
-	/**
-	 * Default value for NO_PLANET_MULTIPLIER
-	 */
-	public static final Float defaultNoPlanetMultiplier = 1.0f;
-	private static final int  NONE_INDEX = PLANET_TYPES.indexOf(PlanetType.NONE);
-	
-	private static Float noPlanetMultiplier = defaultNoPlanetMultiplier;
-	/**
-	 * @return the current noPlanetMultiplier
-	 */
-	public static Float getNoPlanetMultiplier() {
-		return noPlanetMultiplier;
-	}
-	/**
-	 * @param noPlanetMultiplier the new value
-	 */
-	public static void setNoPlanetMultiplier(Float noPlanetMultiplier) {
-		StarsOptions.noPlanetMultiplier = noPlanetMultiplier;
-	}
-	/**
-	 * @param cumSum the Cumulative Probability
-	 * @return the new Cumulative Probability
-	 */
-	public static float[] changeCumulativeProbability(float[] cumSum) {
-		float[] density = PMutil.probCumulToDensity(cumSum);
-		density[NONE_INDEX] *= noPlanetMultiplier;
-		return PMutil.probDensityToCumul(density);
-	}
+
 	// ========================================================================
 	// PROBABILITY MODIFIER PARAMETERS
 	//
 	/**
-	 * STAR TYPE MODIFIER
+	 * get the probability modifier
+	 * @param key The probability modifier to retrieve
+	 * @return the probabilityModifier
 	 */
-	public static final ProbabilityModifier starTypeModifier =
-			new ProbabilityModifier(MOO1GameOptions.starTypeColors);
-	/**
-	 * PLANET TYPE MODIFIER GLOBAL
-	 */
-	public static final ProbabilityModifier planetTypeModifierGlobal =
-			new ProbabilityModifier(Arrays.asList(MOO1GameOptions.planetTypes()));
-	
+	public static ProbabilityModifier probabilityModifier(String key) {
+		return probabilityModifierMap.get(key);
+	}
+
 	// ==============================================================
 	// NESTED CLASS PROBABILITY MODIFIER
 	//
@@ -118,7 +113,6 @@ public class StarsOptions {
 		 */
 		public static final Float DefaultProbabilityModifier = 1.0f;
 
-		private List<String> optionList;
 		private List<Float> defaultModifierList;
 		private List<Float> selectedModifierList;
 		
@@ -128,19 +122,13 @@ public class StarsOptions {
 		 * @param options parameters description
 		 */
 		public ProbabilityModifier(List<String> options) {
-			optionList = options;
 			defaultModifierList = new ArrayList<Float>(Collections
-					.nCopies(optionList.size(), DefaultProbabilityModifier));
+					.nCopies(options.size(), DefaultProbabilityModifier));
 			selectedModifierList = defaultModifierList;
 		}
+
 	    // ========== Public Getters ==========
 	    //
-		/**
-		 * @return the optionList
-		 */
-		public List<String> optionList() {
-			return optionList;
-		}
 		/**
 		 * @return the default List of probability modifier
 		 */
@@ -250,4 +238,5 @@ public class StarsOptions {
 			return cumulativeProbability;
 		}
 	}
+
 }

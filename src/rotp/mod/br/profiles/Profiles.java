@@ -107,13 +107,6 @@ public class Profiles {
 		return userProfiles.isParameterEnabled("MAXIMIZE EMPIRES SPACING");
 	}
 	/**
-  	 * Check if it is OK to use NoPlanet
-	 * @return status
-	 */
-	public static boolean isNoPlanetMultiplierEnabled() {
-		return userProfiles.isParameterEnabled("NO PLANET MULTIPLIER");
-	}
-	/**
   	 * Check if it is OK to use OpponentRaceList (for Random)
 	 * @return status
 	 */
@@ -128,17 +121,19 @@ public class Profiles {
 		return userProfiles.isParameterEnabled("GUI RACE FILTER");
 	}
 	/**
-  	 * Check if it is OK to use GuiOpponentRaceList (for Random)
+  	 * Check if it is OK to use Star Probability Modifier (for Random)
 	 * @return status
 	 */
 	public static boolean isStarProbabilityEnabled() {
 		return userProfiles.isParameterEnabled("STAR TYPE PROBABILITY");
 	}
 	/**
-  	 * Check if it is OK to use GuiOpponentRaceList (for Random)
+  	 * Check if it is OK to use Purple Planet Probability Modifier (for Random)
+	 * @param type The planet color Type
 	 * @return status
 	 */
-	public static boolean isPlanetProbabilityGlobalEnabled() {
-		return userProfiles.isParameterEnabled("PLANET TYPE PROBABILITY GLOBAL");
+	public static boolean isPlanetProbabilityEnabled(String type) {
+		return userProfiles.isParameterEnabled("PLANET TYPE PROBABILITY " + type);
 	}
+	
 }

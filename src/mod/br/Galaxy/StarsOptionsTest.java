@@ -19,24 +19,24 @@ class StarsOptionsTest {
 
 	
 	@Test void modifyStarProbability_Same() {
-		starTypeModifier.selectedModifierList(same);;
-		assertTrue(same.containsAll(starTypeModifier.selectedModifierList()));
+		probabilityModifier(STARS_KEY).selectedModifierList(same);;
+		assertTrue(same.containsAll(probabilityModifier(STARS_KEY).selectedModifierList()));
 		assertEquals (Arrays.toString(youngPcts), 
-				Arrays.toString(starTypeModifier.modifyProbability(youngPcts))
+				Arrays.toString(probabilityModifier(STARS_KEY).modifyProbability(youngPcts))
 				, "should have retrieved the Array");
 	}
 	
 	@Test void modifyStarProbability_Two() {
-		starTypeModifier.selectedModifierList(two);
+		probabilityModifier(STARS_KEY).selectedModifierList(two);
 		assertEquals (Arrays.toString(youngPcts), 
-				Arrays.toString(starTypeModifier.modifyProbability(youngPcts))
+				Arrays.toString(probabilityModifier(STARS_KEY).modifyProbability(youngPcts))
 				, "should have retrieved the Array");
 	}
 
 	@Test void modifyStarProbability_Change() {
-		starTypeModifier.selectedModifierList(old);
+		probabilityModifier(STARS_KEY).selectedModifierList(old);
 		assertEquals (Arrays.toString(oldPcts), 
-				Arrays.toString(starTypeModifier.modifyProbability(youngPcts))
+				Arrays.toString(probabilityModifier(STARS_KEY).modifyProbability(youngPcts))
 				, "should have retrieved the Array");
 	}
 

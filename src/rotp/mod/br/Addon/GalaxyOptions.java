@@ -53,26 +53,20 @@ public class GalaxyOptions {
 		return GalaxySpacing.getMinOrionBuffer();
 	}
 	/**
-	 * @param cumSum the Cumulative Probability
-	 * @return the new Cumulative Probability
-	 */
-	public static float[] changeCumulativeProbability(float[] cumSum) {
-		return StarsOptions.changeCumulativeProbability(cumSum);
-	}
-	/**
-	 * adjust Star Probability to the user preference
+	 * Adjust Star Probability to the user preference
 	 * @param pcts the original cumulative distribution
 	 * @return the modified cumulative distribution
 	 */
 	public static float[] modifyStarProbability(float[] pcts) {
-		 return StarsOptions.starTypeModifier.modifyProbability(pcts);
+		 return StarsOptions.probabilityModifier("STARS").modifyProbability(pcts);
 	}
 	/**
-	 * adjust Global Planet Probability to the user preference
+	 * Adjust Purple Planet Probability to the user preference
 	 * @param pcts the original cumulative distribution
+	 * @param color
 	 * @return the modified cumulative distribution
 	 */
-	public static float[] modifyPlanetProbabilityGlobal(float[] pcts) {
-		 return StarsOptions.planetTypeModifierGlobal.modifyProbability(pcts);
+	public static float[] modifyPlanetProbability(float[] pcts, String color) {
+		 return StarsOptions.probabilityModifier(color).modifyProbability(pcts);
 	}
 }

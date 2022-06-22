@@ -20,22 +20,19 @@ package mod.br.profileManager;
 import static br.profileManager.src.main.java.Validation.History.Current;
 import static br.profileManager.src.main.java.Validation.History.Default;
 import static br.profileManager.src.main.java.Validation.History.Initial;
+import static mod.br.Galaxy.StarsOptions.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 import br.profileManager.src.main.java.AbstractGroup;
 import br.profileManager.src.main.java.AbstractParameter;
 import br.profileManager.src.main.java.AbstractT;
-import br.profileManager.src.main.java.PMutil;
 import br.profileManager.src.main.java.T_Boolean;
 import br.profileManager.src.main.java.T_Float;
 import br.profileManager.src.main.java.T_Integer;
 import br.profileManager.src.main.java.Validation;
 import mod.br.Galaxy.GalaxySpacing;
-import static mod.br.Galaxy.StarsOptions.*;
 import mod.br.Galaxy.StarsOptions.ProbabilityModifier;
-import rotp.model.game.MOO1GameOptions;
 
 
 /**
@@ -44,9 +41,8 @@ import rotp.model.game.MOO1GameOptions;
  */
 public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 	
-	private static List<String> planetTypeList =
-			PMutil.suggestedUserViewFromCodeView(
-					Arrays.asList(MOO1GameOptions.planetTypes()));
+//	private static List<String> planetTypeList =
+//			PMutil.suggestedUserViewFromCodeView(PLANET_TYPES);
 	
 	Group_BrokenRegistry(ClientClasses go) {
 	   super(go);
@@ -56,9 +52,17 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 		addParameter(new MaximizeEmpiresSpacing(go));
 		addParameter(new PreferedStarsPerEmpire(go));
 		addParameter(new MinStarsPerEmpire(go));
-//		addParameter(new NoPlanetMultiplier(go));
-		addParameter(new StarTypeProbability(go));
-		addParameter(new PlanetTypeProbabilityGlobal(go));
+		addParameter(new BaseProbabilityModifier(go, "STAR TYPE PROBABILITY"
+								, probabilityModifier(STARS_KEY), STAR_TYPES));
+		addParameter(new BaseProbabilityModifier(go
+				, "PLANET TYPE PROBABILITY " + ALL_PLANETS_KEY
+				, probabilityModifier(ALL_PLANETS_KEY), PLANET_TYPES));
+		for (String color : STAR_TYPES) {
+			addParameter(new BaseProbabilityModifier(go
+					, "PLANET TYPE PROBABILITY " + color
+					, probabilityModifier(color), PLANET_TYPES));
+		}
+
 	}
 
 	
@@ -99,6 +103,7 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 				" ");
 		}
 	}
+
 	// ========================================================================
 	// PREF STARS PER EMPIRE
 	//
@@ -170,82 +175,19 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 
 	}
 
-//	// ========================================================================
-//	// NO PLANET MULTIPLIER
-//	//
-//	static class NoPlanetMultiplier extends 
-//			AbstractParameter <Float, Validation<Float>, ClientClasses> {
-//
-//		NoPlanetMultiplier(ClientClasses go) { 
-//			super( "NO PLANET MULTIPLIER", 
-//					new Validation<Float>(
-//							new T_Float(StarsOptions.defaultNoPlanetMultiplier)));
-//
-//			setHistoryCodeView(Default, 1f); // BR DEFAULT
-//			setLimits(0f, 1000000f);
-//			setDefaultRandomLimits(0f, 2f);
-//		}
-//		
-//		// ------------------------------------------------
-//		// Overrider
-//		//
-//		@Override public AbstractT<Float> getFromGame (ClientClasses go) {
-//			return new T_Float(StarsOptions.getNoPlanetMultiplier());
-//		}
-//		
-//		@Override public void putToGame(ClientClasses go, AbstractT<Float> value) {}
-//		
-//		@Override public AbstractT<Float> getFromUI (ClientClasses go) {
-//			return new T_Float(StarsOptions.getNoPlanetMultiplier());
-//		}
-//		
-//		@Override public void putToGUI(ClientClasses go, AbstractT<Float> value) {
-//			StarsOptions.setNoPlanetMultiplier(value.getCodeView());
-//		}
-//		
-//		@Override public void initComments() {}
-//	}
-
-	// ========================================================================
-	// PROBABILITY MODIFIER CLASSES
-	//
-	/**
-	 *  STAR TYPE PROBABILITY
-	 */
-	static class StarTypeProbability extends BaseProbability  {
-
-		StarTypeProbability(ClientClasses go) {
-			super(go, "STAR TYPE PROBABILITY"
-					, starTypeModifier
-					, MOO1GameOptions.starTypeColors);
-		}
-	}
-	
-	/**
-	 *  PLANET TYPE PROBABILITY GLOBAL
-	 */
-	static class PlanetTypeProbabilityGlobal extends BaseProbability  {
-
-		PlanetTypeProbabilityGlobal(ClientClasses go) {
-			super(go, "PLANET TYPE PROBABILITY GLOBAL"
-					, planetTypeModifierGlobal
-					, planetTypeList);
-		}
-	}
-	// TODO add for star color
 	// ==============================================================
-	// BASE PROBABILITY CLASS
+	// BASE PROBABILITY MODIFIER CLASS
 	//
 	/**
 	 *  Base class for star and planets probability modifier
 	 */
-	public static class BaseProbability extends 
+	public static class BaseProbabilityModifier extends 
 			AbstractParameter <Float, Valid_ProbabilityDensity, ClientClasses> {
 
 		private final ProbabilityModifier pMod;
 	    // ========== Constructors and initializer ==========
 	    //
-		BaseProbability(ClientClasses go, String Name
+		BaseProbabilityModifier(ClientClasses go, String Name
 				, ProbabilityModifier modifier, List<String> options)
 		{
 			super(Name, new Valid_ProbabilityDensity(
