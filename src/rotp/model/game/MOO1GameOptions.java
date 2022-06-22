@@ -48,6 +48,7 @@ import rotp.ui.game.SetupGalaxyUI;
 import rotp.ui.UserPreferences;
 import rotp.util.Base;
 import rotp.mod.br.Addon.GalaxyOptions;
+import rotp.mod.br.Addon.RacesOptions;
 import rotp.mod.br.profiles.Profiles; // BR:
 
 public class MOO1GameOptions implements Base, IGameOptions, Serializable {
@@ -568,6 +569,11 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
             case GALAXY_AGE_OLD:    pcts = oldPcts; break;
             default:                pcts = normalPcts; break;
         }
+        // BR: distribution modifier
+        if (Profiles.isStarProbabilityEnabled()) {
+        	pcts = GalaxyOptions.modifyStarProbability(pcts);
+        } // \BR:
+        
         float r = random();
         for (int i=0;i<pcts.length;i++) {
             if (r <= pcts[i]) {
@@ -586,6 +592,13 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
             default: return StarType.RED;
         }
     }
+    // BR: Made this String List public
+    /**
+     * List of all stars Type Color key
+     * in the sequence used by the cumulative probability arrays
+     */
+    public static final List<String> starTypeColors = List.of(
+    		"RED", "ORANGE", "YELLOW", "BLUE", "WHITE", "PURPLE"); 
 
     // BR: Made this String Array public
     /**
@@ -643,11 +656,16 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
                 pcts = redPcts; break;
         }
 
-        // BR: adjust the "PLANET_NONE" quantity
-        if(Profiles.isNoPlanetMultiplierEnabled()) {
-        	pcts = GalaxyOptions.changeCumulativeProbability(pcts);
+        // BR: modify the "PLANET TYPE PROBABILITY GLOBAL" probability
+        if(Profiles.isPlanetProbabilityGlobalEnabled()) {
+        	pcts = GalaxyOptions.modifyPlanetProbabilityGlobal(pcts);
         } // \BR
-        
+ 
+//        // BR: adjust the "PLANET_NONE" quantity
+//        if(Profiles.isNoPlanetMultiplierEnabled()) {
+//        	pcts = GalaxyOptions.changeCumulativeProbability(pcts);
+//        } // \BR
+//        
         float r = random();
         
         // modnar: change PLANET_QUALITY settings, comment out poor to great settings

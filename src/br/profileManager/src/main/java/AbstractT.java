@@ -256,7 +256,9 @@ public abstract class AbstractT <T> {
 		codeList.add(value);
 	}
 	private void codeView(List<T> value) {
-		codeList = new ArrayList<T>(value);
+		if (value != null) {
+			codeList = new ArrayList<T>(value);
+		}
 	}
 
 	// ===== Public Setters =====

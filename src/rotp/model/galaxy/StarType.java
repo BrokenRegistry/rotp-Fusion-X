@@ -149,12 +149,4 @@ public class StarType implements Base {
             break;
         }
     }
-
-
-    /**
-     * @return the StarType colors as List    // BR:
-     */
-    public static List<String> getStarTypeColors() {
-    	return new ArrayList<String>(typeMap.keySet()) ;
-    }
 }

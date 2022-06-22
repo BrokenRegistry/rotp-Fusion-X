@@ -6,7 +6,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *     https://www.gnu.org/licenses/gpl-3.0.html
+ *	 https://www.gnu.org/licenses/gpl-3.0.html
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,26 +37,42 @@ public class GalaxyOptions {
 	/**
 	 * @return minEmpireBuffer {@code float} value
 	 */
-    public static float getMinEmpireBuffer() {
-         return GalaxySpacing.getMinEmpireBuffer();
-    }
-    /**
+	public static float getMinEmpireBuffer() {
+		 return GalaxySpacing.getMinEmpireBuffer();
+	}
+	/**
 	 * @return maxMinEmpireBuffer {@code float} value
 	 */
 	public static float getMaxMinEmpireBuffer() {
-         return GalaxySpacing.getMaxMinEmpireBuffer();
-    }
+		 return GalaxySpacing.getMaxMinEmpireBuffer();
+	}
 	/**
 	 * @return minOrionBuffer {@code float} value
 	 */
 	public static float getMinOrionBuffer() {
 		return GalaxySpacing.getMinOrionBuffer();
-    }
+	}
 	/**
 	 * @param cumSum the Cumulative Probability
 	 * @return the new Cumulative Probability
 	 */
 	public static float[] changeCumulativeProbability(float[] cumSum) {
 		return StarsOptions.changeCumulativeProbability(cumSum);
+	}
+	/**
+	 * adjust Star Probability to the user preference
+	 * @param pcts the original cumulative distribution
+	 * @return the modified cumulative distribution
+	 */
+	public static float[] modifyStarProbability(float[] pcts) {
+		 return StarsOptions.starTypeModifier.modifyProbability(pcts);
+	}
+	/**
+	 * adjust Global Planet Probability to the user preference
+	 * @param pcts the original cumulative distribution
+	 * @return the modified cumulative distribution
+	 */
+	public static float[] modifyPlanetProbabilityGlobal(float[] pcts) {
+		 return StarsOptions.planetTypeModifierGlobal.modifyProbability(pcts);
 	}
 }

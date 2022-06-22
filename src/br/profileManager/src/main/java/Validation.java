@@ -572,6 +572,12 @@ public class Validation<T> extends OptionValidation<T> {
 	// ==================================================
     // Other Methods
     //
+	/**
+	 * @return <b>true</b> if the Validation List is not empty
+	 */
+	protected boolean hasOptions() { // may be overridden
+		return optionList().size() > 0;
+	}
  	/**
 	 * Test if the code view is part of the validation list
 	 * and return the user view

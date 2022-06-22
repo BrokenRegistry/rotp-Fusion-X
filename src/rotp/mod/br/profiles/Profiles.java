@@ -18,7 +18,6 @@
 package rotp.mod.br.profiles;
 
 import mod.br.profileManager.ClientClasses;
-import mod.br.profileManager.Group_Galaxy.StartPresetOpponent;
 import mod.br.profileManager.UserProfiles;
 import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
@@ -33,13 +32,23 @@ import rotp.model.game.IGameOptions;
 public class Profiles {
 	
 	private static UserProfiles userProfiles = new UserProfiles();
-	
 	/**
 	 * Global Parameter to allow or block the edition of game files
 	 * Pressing "X" to load the file make it <b>true</b> 
 	 */
 	public static boolean ChangeGameFile = false;
-	
+	// ========================================================================
+	// Getter
+	//
+	/**
+	 * @return the user Profile
+   	 */
+	public static UserProfiles userProfiles() {
+		return userProfiles;
+	}
+	// ========================================================================
+	// Global Methods
+	//
 	/**
    	 * Load the configuration file and memorize first options
 	 * @param options the {@code IGameOptions} containing the parameters
@@ -87,12 +96,14 @@ public class Profiles {
 		return userProfiles.processKey(key, global, group,
 							new ClientClasses(options, newOptions));
 	}
+	// ========================================================================
+	// Test For Enabled Methods
+	//
 	/**
   	 * Check if it is OK to use Spacing
 	 * @return status
 	 */
 	public static boolean isSpacingEnabled() {
-		// Here because this is the Mod that knows the other Mods
 		return userProfiles.isParameterEnabled("MAXIMIZE EMPIRES SPACING");
 	}
 	/**
@@ -100,7 +111,6 @@ public class Profiles {
 	 * @return status
 	 */
 	public static boolean isNoPlanetMultiplierEnabled() {
-		// Here because this is the Mod that knows the other Mods
 		return userProfiles.isParameterEnabled("NO PLANET MULTIPLIER");
 	}
 	/**
@@ -108,7 +118,6 @@ public class Profiles {
 	 * @return status
 	 */
 	public static boolean isStartOpponentRaceListEnabled() {
-		// Here because this is the Mod that knows the other Mods
 		return userProfiles.isParameterEnabled("START PRESET OPPONENT");
 	}
 	/**
@@ -116,17 +125,20 @@ public class Profiles {
 	 * @return status
 	 */
 	public static boolean isGuiOpponentRaceListEnabled() {
-		// Here because this is the Mod that knows the other Mods
 		return userProfiles.isParameterEnabled("GUI RACE FILTER");
 	}
 	/**
-	 * Set the starting opponents
-	 * @param options the {@code IGameOptions} containing the parameters
+  	 * Check if it is OK to use GuiOpponentRaceList (for Random)
+	 * @return status
 	 */
-	public static void loadStartingOpponents(IGameOptions options) {
-		StartPresetOpponent startPresetOpponent;
-		startPresetOpponent = (StartPresetOpponent) 
-				userProfiles.getParameter("START PRESET OPPONENT");
-		startPresetOpponent.loadOpponents(new ClientClasses(options));
+	public static boolean isStarProbabilityEnabled() {
+		return userProfiles.isParameterEnabled("STAR TYPE PROBABILITY");
+	}
+	/**
+  	 * Check if it is OK to use GuiOpponentRaceList (for Random)
+	 * @return status
+	 */
+	public static boolean isPlanetProbabilityGlobalEnabled() {
+		return userProfiles.isParameterEnabled("PLANET TYPE PROBABILITY GLOBAL");
 	}
 }

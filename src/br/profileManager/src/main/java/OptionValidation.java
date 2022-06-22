@@ -189,7 +189,7 @@ class OptionValidation<T> extends WriteUtil {
 	/**
 	 * @return <b>true</b> if the Validation List is not empty
 	 */
-	boolean hasOptions() {
+	private boolean hasOptions() { // never overridden in this class
 		return optionList().size() > 0;
 	}
 	/**

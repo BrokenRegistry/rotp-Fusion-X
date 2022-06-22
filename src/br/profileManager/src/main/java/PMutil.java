@@ -416,6 +416,20 @@ public class PMutil {
 		}
 		return toSentence(codeView.substring(codeView.lastIndexOf("_") + 1));
 	}
+	/**
+	 * Convert a {@code String} with several "_" to a more user friendly one
+	 * @param list the {@code List<String>} Option 
+	 * @return  the capitalized last element of the {@code String} (after "_")
+	 */
+	public static List<String> suggestedUserViewFromCodeView (List<?> list) {
+		List<String> result = new ArrayList<String>();
+		if (list != null) {
+			for (Object value : list) {
+				result.add(suggestedUserViewFromCodeView(value));
+				}
+		}
+		return result;
+	}
 
 	// ==================================================
     // Math Methods

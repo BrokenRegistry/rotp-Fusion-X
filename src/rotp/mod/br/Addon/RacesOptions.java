@@ -20,6 +20,10 @@ package rotp.mod.br.Addon;
 import java.util.List;
 
 import mod.br.Races.RaceFilter;
+import mod.br.profileManager.ClientClasses;
+import mod.br.profileManager.Group_Galaxy.StartPresetOpponent;
+import rotp.mod.br.profiles.Profiles;
+import rotp.model.game.IGameOptions;
 
 /**
  * @author BrokenRegistry
@@ -33,16 +37,20 @@ public class RacesOptions {
     public static List<String> getGuiFilteredRaceList() {
          return RaceFilter.selectedGuiRaceFilter();
     }
-//	/**
-//	 * @return the preset opponent List
-//	 */
-//    public static List<String> getGuiPresetOpponents() {
-//         return RaceFilter.selectedGuiPresetOpponent();
-//    }
     /**
 	 * @return Race Filter
 	 */
 	public static List<String> getFilteredRaceList() {
          return RaceFilter.selectedGameRaceFilter();
     }
+	/**
+	 * Set the starting opponents
+	 * @param options the {@code IGameOptions} containing the parameters
+	 */
+	public static void loadStartingOpponents(IGameOptions options) {
+		StartPresetOpponent startPresetOpponent;
+		startPresetOpponent = (StartPresetOpponent) 
+				Profiles.userProfiles().getParameter("START PRESET OPPONENT");
+		startPresetOpponent.loadOpponents(new ClientClasses(options));
+	}
 }

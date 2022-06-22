@@ -39,6 +39,7 @@ import java.awt.RenderingHints; // modnar: needed for adding RenderingHints
 import java.util.List;
 import javax.swing.SwingUtilities;
 
+import rotp.mod.br.Addon.RacesOptions;
 import rotp.mod.br.profiles.Profiles;
 import rotp.model.empires.Race;
 import rotp.model.galaxy.GalaxyShape;
@@ -559,7 +560,7 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
         starting = true;
         // BR:
         if (Profiles.isStartOpponentRaceListEnabled()) {
-        	Profiles.loadStartingOpponents(newGameOptions());
+        	RacesOptions.loadStartingOpponents(newGameOptions());
         }
         Race r = Race.keyed(newGameOptions().selectedPlayerRace());
         GameUI.gameName = r.setupName()+ " - "+text(newGameOptions().selectedGalaxySize())+ " - "+text(newGameOptions().selectedGameDifficulty());

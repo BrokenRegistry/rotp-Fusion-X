@@ -42,7 +42,7 @@ class Valid_ProbabilityDensity extends Validation<Float> {
 		for (String option : OPTIONS) {
 			addOption(Float.valueOf(OPTIONS.indexOf(option)), option);
 		}
-		setLimits(-1000f , 10f);
+		setLimits(-1000f , 1000f);
 		setDefaultRandomLimits(0.25f , 4f);
 		setHistory(Default, new T_Float(DEFAULT));
 	}
@@ -53,5 +53,11 @@ class Valid_ProbabilityDensity extends Validation<Float> {
 	 */
 	@Override public String getOptionsRange() {
 		return PMutil.capitalize(getOptionsStringList().toString());
+	}
+	/**
+	 * @return <b>true</b> if the Validation List is not empty
+	 */
+	@Override protected boolean hasOptions() {
+		return false; // it has but not to be used the conventional way 
 	}
 }
