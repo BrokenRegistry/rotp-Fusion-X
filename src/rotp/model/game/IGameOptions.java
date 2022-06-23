@@ -18,7 +18,7 @@ package rotp.model.game;
 import java.awt.Color;
 import java.util.List;
 
-import rotp.mod.br.Addon.RacesOptions; // BR:
+import rotp.mod.br.AddOns.RacesOptions;
 import rotp.mod.br.profiles.Profiles; // BR:
 import rotp.model.ai.AI;
 import rotp.model.empires.Empire;

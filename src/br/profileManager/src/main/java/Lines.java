@@ -19,6 +19,7 @@ import static br.profileManager.src.main.java.PMconfig.commentEndPosition;
 import static br.profileManager.src.main.java.PMconfig.lineSplitPosition;
 import static br.profileManager.src.main.java.PMconfig.valueSpacer;
 import static br.profileManager.src.main.java.PMconfig.keyValueSeparator;
+import static br.profileManager.src.main.java.PMconfig.clogId;
 
 
 /**
@@ -44,6 +45,7 @@ public class Lines<T, V extends Validation<T>>
     // ==================================================
 	// Variables Properties
     //
+    private boolean clogged = false; // if clogged, userEntry isn't allowed to change
 	private String entryName = "none";
 	private Entry<T, V> entryValue;
 	private String comment = null;
@@ -131,6 +133,11 @@ public class Lines<T, V extends Validation<T>>
 	 */
 	Lines<T, V> setName(String newKey) {
 		entryName = PMutil.clean(newKey);
+		if (entryName.contains(clogId())) {
+			clogged = true;
+			entryValue.clogged(true);
+			entryName.replace(clogId(), "");
+		}
 		return this;
 	}
 
@@ -312,9 +319,16 @@ public class Lines<T, V extends Validation<T>>
 	// ==================================================
     // Overriders and overridden
     //
+	String nameToString() {
+		if (clogged) {
+			return entryName + clogId();
+		}
+		return entryName;
+	}
+
 	@Override public String toString() {
 		String out = "";
-		out += String.format(KEY_FORMAT, entryName.toString());
+		out += String.format(KEY_FORMAT, nameToString());
 		out += PMutil.neverNull(entryValue.toString());
 		if (getValidationData().isShowWithOptions()) {
 			comment = getValidationData().getOptionsRange();

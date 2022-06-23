@@ -1,7 +1,7 @@
 package mod.br.profileManager;
 
-import static mod.br.Galaxy.StarsOptions.STAR_TYPES;
-import static mod.br.Galaxy.StarsOptions.probabilityModifier;
+import static mod.br.AddOns.StarsOptions.STAR_TYPES;
+import static mod.br.AddOns.StarsOptions.probabilityModifier;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;

@@ -9,8 +9,8 @@ import rotp.model.game.IGameOptions;
  * Could be replaced by using {@code Object} and casting the class
  */
 public class ClientClasses {
-	private static IGameOptions newOption;
-	private static IGameOptions option;
+	private IGameOptions newOption;
+	private IGameOptions option;
 	private GameSession  session;
 
 	// ==================================================
@@ -64,20 +64,5 @@ public class ClientClasses {
 	 */
 	public GameSession session() {
 		return session;
-	}
-	// ==================================================
-	// Static Getters
-	//
-	/**
-	 * @return the guiObject
-	 */
-	public static IGameOptions getNewOptions() {
-		return newOption;
-	}
-	/**
-	 * @return the second guiObject
-	 */
-	public static IGameOptions getOptions() {
-		return option;
 	}
 }

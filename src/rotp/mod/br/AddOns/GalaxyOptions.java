@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-package rotp.mod.br.Addon;
+package rotp.mod.br.AddOns;
 
-import mod.br.Galaxy.GalaxySpacing;
-import mod.br.Galaxy.StarsOptions;
+import mod.br.AddOns.GalaxySpacing;
+import mod.br.AddOns.StarsOptions;
 
 /**
  * @author BrokenRegistry

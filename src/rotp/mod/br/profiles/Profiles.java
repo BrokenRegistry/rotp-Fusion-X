@@ -103,6 +103,13 @@ public class Profiles {
   	 * Check if it is OK to use Spacing
 	 * @return status
 	 */
+	public static boolean isFlagColorOrderEnabled() {
+		return userProfiles.isParameterEnabled("FLAG COLOR ORDER");
+	}
+	/**
+  	 * Check if it is OK to use Spacing
+	 * @return status
+	 */
 	public static boolean isSpacingEnabled() {
 		return userProfiles.isParameterEnabled("MAXIMIZE EMPIRES SPACING");
 	}

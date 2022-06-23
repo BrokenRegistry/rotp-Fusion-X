@@ -20,19 +20,26 @@ package mod.br.profileManager;
 import static br.profileManager.src.main.java.Validation.History.Current;
 import static br.profileManager.src.main.java.Validation.History.Default;
 import static br.profileManager.src.main.java.Validation.History.Initial;
-import static mod.br.Galaxy.StarsOptions.*;
+import static mod.br.AddOns.StarsOptions.ALL_PLANETS_KEY;
+import static mod.br.AddOns.StarsOptions.PLANET_TYPES;
+import static mod.br.AddOns.StarsOptions.STARS_KEY;
+import static mod.br.AddOns.StarsOptions.STAR_TYPES;
+import static mod.br.AddOns.StarsOptions.probabilityModifier;
 
 import java.util.List;
 
 import br.profileManager.src.main.java.AbstractGroup;
 import br.profileManager.src.main.java.AbstractParameter;
 import br.profileManager.src.main.java.AbstractT;
+import br.profileManager.src.main.java.PMconfig;
+import br.profileManager.src.main.java.PMutil;
 import br.profileManager.src.main.java.T_Boolean;
 import br.profileManager.src.main.java.T_Float;
 import br.profileManager.src.main.java.T_Integer;
 import br.profileManager.src.main.java.Validation;
-import mod.br.Galaxy.GalaxySpacing;
-import mod.br.Galaxy.StarsOptions.ProbabilityModifier;
+import mod.br.AddOns.GalaxySpacing;
+import mod.br.AddOns.Miscellaneous;
+import mod.br.AddOns.StarsOptions.ProbabilityModifier;
 
 
 /**
@@ -49,6 +56,7 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 	}
 	
 	@Override protected void initSettingList(ClientClasses go) {
+		addParameter(new FlagColorOrder(go));
 		addParameter(new MaximizeEmpiresSpacing(go));
 		addParameter(new PreferedStarsPerEmpire(go));
 		addParameter(new MinStarsPerEmpire(go));
@@ -65,7 +73,87 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 
 	}
 
-	
+	// ========================================================================
+	// FLAG COLOR ORDER
+	//
+	static class Valid_FlagColorOrder extends Validation<Integer> {
+
+		static final T_Integer flagColors = Miscellaneous.defaultFlagColorOrder();
+
+		Valid_FlagColorOrder(int initial) {
+			super(new T_Integer(initial));
+			init();
+		}
+
+		private void initCriteria() {
+			getCriteria().isNullAllowed(false);
+		}
+		
+		private void init() {
+			List<String> colors = flagColors.getUserList();
+			initCriteria();
+			for (String color : colors) {
+				addOption(colors.indexOf(color), color);
+			}
+			setLimits(0 , colors.size());
+			setDefaultRandomLimits(0 , colors.size());
+			setHistory(Default, flagColors);
+		}
+				
+		/**
+		 * Generate UserViewList and convert it to capitalized String
+		 * @return UserView List in capitalized String
+		 */
+		@Override public String getOptionsRange() {
+			return PMutil.capitalize(getOptionsStringList().toString());
+		}
+	}
+
+	// ========== Parameter Section ==========
+	//
+	static class FlagColorOrder extends 
+			AbstractParameter <Integer, Valid_FlagColorOrder, ClientClasses> {
+
+	    // ========== Constructors and initializer ==========
+	    //
+		FlagColorOrder(ClientClasses go) {
+			super("FLAG COLOR ORDER", new Valid_FlagColorOrder(0));
+			
+			getValidation().setHistory(Initial, Miscellaneous.defaultFlagColorOrder());
+			getValidation().setHistory(Default, Miscellaneous.defaultFlagColorOrder());
+			getValidation().setHistory(Current, Miscellaneous.defaultFlagColorOrder());
+		}
+		
+	    // ========== Overriders ==========
+	    //
+		@Override public AbstractT<Integer> getFromGame (ClientClasses go) {
+			return Miscellaneous.selectedFlagColorOrder();
+		}
+		
+		@Override public void putToGame(ClientClasses go, AbstractT<Integer> value) {
+			Miscellaneous.selectedFlagColorOrder(value);
+		}
+		
+		@Override public AbstractT<Integer> getFromUI (ClientClasses go) {
+			return Miscellaneous.selectedFlagColorOrder();
+		}
+		
+		@Override public void putToGUI(ClientClasses go, AbstractT<Integer> value) {
+			Miscellaneous.selectedFlagColorOrder(value);
+
+			go.newOptions().selectedPlayerColor(value.getCodeView());
+			go.options().selectedPlayerColor(value.getCodeView());
+		}
+		
+		@Override public void initComments() {
+			setBottomComments(PMconfig.dynamicParameter());
+			setHeadComments(
+					" " + NL +
+					"------------- Broken Registry Options -------------" + NL +
+					" ");
+		}	
+	}
+
 	// ========================================================================
 	// MAXIMIZE EMPIRES SPACING
 	//
@@ -79,9 +167,8 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 
 			setHistoryCodeView(Default, false); // BR DEFAULT
 		}
-		// ------------------------------------------------
-		// Overrider
-		//
+	    // ========== Overriders ==========
+	    //
 		@Override public AbstractT<Boolean> getFromGame (ClientClasses go) {
 			return new T_Boolean(GalaxySpacing.isMaximizeEmpiresSpacing());
 		}
@@ -96,12 +183,7 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 			GalaxySpacing.setMaximizeEmpiresSpacing(value.getCodeView());
 		}
 		
-		@Override public void initComments() {
-			setHeadComments(
-				" " + NL +
-				"------------- Broken Registry Options -------------" + NL +
-				" ");
-		}
+		@Override public void initComments() {}
 	}
 
 	// ========================================================================
@@ -119,9 +201,8 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 			setLimits(0 , 1000000);
 			setDefaultRandomLimits(16 , 24);
 		}
-		// ------------------------------------------------
-		// Overrider
-		//
+	    // ========== Overriders ==========
+	    //
 		@Override public AbstractT<Integer> getFromGame (ClientClasses go) {
 			return new T_Integer(GalaxySpacing.getPreferedStarsPerEmpire());
 		}
@@ -154,9 +235,8 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 			setLimits(0 , 1000000);
 			setDefaultRandomLimits(4 , 16);
 		}
-		// ------------------------------------------------
-		// Overrider
-		//
+	    // ========== Overriders ==========
+	    //
 		@Override public AbstractT<Integer> getFromGame (ClientClasses go) {
 			return new T_Integer(GalaxySpacing.getMinStarsPerEmpire());
 		}

@@ -1,8 +1,8 @@
-package mod.br.Galaxy;
+package mod.br.AddOns;
 
+import static mod.br.AddOns.StarsOptions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static mod.br.Galaxy.StarsOptions.*;
 
 import java.util.Arrays;
 import java.util.List;

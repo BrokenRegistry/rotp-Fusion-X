@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-package rotp.mod.br.Addon;
+package rotp.mod.br.AddOns;
 
 import java.util.List;
 
-import mod.br.Races.RaceFilter;
+import mod.br.AddOns.RaceFilter;
 import mod.br.profileManager.ClientClasses;
 import mod.br.profileManager.Group_Galaxy.StartPresetOpponent;
 import rotp.mod.br.profiles.Profiles;

@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 import br.profileManager.src.main.java.AbstractT;
 import br.profileManager.src.main.java.PMutil;
 import br.profileManager.src.main.java.Validation;
-import mod.br.Races.RaceFilter;
+import mod.br.AddOns.RaceFilter;
 import rotp.model.game.IGameOptions;
 
 /**
@@ -41,8 +41,9 @@ class Valid_RaceList extends Validation<String> {
 
 	// ========== Getters ==========
 	//
-	String[] analyze(List<String> userEntry, int maxOpponentType, boolean neverNull) {
-		return new newAnalyze(userEntry, maxOpponentType, neverNull).selectedOpponents();
+	String[] analyze(ClientClasses go, List<String> userEntry
+			, int maxOpponentType, boolean neverNull) {
+		return new newAnalyze(go, userEntry, maxOpponentType, neverNull).selectedOpponents();
 	}
 
 	// ==============================================================
@@ -58,9 +59,10 @@ class Valid_RaceList extends Validation<String> {
 		private int maxArray;
 		private boolean neverNull;
 
-		newAnalyze(List<String> userEntry, int maxOpponentType, boolean neverNull) {
+		newAnalyze(ClientClasses go, List<String> userEntry
+				, int maxOpponentType, boolean neverNull) {
 			this.maxOpponentType = maxOpponentType;
-			initOptions();
+			initOptions(go);
 
 			List<String> randomGui  = RaceFilter.selectedGuiRaceFilter();
 			List<String> randomGame = RaceFilter.selectedGameRaceFilter();
@@ -200,25 +202,21 @@ class Valid_RaceList extends Validation<String> {
 			return allRaceOptions.contains(race);
 		}
 
-		private IGameOptions newOptions() {
-			return ClientClasses.getNewOptions();
-		}
-
-		private void initOptions() {
+		private void initOptions(ClientClasses go) {
 			if (maxOpponentType == 0) {
 				maxOpponentType = IGameOptions.MAX_OPPONENT_TYPE;
 			}
 			// init allRaceOptions
-			startingList = newOptions().startingRaceOptions();
+			startingList = go.newOptions().startingRaceOptions();
 			allRaceOptions = new ArrayList<String>();
 			for (int i=0; i<maxOpponentType; i++) {
 				allRaceOptions.addAll(startingList);
 			}
 			// remove the player from the list and shuffle
-			allRaceOptions.remove(newOptions().selectedPlayerRace());
+			allRaceOptions.remove(go.newOptions().selectedPlayerRace());
 			Collections.shuffle(allRaceOptions);
 			// load already set opponents
-	        selectedOpponents = newOptions().selectedOpponentRaces().clone();
+	        selectedOpponents = go.newOptions().selectedOpponentRaces().clone();
 			maxArray = selectedOpponents.length;
 		}
 	}

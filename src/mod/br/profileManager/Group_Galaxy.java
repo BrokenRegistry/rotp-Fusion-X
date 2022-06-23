@@ -29,7 +29,7 @@ import br.profileManager.src.main.java.AbstractT;
 import br.profileManager.src.main.java.T_Integer;
 import br.profileManager.src.main.java.T_String;
 import br.profileManager.src.main.java.Validation;
-import mod.br.Races.RaceFilter;
+import mod.br.AddOns.RaceFilter;
 import rotp.model.empires.Empire;
 import rotp.model.game.IGameOptions;
 
@@ -418,7 +418,7 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, AbstractT<String> value) {
 			String[] selectedOpponents = ((Valid_RaceList) getValidation())
-										.analyze(value.getUserList()
+										.analyze(go, value.getUserList()
 												, IGameOptions.MAX_OPPONENT_TYPE
 												, false);
 			int i=0;
@@ -482,7 +482,7 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 		
 		@Override public void putToGUI(ClientClasses go, AbstractT<String> value) {
 			String[] selectedOpponents = ((Valid_RaceList) getValidation())
-										.analyze(value.getUserList()
+										.analyze(go, value.getUserList()
 												, IGameOptions.MAX_OPPONENT_TYPE
 												, true);
 			RaceFilter.startOpponentRace(selectedOpponents);

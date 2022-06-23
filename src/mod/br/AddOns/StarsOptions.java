@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package mod.br.Galaxy;
+package mod.br.AddOns;
 
 import java.util.ArrayList;
 import java.util.Arrays;

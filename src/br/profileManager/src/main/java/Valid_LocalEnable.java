@@ -27,6 +27,7 @@ class Valid_LocalEnable extends Validation<String> {
 		static final String LOAD_ENABLED    = "ENABLE_LOAD_LIST";
 		static final String WRITE_ENABLED   = "ENABLE_WRITE_LIST";
 		static final String GAME_ENABLED    = "ENABLE_GAME_LIST";
+		static final String GUI_ENABLED     = "ENABLE_GUI_LIST";
 	//	static final String SPECIAL_ENABLED = "SPECIAL_LIST";
 	//  static final String LOCAL_ENABLED = "LOCAL_LIST";
 
@@ -50,13 +51,19 @@ class Valid_LocalEnable extends Validation<String> {
 				"");
 		addOption("ALL",
 				"All actions are allowed in this Setting" ,
-				LOAD_ENABLED + " " + WRITE_ENABLED);
+				LOAD_ENABLED + " " + WRITE_ENABLED + " " + GUI_ENABLED + " " + GAME_ENABLED);
 		addOption("SAVE", 
 				"Allows actions that change the file" ,
 				WRITE_ENABLED);
+		addOption("GUI", 
+				"Allows actions that change GUI and GAMES" ,
+				LOAD_ENABLED + " " + GUI_ENABLED);
+		addOption("GAME", 
+				"Allows actions that change GUI and GAMES" ,
+				LOAD_ENABLED + " " + GAME_ENABLED);
 		addOption("LOAD", 
 				"Allows actions that change GUI and GAMES" ,
-				LOAD_ENABLED);
+				LOAD_ENABLED + " " + GUI_ENABLED + " " + GAME_ENABLED);
 	}
 
  	// ==========================================================
@@ -95,6 +102,14 @@ class Valid_LocalEnable extends Validation<String> {
 		
 		boolean isLoadEnabled() {
 			return isValueFromCategory(LOAD_ENABLED);
+		}
+		
+		boolean isGuiEnabled() {
+			return isValueFromCategory(GUI_ENABLED);
+		}
+		
+		boolean isGameEnabled() {
+			return isValueFromCategory(GAME_ENABLED);
 		}
 		
 		boolean isWriteEnabled() {

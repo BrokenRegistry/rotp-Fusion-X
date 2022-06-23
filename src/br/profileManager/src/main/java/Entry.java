@@ -27,6 +27,7 @@ public class Entry<
 		T, V extends  Validation<T>>
 		extends WriteUtil {
 
+    private boolean clogged = false; // if clogged, userEntry isn't allowed to change
 	private String userEntry = "";  // what we get from the file, Never Null
 	private AbstractT<T> value;
 	private Validation<T> validation;
@@ -85,16 +86,10 @@ public class Entry<
 	 */
 	public Entry<T, V> setCodeView(T codeView) {
 		value = getValidation().newValue(codeView);
-		return this;
-	}
-	/**
-	 * Set a new {@code String} userEntry and analyze it
-	 * @param newValue the new {@code String} userEntry
-	 * @return this for chaining purpose 
-	 */
-	public Entry<T, V> set(String newValue) {
-		userEntry = clean(newValue);
-		value = validation.entryAnalysis(getUserEntry());
+		if (isClogged()) {
+			setOutputStr(getUserEntry());
+		}
+			
 		return this;
 	}
 	/**
@@ -134,10 +129,29 @@ public class Entry<
 	// ==================================================
     // Setters simple
     //
+	void clogged(boolean newValue) {
+		clogged = newValue;
+	}
+
 	void setValidationData(Validation<T> newValidationData) {
 		validation = newValidationData;
 	}
 
+	/**
+	 * Set a new {@code String} userEntry and analyze it
+	 * @param newValue the new {@code String} userEntry
+	 * @return this for chaining purpose 
+	 */
+	public Entry<T, V> set(String newValue) {
+		userEntry = clean(newValue);
+		value = validation.entryAnalysis(getUserEntry(), isClogged());
+		return this;
+	}
+
+	/**
+	 * Set a new {@code AbstractT} value
+	 * @param newValue the new {@code AbstractT} value
+	 */
 	void setValue(AbstractT<T> newValue) {
 		if (newValue != null) {
 			value = newValue;
@@ -155,6 +169,10 @@ public class Entry<
 		if (value == null) {
 			value = validation.newValue();
 		}
+		if (isClogged()) {
+			value.setUserViewOnly(getUserEntry());
+			return;
+		}
 		value.setUserViewOnly(newOutputStr);
 	}
 
@@ -169,6 +187,10 @@ public class Entry<
 		return value;
 	}
 
+	boolean isClogged() {
+		return clogged;
+	}
+	
 	Validation<T> getValidation() {
 		return validation;
 	}

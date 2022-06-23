@@ -174,21 +174,21 @@ class BlockTest {
 //	}
 
 	// ========== Getters ==========
-	@Test
-	void getValue_String() {
-		block = newBlock();
-		block.add(line1);
-		block.add(line2);
-		block.add(line3);
-		assertEquals("load", block.getValue("key1").getUserView()
-				, "should have been «\"load\"»");	
-		assertEquals("", block.getValue("key2").getUserView()
-				, "should have been «\"\"»");	
-		assertEquals("Change", block.getValue("key3").getUserView()
-				, "should have been «\"Change\"»");	
-		assertEquals(null, block.getValue("key4")
-				, "should have been «null»");	
-	}
+//	@Test
+//	void getValue_String() {
+//		block = newBlock();
+//		block.add(line1);
+//		block.add(line2);
+//		block.add(line3);
+//		assertEquals("load", block.getValue("key1").getUserView()
+//				, "should have been «\"load\"»");	
+//		assertEquals("", block.getValue("key2").getUserView()
+//				, "should have been «\"\"»");	
+//		assertEquals("Change", block.getValue("key3").getUserView()
+//				, "should have been «\"Change\"»");	
+//		assertEquals(null, block.getValue("key4")
+//				, "should have been «null»");	
+//	}
 
 //	@Test
 //	void getValue_StringValueClass() {

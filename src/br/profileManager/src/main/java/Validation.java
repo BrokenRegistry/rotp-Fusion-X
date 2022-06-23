@@ -108,7 +108,7 @@ public class Validation<T> extends OptionValidation<T> {
 	 * @param history  Field to be filled
 	 * @param newValue the new "history" Value
 	 */
-	protected void setHistory(Validation.History history, AbstractT<T> newValue) {
+	public void setHistory(Validation.History history, AbstractT<T> newValue) {
 		if (history == Last) { // if in two step to allow breakpoint
 			if (historyMap.get(Last) != null) {
 				return; // Last was already assigned	
@@ -128,12 +128,21 @@ public class Validation<T> extends OptionValidation<T> {
 		setHistory(history, getHistory(source));
 	}
 	/**
-	 * Set the "history" User View
+	 * Set the "history" from User View
 	 * @param history  Field to be filled
 	 * @param userView the new "history" Value
 	 */
 	protected void setHistory(Validation.History history, String userView) {
 		AbstractT<T> value = newValue(getCodeView(userView));
+		setHistory(history, value);
+	}
+	/**
+	 * Set the "history" from User View List
+	 * @param history  Field to be filled
+	 * @param userView the new "history" Value
+	 */
+	public void setHistory(Validation.History history, List<String> userView) {
+		AbstractT<T> value = toValue(userView);
 		setHistory(history, value);
 	}
 	/**
@@ -197,6 +206,19 @@ public class Validation<T> extends OptionValidation<T> {
 		}
 		value.setUserViewOnly(userView);
 		value.setCodeViewOnly(getCodeView(userView));
+		return value;
+	}
+	/**
+	 * Get the code view List from User View List then set the value
+	 * @param userViewList  the user entry List
+	 * @return the validated Value
+	 */
+	public AbstractT<T> toValue(List<String> userViewList) {
+		AbstractT<T> value = newValue();
+		if (userViewList != null) {
+			value.setUserViewOnly(userViewList);
+			value.setCodeViewOnly(getCodeView(userViewList));
+		}
 		return value;
 	}
 	/**
@@ -387,14 +409,18 @@ public class Validation<T> extends OptionValidation<T> {
 	 * Analyze List user Entry content
 	 * @return value
 	 */
-	protected AbstractT<T> entryAnalysis(String userEntry) {
+	protected AbstractT<T> entryAnalysis(String userEntry, boolean clogged) {
 		userEntry = PMutil.clean(userEntry);
 		AbstractT<T> value;
 		List<String> userViewList = new ArrayList<String>();
 		List<T> codeViewList      = new ArrayList<T>();
 		for (String element : userEntry.split(listSeparator())) {
 			value = elementAnalysis(element); // Never null
-			userViewList.add(value.getUserView());
+			if (clogged) {
+				userViewList.add(userEntry);
+			} else {
+				userViewList.add(value.getUserView());
+			}
 			codeViewList.add(value.getCodeView());
 			}
 		value = newValue();

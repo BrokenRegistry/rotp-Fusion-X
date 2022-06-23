@@ -47,8 +47,8 @@ import rotp.model.tech.TechEngineWarp;
 import rotp.ui.game.SetupGalaxyUI;
 import rotp.ui.UserPreferences;
 import rotp.util.Base;
-import rotp.mod.br.Addon.GalaxyOptions;
-import rotp.mod.br.Addon.RacesOptions;
+import rotp.mod.br.AddOns.GalaxyOptions;
+import rotp.mod.br.AddOns.RacesOptions;
 import rotp.mod.br.profiles.Profiles; // BR:
 
 public class MOO1GameOptions implements Base, IGameOptions, Serializable {

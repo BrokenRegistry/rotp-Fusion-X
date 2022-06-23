@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package mod.br.Races;
+package mod.br.AddOns;
 
 import java.util.List;
 

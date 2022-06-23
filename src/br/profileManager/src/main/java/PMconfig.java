@@ -36,6 +36,7 @@ public class PMconfig {
 	private static String parametersSeparator  = ",";
 	private static String listSeparator        = "/";
 	private static String randomId             = "RANDOM";
+	private static String clogId               = "·";
 	
 	private static String availableForChange = "---- Available for changes in game saves";
 	private static String dynamicParameter   = "---- Follow the GUI, not stored in game";
@@ -233,6 +234,18 @@ public class PMconfig {
 	 */
 	public static void randomId(String newValue) {
 		randomId = newValue;
+	}
+	/**
+	 * @return The {@code String} to be used as Identifier for stop! parameters
+	 */
+	public static String clogId() {
+		return clogId;
+	}
+	/**
+	 * @param newValue the new {@code String} to be used as Identifier for stop! parameters
+	 */
+	public static void clogId(String newValue) {
+		clogId = newValue;
 	}
 	/**
 	 * @return The {@code String} to be used to inform that this

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package mod.br.Galaxy;
+package mod.br.AddOns;
 
 /**
  * @author BrokenRegistry

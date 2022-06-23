@@ -156,6 +156,22 @@ class OptionValidation<T> extends WriteUtil {
 	 * @param userEntry the value to test
 	 * @return the code view, "" if none
 	 */
+ 	List<T> getCodeView(List<String> userViewList) {
+		List<T> codeViewList = new ArrayList<T>();
+		if (userViewList != null) {
+			for (String userView : userViewList) {
+				codeViewList.add(getCodeViewOrDefault(
+									userView, getBlankCodeView()));
+			}
+		}
+		return codeViewList;
+	}
+	/**
+	 * Test if the user entry is part of the validation list
+	 * and return the {@code Code View} value as {@code String}
+	 * @param userEntry the value to test
+	 * @return the code view, "" if none
+	 */
  	T getCodeView(String userEntry) {
 		return getCodeViewOrDefault(userEntry, getBlankCodeView());
 	}
@@ -230,7 +246,7 @@ class OptionValidation<T> extends WriteUtil {
 	 * @param defaultIndex the {@code int} default returned value
 	 * @return the {@code int} index
 	 */
-	 int getUserViewIndex(String userView, int defaultIndex) {
+	int getUserViewIndex(String userView, int defaultIndex) {
 		userView = PMutil.clean(userView);
 		int index = 0;
 		for (Options<T> element : optionList()) {

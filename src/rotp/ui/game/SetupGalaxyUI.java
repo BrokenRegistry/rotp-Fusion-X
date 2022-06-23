@@ -39,7 +39,7 @@ import java.awt.RenderingHints; // modnar: needed for adding RenderingHints
 import java.util.List;
 import javax.swing.SwingUtilities;
 
-import rotp.mod.br.Addon.RacesOptions;
+import rotp.mod.br.AddOns.RacesOptions;
 import rotp.mod.br.profiles.Profiles;
 import rotp.model.empires.Race;
 import rotp.model.galaxy.GalaxyShape;
