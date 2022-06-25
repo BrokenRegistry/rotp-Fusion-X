@@ -108,6 +108,7 @@
                 <directory>${project.basedir}</directory>
                 <includes>
                     <include>README.md</include>
+                    <include>Profiles.pdf</include>
                 </includes>
                 <filtering>true</filtering>
             </resource>
@@ -360,6 +361,7 @@
                             <targetCommitish>main</targetCommitish>
                             <releaseNotes>target/classes/README.md</releaseNotes>
                             <assets>
+                                <asset>target/classes/Profiles.pdf</asset>
                                 <asset>target/rotp-${project.version}.jar</asset>
                                 <asset>target/rotp-${project.version}-mini.jar</asset>
                                 <asset>target/rotp-${project.version}-windows.zip</asset>

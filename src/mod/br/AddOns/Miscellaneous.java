@@ -108,7 +108,7 @@ public class Miscellaneous {
 	 * @return the new flag color index
 	 */
 	public static int getNextFlagColor(int colorIndex, boolean reverse) {
-		int selectedIndex = converter.indexOf(colorIndex);
+		int selectedIndex = converter.indexOf(colorIndex); // -1 if none... OK!
 		if (reverse) {		 
 			selectedIndex -= 1;
 			if (selectedIndex < 0) {

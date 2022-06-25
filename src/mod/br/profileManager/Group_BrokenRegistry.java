@@ -31,7 +31,6 @@ import java.util.List;
 import br.profileManager.src.main.java.AbstractGroup;
 import br.profileManager.src.main.java.AbstractParameter;
 import br.profileManager.src.main.java.AbstractT;
-import br.profileManager.src.main.java.PMconfig;
 import br.profileManager.src.main.java.PMutil;
 import br.profileManager.src.main.java.T_Boolean;
 import br.profileManager.src.main.java.T_Float;
@@ -146,7 +145,7 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void initComments() {
-			setBottomComments(PMconfig.dynamicParameter());
+			setBottomComments(dynamicParameter());
 			setHeadComments(
 					" " + NL +
 					"------------- Broken Registry Options -------------" + NL +

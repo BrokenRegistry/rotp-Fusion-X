@@ -15,7 +15,9 @@
 
 package br.profileManager.src.main.java;
 
-import static br.profileManager.src.main.java.Validation.History.*;
+import static br.profileManager.src.main.java.PMconfig.getConfig;
+import static br.profileManager.src.main.java.Validation.History.Current;
+import static br.profileManager.src.main.java.Validation.History.Default;
 
 /**
  * For the validation of the configurations Action
@@ -23,6 +25,10 @@ import static br.profileManager.src.main.java.Validation.History.*;
 //class Valid_LocalEnable extends Valid_ProfileAction {
 class Valid_LocalEnable extends Validation<String> {
 
+	private static String clogId;
+//	static {
+//		newConfig();
+//	}
 	// From Valid_ConfigAction
 		static final String LOAD_ENABLED    = "ENABLE_LOAD_LIST";
 		static final String WRITE_ENABLED   = "ENABLE_WRITE_LIST";
@@ -55,17 +61,26 @@ class Valid_LocalEnable extends Validation<String> {
 		addOption("SAVE", 
 				"Allows actions that change the file" ,
 				WRITE_ENABLED);
-		addOption("GUI", 
-				"Allows actions that change GUI and GAMES" ,
-				LOAD_ENABLED + " " + GUI_ENABLED);
-		addOption("GAME", 
-				"Allows actions that change GUI and GAMES" ,
-				LOAD_ENABLED + " " + GAME_ENABLED);
+//		addOption("GUI", 
+//				"Allows actions that change GUI and GAMES" ,
+//				LOAD_ENABLED + " " + GUI_ENABLED);
+//		addOption("GAME", 
+//				"Allows actions that change GUI and GAMES" ,
+//				LOAD_ENABLED + " " + GAME_ENABLED);
 		addOption("LOAD", 
 				"Allows actions that change GUI and GAMES" ,
 				LOAD_ENABLED + " " + GUI_ENABLED + " " + GAME_ENABLED);
+		addOption(clogId,
+				"No actions are allowed in this Setting" ,
+				"");
 	}
 
+	/**
+	 * To be notified that config has been updated
+	 */
+	static void newConfig() {
+		clogId = getConfig("clogId");
+	}
  	// ==========================================================
     // Nested Classes
     //

@@ -13,12 +13,12 @@ class UserProfilesTest {
 //	private AbstractParameter<?, ?, ClientClasses> param;
 	
 	private void init() {
-		userProfiles = new UserProfiles();
+		userProfiles = new UserProfiles("", "");
 		userProfiles.initAndLoadProfiles(clientObject);		
 	}
 	
 	@Test void initAndLoadProfiles_ClientClasses() {
-		userProfiles = new UserProfiles();
+		userProfiles = new UserProfiles("", "");
 		assertEquals(false, userProfiles.isInitialized(), "Not yet initialized");
 		userProfiles.initAndLoadProfiles(clientObject);
 		assertEquals(true, userProfiles.isInitialized(), "Should be initialized");

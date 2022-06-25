@@ -57,6 +57,10 @@ public class Valid_ProfileAction extends Validation<String> {
 	 */
 	public static final String ACTION_DEFAULT_TO_FILE  = "SaveDefault";
 	/**
+	 * User view association with Action Get from Default and put to File
+	 */
+	public static final String ACTION_LAST_TO_FILE  = "SaveLast";
+	/**
 	 * User view association with Action Get from GUI and update File
 	 */
 	public static final String ACTION_GUI_UPDATE_FILE  = "GetGUI";
@@ -72,6 +76,10 @@ public class Valid_ProfileAction extends Validation<String> {
 	 * User view association with Action Get from Default and update File
 	 */
 	public static final String ACTION_DEFAULT_UPDATE_FILE = "GetDefault";
+	/**
+	 * User view association with Action Get from Default and update File
+	 */
+	public static final String ACTION_LAST_UPDATE_FILE = "GetLast";
 	/**
 	 * User view association with Parameter Name
 	 */

@@ -15,17 +15,23 @@
 
 package br.profileManager.src.main.java;
 
-import static br.profileManager.src.main.java.PMconfig.separatorSymbol;
-import static br.profileManager.src.main.java.PMconfig.separatorSpacer;
-import static br.profileManager.src.main.java.PMconfig.lineSplitPosition;
-import static br.profileManager.src.main.java.PMutil.suggestedUserViewFromCodeView;
+import static br.profileManager.src.main.java.PMconfig.getConfig;
+import static br.profileManager.src.main.java.PMconfig.getIntConfig;
 import static br.profileManager.src.main.java.PMutil.genericTest;
+import static br.profileManager.src.main.java.PMutil.suggestedUserViewFromCodeView;
 
 /**
  * Single element for validation list
  * @param <T> the Value's Code View Class
  */
 class Options<T> extends WriteUtil {
+
+	private static String separatorSymbol;
+	private static String separatorSpacer;
+	private static int    lineSplitPosition;
+//		static {
+//			newConfig();
+//		}
 
 	private String description;
 	private String category ;
@@ -53,7 +59,14 @@ class Options<T> extends WriteUtil {
 		setCodeView(codeView);
 		setUserView(userView);
 	}
-
+	/**
+	 * To be notified that config has been updated
+	 */
+	static void newConfig() {
+		separatorSymbol   = getConfig("separatorSymbol");
+		separatorSpacer   = getConfig("separatorSpacer");
+		lineSplitPosition = getIntConfig("lineSplitPosition");
+	}
 	// ------------------------------------------------
     // Other Methods
     //
@@ -192,14 +205,14 @@ class Options<T> extends WriteUtil {
     // Other Private Methods
     //
 	private static Integer separatorPosition() {
-		return lineSplitPosition() - commentPrt().length();
+		return lineSplitPosition - commentPrt().length();
 	}	
     private static String keyFormat() { 
 		return  "%-"  + separatorPosition().toString() + "s"
-                + separatorSymbol() + separatorSpacer();
+                + separatorSymbol + separatorSpacer;
 	}
     private static String extFormat() { 
 		return  "%-"  + separatorPosition().toString() + "s"
-                + separatorSpacer() + separatorSpacer();
+                + separatorSpacer + separatorSpacer;
 	}
 }

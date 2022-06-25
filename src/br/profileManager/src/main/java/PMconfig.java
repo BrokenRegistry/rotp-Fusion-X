@@ -4,7 +4,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.gnu.org/licenses/gpl-3.0.html
+ *	 https://www.gnu.org/licenses/gpl-3.0.html
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,303 +15,278 @@
 
 package br.profileManager.src.main.java;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Properties;
+
+//import java.io.File;
+//import java.io.IOException;
+//import java.util.HashMap;
+//import java.util.Map;
+//import org.codehaus.jackson.JsonGenerationException;
+//import org.codehaus.jackson.map.JsonMappingException;
+//import org.codehaus.jackson.map.ObjectMapper;
+//import org.codehaus.jackson.map.ObjectWriter;
+//import org.codehaus.jackson.util.DefaultPrettyPrinter;
+//public class JavaMapToJsonFile {
+//  public static void main(String[] args) throws JsonGenerationException,
+//      JsonMappingException, IOException {
+//    Map<String, Object> person = new HashMap<String, Object>();
+//    Map<String, String> address = new HashMap<String, String>();
+//    address.put("Vill.", "Dhananjaypur");
+//    address.put("Dist.", "Varanasi");
+//    address.put("State", "UP");
+//    person.put("id", "1");
+//    person.put("name", "Arvind");
+//    person.put("address", address);
+//    ObjectMapper mapper = new ObjectMapper();
+//    ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
+//    mapper.writeValue(new File("JacksonFile/dataTwo.json"), person);
+//    System.out.println("--Done--");
+//  }
+
 /**
  * @author BrokenRegistry
  * Global parameters, open for configuration
  */
-public class PMconfig {
+public class PMconfig extends Properties {
 
-	private static String commentKey        = ";";
-	private static String commentSpacer     = " ";
-	private static String keyValueSeparator = ":";
-    private static String valueSpacer       = " ";
-	private static String separatorSymbol   = "=";
-	private static String separatorSpacer   = " ";
-	private static String parameterKey      = "¦ Parameter";
-	private static String historyKey        = "¦ History";
-	private static String optionsKey        = "Options";
-	private static String optionsSubKey	    = "  \" \" ";
-	private static String historyNameValueSeparator = " : ";
-	private static String historyElementsSeparator  = " ¦ ";
-	private static String parametersSeparator  = ",";
-	private static String listSeparator        = "/";
-	private static String randomId             = "RANDOM";
-	private static String clogId               = "·";
+	private static final String defaultProfileName = "Profile.cfg";
+	private static final String defaultConfigName  = "PMConfig.xml";
 	
-	private static String availableForChange = "---- Available for changes in game saves";
-	private static String dynamicParameter   = "---- Follow the GUI, not stored in game";
-    
-	private static int lineSplitPosition  = 16;
-	private static int commentEndPosition = 30;
-	private static int maxLineLength      = 80;
-
-	/**
-	 * @return The {@code String} to be used as Comment starter
-	 */
-	static String commentKey() {
-		return commentKey;
-	}
-	/**
-	 * @param newValue the new {@code String} to be used as Comment starter
-	 */
-	public static void commentKey(String newValue) {
-		commentKey = newValue;
-	}
-	/**
-	 * @return The {@code String} to be used as Comment Spacer
-	 */
-	static String commentSpacer() {
-		return commentSpacer;
-	}
-	/**
-	 * @param newValue the new {@code String} to be used as Comment Spacer
-	 */
-	public static void commentSpacer(String newValue) {
-		commentSpacer = newValue;
-	}
-	/**
-	 * @return The {@code String} to be used as Key - Value Separator
-	 */
-	static String keyValueSeparator() {
-		return keyValueSeparator;
-	}
-	/**
-	 * @param newValue the new {@code String} to be used as Key - Value Separator
-	 */
-	public static void keyValueSeparator(String newValue) {
-		keyValueSeparator = newValue;
-	}
-	/**
-	 * @return The {@code String} to be used as Value Spacer
-	 */
-	static String valueSpacer() {
-		return valueSpacer;
-	}
-	/**
-	 * @param newValue the new {@code String} to be used as Value Spacer
-	 */
-	public static void valueSpacer(String newValue) {
-		valueSpacer = newValue;
-	}
-	/**
-	 * @return The {@code String} to be used as Option Definition Symbol
-	 */
-	static String separatorSymbol() {
-		return separatorSymbol;
-	}
-	/**
-	 * @param newValue the new {@code String} to be used as Option Definition Symbol
-	 */
-	public static void separatorSymbol(String newValue) {
-		separatorSymbol = newValue;
-	}
-	/**
-	 * @return The {@code String} to be used as Definition Spacer
-	 */
-	static String separatorSpacer() {
-		return separatorSpacer;
-	}
-	/**
-	 * @param newValue the new {@code String} to be used as Definition Spacer
-	 */
-	public static void separatorSpacer(String newValue) {
-		separatorSpacer = newValue;
-	}
-	/**
-	 * @return The {@code String} to be used as Parameter Key
-	 */
-	static String parameterKey() {
-		return parameterKey;
-	}
-	/**
-	 * @param newValue the new {@code String} to be used as Parameter Key
-	 */
-	public static void parameterKey(String newValue) {
-		parameterKey = newValue;
-	}
-	/**
-	 * @return The {@code String} to be used as history Key
-	 */
-	static String historyKey() {
-		return historyKey;
-	}
-	/**
-	 * @param newValue the new {@code String} to be used as History Key
-	 */
-	public static void historyKey(String newValue) {
-		historyKey = newValue;
-	}
-	/**
-	 * @return The {@code String} to be used as Options Key
-	 */
-	static String optionsKey() {
-		return optionsKey;
-	}
-	/**
-	 * @param newValue the new {@code String} to be used as Options Key
-	 */
-	public static void optionsKey(String newValue) {
-		optionsKey = newValue;
-	}
-	/**
-	 * @return The {@code String} to be used as Options subKey
-	 * (to start new line when long lines have been cut)
-	 */
-	static String optionsSubKey() {
-		return optionsSubKey;
-	}
-	/**
-	 * @param newValue the new {@code String} to be used as Options subKey
-	 * (to start new line when long lines have been cut)
-	 */
-	public static void optionsSubKey(String newValue) {
-		optionsSubKey = newValue;
-	}
-	/**
-	 * @return The {@code String} to be used as 
-	 * History Name - Value Separator (Definition)
-	 */
-	static String historyNameValueSeparator() {
-		return historyNameValueSeparator;
-	}
-	/**
-	 * @param newValue the new {@code String} to be used as 
-	 * History Name - Value Separator (Definition)
-	 */
-	public static void historyNameValueSeparator(String newValue) {
-		historyNameValueSeparator = newValue;
-	}
-	/**
-	 * @return The {@code String} to be used as 
-	 * History elements Separator
-	 */
-	static String historyElementsSeparator() {
-		return historyElementsSeparator;
-	}
-	/**
-	 * @param newValue the new {@code String} to be used as 
-	 * History elements Separator
-	 */
-	public static void historyElementsSeparator(String newValue) {
-		historyElementsSeparator = newValue;
-	}
-	/**
-	 * @return The {@code String} to be used as
-	 * elements separator for random parameters list
-	 */
-	public static String parametersSeparator() {
-		return parametersSeparator;
-	}
-	/**
-	 * @param newValue the new {@code String} to be used as
-	 * elements separator for random parameters list
-	 */
-	public static void parametersSeparator(String newValue) {
-		parametersSeparator = newValue;
-	}
-	/**
-	 * @return The {@code String} to be used as 
-	 * elements separator for parameters list
-	 */
-	public static String listSeparator() {
-		return listSeparator;
-	}
-	/**
-	 * @param newValue the new {@code String} to be used as
-	 * elements separator for parameters list
-	 */
-	public static void listSeparator(String newValue) {
-		listSeparator = newValue;
-	}
-	/**
-	 * @return The {@code String} to be used as Identifier for Random parameters
-	 */
-	public static String randomId() {
-		return randomId;
-	}
-	/**
-	 * @param newValue the new {@code String} to be used as Identifier for Random parameters
-	 */
-	public static void randomId(String newValue) {
-		randomId = newValue;
-	}
-	/**
-	 * @return The {@code String} to be used as Identifier for stop! parameters
-	 */
-	public static String clogId() {
-		return clogId;
-	}
-	/**
-	 * @param newValue the new {@code String} to be used as Identifier for stop! parameters
-	 */
-	public static void clogId(String newValue) {
-		clogId = newValue;
-	}
-	/**
-	 * @return The {@code String} to be used to inform that this
-	 * parameter is available for in Game setting
-	 */
-
-	public static String availableForChange() {
-		return availableForChange;
-	}
-	/**
-	 * @param newValue the new {@code String} to be used to inform that this
-	 * parameter is available for in Game setting
-	 */
-	public static void availableForChange(String newValue) {
-		availableForChange = newValue;
-	}
-	/**
-	 * @return The {@code String} to be used to inform that this
-	 * parameter change dynamically with GUI (Not stored in game file)
-	 */
-	public static String dynamicParameter() {
-		return dynamicParameter;
-	}
-	/**
-	 * @param newValue the new {@code String} to be used to inform that this
-	 * parameter change dynamically with GUI (Not stored in game file)
-	 */
-	public static void dynamicParameter(String newValue) {
-		dynamicParameter = newValue;
+	interface NewConfig {
+		void newConfig();
 	}
 
 	/**
-	 * @return Label - Value Separator Position
+	 * Original Version 2020-06-23
 	 */
-	protected static int lineSplitPosition() {
-		return lineSplitPosition;
-	}
-	/**
-	 * @param newValue the new {@code int} Label - Value Separator Position
-	 */
-	public static void lineSplitPosition(int newValue) {
-		lineSplitPosition = newValue;
-	}
-	/**
-	 * @return End o line comment position
-	 */
-	protected static int commentEndPosition() {
-		return commentEndPosition;
-	}
-	/**
-	 * @param newValue the new {@code int} End o line comment position
-	 */
-	public static void commentEndPosition(int newValue) {
-		commentEndPosition = newValue;
-	}
-	/**
-	 * @return Maximum Line Length before splitting
-	 */
-	protected static int maxLineLength() {
-		return maxLineLength;
-	}
-	/**
-	 * @param newValue the new {@code int} Maximum Line Length before splitting
-	 */
-	public static void maxLineLength(int newValue) {
-		maxLineLength = newValue;
+	private static final long serialVersionUID = LocalDate
+			.parse("2022-06-23")
+			.toEpochDay();
+	private static List<NewConfig> listeners = new ArrayList<NewConfig>();
+	private static final PMconfig config = new PMconfig();
+
+	PMconfig() {
+		setProperty("commentKey",		";");
+		setProperty("commentSpacer",	 " ");
+		setProperty("keyValueSeparator", ":");
+		setProperty("valueSpacer",	     " ");
+		setProperty("separatorSymbol",   "=");
+		setProperty("separatorSpacer",   " ");
+		setProperty("parameterKey",	     "¦ Parameter");
+		setProperty("historyKey",		 "¦ History");
+		setProperty("optionsKey",		 "Options");
+		setProperty("optionsSubKey",	 "  \" \" ");
+		setProperty("historyNameValueSeparator", ": ");
+		setProperty("historyElementsSeparator",  " ¦ ");
+		setProperty("parametersSeparator", ",");
+		setProperty("listSeparator",	   "/");
+		setProperty("randomId",	"RANDOM");
+		setProperty("clogId",   "·");
+		
+		setProperty("availableForChange", "---- Available for changes in game saves");
+		setProperty("dynamicParameter", "---- Follow the GUI, not stored in game");
+
+		setProperty("lineSplitPosition",  "16");
+		setProperty("commentEndPosition", "30");
+		setProperty("maxLineLength",	  "80");
+
+		setProperty("configPath",      "");
+		setProperty("configFileName",  defaultConfigName);
+		setProperty("profilePath",     "");
+		setProperty("profileFileName", defaultProfileName);
 	}
 
+	/**
+	 * @return the config
+	 */
+	public PMconfig config() {
+		return config;
+	}
+	/**
+	 * To add a listener to NewConfig
+	 * @param toAdd
+	 */
+	public static void addListener(NewConfig toAdd) {
+		listeners.add(toAdd);
+	}
+	/**
+	 * To notify all config user to update
+	 */
+	public static void sendInfo() {
+		// Notify everybody that may be interested.
+		for (NewConfig hl : listeners) {
+			hl.newConfig();
+		}
+		// For Static Field in abstract classes...
+		// No needs to update them for every child!
+		WriteUtil.newConfig();
+		AbstractT.newConfig();
+		LineString.newConfig();
+		Options.newConfig();
+		Validation.newConfig();
+		Valid_LocalEnable.newConfig();
+		Lines.newConfig();
+	}
+	
+	/**
+	 * @return the file is loaded
+	 */
+	public static boolean loadConfig() {
+		return loadConfig(
+				config.getProperty("configPath"),
+				config.getProperty("configFileName"),
+				config.getProperty("profilePath"),
+				config.getProperty("profileFileName"));
+	}
+	/**
+	 * @param configPath
+	 * @param configFileName
+	 * @return the file is loaded
+	 */
+	public static boolean loadConfig(String configPath
+									, String configFileName) {
+		return loadConfig(
+				configPath,
+				configFileName,
+				config.getProperty("profilePath"),
+				config.getProperty("profileFileName"));
+	}
+	/**
+	 * @param configPath
+	 * @param configFileName
+	 * @param profilePath
+	 * @param profileFileName
+	 * @return the file is loaded
+	 */
+	public static boolean loadConfig(
+			  String configPath
+			, String configFileName
+			, String profilePath
+			, String profileFileName) 
+	{
+		// update the Files Path
+		setConfigFilePath(configPath, configFileName);
+		setProfileFilePath(profilePath, profileFileName);
+		File file = Paths.get(configPath, configFileName).toFile();
+
+		if (file.exists()) {
+			// Try to load the file
+			if (isXML(file)) {
+				try {
+					config.loadFromXML(new FileInputStream(file));
+					return true;
+				} catch (IOException e) {
+					e.printStackTrace();
+				}				
+			} else {
+				try(FileReader fileReader = new FileReader(file)){
+				    config.load(fileReader);
+				    return true;
+				} catch (IOException e) {
+				    e.printStackTrace();
+				}				
+			}
+		}
+		return false;
+	}
+	/**
+	 * Save the current configuration
+	 */
+	public static void saveConfig() {
+		saveConfig(config.getProperty("configPath")
+				 , config.getProperty("configFileName"));
+	}
+	/**
+	 * Save the current configuration
+	 * @param configPath
+	 * @param configFileName
+	 */
+	public static void saveConfig(String configPath, String configFileName) {
+		File file = Paths.get(configPath, configFileName).toFile();
+		if (isXML(file)) {
+			try {
+				config.storeToXML(new FileOutputStream(file), "Testing now!");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}			
+		} else {
+			try(FileWriter output = new FileWriter(file, Charset.forName("UTF-8"))){
+			    config.store(output, "These are properties");
+			} catch (IOException e) {
+			    e.printStackTrace();
+			}			
+		}
+	}
+	/**
+	 * @param profilePath
+	 * @param profileFileName
+	 */
+	public static void setProfileFilePath(String profilePath, String profileFileName) {
+		config.setProperty("profilePath", profilePath);
+		config.setProperty("profileFileName", profileFileName);
+	}
+	/**
+	 * @param configPath
+	 * @param configFileName
+	 */
+	public static void setConfigFilePath(String configPath, String configFileName) {
+		config.setProperty("configPath", configPath);
+		config.setProperty("configFileName", configFileName);
+	}
+	/**
+	 * @param key the property to retrieve
+	 * @return The String property
+	 */
+	public static String getConfig(String key) {
+		return config.getProperty(key);
+	}
+	/**
+	 * @param key the property to retrieve
+	 * @return The Integer property
+	 */
+	public static Integer getIntConfig(String key) {
+		return Integer.decode(config.getProperty(key));
+	}
+	/**
+	 * @param key the property to retrieve
+	 * @param property The String property
+	 */
+	public static void set(String key, String property) {
+		config.setProperty(key, property);
+	}
+	/**
+	 * @param key the property to retrieve
+	 * @param property The String property
+	 */
+	public static void set(String key, Integer property) {
+		config.setProperty(key, property.toString());
+	}
+	/**
+	 * Test if the file has an extention xml compatible
+	 * @param file
+	 */
+	private static boolean isXML(File file) {
+		return getExtension(file.toString()).get().equalsIgnoreCase("xml");
+	}
+	/**
+	 * Extract the filename extension
+	 * @param filename
+	 */
+	private static Optional<String> getExtension(String filename) {
+	    return Optional.ofNullable(filename)
+	      .filter(f -> f.contains("."))
+	      .map(f -> f.substring(filename.lastIndexOf(".") + 1));
+	}
 }

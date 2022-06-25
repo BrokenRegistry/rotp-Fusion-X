@@ -19,6 +19,7 @@ package rotp.mod.br.profiles;
 
 import mod.br.profileManager.ClientClasses;
 import mod.br.profileManager.UserProfiles;
+import rotp.Rotp;
 import rotp.model.game.GameSession;
 import rotp.model.game.IGameOptions;
 
@@ -30,8 +31,9 @@ import rotp.model.game.IGameOptions;
  */
 
 public class Profiles {
-	
-	private static UserProfiles userProfiles = new UserProfiles();
+	private static final String configFileName = "ProfileManager.xml";
+	private static final UserProfiles userProfiles = 
+			new UserProfiles(Rotp.jarPath(), configFileName);
 	/**
 	 * Global Parameter to allow or block the edition of game files
 	 * Pressing "X" to load the file make it <b>true</b> 
@@ -65,13 +67,22 @@ public class Profiles {
 		return userProfiles.isInitialized();
 	}
 	/**
-   	 * Load the configuration file to update the Action
+   	 * Load the configuration file,
    	 * Update with last Loaded Game options values
    	 * Save the new configuration file
 	 * @param instance 
    	 */
 	public static void saveGameOptionsToFile(GameSession instance) {
 		userProfiles.saveGameToFile(new ClientClasses(instance));
+	}
+	/**
+   	 * Load the configuration file,
+   	 * Update with last Loaded Game options values
+   	 * Save the new configuration file
+	 * @param options class containing info
+   	 */
+	public static void saveGuiOptionsToFile(IGameOptions options) {
+		userProfiles.saveGuiToFile(new ClientClasses(options));
 	}
 	/**
    	 * Load and execute the configuration file to Change the game file
@@ -95,6 +106,14 @@ public class Profiles {
 			String group, IGameOptions options, IGameOptions newOptions) {
 		return userProfiles.processKey(key, global, group,
 							new ClientClasses(options, newOptions));
+	}
+	/**
+   	 * Load The Profile Manager configuration file,
+   	 * and save the current profile with the new configuration.
+   	 * Or create it if there is none.
+   	 */
+	public static void loadProfileManagerConfig() {
+		userProfiles.loadProfileManagerConfig();
 	}
 	// ========================================================================
 	// Test For Enabled Methods

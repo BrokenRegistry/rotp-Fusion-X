@@ -15,11 +15,7 @@
 
 package br.profileManager.src.main.java;
 
-import static br.profileManager.src.main.java.PMconfig.commentEndPosition;
-import static br.profileManager.src.main.java.PMconfig.lineSplitPosition;
-import static br.profileManager.src.main.java.PMconfig.valueSpacer;
-import static br.profileManager.src.main.java.PMconfig.keyValueSeparator;
-import static br.profileManager.src.main.java.PMconfig.clogId;
+import static br.profileManager.src.main.java.PMconfig.getConfig;
 
 
 /**
@@ -33,15 +29,17 @@ public class Lines<T, V extends Validation<T>>
     // ==================================================
 	// Constant Properties 
     //
-    private static final String BASE_KEY_FORMAT = 
-    		"%-" + Integer.toString(lineSplitPosition()) + "s";
-    private static final String	KEY_VALUE_SEPARATOR_PRT =
-    		keyValueSeparator() + valueSpacer();
-    private static final String KEY_FORMAT = 
-    		BASE_KEY_FORMAT + KEY_VALUE_SEPARATOR_PRT;
-    private static final String KEY_VALUE_FORMAT =
-    		"%-" + Integer.toString(commentEndPosition()) + "s";
- 
+	
+    private static String keyValueSeparator;
+    private static String BASE_KEY_FORMAT;
+    private static String KEY_VALUE_SEPARATOR_PRT;
+    private static String KEY_FORMAT;
+    private static String KEY_VALUE_FORMAT;
+    private static String clogId;
+//		static {
+//			newConfig();
+//		}
+
     // ==================================================
 	// Variables Properties
     //
@@ -103,6 +101,17 @@ public class Lines<T, V extends Validation<T>>
 	@SuppressWarnings("unused")
 	private Lines() {} // Forbidden constructor
 	
+	/**
+	 * To be notified that config has been updated
+	 */
+	static void newConfig() {
+	   keyValueSeparator		= getConfig("keyValueSeparator");
+	   BASE_KEY_FORMAT			= "%-" + getConfig("lineSplitPosition") + "s";
+	   KEY_VALUE_SEPARATOR_PRT	= keyValueSeparator + getConfig("valueSpacer");
+	   KEY_FORMAT				= BASE_KEY_FORMAT + KEY_VALUE_SEPARATOR_PRT;
+	   KEY_VALUE_FORMAT		= "%-" + getConfig("commentEndPosition") + "s";
+	   clogId = getConfig("clogId");
+	}
 	// ==================================================
 	// Setters
 	//
@@ -118,7 +127,7 @@ public class Lines<T, V extends Validation<T>>
  		// Get the comment if one
  		setComment(WriteUtil.extractComment(line));
  		// Split the Key and the value
-		String[] list = WriteUtil.removeComment(line).split(keyValueSeparator(), 2);
+		String[] list = WriteUtil.removeComment(line).split(keyValueSeparator, 2);
 		setName(list[0]);
 		if (list.length == 2) {
 			initValue(list[1]);
@@ -133,10 +142,10 @@ public class Lines<T, V extends Validation<T>>
 	 */
 	Lines<T, V> setName(String newKey) {
 		entryName = PMutil.clean(newKey);
-		if (entryName.contains(clogId())) {
+		if (entryName.contains(clogId)) {
 			clogged = true;
 			entryValue.clogged(true);
-			entryName.replace(clogId(), "");
+			entryName = entryName.replace(clogId, "");
 		}
 		return this;
 	}
@@ -321,7 +330,7 @@ public class Lines<T, V extends Validation<T>>
     //
 	String nameToString() {
 		if (clogged) {
-			return entryName + clogId();
+			return entryName + clogId;
 		}
 		return entryName;
 	}
@@ -356,7 +365,7 @@ public class Lines<T, V extends Validation<T>>
 		if (line.isBlank()) {
 			return "";
 		}
-		return line.split(keyValueSeparator(), 2)[0].strip();
+		return line.split(keyValueSeparator, 2)[0].strip();
 	}
 	/**
 	 * Test if the {@code String} has a value and extract it
@@ -366,7 +375,7 @@ public class Lines<T, V extends Validation<T>>
 	static String getValueAsString(String line) {
 		line = PMutil.clean(line);
 		if (!line.isBlank()) {
-			String[] list = WriteUtil.removeComment(line).split(keyValueSeparator(), 2);
+			String[] list = WriteUtil.removeComment(line).split(keyValueSeparator, 2);
 			if (list.length == 2) {
 				return list[1].strip();
 			}

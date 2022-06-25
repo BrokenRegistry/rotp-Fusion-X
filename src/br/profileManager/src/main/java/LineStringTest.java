@@ -8,6 +8,9 @@ import static br.profileManager.src.main.java.PMconfig.*;
 
 class LineStringTest {
 
+	private static final String keyValueSeparator = getConfig("keyValueSeparator");
+	private static final String commentKey        = getConfig("commentKey");
+
 	@Test void Line_String_None() {
 		LineString line = new LineString();
 		assertEquals(true, line.isBlankValue()
@@ -15,8 +18,8 @@ class LineStringTest {
 	}
 
 	@Test void Line_String_String() {
-		LineString line = new LineString("Key " + keyValueSeparator()
-						+ " Value " + PMconfig.commentKey() + "comment");
+		LineString line = new LineString("Key " + keyValueSeparator
+						+ " Value " + commentKey + "comment");
 		assertEquals("Key", line.key()
 				, "This String should have been \"Key\"");
 		assertEquals("Value", line.value()

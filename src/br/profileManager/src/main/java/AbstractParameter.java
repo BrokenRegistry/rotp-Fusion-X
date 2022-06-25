@@ -31,15 +31,18 @@ public abstract class AbstractParameter<
 		T, V extends Validation<T>, O> extends WriteUtil {
 
 	// Former Constant
-	private static String optionsHead() {
-		return lineFormat(toComment(optionsKey()), "");
-	}
-	private static String optionsSubHead() {
-		return lineFormat(toComment(optionsSubKey()), "");
-	}
-	private static String historyHead() {
-		return lineFormat(historyKey(), "");
-	}
+	private static String optionsHead;
+	private static String optionsSubHead;
+	private static String historyHead;
+	private static String historyKey;
+	private static String parameterKey;
+	private static String historyElementsSeparator;
+	private static String historyNameValueSeparator;
+	private static String availableForChange;
+	private static String dynamicParameter;
+		static {
+			newConfig();
+		}
 	
 	// ------------------------------------------------------------------------
 	// Variables Properties
@@ -68,6 +71,18 @@ public abstract class AbstractParameter<
 	void resetUserProfiles() {
  	userProfiles = new Block<T, V>(validation);
 	}
+	
+	public static void newConfig() {
+		optionsHead    =  lineFormat(toComment(getConfig("optionsKey")), "");
+		optionsSubHead = lineFormat(toComment(getConfig("optionsSubKey")), "");
+		historyHead    = lineFormat(getConfig("historyKey"), "");
+		historyKey     = getConfig("historyKey");
+		parameterKey   = getConfig("parameterKey");
+		historyElementsSeparator  = getConfig("historyElementsSeparator");
+		historyNameValueSeparator = getConfig("historyNameValueSeparator");
+		availableForChange = PMconfig.getConfig("availableForChange");
+		dynamicParameter   = PMconfig.getConfig("dynamicParameter");
+	}
 
 	// ========================================================================
 	// Abstract Methods
@@ -86,6 +101,18 @@ public abstract class AbstractParameter<
 	// ------------------------------------------------------------------------
 	// Getters and Setters
 	//
+	/**
+	 * @return availableForChange
+	 */
+	protected String availableForChange() {
+ 	return availableForChange;
+	}
+	/**
+	 * @return dynamicParameter
+	 */
+	protected String dynamicParameter() {
+ 	return dynamicParameter;
+	}
 	/**
 	 * @return the value validation class
 	 */
@@ -377,15 +404,15 @@ public abstract class AbstractParameter<
 	 */
 	private boolean isHistory(String line) {
 		boolean result = false;
-		if (historyKey().equalsIgnoreCase(Lines.getKey(line))) {
+		if (historyKey.equalsIgnoreCase(Lines.getKey(line))) {
 			result = true;
 			String key;
 			String value;
 			// Split the history elements
 			for (String historyElement : 
-					Lines.getValueAsString(line).split(historyElementsSeparator())) {
+					Lines.getValueAsString(line).split(historyElementsSeparator)) {
 				// Split key and value
-				String[] keyValue = historyElement.split(historyNameValueSeparator());
+				String[] keyValue = historyElement.split(historyNameValueSeparator);
 				key = keyValue[0].strip();
 				value = "";
 				if (keyValue.length >= 2
@@ -443,7 +470,7 @@ public abstract class AbstractParameter<
 		out += toCommentLine(headComments);
 
 		// SETTING NAME
-		out += lineFormat(parameterKey(), parameterName)
+		out += lineFormat(parameterKey, parameterName)
 				.toString() + NL;
 
 		// SETTING COMMENTS
@@ -451,7 +478,7 @@ public abstract class AbstractParameter<
 
 		// OPTIONS LIST
 		out += multiLines(validation.getOptionsRange()
-				,optionsHead(), optionsSubHead()) + NL;
+				,optionsHead, optionsSubHead) + NL;
 
 		// OPTIONS DESCRIPTION
 		out += toCommentLine(validation.getOptionsDescription(), 1, 1);
@@ -462,23 +489,23 @@ public abstract class AbstractParameter<
 		// HISTORY
 		if (validation.isShowHistory()) {
 			out += multiLines(
-					Current.toString() + historyNameValueSeparator()
+					Current.toString() + historyNameValueSeparator
 					+ getHistory(Current).toString()
-					+ historyElementsSeparator()
-					+ Last.toString() + historyNameValueSeparator()
+					+ historyElementsSeparator
+					+ Last.toString() + historyNameValueSeparator
 					+ getHistory(Last).toString()
-					+ historyElementsSeparator()
-					+ Initial.toString() + historyNameValueSeparator()
+					+ historyElementsSeparator
+					+ Initial.toString() + historyNameValueSeparator
 					+ getHistory(Initial).toString()
-					+ historyElementsSeparator()
-					+ Default.toString() + historyNameValueSeparator()
+					+ historyElementsSeparator
+					+ Default.toString() + historyNameValueSeparator
 					+ getHistory(Default).toString()
-					+ historyElementsSeparator()
-					+ Game.toString() + historyNameValueSeparator()
+					+ historyElementsSeparator
+					+ Game.toString() + historyNameValueSeparator
 					+ getHistory(Game).toString()
-					, historyElementsSeparator()
-					, historyHead()
-					, historyHead()) + NL;
+					, historyElementsSeparator
+					, historyHead
+					, historyHead) + NL;
 		}
 
 		// LOCAL ENABLE
@@ -557,6 +584,6 @@ public abstract class AbstractParameter<
 	 */
 	static boolean isHeadOfParameter(String key) {
 		key = PMutil.clean(key);
-		return key.equalsIgnoreCase(parameterKey());
+		return key.equalsIgnoreCase(parameterKey);
 	}
 }

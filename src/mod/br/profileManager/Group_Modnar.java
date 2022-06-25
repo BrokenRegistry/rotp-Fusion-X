@@ -17,18 +17,18 @@
 
 package mod.br.profileManager;
 
-import static br.profileManager.src.main.java.Validation.History.*;
+import static br.profileManager.src.main.java.Validation.History.Default;
+import static br.profileManager.src.main.java.Validation.History.Initial;
 
 import java.util.List;
 
 import br.profileManager.src.main.java.AbstractGroup;
 import br.profileManager.src.main.java.AbstractParameter;
 import br.profileManager.src.main.java.AbstractT;
-import br.profileManager.src.main.java.Validation;
-import br.profileManager.src.main.java.PMconfig;
 import br.profileManager.src.main.java.T_Boolean;
 import br.profileManager.src.main.java.T_Float;
 import br.profileManager.src.main.java.T_Integer;
+import br.profileManager.src.main.java.Validation;
 import rotp.model.empires.Empire;
 import rotp.ui.UserPreferences;
 
@@ -103,7 +103,7 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 				" " + NL +
 				"------------- Modnar's Options -------------" + NL +
 				" ");
-			setBottomComments(PMconfig.availableForChange());
+			setBottomComments(availableForChange());
 		}
 	}
 	
@@ -152,7 +152,7 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void initComments() {
-			setBottomComments(PMconfig.availableForChange());
+			setBottomComments(availableForChange());
 		}
 	}
 	
@@ -316,7 +316,7 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 		}
 
 		@Override public void initComments() {
-			setBottomComments(PMconfig.dynamicParameter());
+			setBottomComments(dynamicParameter());
 		}
 	}
 
@@ -351,7 +351,7 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 		}
 
 		@Override public void initComments() {
-			setBottomComments(PMconfig.dynamicParameter());
+			setBottomComments(dynamicParameter());
 		}
 	}
 
@@ -388,7 +388,7 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 		}
 
 		@Override public void initComments() {
-			setBottomComments(PMconfig.dynamicParameter());
+			setBottomComments(dynamicParameter());
 		}
 	}
 }

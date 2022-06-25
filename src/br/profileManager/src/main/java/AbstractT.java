@@ -17,6 +17,8 @@
 
 package br.profileManager.src.main.java;
 
+import static br.profileManager.src.main.java.PMconfig.getConfig;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +30,11 @@ import java.util.List;
  */
 public abstract class AbstractT <T> {
 
-//	private String  userView;
-//	private T       codeView;
+	private static String listSeparator;
+//		static {
+//			newConfig();
+//		}
+
 	private T blankCodeView = null;
 	private List<T> codeList;
 	private List<String> userList;
@@ -64,11 +69,18 @@ public abstract class AbstractT <T> {
 	}
 	
 	// ===== Initializers =====
+	/**
+	 * To be notified that config has been updated
+	 */
+	static void newConfig() {
+		listSeparator = getConfig("listSeparator");
+	}
 	private void init(T value) {
 		codeView(value);
 		userView(toUserView(value));
 	}
 	private void init(List<T> value) {
+		newConfig();
 		codeView(value);
 		userView(toUserView(value));
 	}
@@ -151,7 +163,7 @@ public abstract class AbstractT <T> {
 		if (isBlankUser()) {
 			return "";
 		}
-		return String.join(PMconfig.listSeparator(), userList);
+		return String.join(listSeparator, userList);
 	}
 
 	@Override protected AbstractT<T> clone() {
@@ -368,7 +380,7 @@ public abstract class AbstractT <T> {
 	 * @return the full list as String with separators
 	 */
 	public String getUserEntry() {
-		return String.join(PMconfig.listSeparator(), userList);
+		return String.join(listSeparator, userList);
 	}
 	/**
 	 * @return the full list of user view

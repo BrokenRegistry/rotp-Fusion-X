@@ -23,18 +23,35 @@ import static br.profileManager.src.main.java.PMconfig.*;
  * Contains the interface and the tools for toComment Methods
  */
 public class WriteUtil {
+
+//	private static PMconfig notused;
+//	private static final long serialVersionUID = 1L;
+	private static int    maxLineLength;
+	private static String commentKey;
+	private static String commentSpacer;
+//		static {
+//			newConfig();
+//		}
+	/**
+	 * To be notified that config has been updated
+	 */
+	static void newConfig() {
+		@SuppressWarnings("unused")
+		PMconfig notused; // to force PMconfig initialization
+		maxLineLength = getIntConfig("maxLineLength");
+		commentKey    = getConfig("commentKey");
+		commentSpacer = getConfig("commentSpacer");
+	}
 	/**
 	 * an easier access to System.lineSeparator()
 	 */
 	protected static final String NL = System.lineSeparator();
-
 	/**
 	 * @return The {@code String} to be added to the toString
 	 */
 	protected static String commentPrt() {
-		return commentKey() + commentSpacer();
+		return commentKey + commentSpacer;
 	}
-	
 	/**
 	 * @param quantity the number of empty comment lines
 	 * @return a batch of empty comment lines
@@ -42,12 +59,11 @@ public class WriteUtil {
 	protected static String emptyCommentLines(int quantity) {
 		return emptyCommentLines().repeat(quantity);
 	}
-	
 	/**
 	 * @return an empty comment lines
 	 */
 	protected static String emptyCommentLines() {
-		return commentKey() + commentSpacer() + NL;
+		return commentKey + commentSpacer + NL;
 	}	
 	//===============================================================
 	// Methods using the Abstract methods
@@ -110,7 +126,7 @@ public class WriteUtil {
 				line = otherHeader;
 				firstLineElement = true;
 			} 
-			else if (line.length() + slen + element.length() > maxLineLength()
+			else if (line.length() + slen + element.length() > maxLineLength
 					&& !firstElement) {
 				lines.add(line);
 				line = otherHeader + element;
@@ -263,13 +279,13 @@ public class WriteUtil {
  		if (element == null) {
  			return false;
  		}
- 	    return element.strip().startsWith(commentKey());
+ 	    return element.strip().startsWith(commentKey);
  	}
 
 	/**
  	 * Check if the object.toString() contains a comment
      * @param object the {@code Object} to be analyzed
- 	 * @return true if the {@code Object} contains at least one commentKey()
+ 	 * @return true if the {@code Object} contains at least one commentKey
  	 */
  	static boolean containsComment(Object object) {
  		if (object == null) {
@@ -279,7 +295,7 @@ public class WriteUtil {
  		if (element == null) {
  			return false;
  		}
-	    return element.contains(commentKey());
+	    return element.contains(commentKey);
  	}
 
  	/**
@@ -295,11 +311,11 @@ public class WriteUtil {
  		if (element == null) {
  			return null;
  		}
-  		return (" " + element).split(commentKey(), 2)[0].strip();
+  		return (" " + element).split(commentKey, 2)[0].strip();
 	}
 
 	/**
-	 * Remove the beginning of the {@code Object} and the commentKey().
+	 * Remove the beginning of the {@code Object} and the commentKey.
 	 * @param object the {@code Object} to be analyzed
  	 * @return a stripped {@code String} with only the comment element
 	 */
@@ -312,7 +328,7 @@ public class WriteUtil {
 			return null;
 		}
 		if (containsComment(element)) {
-			return element.strip().split(commentKey(), 2)[1].strip();
+			return element.strip().split(commentKey, 2)[1].strip();
 		}
 		// No comment!
 		return "";
@@ -335,10 +351,10 @@ public class WriteUtil {
 		}
 		if (isComment(element)) {
 			return new String[] { "", PMutil.removeFirstSpace(
-					element.strip().split(commentKey(), 2)[1]) };
+					element.strip().split(commentKey, 2)[1]) };
 		}
 		if (containsComment(element)) {
-			String[] s = (" " + element).split(commentKey(), 2);
+			String[] s = (" " + element).split(commentKey, 2);
 			s[0] = s[0].strip();
 			s[1] = PMutil.removeFirstSpace(s[1]);
 			return s;
@@ -354,7 +370,7 @@ public class WriteUtil {
 	 * @return Return a {@code String Array} with both part
 	 * <br> null for null {@code Object}, null {@code String}
 	 * <br> {@code String[0]} The part from the left
-	 * <br> {@code String[1]} The part from the right, null for no commentKey()
+	 * <br> {@code String[1]} The part from the right, null for no commentKey
 	 */
 	static String[] rawSplitComment(Object object) {
 		// Null management
@@ -369,6 +385,6 @@ public class WriteUtil {
  		if (!containsComment(element)) {
  			return new String[] {element, null};
  		}
-		return element.split(commentKey(), 2);
+		return element.split(commentKey, 2);
 	}
 }

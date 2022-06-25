@@ -15,6 +15,7 @@
 
 package mod.br.profileManager;
 import static br.profileManager.src.main.java.Valid_ProfileAction.*;
+import static br.profileManager.src.main.java.Validation.History.*;
 
 import java.awt.event.KeyEvent;
 import java.util.LinkedHashMap;
@@ -34,8 +35,74 @@ public class UserProfiles extends AbstractProfiles<ClientClasses> {
 	}
 	
 	private static final String BR_GROUP_NAME = "BR";
-	static BaseMod baseMod = BaseMod.Xilmi;
+	static final BaseMod baseMod = BaseMod.Xilmi;
 	
+	/**
+	 * @param jarPath	Path to the configurations files
+	 * @param configFileName Name of the optional (PMconfig) configuration file
+	 */
+	public UserProfiles(String jarPath, String configFileName) {
+		super(jarPath, configFileName);
+	}
+
+	/**
+   	 * Load the configuration file to update the Action
+   	 * Update with last Loaded Game options values
+   	 * Save the new configuration file
+	 * @param key the key to process
+	 * @param global Global or Local ?
+	 * @param group group name
+	 * @param clientObject The class that manage GUI parameters
+	 * @return key to local remaining processing
+   	 */
+	public boolean processKey(int key, boolean global,
+			String group, ClientClasses clientObject) {
+		boolean refresh = false;
+		switch (key) {
+		case KeyEvent.VK_B: // "B" = Load Broken Registry User Presets
+			if(global) { // For Random
+				loadSurpriseGroupSettings(clientObject, group, false);
+			} else {
+				loadGroupSettings(clientObject, group, false);
+			}
+			refresh = true;
+			break;
+		case KeyEvent.VK_D: // "D" = Reload Default Presets
+			loadHistoryOptions(clientObject, group, Default, global);
+			refresh = true;
+			break;
+		case KeyEvent.VK_F: // "F" = Reload History Former (Last) Presets
+			loadHistoryOptions(clientObject, group, Last, global);
+			refresh = true;
+			break;
+		case KeyEvent.VK_G: // "G" = Reload History Game Presets
+			loadHistoryOptions(clientObject, group, Game, global);
+			refresh = true;
+			break;
+		case KeyEvent.VK_I: // "I" = Reload Initial Presets
+			loadHistoryOptions(clientObject, group, Initial, global);
+			refresh = true;
+			break;
+		case KeyEvent.VK_L: // "L" = Load GUI User Presets
+			loadGroupSettings(clientObject, group, global);
+			refresh = true;
+			break;
+		case KeyEvent.VK_R: // "R" = Load GUI Surprise Presets
+			loadSurpriseGroupSettings(clientObject, group, global);
+			refresh = true;
+			break;
+		case KeyEvent.VK_S: // "S = Save Remnant.cfg
+			UserPreferences.save();
+			break;
+		case KeyEvent.VK_U: // "U" = Update User Presets
+			saveGuiToFile(clientObject);
+			break;
+		}
+		if (refresh) {
+			UserPreferences.save();
+		}
+		return refresh;
+	}	
 	// ========================================================================
 	//  Abstract Methods
 	//
@@ -60,141 +127,75 @@ public class UserProfiles extends AbstractProfiles<ClientClasses> {
       groupMap.put(BR_GROUP_NAME, new Group_BrokenRegistry(options));
 	}
 
-	/**
-   	 * Load the configuration file to update the Action
-   	 * Update with last Loaded Game options values
-   	 * Save the new configuration file
-	 * @param key the key to process
-	 * @param global Global or Local ?
-	 * @param group group name
-	 * @param clientObject The class that manage GUI parameters
-	 * @return key to local remaining processing
-   	 */
-	public boolean processKey(int key, boolean global,
-			String group, ClientClasses clientObject) {
-		boolean refresh = false;
-		switch (key) {
-		case KeyEvent.VK_B: // "B" = Load Broken Registry User Presets
-			if(global) { // For Random
-				loadSurpriseLocalGroupSettings(BR_GROUP_NAME, clientObject);
-				refresh = true;
-				break;
-			} else {
-				loadLocalGroupSettings(BR_GROUP_NAME, clientObject);
-				refresh = true;
-				break;
-			}
-		case KeyEvent.VK_D: // "D" = Reload Default Presets
-			if(global) {
-				resetGlobalDefaultOptions(clientObject);
-				refresh = true;
-				break;
-			} else {
-				resetLocalDefaultOptions(group, clientObject);
-				refresh = true;
-				break;            		
-			}
-		case KeyEvent.VK_G: // "G" = Reload User Presets
-			loadGlobalGroupSettings(clientObject);
-			refresh = true;
-			break;
-		case KeyEvent.VK_I: // "I" = Reload Initial Presets
-			if(global) {
-				resetGlobalInitialOptions(clientObject);
-				refresh = true;
-				break;
-			} else {
-				resetLocalInitialOptions(group, clientObject);
-				refresh = true;
-				break;            		
-			}
-		case KeyEvent.VK_L: // "L" = Load GUI User Presets
-			if(global) {
-				loadGlobalGroupSettings(clientObject);
-				refresh = true;
-				break;
-			} else {
-				loadLocalGroupSettings(group, clientObject);
-				refresh = true;
-				break;
-			}
-		case KeyEvent.VK_R: // "R" = Load GUI Surprise Presets
-			if(global) {
-				loadSurpriseGlobalGroupSettings(clientObject);
-				refresh = true;
-				break;
-			} else {
-				loadSurpriseLocalGroupSettings(group, clientObject);
-				refresh = true;
-				break;
-			}
-		case KeyEvent.VK_S: // "S = Save Remnant.cfg
-			UserPreferences.save();
-			break;
-		case KeyEvent.VK_U: // "U" = Update User Presets
-			saveGuiToFile(clientObject);
-			break;
-		}
-		if (refresh) {
-			UserPreferences.save();
-		}
-		return refresh;
-	}
-	
 	@Override protected void createDefaultUserProfiles() {
-		parameterProfileAction().addLine("User", 
-				ACTION_GUI_TO_FILE + " " + ACTION_FILE_TO_GUI,
-				"This profile could be Loaded by pressing \"L\"");
-		parameterProfileAction().addLine("LastGui",
-				ACTION_GUI_TO_FILE,
-				"This profile will keep the last GUI configuration");
-		parameterProfileAction().addLine("LastGame",
-				ACTION_GAME_TO_FILE,
-				"This profile will keep the loaded Game configuration");
-		parameterProfileAction().addLine("ChangeGame",
-				ACTION_GUI_TO_FILE + " " + ACTION_FILE_TO_GAME,
-				"This profile change Game When Loaded by pressing \"X\"");
-		parameterProfileAction().addLine("Random", 
-				ACTION_RANDOM,
-				"Loaded by pressing \"R\", add or replace by "
-						+ ACTION_FILE_TO_GUI + " to allow it to be loaded");
+		parameterProfileAction().addLine("Continuation"
+				, ACTION_GUI_TO_FILE + " " + ACTION_FILE_TO_GUI
+				, "To retrieve the las session configuration. Press \"L\" to load this profile");
+
+		parameterProfileAction().addLine("MyConfig"
+				, ACTION_FILE_TO_GUI
+				, "Adjust this manually, with your preferences");
+
+		parameterProfileAction().addLine("ChangeGame"
+				, ACTION_FILE_TO_GAME
+				, "This profile change Game When Loaded by pressing \"X\", add "
+						+ ACTION_GUI_TO_FILE
+						+ " to be able to update this profile from the GUI");
+
+		parameterProfileAction().addLine("FullRandom"
+				, ACTION_RANDOM
+				, "All parameter preset to random! Load by pressing \"R\", add or replace by "
+						+ ACTION_FILE_TO_GUI 
+						+ " to also allow it to be loaded with \"L\"");
+
+		parameterProfileAction().addLine("MyRandom"
+				, ACTION_RANDOM
+				, "For your customized random! Load by pressing \"R\", add or replace by "
+						+ ACTION_FILE_TO_GUI 
+						+ " to also allow it to be loaded with \"L\"");
+
+		parameterProfileAction().addLine("Vanilla"
+				, ACTION_DEFAULT_UPDATE_FILE
+				, "add " + ACTION_FILE_TO_GUI
+				+ " to keep some vanilla configuration");
+
+		parameterProfileAction().addLine("LastWord·"
+				, ACTION_FILE_TO_GUI + " " + ACTION_RANDOM
+				, "For the parameters you never want to be changed."
+						+ " Keep at the end of the list. "
+						+ " The · prevent it to be mistakenly changed");
+		
 		// Fill the Random
 		for (AbstractParameter<?, ?, ClientClasses> parameter : parameterNameMap().values()) {
-			parameter.addLine("Random", "Random");
+			parameter.addLine("FullRandom", "Random");
 		}
-		getParameter("AUTOPLAY").addLine("Random", "Off", "Not Random!");
+		getParameter("AUTOPLAY").addLine("LastWord", "Off", "Only activated thru GUI");
 		getParameter("MAXIMIZE EMPIRES SPACING").addLine("Random", "NO",
 				"Not Random, not yet");
 		
 		// Special random with comments
-		getParameter("PLAYER RACE").addLine("Random", "Random",
+		getParameter("PLAYER RACE").addLine("MyRandom", "Random",
 				"Full random");
-		getParameter("PLAYER COLOR").addLine("Random", "Random Green, Lime",
+		getParameter("PLAYER COLOR").addLine("MyRandom", "Random Green, Lime",
 				"2 values = a range from option list");
-		getParameter("GALAXY SHAPE").addLine("Random",
+		getParameter("GALAXY SHAPE").addLine("MyRandom",
 				"Random Rectangle, Ellipse, Spiral, Spiralarms",
 				"a limited choice");
-		getParameter("GALAXY SIZE").addLine("Random", "",
+		getParameter("GALAXY SIZE").addLine("MyRandom", "",
 				"Nothing changed by this profile");
-		getParameter("DIFFICULTY").addLine("Random", "Random 1, 4",
+		getParameter("DIFFICULTY").addLine("MyRandom", "Random 1, 4",
 				"a range from option list");
-		getParameter("OPPONENT AI").addLine("Random", 
+		getParameter("OPPONENT AI").addLine("MyRandom", 
 				"Random Base, Xilmi, Xilmi",
 				"2 chances to have Xilmi vs Base");
-		getParameter("NB OPPONENTS").addLine("Random", "Random 3, 6",
+		getParameter("NB OPPONENTS").addLine("MyRandom", "Random 3, 6",
 				"a custom range");
-		getParameter("GALAXY AGE").addLine("Random",
+		getParameter("GALAXY AGE").addLine("MyRandom",
 				"Random Young, Young, Old, Old",
 				"Only 2 choices... Not a range");
-		getParameter("NEBULAE").addLine("Random","Random 1, 4",
-				"Range = Rare .. Common (first option = 0)");
-
-		
-//		getParameter("AI HOSTILITY").addLine("Random", "Random 0, 3");
-//		getParameter("COUNCIL").addLine("Random", "Random");
-//		getParameter("RANDOMIZE AI").addLine("Random", "Random");
-//		getParameter("RESEARCH").addLine("Random", "Random");
-//		getParameter("TECH TRADING").addLine("Random", "Random");
-//		getParameter("ALWAYS STAR GATES").addLine("Random", "Yes", "Not Random!");
+		getParameter("NEBULAE").addLine("MyRandom","Random 1, 4",
+				"Range = Rare .. Common (first option = 0)");	
+		getParameter("AI HOSTILITY").addLine("MyRandom", "Random 0, 3");
+		getParameter("ALWAYS STAR GATES").addLine("MyRandom", "Yes", "Not Random!");
 	}
 }

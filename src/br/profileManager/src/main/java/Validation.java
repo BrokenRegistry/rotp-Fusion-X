@@ -15,15 +15,16 @@
 
 package br.profileManager.src.main.java;
 
+import static br.profileManager.src.main.java.PMconfig.getConfig;
+import static br.profileManager.src.main.java.Validation.History.Current;
+import static br.profileManager.src.main.java.Validation.History.Default;
+import static br.profileManager.src.main.java.Validation.History.Initial;
+import static br.profileManager.src.main.java.Validation.History.Last;
+
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-
-import static br.profileManager.src.main.java.Validation.History.*;
-import static br.profileManager.src.main.java.PMconfig.randomId;
-import static br.profileManager.src.main.java.PMconfig.parametersSeparator;
-import static br.profileManager.src.main.java.PMconfig.listSeparator;
 
 /**
  * Common methods for data validation
@@ -56,6 +57,12 @@ public class Validation<T> extends OptionValidation<T> {
 	     */
 	    Game
 	}
+	private static String randomId;
+	private static String parametersSeparator;
+	private static String listSeparator;
+//		static {
+//			newConfig();
+//		}
 
 	private final AbstractT<T> factory;
 	private final boolean isString;
@@ -99,6 +106,14 @@ public class Validation<T> extends OptionValidation<T> {
 			return t;
 			}
 		return t.clone();
+	}
+	/**
+	 * To be notified that config has been updated
+	 */
+	static void newConfig() {
+		randomId            = getConfig("randomId");
+		parametersSeparator = getConfig("parametersSeparator");
+		listSeparator       = getConfig("listSeparator");
 	}
 	// ==================================================
     // Setters
@@ -326,8 +341,8 @@ public class Validation<T> extends OptionValidation<T> {
 	 */
 	public static boolean isRandom(String userEntry) {
 		userEntry = PMutil.clean(userEntry).toUpperCase();
-		if (userEntry.length() >= randomId().length()) {
-			return userEntry.substring(0, randomId().length()).equals(randomId()); 
+		if (userEntry.length() >= randomId.length()) {
+			return userEntry.substring(0, randomId.length()).equals(randomId); 
 		}
 		return false;
 	}
@@ -346,10 +361,10 @@ public class Validation<T> extends OptionValidation<T> {
 	 */
 	public static String removeRandomId(String userEntry) {
 		userEntry = PMutil.clean(userEntry);
-		userEntry = userEntry.substring(randomId().length()).strip();
+		userEntry = userEntry.substring(randomId.length()).strip();
 		// Check for misplaced parametersSeparator()
 		if (!userEntry.isEmpty() &&
-				userEntry.charAt(0) == parametersSeparator().charAt(0)) {
+				userEntry.charAt(0) == parametersSeparator.charAt(0)) {
 			userEntry = userEntry.substring(1).strip();
 		}
 		return userEntry;
@@ -361,7 +376,7 @@ public class Validation<T> extends OptionValidation<T> {
 	 */
 	public static String[] splitParameters(String parameters) {
 		// parameters should already be tested
-		return parameters.split(parametersSeparator());
+		return parameters.split(parametersSeparator);
 	}
 	/**
 	 * Process Random with parameters
@@ -414,7 +429,7 @@ public class Validation<T> extends OptionValidation<T> {
 		AbstractT<T> value;
 		List<String> userViewList = new ArrayList<String>();
 		List<T> codeViewList      = new ArrayList<T>();
-		for (String element : userEntry.split(listSeparator())) {
+		for (String element : userEntry.split(listSeparator)) {
 			value = elementAnalysis(element); // Never null
 			if (clogged) {
 				userViewList.add(userEntry);

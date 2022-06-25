@@ -17,13 +17,13 @@
 
 package mod.br.profileManager;
 
+import static br.profileManager.src.main.java.Validation.History.Default;
+
 import br.profileManager.src.main.java.AbstractGroup;
 import br.profileManager.src.main.java.AbstractParameter;
 import br.profileManager.src.main.java.AbstractT;
-import br.profileManager.src.main.java.Validation;
-import br.profileManager.src.main.java.PMconfig;
 import br.profileManager.src.main.java.T_String;
-import static br.profileManager.src.main.java.Validation.History.*;
+import br.profileManager.src.main.java.Validation;
 
 /**
  * @author BrokenRegistry
@@ -263,7 +263,7 @@ public class Group_Advanced extends  AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void initComments() {
-			setBottomComments(PMconfig.availableForChange());
+			setBottomComments(availableForChange());
 	   	}
 	}
 	// ==============================================================
@@ -335,7 +335,7 @@ public class Group_Advanced extends  AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void initComments() {
-			setBottomComments(PMconfig.availableForChange());
+			setBottomComments(availableForChange());
 	   	}
 	}
 	// ==============================================================
@@ -547,7 +547,7 @@ public class Group_Advanced extends  AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void initComments() {
-			setBottomComments(PMconfig.availableForChange());
+			setBottomComments(availableForChange());
 		}
 	}
 	// ==============================================================
@@ -583,7 +583,7 @@ public class Group_Advanced extends  AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void initComments() {
-			setBottomComments(PMconfig.availableForChange());
+			setBottomComments(availableForChange());
 			}
 	}
 }

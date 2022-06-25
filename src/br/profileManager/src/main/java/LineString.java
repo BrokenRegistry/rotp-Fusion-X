@@ -26,6 +26,14 @@ class LineString {
     // ==================================================
 	// Variables Properties
     //
+	private static String keyValueSeparator;
+	private static String valueSpacer;
+	private static String lineSplitPosition;
+	private static String commentEndPosition;
+//		static {
+//			newConfig();
+//		}
+	
 	private String key;
 	private String value;
 	private String comment;
@@ -67,6 +75,15 @@ class LineString {
     // Initialization Methods
     //
 	/**
+	 * To be notified that config has been updated
+	 */
+	static void newConfig() {
+		keyValueSeparator  = getConfig("keyValueSeparator");
+		valueSpacer        = getConfig("valueSpacer");
+		lineSplitPosition  = getConfig("lineSplitPosition");
+		commentEndPosition = getConfig("commentEndPosition");
+	}
+	/**
 	 * Reset the line
 	 */
 	private LineString set() {
@@ -86,7 +103,7 @@ class LineString {
  		// Get the comment if one
  		comment(WriteUtil.extractComment(line));
  		// Split the Key and the value
-		String[] list = WriteUtil.removeComment(line).split(keyValueSeparator(), 2);
+		String[] list = WriteUtil.removeComment(line).split(keyValueSeparator, 2);
 		key(list[0]);
 		if (list.length == 2) {
 			value(list[1]);
@@ -162,11 +179,11 @@ class LineString {
     // Private Methods
     //
     private static String keyFormat() { 
-		return "%-" + Integer.toString(lineSplitPosition()) + "s"
-					+ keyValueSeparator() + valueSpacer();
+		return "%-" + lineSplitPosition + "s"
+					+ keyValueSeparator + valueSpacer;
 	}
     private static String keyValueFormat() { 
-		return "%-" + Integer.toString(commentEndPosition()) + "s";
+		return "%-" + commentEndPosition + "s";
 	}
 
   	// ==========================================================
