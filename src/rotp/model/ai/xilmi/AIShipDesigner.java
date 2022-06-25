@@ -72,7 +72,7 @@ public class AIShipDesigner implements Base, ShipDesigner {
             boolean wantHybrid = wantHybrid();
             MarkObsolete();
             updateFighterDesign();
-            if(!wantHybrid)
+            if(!wantHybrid || !BestDesignToBomb().active())
                 updateBomberDesign();
             updateColonyDesign();
             if(empire.shipLab().needScouts)
@@ -117,11 +117,11 @@ public class AIShipDesigner implements Base, ShipDesigner {
         return bestDesign;
     }
     private void countdownObsoleteDesigns() {
-        if(((empire.shipMaintCostPerBC() > (empire.fleetCommanderAI().maxShipMaintainance() * 1.5) && empire.enemies().isEmpty() && !empire.fleetCommanderAI().inExpansionMode()))
-                || (empire.netIncome() <= 0 && !empire.atWar()))
+        if(((empire.shipMaintCostPerBC() > (max(0.35f, empire.fleetCommanderAI().maxShipMaintainance()) * 1.5) && empire.enemies().isEmpty() && !empire.fleetCommanderAI().inExpansionMode()))
+                || (empire.netIncome() + empire.totalReserve() <= 0 && !empire.atWar()))
         {
-            //System.out.print("\n"+empire.name()+" scrapWorstDesign max-maint: "+empire.fleetCommanderAI().maxShipMaintainance());
-            scrapWorstDesign(empire.netIncome() <= 0);
+            //System.out.print("\n"+empire.name()+" scrapWorstDesign max-maint: "+empire.fleetCommanderAI().maxShipMaintainance()+" empire.netIncome(): "+empire.netIncome()+ " empire.totalReserve(): "+empire.totalReserve());
+            scrapWorstDesign(empire.netIncome() + empire.totalReserve() <= 0);
         }
     }
     private void scrapWorstDesign(boolean forceCosting) {
@@ -153,7 +153,7 @@ public class AIShipDesigner implements Base, ShipDesigner {
                 }
                 keepScore *= keepScore;
                 float keepBeforeCounts = keepScore;
-                keepScore *= shipCounts[d.id()] * d.cost();
+                keepScore *= (shipCounts[d.id()] + galaxy().ships.shipDesignConstructionCounts(empire.id)[d.id()]) * d.cost();
                 //we can scrap all that we don't need at all
                 //System.out.print("\n"+galaxy().currentTurn()+" "+empire.name()+" "+d.name()+" keepScore: "+keepScore+" before counts: "+keepBeforeCounts+" role: "+d.mission());
                 if(keepScore == 0 || forceCosting)
@@ -163,6 +163,8 @@ public class AIShipDesigner implements Base, ShipDesigner {
                     shouldScrap = false;
                     if(!forceCosting)
                         break;
+                    else
+                        forceCosting = false;
                 }
                 else if(keepScore < lowestKeepScore)
                 {
@@ -174,7 +176,7 @@ public class AIShipDesigner implements Base, ShipDesigner {
         }
         if(designToScrap != null && shouldScrap)
         {
-            //System.out.print("\n"+empire.name()+" "+designToScrap.name()+" is scrapped.");
+            //System.out.print("\n"+empire.name()+" "+shipCounts[designToScrap.id()]+" "+designToScrap.name()+" with keepscore: "+lowestKeepScore+" is scrapped.");
             ScrapDesign(designToScrap);
         }
     }
@@ -730,8 +732,6 @@ public class AIShipDesigner implements Base, ShipDesigner {
     @Override
     public boolean wantHybrid()
     {
-        if(empire.generalAI().defenseRatio() == 1.0 || empire.generalAI().defenseRatio() < 0.5)
-            return false;
         return true;
     } 
     public void ScrapDesign(ShipDesign d)
@@ -747,7 +747,7 @@ public class AIShipDesigner implements Base, ShipDesigner {
         if(empire.totalFleetCost() > 0)
         {
             float maintenancePercentage = galaxy().ships.shipDesignCount(empire.id, d.id()) * d.cost() / empire.totalFleetCost();
-            float percentageOfMaxMaintenance = min(1, empire.shipMaintCostPerBC() / empire.fleetCommanderAI().maxShipMaintainance());
+            float percentageOfMaxMaintenance = min(1, empire.shipMaintCostPerBC() / max(0.35f, empire.fleetCommanderAI().maxShipMaintainance()));
             float slotsForCombat = 4;
             if(empire.shipLab().needScouts)
                 slotsForCombat--;
@@ -868,6 +868,8 @@ public class AIShipDesigner implements Base, ShipDesigner {
                 }
             }
         }
+        if(bomber == null)
+            return BestDesignToFight();
         return bomber;
     }
     @Override

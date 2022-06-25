@@ -438,6 +438,13 @@ public class NewShipTemplate implements Base {
         {
             hybridBombRatio = 1 - ai.empire().generalAI().defenseRatio();
         }
+        float minBombSpace = 0;
+        for(ShipWeapon wpn : ai.lab().weapons())
+        {
+            if(wpn.groundAttacksOnly())
+                if(wpn.space(d) > minBombSpace)
+                    minBombSpace = wpn.space(d);
+        }
         //System.out.print("\n"+galaxy().currentTurn()+" "+ai.empire().name()+" hybridBombRatio: "+hybridBombRatio);
         // what's left will be used on non-bombs for bombers, second best weapon for destroyers
         // repeat calls of setOptimalShipCombatWeapon() will result in a weapon from another category (beam, missile, streaming) than already installed
@@ -453,7 +460,7 @@ public class NewShipTemplate implements Base {
                 bestNonBomb = setOptimalWeapon(ai, d, d.availableSpace(), 4, needRange, true, false, topSpeed, avgECM, bestSHD, antiDote, true, avgHP); // uses slots 0-3
             case FIGHTER:
             default:
-                setOptimalWeapon(ai, d, d.availableSpace() * hybridBombRatio, 1, false, false, false, topSpeed, avgECM, bestSHD, antiDote, false, avgHP);
+                setOptimalWeapon(ai, d, max(minBombSpace, d.availableSpace() * hybridBombRatio), 1, false, false, false, topSpeed, avgECM, bestSHD, antiDote, false, avgHP);
                 bestNonBomb = setOptimalWeapon(ai, d, d.availableSpace(), 4, needRange, true, false, topSpeed, avgECM, bestSHD, antiDote, false, avgHP); // uses slots 0-3
                 break;
         }
@@ -837,7 +844,7 @@ public class NewShipTemplate implements Base {
                         
                     if(wpn.isBioWeapon())
                         currentScore = bioWeaponScoreMod(ai) * TechBiologicalWeapon.avgDamage(wpn.maxDamage(), (int)antiDote) * 200 / wpn.space(d);
-                    //System.out.print("\n"+ai.empire().name()+" "+d.name()+" wpn: "+wpn.name()+" score: "+currentScore+" overKillMod: "+overKillMod+" avgHP: "+avgHP+" expectedDamagePerShot: "+expectedDamagePerShot+"  bioWeaponScoreMod(ai): "+ bioWeaponScoreMod(ai));
+                    //System.out.print("\n"+ai.empire().name()+" "+d.name()+" wpn: "+wpn.name()+" score: "+currentScore+" overKillMod: "+overKillMod+" avgHP: "+avgHP+" expectedDamagePerShot: "+expectedDamagePerShot+"  bioWeaponScoreMod(ai): "+ bioWeaponScoreMod(ai)+" space: "+wpn.space(d));
                     if(currentScore > bestScore)
                     {
                         bestWeapon = wpn;
@@ -932,10 +939,11 @@ public class NewShipTemplate implements Base {
         float totalPopulationCost = 0;
         for(Empire enemy : ai.empire().contactedEmpires())
         {
-            totalMissileBaseCost += enemy.totalMissileBaseCost();
+            totalMissileBaseCost += enemy.totalMissileBaseCost() * 50; //this is maintenance-cost but was supposed to be the actual cost, so times 50 to take that into account!
             totalShipCost += enemy.shipMaintCostPerBC();
             totalPopulationCost += enemy.totalPlanetaryPopulation() * enemy.tech().populationCost();
         }
+        //System.out.print("\n"+ai.empire().name()+" totalPopulationCost"+totalPopulationCost+" totalMissileBaseCost: "+totalMissileBaseCost);
         if(totalMissileBaseCost > 0)
         {
             scoreMod = totalPopulationCost / (totalMissileBaseCost + totalPopulationCost);

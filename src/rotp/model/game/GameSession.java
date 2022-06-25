@@ -811,17 +811,6 @@ public final class GameSession implements Base, Serializable {
     private void loadPreviousSession(GameSession gs, boolean startUp) {
         stopCurrentGame();
         instance = gs;
-        
-//        // BR:
-//        // if asked, Change the game parameters
-//        if (Profiles.ChangeGameFile) {
-//        	Profiles.ChangeGameFile = false;
-//        	Profiles.changeGameSettings(instance);
-//        }
-//        // Save the last loaded game parameters
-//        Profiles.saveGameOptionsToFile(instance);
-//        // \BR:
-        
         startExecutors();
         RotPUI.instance().mainUI().checkMapInitialized();
         if (!startUp) {

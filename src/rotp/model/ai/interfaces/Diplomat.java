@@ -126,15 +126,12 @@ public interface Diplomat {
     //Xilmi-AI:
     default int popCapRank(Empire etc, boolean inAttackRange) { return 1; }
     default int techLevelRank() { return 1; }
-    default int warTechLevelRank() { return 1; }
     default int facCapRank() { return 1; }
     default int militaryRank(Empire etc, boolean inAttackRange) { return 1; }
     default int popLossToTriggerWar() { return 1; }
     default boolean masksDiplomacy() { return false; }
     default boolean readyForWar(EmpireView v, boolean considerBestVictim) { return true; }
     default boolean wantToDeclareWarOfDesperation(EmpireView v) { return false; }
-    default boolean techIsAdequateForWar() { return true; }
     default boolean willingToTradeTech(Tech t, Empire tradeParnet) { return true; }
     default boolean wantsToReviewCounterOffers() { return false; }
-    default boolean minWarTechsAvailable() { return true; }
 }

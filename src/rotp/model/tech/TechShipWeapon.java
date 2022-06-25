@@ -378,16 +378,7 @@ public final class TechShipWeapon extends Tech {
     public float basePower()   { return power; }
     @Override
     public boolean isObsolete(Empire c) {
-        TechShipWeapon top = c.tech().topShipWeaponTech();
-        if (top == null)
-            return false;
-        
-        if (level > top.level)
-            return false;
-        float currVal = comparableDamageValue();
-        float tVal = top.comparableDamageValue();
-
-        return tVal >= currVal;
+        return (c.tech().topShipWeaponTech() != null) && (level < c.tech().topShipWeaponTech().level);
     }
     @Override
     public void provideBenefits(Empire c) {

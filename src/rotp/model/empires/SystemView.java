@@ -53,7 +53,7 @@ public class SystemView implements IMappedObject, Base, Serializable {
     static final int FLAG_PURPLE = 9;
     static final int FLAG_PINK = 10;
 
-     public static SystemView create(int sysId, int empId) {
+    public static SystemView create(int sysId, int empId) {
         return new SystemView(sysId,empId);
     }
 
@@ -356,7 +356,7 @@ public class SystemView implements IMappedObject, Base, Serializable {
 
     public void resetFlagColor()            { flagColor = FLAG_NONE; }
     public void toggleFlagColor(boolean reverse) {
-    	if (Profiles.isFlagColorOrderEnabled()) {
+    	if (Profiles.isFlagColorOrderEnabled()) { // BR:
     		flagColor = MiscellaneousOptions.getNextFlagColor(flagColor, reverse);
     		return;
     	}

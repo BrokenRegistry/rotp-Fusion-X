@@ -338,7 +338,7 @@ public final class LoadGameUI  extends BasePanel implements MouseListener, Mouse
                 if (canSelect())
                     loadGame(selectedFile);
                 return;
-            case KeyEvent.VK_X:
+            case KeyEvent.VK_X: // BR:
                 if (canSelect())
                 	Profiles.ChangeGameFile = true;
                     loadGame(selectedFile);
