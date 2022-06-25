@@ -15,8 +15,6 @@
 
 package br.profileManager.src.main.java;
 
-import static br.profileManager.src.main.java.PMconfig.getConfig;
-
 
 /**
  * Base for every User Entry Lines
@@ -104,13 +102,13 @@ public class Lines<T, V extends Validation<T>>
 	/**
 	 * To be notified that config has been updated
 	 */
-	static void newConfig() {
-	   keyValueSeparator		= getConfig("keyValueSeparator");
-	   BASE_KEY_FORMAT			= "%-" + getConfig("lineSplitPosition") + "s";
-	   KEY_VALUE_SEPARATOR_PRT	= keyValueSeparator + getConfig("valueSpacer");
+	static void newConfig(PMconfig PM) {
+	   keyValueSeparator		= PM.getConfig("keyValueSeparator");
+	   BASE_KEY_FORMAT			= "%-" + PM.getConfig("lineSplitPosition") + "s";
+	   KEY_VALUE_SEPARATOR_PRT	= keyValueSeparator + PM.getConfig("valueSpacer");
 	   KEY_FORMAT				= BASE_KEY_FORMAT + KEY_VALUE_SEPARATOR_PRT;
-	   KEY_VALUE_FORMAT		= "%-" + getConfig("commentEndPosition") + "s";
-	   clogId = getConfig("clogId");
+	   KEY_VALUE_FORMAT		= "%-" + PM.getConfig("commentEndPosition") + "s";
+	   clogId = PM.getConfig("clogId");
 	}
 	// ==================================================
 	// Setters

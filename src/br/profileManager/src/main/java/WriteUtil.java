@@ -17,7 +17,6 @@ package br.profileManager.src.main.java;
 
 import java.util.ArrayList;
 import java.util.List;
-import static br.profileManager.src.main.java.PMconfig.*;
 
 /**
  * Contains the interface and the tools for toComment Methods
@@ -35,12 +34,12 @@ public class WriteUtil {
 	/**
 	 * To be notified that config has been updated
 	 */
-	static void newConfig() {
+	static void newConfig(PMconfig PM) {
 		@SuppressWarnings("unused")
 		PMconfig notused; // to force PMconfig initialization
-		maxLineLength = getIntConfig("maxLineLength");
-		commentKey    = getConfig("commentKey");
-		commentSpacer = getConfig("commentSpacer");
+		maxLineLength = PM.getIntConfig("maxLineLength");
+		commentKey    = PM.getConfig("commentKey");
+		commentSpacer = PM.getConfig("commentSpacer");
 	}
 	/**
 	 * an easier access to System.lineSeparator()

@@ -15,8 +15,6 @@
 
 package br.profileManager.src.main.java;
 
-import static br.profileManager.src.main.java.PMconfig.*;
-
 /**
  * @author BrokenRegistry
  * For basic User Entry Lines
@@ -77,11 +75,11 @@ class LineString {
 	/**
 	 * To be notified that config has been updated
 	 */
-	static void newConfig() {
-		keyValueSeparator  = getConfig("keyValueSeparator");
-		valueSpacer        = getConfig("valueSpacer");
-		lineSplitPosition  = getConfig("lineSplitPosition");
-		commentEndPosition = getConfig("commentEndPosition");
+	static void newConfig(PMconfig PM) {
+		keyValueSeparator  = PM.getConfig("keyValueSeparator");
+		valueSpacer        = PM.getConfig("valueSpacer");
+		lineSplitPosition  = PM.getConfig("lineSplitPosition");
+		commentEndPosition = PM.getConfig("commentEndPosition");
 	}
 	/**
 	 * Reset the line

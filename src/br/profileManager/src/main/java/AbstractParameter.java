@@ -20,7 +20,6 @@ import java.util.List;
 import br.profileManager.src.main.java.Valid_LocalEnable.Line_LocalEnable;
 import static br.profileManager.src.main.java.Validation.History.*;
 import static br.profileManager.src.main.java.LineString.lineFormat;
-import static br.profileManager.src.main.java.PMconfig.*;
 
 /**
  * @param <T>  the Base Code View Class
@@ -40,9 +39,9 @@ public abstract class AbstractParameter<
 	private static String historyNameValueSeparator;
 	private static String availableForChange;
 	private static String dynamicParameter;
-		static {
-			newConfig();
-		}
+//		static {
+//			newConfig();
+//		}
 	
 	// ------------------------------------------------------------------------
 	// Variables Properties
@@ -72,16 +71,16 @@ public abstract class AbstractParameter<
  	userProfiles = new Block<T, V>(validation);
 	}
 	
-	public static void newConfig() {
-		optionsHead    =  lineFormat(toComment(getConfig("optionsKey")), "");
-		optionsSubHead = lineFormat(toComment(getConfig("optionsSubKey")), "");
-		historyHead    = lineFormat(getConfig("historyKey"), "");
-		historyKey     = getConfig("historyKey");
-		parameterKey   = getConfig("parameterKey");
-		historyElementsSeparator  = getConfig("historyElementsSeparator");
-		historyNameValueSeparator = getConfig("historyNameValueSeparator");
-		availableForChange = PMconfig.getConfig("availableForChange");
-		dynamicParameter   = PMconfig.getConfig("dynamicParameter");
+	public static void newConfig(PMconfig PM) {
+		optionsHead    =  lineFormat(toComment(PM.getConfig("optionsKey")), "");
+		optionsSubHead = lineFormat(toComment(PM.getConfig("optionsSubKey")), "");
+		historyHead    = lineFormat(PM.getConfig("historyKey"), "");
+		historyKey     = PM.getConfig("historyKey");
+		parameterKey   = PM.getConfig("parameterKey");
+		historyElementsSeparator  = PM.getConfig("historyElementsSeparator");
+		historyNameValueSeparator = PM.getConfig("historyNameValueSeparator");
+		availableForChange = PM.getConfig("availableForChange");
+		dynamicParameter   = PM.getConfig("dynamicParameter");
 	}
 
 	// ========================================================================

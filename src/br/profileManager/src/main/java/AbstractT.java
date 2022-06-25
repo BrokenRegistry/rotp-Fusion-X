@@ -17,8 +17,6 @@
 
 package br.profileManager.src.main.java;
 
-import static br.profileManager.src.main.java.PMconfig.getConfig;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,15 +70,14 @@ public abstract class AbstractT <T> {
 	/**
 	 * To be notified that config has been updated
 	 */
-	static void newConfig() {
-		listSeparator = getConfig("listSeparator");
+	static void newConfig(PMconfig PM) {
+		listSeparator = PM.getConfig("listSeparator");
 	}
 	private void init(T value) {
 		codeView(value);
 		userView(toUserView(value));
 	}
 	private void init(List<T> value) {
-		newConfig();
 		codeView(value);
 		userView(toUserView(value));
 	}

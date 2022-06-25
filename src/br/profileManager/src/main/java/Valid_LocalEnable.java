@@ -15,7 +15,6 @@
 
 package br.profileManager.src.main.java;
 
-import static br.profileManager.src.main.java.PMconfig.getConfig;
 import static br.profileManager.src.main.java.Validation.History.Current;
 import static br.profileManager.src.main.java.Validation.History.Default;
 
@@ -78,8 +77,8 @@ class Valid_LocalEnable extends Validation<String> {
 	/**
 	 * To be notified that config has been updated
 	 */
-	static void newConfig() {
-		clogId = getConfig("clogId");
+	static void newConfig(PMconfig PM) {
+		clogId = PM.getConfig("clogId");
 	}
  	// ==========================================================
     // Nested Classes

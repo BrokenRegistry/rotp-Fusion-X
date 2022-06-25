@@ -15,7 +15,6 @@
 
 package br.profileManager.src.main.java;
 
-import static br.profileManager.src.main.java.PMconfig.getConfig;
 import static br.profileManager.src.main.java.Validation.History.Current;
 import static br.profileManager.src.main.java.Validation.History.Default;
 import static br.profileManager.src.main.java.Validation.History.Initial;
@@ -110,10 +109,10 @@ public class Validation<T> extends OptionValidation<T> {
 	/**
 	 * To be notified that config has been updated
 	 */
-	static void newConfig() {
-		randomId            = getConfig("randomId");
-		parametersSeparator = getConfig("parametersSeparator");
-		listSeparator       = getConfig("listSeparator");
+	static void newConfig(PMconfig PM) {
+		randomId            = PM.getConfig("randomId");
+		parametersSeparator = PM.getConfig("parametersSeparator");
+		listSeparator       = PM.getConfig("listSeparator");
 	}
 	// ==================================================
     // Setters

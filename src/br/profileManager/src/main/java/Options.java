@@ -15,8 +15,6 @@
 
 package br.profileManager.src.main.java;
 
-import static br.profileManager.src.main.java.PMconfig.getConfig;
-import static br.profileManager.src.main.java.PMconfig.getIntConfig;
 import static br.profileManager.src.main.java.PMutil.genericTest;
 import static br.profileManager.src.main.java.PMutil.suggestedUserViewFromCodeView;
 
@@ -62,10 +60,10 @@ class Options<T> extends WriteUtil {
 	/**
 	 * To be notified that config has been updated
 	 */
-	static void newConfig() {
-		separatorSymbol   = getConfig("separatorSymbol");
-		separatorSpacer   = getConfig("separatorSpacer");
-		lineSplitPosition = getIntConfig("lineSplitPosition");
+	static void newConfig(PMconfig PM) {
+		separatorSymbol   = PM.getConfig("separatorSymbol");
+		separatorSpacer   = PM.getConfig("separatorSpacer");
+		lineSplitPosition = PM.getIntConfig("lineSplitPosition");
 	}
 	// ------------------------------------------------
     // Other Methods

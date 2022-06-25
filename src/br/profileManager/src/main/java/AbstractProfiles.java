@@ -18,7 +18,6 @@ package br.profileManager.src.main.java;
 import static br.profileManager.src.main.java.Valid_ProfileAction.*;
 import static br.profileManager.src.main.java.Validation.History.*;
 import static br.profileManager.src.main.java.PMutil.containsIgnoreCase;
-import static br.profileManager.src.main.java.PMconfig.getConfig;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -38,13 +37,12 @@ import java.util.List;
  * @param <C> The class that have to go thru the profile manager
  */
 public abstract class AbstractProfiles<C> extends WriteUtil {
-	// ------------------------------------------------------------------------
+	// ========================================================================
 	// Variables Properties
 	//
-//	private String path;
-//	private String configFileName;
-//	private String profileFileName;
-	private List<String> defaultUserSettingKeys = new ArrayList<String>(List.of("User", "Last", "Cryslonoid"));
+	protected static final PMconfig PM = new PMconfig();
+	
+	private List<String> defaultUserSettingKeys = new ArrayList<String>(List.of("User", "LastWord"));
 	private boolean firstInit = true;
 
 	private LinkedHashMap<String, AbstractParameter<?, ?, C>> parameterNameMap;
@@ -62,10 +60,10 @@ public abstract class AbstractProfiles<C> extends WriteUtil {
 	 * @param configFileName Name of the optional (PMconfig) configuration file
 	 */
 	public AbstractProfiles(String jarPath, String configFileName) {
-//		File configFile = new File(jarPath + configFileName);
+//		File configFile = new File(jarPath, configFileName);
 //		PMconfig.loadConfig(configFile);
-		PMconfig.loadConfig(jarPath, configFileName, jarPath, getFileName());
-		PMconfig.sendInfo();
+		PM.loadConfig(jarPath, configFileName, jarPath, getFileName());
+		PM.sendInfo();
 	}
 
 	// ========================================================================
@@ -86,8 +84,8 @@ public abstract class AbstractProfiles<C> extends WriteUtil {
 	//  Protected Getters and Setters
 	//
 	File getProfilePath() {
-		return Paths.get(getConfig("profilePath")
-						, getConfig("profileFileName"))
+		return Paths.get(PM.getConfig("profilePath")
+						, PM.getConfig("profileFileName"))
 						.toFile();
 	}
 	protected Parameter_ProfileAction parameterProfileAction() {
@@ -107,11 +105,11 @@ public abstract class AbstractProfiles<C> extends WriteUtil {
    	 */
 	public void loadProfileManagerConfig() { // TODO BR:
 //		File configFile = new File(path + configFileName);
-		if (PMconfig.loadConfig()) {
-			PMconfig.sendInfo();
+		if (PM.loadConfig()) {
+			PM.sendInfo();
 			saveProfilesCfg();
 		} else {
-			PMconfig.saveConfig();
+			PM.saveConfig();
 		}
 	}
 	/**
@@ -347,8 +345,8 @@ public abstract class AbstractProfiles<C> extends WriteUtil {
 				}
 			}
 			catch (FileNotFoundException e) {
-				System.err.println(getConfig("profilePath") 
-						+ getConfig("profileFileName") + " not found.");
+				System.err.println(PM.getConfig("profilePath") 
+						+ PM.getConfig("profileFileName") + " not found.");
 			}
 			catch (IOException e) {
 				System.err.println("UserPreferences.load -- IOException: "+ e.toString());

@@ -31,7 +31,7 @@ import rotp.model.game.IGameOptions;
  */
 
 public class Profiles {
-	private static final String configFileName = "ProfileManager.xml";
+	private static final String configFileName = "ProfileManager.json";
 	private static final UserProfiles userProfiles = 
 			new UserProfiles(Rotp.jarPath(), configFileName);
 	/**

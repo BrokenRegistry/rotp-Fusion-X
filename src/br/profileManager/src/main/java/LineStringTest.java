@@ -4,12 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 import static br.profileManager.src.main.java.Lines.*;
-import static br.profileManager.src.main.java.PMconfig.*;
 
 class LineStringTest {
-
-	private static final String keyValueSeparator = getConfig("keyValueSeparator");
-	private static final String commentKey        = getConfig("commentKey");
+	private static PMconfig PM = new PMconfig();
+	private static final String keyValueSeparator = PM.getConfig("keyValueSeparator");
+	private static final String commentKey        = PM.getConfig("commentKey");
 
 	@Test void Line_String_None() {
 		LineString line = new LineString();
