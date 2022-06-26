@@ -23,20 +23,13 @@ import java.util.List;
  */
 public class WriteUtil {
 
-//	private static PMconfig notused;
-//	private static final long serialVersionUID = 1L;
 	private static int    maxLineLength;
 	private static String commentKey;
 	private static String commentSpacer;
-//		static {
-//			newConfig();
-//		}
 	/**
-	 * To be notified that config has been updated
+	 * To be notified the config has been updated
 	 */
 	static void newConfig(PMconfig PM) {
-		@SuppressWarnings("unused")
-		PMconfig notused; // to force PMconfig initialization
 		maxLineLength = PM.getIntConfig("maxLineLength");
 		commentKey    = PM.getConfig("commentKey");
 		commentSpacer = PM.getConfig("commentSpacer");
@@ -65,7 +58,7 @@ public class WriteUtil {
 		return commentKey + commentSpacer + NL;
 	}	
 	//===============================================================
-	// Methods using the Abstract methods
+	// Methods using the Abstract methods (Former)
 	//
 	/**
      * Format the element as Comment
@@ -99,10 +92,17 @@ public class WriteUtil {
  	 * @param splitter the {@code String} where the line could be cut
 	 * @param firstHeader the Header for the first line
 	 * @param otherHeader the Header for the other lines
+	 * @param endOfLine The lines separator
+	 * @param addNewLine If not empty, terminate with a new line
 	 * @return the {@code String} formated object, never null
 	 */
 	static String multiLines(String string, String splitter,
-							String firstHeader, String otherHeader) {
+							String firstHeader, String otherHeader,
+							String endOfLine, boolean addNewLine) {
+		string = PMutil.neverNull(string);
+		if (string.isBlank()) {
+			return "";
+		}
 		firstHeader = PMutil.neverNull(firstHeader);
 		otherHeader = PMutil.neverNull(otherHeader);
 		splitter    = PMutil.neverNull(splitter);
@@ -116,18 +116,20 @@ public class WriteUtil {
 		boolean firstLineElement = true;
 		boolean firstElement = true;
 		
+		// To also split on the existing lines break
 		elements = PMutil.neverNull(string)
 						 .replace(NL, splitter + NL + splitter)
 						 .split(splitter);
+		
 		for (String element : elements) {
-			if (element.contains(NL)) {
+			if (element.contains(NL)) { // Normal line break
 				lines.add(line);
 				line = otherHeader;
 				firstLineElement = true;
 			} 
-			else if (line.length() + slen + element.length() > maxLineLength
-					&& !firstElement) {
-				lines.add(line);
+			else if (line.length() + slen + element.length() >= maxLineLength
+					&& !firstElement) { // long line, need to add line break
+				lines.add(line + endOfLine);
 				line = otherHeader + element;
 				firstLineElement = false;
 			} 
@@ -140,9 +142,24 @@ public class WriteUtil {
 			firstElement = false;
 		}
 		lines.add(line);
+		if (addNewLine) {
+			return String.join(NL, lines) + NL;			
+		}
 		return String.join(NL, lines);
 	}
-
+	/**
+     * split the string over several lines, using firstHeader
+     * on the first line then otherHeader on the following ones
+ 	 * @param string the {@code String} to be formated
+ 	 * @param splitter the {@code String} where the line could be cut
+	 * @param firstHeader the Header for the first line
+	 * @param otherHeader the Header for the other lines
+	 * @return the {@code String} formated object, never null
+	 */
+	static String multiLines(String string, String splitter,
+			String firstHeader, String otherHeader) {
+		return multiLines(string, splitter, firstHeader, otherHeader, "", false);
+	}
 	/**
      * split the string over several lines, using firstHeader
      * on the first line then otherHeader on the following ones,
@@ -153,7 +170,7 @@ public class WriteUtil {
 	 * @return the {@code String} formated object, never null
 	 */
 	static String multiLines(String string, String firstHeader, String otherHeader) {
-		return multiLines(string, " ", firstHeader, otherHeader);
+		return multiLines(string, " ", firstHeader, otherHeader, "", false);
 	}
 
 	/**

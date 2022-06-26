@@ -28,9 +28,6 @@ class LineString {
 	private static String valueSpacer;
 	private static String lineSplitPosition;
 	private static String commentEndPosition;
-//		static {
-//			newConfig();
-//		}
 	
 	private String key;
 	private String value;

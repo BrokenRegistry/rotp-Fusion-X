@@ -59,9 +59,6 @@ public class Validation<T> extends OptionValidation<T> {
 	private static String randomId;
 	private static String parametersSeparator;
 	private static String listSeparator;
-//		static {
-//			newConfig();
-//		}
 
 	private final AbstractT<T> factory;
 	private final boolean isString;

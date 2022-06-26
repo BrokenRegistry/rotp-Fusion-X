@@ -39,11 +39,8 @@ public abstract class AbstractParameter<
 	private static String historyNameValueSeparator;
 	private static String availableForChange;
 	private static String dynamicParameter;
-//		static {
-//			newConfig();
-//		}
 	
-	// ------------------------------------------------------------------------
+	// ==================================================
 	// Variables Properties
 	//
 	private String headComments;
@@ -72,11 +69,11 @@ public abstract class AbstractParameter<
 	}
 	
 	public static void newConfig(PMconfig PM) {
-		optionsHead    =  lineFormat(toComment(PM.getConfig("optionsKey")), "");
-		optionsSubHead = lineFormat(toComment(PM.getConfig("optionsSubKey")), "");
-		historyHead    = lineFormat(PM.getConfig("historyKey"), "");
-		historyKey     = PM.getConfig("historyKey");
-		parameterKey   = PM.getConfig("parameterKey");
+		optionsHead     = lineFormat(toComment(PM.getConfig("optionsKey")), "");
+		optionsSubHead  = lineFormat(toComment(PM.getConfig("optionsSubKey")), "");
+		historyHead     = lineFormat(PM.getConfig("historyKey"), "");
+		historyKey      = PM.getConfig("historyKey");
+		parameterKey    = PM.getConfig("parameterKey");
 		historyElementsSeparator  = PM.getConfig("historyElementsSeparator");
 		historyNameValueSeparator = PM.getConfig("historyNameValueSeparator");
 		availableForChange = PM.getConfig("availableForChange");
@@ -463,27 +460,30 @@ public abstract class AbstractParameter<
 	 * @return parameter as String, ready to be printed
 	 */
 	public String toString(List<String> groupCodeViews) {
-		String out = "";
+		String out = NL;
 
 		// HEAD COMMENTS
-		out += toCommentLine(headComments);
+		out += multiLines(headComments
+				, " ", commentPrt(), commentPrt(), "", true);
 
 		// SETTING NAME
 		out += lineFormat(parameterKey, parameterName)
 				.toString() + NL;
 
 		// SETTING COMMENTS
-		out += toCommentLine(settingComments) ;
+		out += multiLines(settingComments
+				, " ", commentPrt(), commentPrt(), "", true);
 
 		// OPTIONS LIST
 		out += multiLines(validation.getOptionsRange()
-				,optionsHead, optionsSubHead) + NL;
+				, " " ,optionsHead, optionsSubHead, "", true);
 
 		// OPTIONS DESCRIPTION
 		out += toCommentLine(validation.getOptionsDescription(), 1, 1);
 		
 		// OPTIONS COMMENTS
-		out += toCommentLine(optionsComments) ;
+		out += multiLines(optionsComments
+				, " ", commentPrt(), commentPrt(), "", true);
 
 		// HISTORY
 		if (validation.isShowHistory()) {
@@ -504,7 +504,8 @@ public abstract class AbstractParameter<
 					+ getHistory(Game).toString()
 					, historyElementsSeparator
 					, historyHead
-					, historyHead) + NL;
+					, historyHead
+					, "", true);
 		}
 
 		// LOCAL ENABLE
@@ -513,10 +514,11 @@ public abstract class AbstractParameter<
 		}
 
 		// USER SETTINGS BLOCK
-		out += userProfiles.toString(groupCodeViews) + NL;
+		out += NL + userProfiles.toString(groupCodeViews) + NL;
 
 		// BOTTOM COMMENTS
-		out += toCommentLine(bottomComments) ;
+		out += multiLines(bottomComments
+				, " ", commentPrt(), commentPrt(), "", true);
 
 		out += NL;
  	return out;

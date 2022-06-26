@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <artifactId>rotp</artifactId>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.rayfowler</groupId>
 
-    <version>0.95.00</version>
+    <version>2022.06.26</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>8</java.version>
@@ -108,8 +108,7 @@
                 <directory>${project.basedir}</directory>
                 <includes>
                     <include>README.md</include>
-                    <include>Profiles.pdf</include>
-                </includes>
+                 </includes>
                 <filtering>true</filtering>
             </resource>
         </resources>
@@ -122,12 +121,6 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
-                    <!-- Add explicit java.desktop for import java.awt.*; -->
-                    <compilerArgs>
-                        <arg>--add-modules</arg>
-                        <arg>java.se,java.desktop</arg>
-                    </compilerArgs>
-
                 </configuration>
             </plugin>
 
@@ -356,20 +349,20 @@
                             <owner>BrokenRegistry</owner>
                             <repository>rotp-Fusion-X</repository>
                             <authToken>${GITHUB_TOKEN}</authToken>
-                            <tagName>v${project.version}</tagName>
-                            <name>ROTP-Fusion-BR v${project.version}</name>
+                            <tagName>${project.version}</tagName>
+                            <name>ROTP-Fusion-BR ${project.version}</name>
                             <targetCommitish>main</targetCommitish>
                             <releaseNotes>target/classes/README.md</releaseNotes>
                             <assets>
-                                <asset>target/classes/Profiles.pdf</asset>
                                 <asset>target/rotp-${project.version}.jar</asset>
                                 <asset>target/rotp-${project.version}-mini.jar</asset>
                                 <asset>target/rotp-${project.version}-windows.zip</asset>
+                                <asset>Profiles.pdf</asset>
                             </assets>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-	    </plugins>
+        </plugins>
     </build>
 </project>

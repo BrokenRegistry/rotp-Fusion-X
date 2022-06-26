@@ -29,9 +29,6 @@ import java.util.List;
 public abstract class AbstractT <T> {
 
 	private static String listSeparator;
-//		static {
-//			newConfig();
-//		}
 
 	private T blankCodeView = null;
 	private List<T> codeList;

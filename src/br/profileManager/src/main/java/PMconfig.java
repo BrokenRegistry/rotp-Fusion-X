@@ -48,27 +48,32 @@ public class PMconfig {
 	PMconfig() {
 		config.put("commentKey",		";");
 		config.put("commentSpacer",	    " ");
+		config.put("continueOnNewLine", "..");
 		config.put("keyValueSeparator", ":");
 		config.put("valueSpacer",	    " ");
 		config.put("separatorSymbol",   "=");
 		config.put("separatorSpacer",   " ");
-		config.put("parameterKey",	    "¦ Parameter");
-		config.put("historyKey",		"¦ History");
-		config.put("optionsKey",		"Options");
 		config.put("optionsSubKey",	    "  \" \" ");
 		config.put("historyNameValueSeparator", ": ");
 		config.put("historyElementsSeparator",  " ¦ ");
 		config.put("parametersSeparator", ",");
 		config.put("listSeparator",	      "/");
-		config.put("randomId",	"RANDOM");
+		config.put("====================", "==========");
 		config.put("clogId",    "·");
+		config.put("randomId",	"RANDOM");
+		config.put("parameterKey",	    "¦ Parameter");
+		config.put("historyKey",		"¦ History");
+		config.put("optionsKey",		"Options");
+		config.put("--------------------", "----------");
 		
 		config.put("availableForChange", "---- Available for changes in game saves");
 		config.put("dynamicParameter",   "---- Follow the GUI, not stored in game");
+		config.put("++++++++++++++++++++", "++++++++++");
 
 		config.put("lineSplitPosition",  "16");
 		config.put("commentEndPosition", "30");
 		config.put("maxLineLength",	     "80");
+		config.put("####################", "##########");
 
 		config.put("configPath",      "");
 		config.put("configFileName",  defaultConfigName);
@@ -97,6 +102,7 @@ public class PMconfig {
 		Validation.newConfig(this);
 		Valid_LocalEnable.newConfig(this);
 		AbstractParameter.newConfig(this);
+		AbstractProfiles.newConfig(this);
 	}
 	/**
 	 * @return the file is loaded

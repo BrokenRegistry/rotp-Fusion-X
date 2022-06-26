@@ -38,6 +38,9 @@ public class UserProfiles extends AbstractProfiles<ClientClasses> {
 	private static final String BR_GROUP_NAME = "BR";
 	static final BaseMod baseMod = BaseMod.Xilmi;
 	
+	// ==================================================
+	// Constructors and helpers
+	//
 	/**
 	 * @param jarPath	Path to the configurations files
 	 * @param configFileName Name of the optional (PMconfig) configuration file
@@ -45,7 +48,9 @@ public class UserProfiles extends AbstractProfiles<ClientClasses> {
 	public UserProfiles(String jarPath, String configFileName) {
 		super(jarPath, configFileName);
 	}
-
+	// ========================================================================
+	//  Public Methods
+	//
 	/**
    	 * Load the configuration file to update the Action
    	 * Update with last Loaded Game options values
@@ -131,7 +136,7 @@ public class UserProfiles extends AbstractProfiles<ClientClasses> {
 	@Override protected void createDefaultUserProfiles() {
 		parameterProfileAction().addLine("Continuation"
 				, ACTION_GUI_TO_FILE + " " + ACTION_FILE_TO_GUI
-				, "To retrieve the las session configuration. Press \"L\" to load this profile");
+				, "To retrieve the last session configuration. Press \"L\" to load this profile");
 
 		parameterProfileAction().addLine("MyConfig"
 				, ACTION_FILE_TO_GUI
@@ -156,8 +161,10 @@ public class UserProfiles extends AbstractProfiles<ClientClasses> {
 						+ " to also allow it to be loaded with \"L\"");
 
 		parameterProfileAction().addLine("Vanilla"
-				, ACTION_DEFAULT_UPDATE_FILE
-				, "add " + ACTION_FILE_TO_GUI
+				, ACTION_DEFAULT_TO_FILE
+				, "remove the settings you don't want vinilla, replace "
+				+ ACTION_DEFAULT_TO_FILE + " by " + ACTION_DEFAULT_UPDATE_FILE
+				+ " and " + ACTION_FILE_TO_GUI
 				+ " to keep some vanilla configuration");
 
 		parameterProfileAction().addLine("LastWord·"

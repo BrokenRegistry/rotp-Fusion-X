@@ -11,3 +11,5 @@ bin/
 *.log
 nbactions.xml
 .project
+**/*Test.java
+**/*.bak

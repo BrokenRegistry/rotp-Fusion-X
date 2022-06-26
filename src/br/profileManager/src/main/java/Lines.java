@@ -25,18 +25,17 @@ public class Lines<T, V extends Validation<T>>
 		extends WriteUtil {
 	
     // ==================================================
-	// Constant Properties 
+	// Former Constant Properties, linked to config
     //
-	
     private static String keyValueSeparator;
-    private static String BASE_KEY_FORMAT;
-    private static String KEY_VALUE_SEPARATOR_PRT;
-    private static String KEY_FORMAT;
-    private static String KEY_VALUE_FORMAT;
+    private static String baseKeyFormat;
+    private static String keyValueSeparatorPrt;
+    private static String keyFormat;
+    private static String keyValueFormat;
     private static String clogId;
-//		static {
-//			newConfig();
-//		}
+    private static String valueSubHead;
+    private static String commentSubHead;
+	private static String profilesBreakLines;
 
     // ==================================================
 	// Variables Properties
@@ -103,11 +102,14 @@ public class Lines<T, V extends Validation<T>>
 	 * To be notified that config has been updated
 	 */
 	static void newConfig(PMconfig PM) {
-	   keyValueSeparator		= PM.getConfig("keyValueSeparator");
-	   BASE_KEY_FORMAT			= "%-" + PM.getConfig("lineSplitPosition") + "s";
-	   KEY_VALUE_SEPARATOR_PRT	= keyValueSeparator + PM.getConfig("valueSpacer");
-	   KEY_FORMAT				= BASE_KEY_FORMAT + KEY_VALUE_SEPARATOR_PRT;
-	   KEY_VALUE_FORMAT		= "%-" + PM.getConfig("commentEndPosition") + "s";
+		keyValueSeparator    = PM.getConfig("keyValueSeparator");
+		keyValueSeparatorPrt = keyValueSeparator + PM.getConfig("valueSpacer");
+		profilesBreakLines   = " " + PM.getConfig("continueOnNewLine");
+		baseKeyFormat  = "%-" + PM.getConfig("lineSplitPosition") + "s";
+		keyFormat      = baseKeyFormat + keyValueSeparatorPrt;
+		keyValueFormat = "%-" + PM.getConfig("commentEndPosition") + "s";
+		valueSubHead   = String.format(baseKeyFormat, " ") + commentPrt();
+		commentSubHead = String.format(keyValueFormat, " ") + commentPrt();
 	   clogId = PM.getConfig("clogId");
 	}
 	// ==================================================
@@ -334,20 +336,35 @@ public class Lines<T, V extends Validation<T>>
 	}
 
 	@Override public String toString() {
+		boolean hasComment = false;
 		String out = "";
-		out += String.format(KEY_FORMAT, nameToString());
+		// add the Key and prepare for value
+		out += String.format(keyFormat, nameToString());
+		// add the value
 		out += PMutil.neverNull(entryValue.toString());
+		// check for comment overriding
 		if (getValidationData().isShowWithOptions()) {
 			comment = getValidationData().getOptionsRange();
 		}
+		// Check for comment
 		if (comment != null && !comment.isBlank()) {
-			out = String.format(KEY_VALUE_FORMAT, out);
+			hasComment = true;
+			// format to position comments
+			out = String.format(keyValueFormat, out);
+			// Manage spaces that may have been removed
 			if (!" ".equals(PMutil.getLastChar(out))) {
 				out += " ";
 			}
+			// Add comment
 			out += toComment(comment);		
 		}
-		return out;
+		// Break the long lines
+		if (hasComment) {
+			return multiLines(out, " ", ""
+					, commentSubHead, profilesBreakLines, false);
+		}
+		return multiLines(out, " ", ""
+				, valueSubHead, profilesBreakLines, false);
 	}
 
 	// ==================================================

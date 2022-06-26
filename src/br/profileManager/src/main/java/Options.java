@@ -27,9 +27,6 @@ class Options<T> extends WriteUtil {
 	private static String separatorSymbol;
 	private static String separatorSpacer;
 	private static int    lineSplitPosition;
-//		static {
-//			newConfig();
-//		}
 
 	private String description;
 	private String category ;

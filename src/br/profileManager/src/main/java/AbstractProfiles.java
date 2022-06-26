@@ -41,6 +41,8 @@ public abstract class AbstractProfiles<C> extends WriteUtil {
 	// Variables Properties
 	//
 	protected static final PMconfig PM = new PMconfig();
+	private static String continueOnNewLine;
+	private static String commentKey;
 	
 	private List<String> defaultUserSettingKeys = new ArrayList<String>(List.of("User", "LastWord"));
 	private boolean firstInit = true;
@@ -55,17 +57,24 @@ public abstract class AbstractProfiles<C> extends WriteUtil {
 	private String currentParameterName;
 	private AbstractGroup<C> currentGroup;
 		
+	// ==================================================
+	// Constructors and helpers
+	//
 	/**
 	 * @param jarPath	Path to the configurations files
 	 * @param configFileName Name of the optional (PMconfig) configuration file
 	 */
 	public AbstractProfiles(String jarPath, String configFileName) {
-//		File configFile = new File(jarPath, configFileName);
-//		PMconfig.loadConfig(configFile);
 		PM.loadConfig(jarPath, configFileName, jarPath, getFileName());
 		PM.sendInfo();
 	}
-
+	/**
+	 * To be notified the config has been updated
+	 */
+	static void newConfig(PMconfig PM) {
+		continueOnNewLine = PM.getConfig("continueOnNewLine");
+		commentKey        = PM.getConfig("commentKey");
+	}
 	// ========================================================================
 	//  Abstract Methods
 	//
@@ -340,7 +349,11 @@ public abstract class AbstractProfiles<C> extends WriteUtil {
 						new FileInputStream(profilesCfg), "UTF-8"));) {
 				String line;
 				while ((line = in.readLine()) != null) {
-					loadLine(line.trim());
+					line = line.trim();
+					while (line.endsWith(continueOnNewLine)) {
+						line = mergeLines(line, in.readLine());
+					}
+					processLine(line.trim());
 				}
 			}
 			catch (FileNotFoundException e) {
@@ -360,7 +373,22 @@ public abstract class AbstractProfiles<C> extends WriteUtil {
 		}
 	}
 	
-	private void loadLine(String line) {
+	private String mergeLines(String line1, String line2) {
+		if (line1.length() < 3) {
+			line1 = "";
+		} else {
+			line1 = line1.substring(0, line1.length()-3);
+		}
+		if (line2 == null) {
+			return line1;
+		}
+		if (line2.contains(commentKey)) {
+			return line1 + line2.strip().split(commentKey, 2)[1];
+		}
+		return (line1 + line2).strip();
+	}
+	
+	private void processLine(String line) {
 		// Test for Emptiness and ignore
 		if (line.isEmpty()) {
 			return;
