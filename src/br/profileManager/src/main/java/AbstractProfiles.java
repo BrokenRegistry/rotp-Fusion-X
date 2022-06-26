@@ -103,8 +103,7 @@ public abstract class AbstractProfiles<C> extends WriteUtil {
    	 * and save the current profile with the new configuration.
    	 * Or create it if there is none.
    	 */
-	public void loadProfileManagerConfig() { // TODO BR:
-//		File configFile = new File(path + configFileName);
+	public void loadProfileManagerConfig() {
 		if (PM.loadConfig()) {
 			PM.sendInfo();
 			saveProfilesCfg();

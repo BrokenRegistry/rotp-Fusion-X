@@ -444,6 +444,16 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
         }
         return text("SETTINGS_MOD_RETREAT_RESTRICTIONS", opt)+"   ";
     }
+    /**
+     * @return Retreat Restriction Option List // BR:
+     */
+    public static List<String> getRetreatRestrictionOptions() {
+    	return List.of(
+    			"SETTINGS_MOD_RETREAT_NONE"
+    			, "SETTINGS_MOD_RETREAT_AI"
+    			, "SETTINGS_MOD_RETREAT_PLAYER"
+    			, "SETTINGS_MOD_RETREAT_NONE");
+    } // \BR:
     private String retreatRestrictionTurnsStr() {
         String opt = String.format("%d",UserPreferences.retreatRestrictionTurns());
         return text("SETTINGS_MOD_RETREAT_RESTRICTION_TURNS", opt)+"   ";

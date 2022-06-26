@@ -29,6 +29,7 @@ import br.profileManager.src.main.java.AbstractT;
 import br.profileManager.src.main.java.PMutil;
 import br.profileManager.src.main.java.T_Integer;
 import br.profileManager.src.main.java.T_String;
+import br.profileManager.src.main.java.Valid_IntegerWithList;
 import br.profileManager.src.main.java.Validation;
 
 /**
@@ -91,7 +92,7 @@ public class Group_Race extends AbstractGroup <ClientClasses> {
 			setBottomComments(availableForChange());
 		}
 	}
-	
+
 	// ==============================================================
 	// PLAYER COLOR
 	//
@@ -154,19 +155,32 @@ public class Group_Race extends AbstractGroup <ClientClasses> {
 	// ========== Parameter Section ==========
 	//
 	static class PlayerColor extends 
-			AbstractParameter <Integer, Valid_Color, ClientClasses> {
+			AbstractParameter <Integer, Valid_IntegerWithList, ClientClasses> {
+
+		private static List<String> getEmpireColors() {
+			switch(UserProfiles.baseMod) {
+			case BrokenRegistry:
+			case Modnar:
+			case Xilmi:
+				return List.of ("Red", "Green", "Yellow", "Blue", "Orange", "Purple",
+								"Aqua", "Fuchsia", "Brown", "White", "Lime", "Grey",
+								"Plum", "Light Blue", "Mint", "Olive");
+			default:
+				return List.of ("Blue", "Brown", "Green",  "Orange", "Pink",
+								"Purple", "Red", "Teal", "Yellow", "White");
+			}
+		}
 
 	    // ========== Constructors and initializer ==========
 	    //
 		PlayerColor(ClientClasses go) {
-			super("PLAYER COLOR", new Valid_Color(go.newOptions().selectedPlayerColor()));
+			super("PLAYER COLOR"
+					, new Valid_IntegerWithList(
+							go.newOptions().selectedPlayerColor()
+							, getEmpireColors()));
 			setHistoryCodeView(Initial, go.newOptions().selectedPlayerColor());
-//			// Re do Default to force validation
-			Integer colorId = getHistory(Default).getCodeView();
-//			setHistoryCodeView(Default, colorId);
-			// Re do Current to force validation
-			colorId = getHistory(Current).getCodeView();
-			setHistoryCodeView(Current, colorId);
+			setHistoryCodeView(Default, 0);
+			setHistory(Current, Initial);
 		}
 		
 	    // ========== Overriders ==========
@@ -231,6 +245,7 @@ public class Group_Race extends AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void initComments() {
+			setSettingComments("It may be better to let the game set this value!");
 			setBottomComments(availableForChange());
 		}
 	}
@@ -272,6 +287,7 @@ public class Group_Race extends AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void initComments() {
+			setSettingComments("It may be better to let the game set this value!");
 			setBottomComments(availableForChange());
 		}
 	}

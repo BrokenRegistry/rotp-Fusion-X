@@ -21,13 +21,9 @@ import static br.profileManager.src.main.java.Validation.History.Default;
 /**
  * For the validation of the configurations Action
  */
-//class Valid_LocalEnable extends Valid_ProfileAction {
-class Valid_LocalEnable extends Validation<String> {
+public class Valid_LocalEnable extends Validation<String> {
 
 	private static String clogId;
-//	static {
-//		newConfig();
-//	}
 	// From Valid_ConfigAction
 		static final String LOAD_ENABLED    = "ENABLE_LOAD_LIST";
 		static final String WRITE_ENABLED   = "ENABLE_WRITE_LIST";
@@ -36,6 +32,9 @@ class Valid_LocalEnable extends Validation<String> {
 	//	static final String SPECIAL_ENABLED = "SPECIAL_LIST";
 	//  static final String LOCAL_ENABLED = "LOCAL_LIST";
 
+	/**
+	 * Local Enable Key
+	 */
 	public  static final String PARAMETER_NAME = "¦ LOCAL ENABLE";
 	private static final String DEFAULT_VALUE  = "ALL";
 

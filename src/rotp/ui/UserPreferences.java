@@ -320,7 +320,12 @@ public class UserPreferences {
         save();
     }
     public static void toggleRetreatRestrictions(int i) {
-        if (retreatRestrictions+i >= 3)
+    	// BR: modified to make it roll at the ends
+    	if (retreatRestrictions == 3 && i>0) 
+    		retreatRestrictions = 0;
+    	else if (retreatRestrictions == 0 && i<0) 
+    		retreatRestrictions = 3;
+    	else if (retreatRestrictions+i >= 3)
             retreatRestrictions = 3;
         else if (retreatRestrictions+i < 0)
             retreatRestrictions = 0;
@@ -329,7 +334,12 @@ public class UserPreferences {
         save();
     }
     public static void toggleRetreatRestrictionTurns(int i) {
-        if (retreatRestrictionTurns+i >= 100)
+    	// BR: modified to make it roll at the ends
+    	if (retreatRestrictionTurns == 100 && i>0) 
+    		retreatRestrictionTurns = 0;
+    	else if (retreatRestrictionTurns == 0 && i<0) 
+    		retreatRestrictionTurns = 100;
+    	else if (retreatRestrictionTurns+i >= 100)
             retreatRestrictionTurns = 100;
         else if (retreatRestrictionTurns+i < 0)
             retreatRestrictionTurns = 0;

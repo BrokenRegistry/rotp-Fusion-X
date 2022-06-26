@@ -28,7 +28,7 @@ class Group_BrokenRegistryTest {
 	@Test void StarProbability_ClientClasses() {
 		BaseProbabilityModifier param;
 		param = new BaseProbabilityModifier(cct, "STAR TYPE PROBABILITY"
-				, probabilityModifier("STARS"), STAR_TYPES);
+				, probabilityModifier("STARS"), STAR_TYPES, "");
 		String out = param.toString(List.of("Profile 1", "Random"));
 		String shouldBe = StarProbabilityPrt;
 		assertEquals(shouldBe, out, "should have been equals");

@@ -17,6 +17,7 @@
 
 package mod.br.profileManager;
 
+import static br.profileManager.src.main.java.Validation.History.Current;
 import static br.profileManager.src.main.java.Validation.History.Default;
 import static br.profileManager.src.main.java.Validation.History.Initial;
 
@@ -28,9 +29,11 @@ import br.profileManager.src.main.java.AbstractT;
 import br.profileManager.src.main.java.T_Boolean;
 import br.profileManager.src.main.java.T_Float;
 import br.profileManager.src.main.java.T_Integer;
+import br.profileManager.src.main.java.Valid_IntegerWithList;
 import br.profileManager.src.main.java.Validation;
 import rotp.model.empires.Empire;
 import rotp.ui.UserPreferences;
+import rotp.ui.game.StartModOptionsUI;
 
 /**
  * @author BrokenRegistry
@@ -52,6 +55,8 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 		addParameter(new CustomDifficulty(go));
 		addParameter(new DynamicDifficulty(go));
 		addParameter(new MissileSizeModifier(go));
+		addParameter(new RetreatRestrictions(go));
+		addParameter(new RetreatRestrictionTurns(go));
 	}
 
 	// ==============================================================
@@ -384,6 +389,78 @@ class Group_Modnar extends  AbstractGroup <ClientClasses> {
 		}
 
 		@Override public void putToGUI(ClientClasses go, AbstractT<Float> value) {
+			UserPreferences.setMissileSizeModifier(value.getCodeView());
+		}
+
+		@Override public void initComments() {
+			setBottomComments(dynamicParameter());
+		}
+	}
+	// ==============================================================
+	// RETREAT RESTRICTIONS
+	//
+	static class RetreatRestrictions extends
+			AbstractParameter <Integer, Valid_IntegerWithList, ClientClasses> {
+
+		RetreatRestrictions(ClientClasses go) { 
+			super("RETREAT RESTRICTIONS", 
+					new Valid_IntegerWithList(
+							UserPreferences.retreatRestrictions()
+							, StartModOptionsUI.getRetreatRestrictionOptions()));	
+			setHistoryCodeView(Initial, UserPreferences.retreatRestrictions());
+			setHistoryCodeView(Default, 0);
+			setHistory(Current, Initial);
+		}
+
+		@Override public AbstractT<Integer> getFromGame (ClientClasses go) { // BR: Validate Dynamic 
+			return new T_Integer(UserPreferences.retreatRestrictions()); // Dynamic: Same as UserPreferences
+		}
+
+		@Override public void putToGame(ClientClasses go, AbstractT<Integer> value) {
+			UserPreferences.setMissileSizeModifier(value.getCodeView()); // Dynamic: Same as UserPreferences
+		}		
+
+		@Override public AbstractT<Integer> getFromUI (ClientClasses go) {
+			return new T_Integer(UserPreferences.retreatRestrictions());
+		}
+
+		@Override public void putToGUI(ClientClasses go, AbstractT<Integer> value) {
+			UserPreferences.setMissileSizeModifier(value.getCodeView());
+		}
+
+		@Override public void initComments() {
+			setBottomComments(dynamicParameter());
+		}
+	}
+	// ==============================================================
+	// RETREAT RESTRICTION TURNS
+	//
+	static class RetreatRestrictionTurns extends
+			AbstractParameter <Integer, Validation<Integer>, ClientClasses> {
+
+		RetreatRestrictionTurns(ClientClasses go) { 
+			super("RETREAT RESTRICTION TURNS", 
+					new Validation<Integer>(
+							new T_Integer(UserPreferences.retreatRestrictionTurns())));
+			
+			setHistoryCodeView(Default, 100); // XILMI DEFAULT
+			setLimits(0 , 100);
+			setDefaultRandomLimits(0 , 100);
+		}
+
+		@Override public AbstractT<Integer> getFromGame (ClientClasses go) {
+			return new T_Integer(UserPreferences.retreatRestrictionTurns()); // Dynamic: Same as UserPreferences
+		}
+
+		@Override public void putToGame(ClientClasses go, AbstractT<Integer> value) {
+			UserPreferences.setMissileSizeModifier(value.getCodeView()); // Dynamic: Same as UserPreferences
+		}		
+
+		@Override public AbstractT<Integer> getFromUI (ClientClasses go) {
+			return new T_Integer(UserPreferences.retreatRestrictionTurns());
+		}
+
+		@Override public void putToGUI(ClientClasses go, AbstractT<Integer> value) {
 			UserPreferences.setMissileSizeModifier(value.getCodeView());
 		}
 

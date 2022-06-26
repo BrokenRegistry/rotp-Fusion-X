@@ -31,10 +31,10 @@ import java.util.List;
 import br.profileManager.src.main.java.AbstractGroup;
 import br.profileManager.src.main.java.AbstractParameter;
 import br.profileManager.src.main.java.AbstractT;
-import br.profileManager.src.main.java.PMutil;
 import br.profileManager.src.main.java.T_Boolean;
 import br.profileManager.src.main.java.T_Float;
 import br.profileManager.src.main.java.T_Integer;
+import br.profileManager.src.main.java.Valid_IntegerWithList;
 import br.profileManager.src.main.java.Validation;
 import mod.br.AddOns.GalaxySpacing;
 import mod.br.AddOns.Miscellaneous;
@@ -60,63 +60,42 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 		addParameter(new PreferedStarsPerEmpire(go));
 		addParameter(new MinStarsPerEmpire(go));
 		addParameter(new BaseProbabilityModifier(go, "STAR TYPE PROBABILITY"
-								, probabilityModifier(STARS_KEY), STAR_TYPES));
+				, probabilityModifier(STARS_KEY), STAR_TYPES
+				, "Modify the probability of appearance of each star colour." + NL
+				+ "A positive value will multiply the base probability." + NL
+				+ "A negative values replace it (after the sign is changed, of course!)." + NL
+				+ "Be careful... This could terribly affect the game!"));
 		addParameter(new BaseProbabilityModifier(go
 				, "PLANET TYPE PROBABILITY " + ALL_PLANETS_KEY
-				, probabilityModifier(ALL_PLANETS_KEY), PLANET_TYPES));
+				, probabilityModifier(ALL_PLANETS_KEY), PLANET_TYPES
+				, "Modify the probability of appearance of each planet type, globally for all star colour." + NL
+				+ "A positive value will multiply the base probability." + NL
+				+ "A negative values replace it (after the sign is changed, of course!)." + NL
+				+ "Be careful... This could terribly affect the game!"));
 		for (String color : STAR_TYPES) {
 			addParameter(new BaseProbabilityModifier(go
 					, "PLANET TYPE PROBABILITY " + color
-					, probabilityModifier(color), PLANET_TYPES));
+					, probabilityModifier(color), PLANET_TYPES
+					, "Modify the probability of appearance of each planet type, globally this specific star colour." + NL
+					+ "A positive value will multiply the base probability." + NL
+					+ "A negative values replace it (after the sign is changed, of course!)." + NL
+					+ "This parameter is applied after the global one." + NL
+					+ "Be careful... This could terribly affect the game!"));
 		}
 
 	}
-
 	// ========================================================================
 	// FLAG COLOR ORDER
 	//
-	static class Valid_FlagColorOrder extends Validation<Integer> {
-
-		static final T_Integer flagColors = Miscellaneous.defaultFlagColorOrder();
-
-		Valid_FlagColorOrder(int initial) {
-			super(new T_Integer(initial));
-			init();
-		}
-
-		private void initCriteria() {
-			getCriteria().isNullAllowed(false);
-		}
-		
-		private void init() {
-			List<String> colors = flagColors.getUserList();
-			initCriteria();
-			for (String color : colors) {
-				addOption(colors.indexOf(color), color);
-			}
-			setLimits(0 , colors.size());
-			setDefaultRandomLimits(0 , colors.size());
-			setHistory(Default, flagColors);
-		}
-				
-		/**
-		 * Generate UserViewList and convert it to capitalized String
-		 * @return UserView List in capitalized String
-		 */
-		@Override public String getOptionsRange() {
-			return PMutil.capitalize(getOptionsStringList().toString());
-		}
-	}
-
-	// ========== Parameter Section ==========
-	//
 	static class FlagColorOrder extends 
-			AbstractParameter <Integer, Valid_FlagColorOrder, ClientClasses> {
+			AbstractParameter <Integer, Valid_IntegerWithList, ClientClasses> {
 
 	    // ========== Constructors and initializer ==========
 	    //
 		FlagColorOrder(ClientClasses go) {
-			super("FLAG COLOR ORDER", new Valid_FlagColorOrder(0));
+			super("FLAG COLOR ORDER"
+					, new Valid_IntegerWithList(0
+							, Miscellaneous.defaultFlagColorOrder().getUserList()));
 			
 			getValidation().setHistory(Initial, Miscellaneous.defaultFlagColorOrder());
 			getValidation().setHistory(Default, Miscellaneous.defaultFlagColorOrder());
@@ -150,6 +129,10 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 					" " + NL +
 					"------------- Broken Registry Options -------------" + NL +
 					" ");
+			setSettingComments(
+					"This setting will change scrolling order of the star flags in the galaxy map" + NL
+					+ "List lenght may be shortened. by removing some colors" + NL
+					+ "If you remove the \"None\" one, it will still be available on reset");
 		}	
 	}
 
@@ -182,7 +165,11 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 			GalaxySpacing.setMaximizeEmpiresSpacing(value.getCodeView());
 		}
 		
-		@Override public void initComments() {}
+		@Override public void initComments() {
+			setSettingComments(
+					"I don’t like being squeezed in a corned in big map with few opponents..." + NL
+					+ "With this option activated, the space between every empire will be maximized.");
+		}
 	}
 
 	// ========================================================================
@@ -216,7 +203,13 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 			GalaxySpacing.setPreferedStarsPerEmpire(value.getCodeView());
 		}
 		
-		@Override public void initComments() {}
+		@Override public void initComments() {
+			setSettingComments(
+					"Preferred number of stars around every empires."
+					+ " This parameter will affect the default selected number of opponents,"
+					+ " also depend on the size of the galaxy." + NL
+					+ "This parameter will be disabled as soon as a number of opponents is chosen.");
+		}
 	}
 	
 	// ========================================================================
@@ -250,8 +243,12 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 			GalaxySpacing.setMinStarsPerEmpire(value.getCodeView());
 		}
 		
-		@Override public void initComments() {}
-
+		@Override public void initComments() {
+			setSettingComments(
+					"Minimum number of stars around every empires." + NL
+					+ " This parameter will affect the maximum number of allowed opponents,"
+					+ " also depend on the size of the galaxy.");
+		}
 	}
 
 	// ==============================================================
@@ -264,15 +261,20 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 			AbstractParameter <Float, Valid_ProbabilityDensity, ClientClasses> {
 
 		private final ProbabilityModifier pMod;
+		private final String comment;
 	    // ========== Constructors and initializer ==========
 	    //
-		BaseProbabilityModifier(ClientClasses go, String Name
-				, ProbabilityModifier modifier, List<String> options)
+		BaseProbabilityModifier(ClientClasses go
+				, String Name
+				, ProbabilityModifier modifier
+				, List<String> options
+				, String settingComment)
 		{
 			super(Name, new Valid_ProbabilityDensity(
 					ProbabilityModifier.DefaultProbabilityModifier, options));
 
 			pMod = modifier;
+			comment = settingComment;
 			setHistoryCodeView(Initial, pMod.defaultModifierList());
 			setHistoryCodeView(Default, pMod.defaultModifierList());
 			setHistoryCodeView(Current, pMod.defaultModifierList());
@@ -295,6 +297,8 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 			pMod.selectedModifierList(value.getCodeList());
 		}
 		
-		@Override public void initComments() {}
+		@Override public void initComments() {
+			setSettingComments(comment);
+		}
 	}
 }

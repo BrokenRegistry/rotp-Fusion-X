@@ -22,6 +22,7 @@ import java.util.LinkedHashMap;
 import br.profileManager.src.main.java.AbstractGroup;
 import br.profileManager.src.main.java.AbstractParameter;
 import br.profileManager.src.main.java.AbstractProfiles;
+import br.profileManager.src.main.java.Valid_LocalEnable;
 import rotp.Rotp;
 import rotp.ui.UserPreferences;
 
@@ -169,7 +170,13 @@ public class UserProfiles extends AbstractProfiles<ClientClasses> {
 		for (AbstractParameter<?, ?, ClientClasses> parameter : parameterNameMap().values()) {
 			parameter.addLine("FullRandom", "Random");
 		}
+		// Some specialized parameters
 		getParameter("AUTOPLAY").addLine("LastWord", "Off", "Only activated thru GUI");
+		getParameter("PLAYER HOMEWORLD").addLine(
+				Valid_LocalEnable.PARAMETER_NAME, "LOAD" );
+		getParameter("PLAYER NAME").addLine(
+				Valid_LocalEnable.PARAMETER_NAME, "LOAD" );
+		
 		getParameter("MAXIMIZE EMPIRES SPACING").addLine("Random", "NO",
 				"Not Random, not yet");
 		
