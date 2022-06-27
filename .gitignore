@@ -9,6 +9,7 @@ target/
 bin/
 *.iml
 *.log
+*Test.java
 nbactions.xml
 .project
 **/*Test.java
