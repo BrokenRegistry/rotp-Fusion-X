@@ -134,6 +134,7 @@ public class UserProfiles extends AbstractProfiles<ClientClasses> {
 	}
 
 	@Override protected void createDefaultUserProfiles() {
+		String random = PM.getConfig("randomId").toLowerCase();
 		parameterProfileAction().addLine("Continuation"
 				, ACTION_GUI_TO_FILE + " " + ACTION_FILE_TO_GUI
 				, "To retrieve the last session configuration. Press \"L\" to load this profile");
@@ -170,12 +171,13 @@ public class UserProfiles extends AbstractProfiles<ClientClasses> {
 		parameterProfileAction().addLine("LastWord·"
 				, ACTION_FILE_TO_GUI + " " + ACTION_RANDOM
 				, "For the parameters you never want to be changed."
-						+ " Keep at the end of the list. "
-						+ " The · prevent it to be mistakenly changed");
+						+ " Keep at the end of the list. The \"" 
+						+ PM.getConfig("clogId")
+						+ "\" prevent it to be mistakenly changed");
 		
 		// Fill the Random
 		for (AbstractParameter<?, ?, ClientClasses> parameter : parameterNameMap().values()) {
-			parameter.addLine("FullRandom", "Random");
+			parameter.addLine("FullRandom", random);
 		}
 		// Some specialized parameters
 		getParameter("AUTOPLAY").addLine("LastWord", "Off", "Only activated thru GUI");
@@ -188,28 +190,33 @@ public class UserProfiles extends AbstractProfiles<ClientClasses> {
 				"Not Random, not yet");
 		
 		// Special random with comments
-		getParameter("PLAYER RACE").addLine("MyRandom", "Random",
+		getParameter("PLAYER RACE").addLine("MyRandom", random,
 				"Full random");
-		getParameter("PLAYER COLOR").addLine("MyRandom", "Random Green, Lime",
+		getParameter("PLAYER COLOR").addLine("MyRandom"
+				, random + " Green, Lime",
 				"2 values = a range from option list");
 		getParameter("GALAXY SHAPE").addLine("MyRandom",
-				"Random Rectangle, Ellipse, Spiral, Spiralarms",
+				random + " Rectangle, Ellipse, Spiral, Spiralarms",
 				"a limited choice");
 		getParameter("GALAXY SIZE").addLine("MyRandom", "",
 				"Nothing changed by this profile");
-		getParameter("DIFFICULTY").addLine("MyRandom", "Random 1, 4",
+		getParameter("DIFFICULTY").addLine("MyRandom"
+				, random + " 1, 4",
 				"a range from option list");
-		getParameter("OPPONENT AI").addLine("MyRandom", 
-				"Random Base, Xilmi, Xilmi",
-				"2 chances to have Xilmi vs Base");
-		getParameter("NB OPPONENTS").addLine("MyRandom", "Random 3, 6",
-				"a custom range");
+		getParameter("OPPONENT AI").addLine("MyRandom"
+				, random + " Base, Xilmi, Xilmi"
+				, "2 chances to have Xilmi vs Base");
+		getParameter("NB OPPONENTS").addLine("MyRandom"
+				, random + " 3, 6"
+				, "a custom range");
 		getParameter("GALAXY AGE").addLine("MyRandom",
-				"Random Young, Young, Old, Old",
+				random + " Young, Young, Old, Old",
 				"Only 2 choices... Not a range");
-		getParameter("NEBULAE").addLine("MyRandom","Random 1, 4",
-				"Range = Rare .. Common (first option = 0)");	
-		getParameter("AI HOSTILITY").addLine("MyRandom", "Random 0, 3");
+		getParameter("NEBULAE").addLine("MyRandom"
+				, random + " 1, 4"
+				, "Range = Rare .. Common (first option = 0)");	
+		getParameter("AI HOSTILITY").addLine("MyRandom"
+				, random + " 0, 3");
 		getParameter("ALWAYS STAR GATES").addLine("MyRandom", "Yes", "Not Random!");
 	}
 }

@@ -61,26 +61,32 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 		addParameter(new MinStarsPerEmpire(go));
 		addParameter(new BaseProbabilityModifier(go, "STAR TYPE PROBABILITY"
 				, probabilityModifier(STARS_KEY), STAR_TYPES
-				, "Modify the probability of appearance of each star colour." + NL
+				, " " + NL
+				+ "Modify the probability of appearance of each star colour." + NL
 				+ "A positive value will multiply the base probability." + NL
 				+ "A negative values replace it (after the sign is changed, of course!)." + NL
-				+ "Be careful... This could terribly affect the game!"));
+				+ "Be careful... This could terribly affect the game!"
+				+ NL));
 		addParameter(new BaseProbabilityModifier(go
 				, "PLANET TYPE PROBABILITY " + ALL_PLANETS_KEY
 				, probabilityModifier(ALL_PLANETS_KEY), PLANET_TYPES
-				, "Modify the probability of appearance of each planet type, globally for all star colour." + NL
+				, " " + NL
+				+ "Modify the probability of appearance of each planet type, globally for all star colour." + NL
 				+ "A positive value will multiply the base probability." + NL
 				+ "A negative values replace it (after the sign is changed, of course!)." + NL
-				+ "Be careful... This could terribly affect the game!"));
+				+ "Be careful... This could terribly affect the game!"
+				+ NL));
 		for (String color : STAR_TYPES) {
 			addParameter(new BaseProbabilityModifier(go
 					, "PLANET TYPE PROBABILITY " + color
 					, probabilityModifier(color), PLANET_TYPES
-					, "Modify the probability of appearance of each planet type, globally this specific star colour." + NL
+					, " " + NL
+					+ "Modify the probability of appearance of each planet type, globally this specific star colour." + NL
 					+ "A positive value will multiply the base probability." + NL
 					+ "A negative values replace it (after the sign is changed, of course!)." + NL
 					+ "This parameter is applied after the global one." + NL
-					+ "Be careful... This could terribly affect the game!"));
+					+ "Be careful... This could terribly affect the game!"
+					+ NL));
 		}
 
 	}
@@ -125,14 +131,14 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 		
 		@Override public void initComments() {
 			setBottomComments(dynamicParameter());
-			setHeadComments(
-					" " + NL +
-					"------------- Broken Registry Options -------------" + NL +
-					" ");
-			setSettingComments(
-					"This setting will change scrolling order of the star flags in the galaxy map" + NL
+			setHeadComments(" " + NL
+					+ "------------- Broken Registry Options -------------" + NL
+					+ " ");
+			setSettingComments(" " + NL
+					+ "This setting will change scrolling order of the star flags in the galaxy map" + NL
 					+ "List lenght may be shortened. by removing some colors" + NL
-					+ "If you remove the \"None\" one, it will still be available on reset");
+					+ "If you remove the \"None\" one, it will still be available on reset"
+					+ NL);
 		}	
 	}
 
@@ -166,9 +172,10 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void initComments() {
-			setSettingComments(
-					"I don’t like being squeezed in a corned in big map with few opponents..." + NL
-					+ "With this option activated, the space between every empire will be maximized.");
+			setSettingComments(" " + NL
+					+ "I don’t like being squeezed in a corned in big map with few opponents..." + NL
+					+ "With this option activated, the space between every empire will be maximized."
+					+ NL);
 		}
 	}
 
@@ -204,11 +211,12 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void initComments() {
-			setSettingComments(
-					"Preferred number of stars around every empires."
+			setSettingComments(" " + NL
+					+ "Preferred number of stars around every empires."
 					+ " This parameter will affect the default selected number of opponents,"
 					+ " also depend on the size of the galaxy." + NL
-					+ "This parameter will be disabled as soon as a number of opponents is chosen.");
+					+ "This parameter will be disabled as soon as a number of opponents is chosen."
+					+ NL);
 		}
 	}
 	
@@ -244,10 +252,11 @@ public class Group_BrokenRegistry extends  AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void initComments() {
-			setSettingComments(
-					"Minimum number of stars around every empires." + NL
+			setSettingComments(" " + NL
+					+ "Minimum number of stars around every empires." + NL
 					+ " This parameter will affect the maximum number of allowed opponents,"
-					+ " also depend on the size of the galaxy.");
+					+ " also depend on the size of the galaxy."
+					+ NL);
 		}
 	}
 

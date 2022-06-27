@@ -61,7 +61,7 @@ public class PMconfig {
 		config.put("====================", "==========");
 		config.put("clogId",    "·");
 		config.put("randomId",	"RANDOM");
-		config.put("parameterKey",	    "¦ Parameter");
+		config.put("parameterKey",	    "¦==== Parameter");
 		config.put("historyKey",		"¦ History");
 		config.put("optionsKey",		"Options");
 		config.put("--------------------", "----------");

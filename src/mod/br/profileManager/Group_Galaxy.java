@@ -323,14 +323,15 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void initComments() {
-			setSettingComments(
-					"If you don’t like to have some races as opponent,"
+			setSettingComments(" " + NL
+					+ "If you don’t like to have some races as opponent,"
 					+ " or if your planetary distribution affect a race too much,"
 					+ " you are able to remove them form the pool of selectable opponents." + NL
 					+ "Only the opponents on the list will be shown when you click on the selection rectangle." + NL
 					+ "The race list must be written using “/” as separator." + NL
 					+ "!!! Don’t break the lines !!! even if they become very long..."
-					+ " There is no multi-line analysis.");
+					+ " There is no multi-line analysis."
+					+ NL);
 		}
 	}
 
@@ -372,14 +373,15 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void initComments() {
-			setSettingComments(
-					"If you don’t like to have some races as opponent,"
+			setSettingComments(" " + NL
+					+ "If you don’t like to have some races as opponent,"
 					+ " or if your planetary distribution affect a race too much,"
 					+ " you are able to remove them form the pool of selectable opponents." + NL
 					+ "Only the opponents on the list will be used by the random generator when starting a new game." + NL
 					+ "The race list must be written using “/” as separator." + NL
 					+ "!!! Don’t break the lines !!! even if they become very long..."
-					+ " There is no multi-line analysis.");
+					+ " There is no multi-line analysis."
+					+ NL);
 		}
 	}
 	// ==============================================================
@@ -442,7 +444,8 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void initComments() {
-			setSettingComments("To fill the opponent list or suggest random opponents from a list." + NL
+			setSettingComments(" " + NL
+					+ "To fill the opponent list or suggest random opponents from a list." + NL
 					+ "If option is empty, the opponent is not changed." + NL
 					+ "If the option is “null” the result is an empty rectangle." + NL
 					+ "If the option is “random” the opponent will be selected from the full race list." + NL
@@ -454,7 +457,8 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 					+ " Otherwise the remaining opponents aren’t changed." + NL
 					+ "The race list must be written using “/” as separator." + NL
 					+ "!!! Don’t break the lines !!! even if they become very long..."
-					+ " There is no multi-line analysis.");
+					+ " There is no multi-line analysis."
+					+ NL);
 		}
 	}
 	// ==============================================================
@@ -515,8 +519,8 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void initComments() {
-			setSettingComments(
-					"To replace the random opponent generation when starting a new game." + NL
+			setSettingComments(" " + NL
+					+ "To replace the random opponent generation when starting a new game." + NL
 					+ "If option is empty or null, the opponent will be randomly selected." + NL
 					+ "If the option is “random” the opponent will be selected from the full race list." + NL
 					+ "If the option is “GUI” the opponent will be selected from the GUI RACE FILTER list." + NL
@@ -531,7 +535,8 @@ public class Group_Galaxy extends  AbstractGroup <ClientClasses> {
 					+ " When this list is empty, sorry, a forbidden race will be chosen." + NL
 					+ "The race list must be written using “/” as separator." + NL
 					+ "!!! Don’t break the lines !!! even if they become very long..."
-					+ " There is no multi-line analysis.");
+					+ " There is no multi-line analysis."
+					+ NL);
 		}
 		// ========== Other Methods ==========
 		//

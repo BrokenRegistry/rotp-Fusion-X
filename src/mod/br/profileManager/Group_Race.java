@@ -245,7 +245,9 @@ public class Group_Race extends AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void initComments() {
-			setSettingComments("It may be better to let the game set this value!");
+			setSettingComments(NL 
+					+ "The best would be to let the game choose this value!"
+					+ NL);
 			setBottomComments(availableForChange());
 		}
 	}
@@ -287,7 +289,9 @@ public class Group_Race extends AbstractGroup <ClientClasses> {
 		}
 		
 		@Override public void initComments() {
-			setSettingComments("It may be better to let the game set this value!");
+			setSettingComments(NL 
+					+ "The best would be to let the game choose this value!"
+					+ NL);
 			setBottomComments(availableForChange());
 		}
 	}
