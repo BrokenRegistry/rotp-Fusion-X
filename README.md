@@ -81,10 +81,13 @@ _Value = Random_<br>
 
 ### Additional features / changelog<br>
 
+- 2022.06.27
+  - Added option to break lines.
+  - Added some comments
+  - Try to have a non blank user manual!
 - 0.95.00 (2022-06-26)
   - Full rewriting of the mod!
   - Added user Manual: Profiles.pdf
-
 - 0.91.1beta (2022-04-02)
   - Added: Player color change in game file
   - Implemented change in game file -> (Beta)
