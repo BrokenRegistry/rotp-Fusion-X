@@ -1023,6 +1023,13 @@ public final class Empire implements Base, NamedObject, Serializable {
             autocolonize();
             autoattack();
             autoscout();
+            if(session().getGovernorOptions().isAutoSpy() || session().getGovernorOptions().isAutoInfiltrate())
+            {
+                for (EmpireView ev : empireViews()) {
+                    if ((ev != null) && ev.embassy().contact())
+                        ev.setSuggestedAllocations();
+                }
+            }
             // If planets are governed, redo allocations now
             for (int i = 0; i < this.sv.count(); ++i) {
                 if (this.sv.empire(i) == this && this.sv.isColonized(i)) {
@@ -1035,7 +1042,7 @@ public final class Empire implements Base, NamedObject, Serializable {
         NoticeMessage.setSubstatus(text("TURN_COLONY_SPENDING"));
         for (int n=0; n<sv.count(); n++) {
             if (sv.empId(n) == id)
-                if(!sv.colony(n).isGovernor() || isAIControlled()) //do not overrule the governor if it is enabled!
+                if(!sv.colony(n).isGovernor() || isAIControlled() || sv.colony(n).shipyard().shipLimitReached()) //do not overrule the governor if it is enabled, except it's for ship-limit-reached
                     governorAI().setColonyAllocations(sv.colony(n));
         }
     }
@@ -3782,7 +3789,77 @@ public final class Empire implements Base, NamedObject, Serializable {
         }
     }
    
-    public static Comparator<Empire> TOTAL_POPULATION = (Empire o1, Empire o2) -> o2.totalPlanetaryPopulation().compareTo(o1.totalPlanetaryPopulation());
+    // BR:
+    /**
+	 * @return the Challenge Mod State
+	 */
+	public boolean isChallengeMode() {
+		for (StarSystem system : colonizedSystems) {
+			if (system.colony() != null) {
+				return system.colony().isChallengeMode();
+			}
+		}
+        return false; // This should never happen... But better safe than sorry!
+	} // \BR
+
+    // BR:
+    /**
+	 * @return the current number of companion worlds
+	 */
+	public int getCompanionWorldsNumber() {
+        if (compSysId != null) {
+        	return compSysId.length;
+        }
+        return 0;
+	} // \BR
+
+    // BR:
+    /**
+	 * @return the current Name of Home World
+	 */
+	public String getHomeWorldName() {
+        return galaxy().system(homeSysId).name();
+	} // \BR
+
+    // BR:
+    /**
+     * Change Home World and Companions Name
+	 * @param NewName the new HomeWorld Name
+	 */
+	public void setHomeWorldName(String newName) {
+		sv.name(homeSysId, newName);
+        int numCompWorlds = getCompanionWorldsNumber();
+        if (numCompWorlds > 0) { 
+            String[] compSysName = new String[]{"α", "β", "γ", "δ"}; // companion world Greek letter prefix
+            for (int id = 0; id < numCompWorlds; id++) {
+               	String name = compSysName[id] + " " + newName;
+               	sv.name(compSysId[id], name);
+             }
+        }
+	} // \BR
+
+    // BR: Trying to allow changing race
+    /**
+	 * @param newRace the new race Name
+	 */
+	public void setRace(String newRace) {
+		// raceKey = newRace; 
+		race = Race.keyed(newRace);
+        // dataRaceKey = newRace;
+		dataRace = Race.keyed(newRace);
+        // raceNameIndex = race.nameIndex(race.nextAvailableName());
+        leader = new Leader(this, race.nextAvailableLeader());
+        shipImage = null;
+        shipImageLarge = null;
+        shipImageHuge = null;
+        scoutImage = null;
+        transportImage = null;
+        loadStartingShipDesigns();
+        recalcPlanetaryProduction();
+        setHomeWorldName(race.nextAvailableHomeworld());
+	} // \BR
+
+   public static Comparator<Empire> TOTAL_POPULATION = (Empire o1, Empire o2) -> o2.totalPlanetaryPopulation().compareTo(o1.totalPlanetaryPopulation());
     public static Comparator<Empire> TOTAL_PRODUCTION = (Empire o1, Empire o2) -> o2.totalPlanetaryProduction().compareTo(o1.totalPlanetaryProduction());
     public static Comparator<Empire> AVG_TECH_LEVEL   = (Empire o1, Empire o2) -> o2.tech.avgTechLevel().compareTo(o1.tech.avgTechLevel());
     public static Comparator<Empire> TOTAL_FLEET_SIZE = (Empire o1, Empire o2) -> o2.totalFleetSize().compareTo(o1.totalFleetSize());

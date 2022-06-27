@@ -30,6 +30,7 @@ import rotp.model.galaxy.Location;
 import rotp.model.galaxy.Ship;
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.StarSystem;
+import rotp.model.galaxy.Transport;
 import rotp.model.incidents.DiplomaticIncident;
 import rotp.model.ships.ShipDesign;
 import rotp.model.ships.ShipDesignLab;
@@ -53,7 +54,10 @@ public class AIGeneral implements Base, General {
     private float totalEmpirePopulationCapacity = -1;
     private float warROI = -1;
     private float visibleEnemyFighterCost = -1;
+    private float visibleEnemyTransportCost = -1;
     private float myFighterCost = -1;
+    private float smartPower = -1;
+    private float highestProdScore = -1;
 
     public AIGeneral (Empire c) {
         empire = c;
@@ -85,7 +89,10 @@ public class AIGeneral implements Base, General {
         totalEmpirePopulationCapacity = -1;
         warROI = -1;
         visibleEnemyFighterCost = -1;
+        visibleEnemyTransportCost = -1;
         myFighterCost = -1;
+        smartPower = -1;
+        highestProdScore = -1;
         
         //empire.tech().learnAll();
         //System.out.println(galaxy().currentTurn()+" "+empire.name()+" "+empire.leader().name()+" personality: "+empire.leader().personality()+" objective: "+empire.leader().objective());
@@ -144,14 +151,17 @@ public class AIGeneral implements Base, General {
             }
             if(bestCol == null)
                 break;
-            bestCol.shipyard().design(design);
-            bestCol.shipyard().addQueuedBC(design.cost());
-            float colonyProduction = (bestCol.totalIncome() - bestCol.minimumCleanupCost()) * bestCol.planet().productionAdj();
-            int desiredCount = min(additionalColonizersToBuild, (int)Math.floor((float)colonyProduction / (float)design.cost()));
-            desiredCount = max(1, desiredCount);
-            bestCol.shipyard().addDesiredShips(desiredCount);
-            //System.out.println(galaxy().currentTurn()+" "+empire.name()+" should order "+desiredCount+" colonizers at "+bestCol.name());
-            additionalColonizersToBuild-=desiredCount;
+            if(!bestCol.shipyard().building() || bestCol.shipyard().design().cost() >= design.cost())
+            {
+                bestCol.shipyard().design(design);
+                bestCol.shipyard().addQueuedBC(design.cost());
+                float colonyProduction = (bestCol.totalIncome() - bestCol.minimumCleanupCost()) * bestCol.planet().productionAdj();
+                int desiredCount = min(additionalColonizersToBuild, (int)Math.floor((float)colonyProduction / (float)design.cost()));
+                desiredCount = max(1, desiredCount);
+                bestCol.shipyard().addDesiredShips(desiredCount);
+                //System.out.println(galaxy().currentTurn()+" "+empire.name()+" should order "+desiredCount+" colonizers at "+bestCol.name());
+                additionalColonizersToBuild-=desiredCount;
+            }
         }
     }
     // modnar: adjustments to invasion valuation
@@ -259,7 +269,7 @@ public class AIGeneral implements Base, General {
         if (!empire.sv.inShipRange(sysId))
             return;
 
-        if(needScoutRepellers() && (sys.empire() == empire || !empire.sv.isColonized(sysId)) && !sys.hasMonster())
+        if(needScoutRepellers(false) && (sys.empire() == empire || !empire.sv.isColonized(sysId)) && !sys.hasMonster())
         {
             //System.out.print("\n"+galaxy().currentTurn()+" "+empire.name()+" making repel-plan for "+sys.name());
             if(empire.shipDesignerAI().BestDesignToRepell() != null)
@@ -340,6 +350,7 @@ public class AIGeneral implements Base, General {
         float expectedDefenders = 0;
         float attackers = 0;
         float allowableTurns = (float) (1 + Math.min(7, Math.floor(22 / empire.tech().topSpeed())));
+        float nonBioBombardDamage = 0;
         if(sys.colony() != null)
             expectedDefenders += allowableTurns * sys.colony().totalProductionIncome() * sys.planet().productionAdj() + sys.colony().defense().bases() * sys.colony().defense().missileBase().cost(sys.empire());
         for(ShipFleet orbiting : sys.orbitingFleets())
@@ -347,7 +358,11 @@ public class AIGeneral implements Base, General {
             if(!orbiting.isArmed())
                 continue;
             if(orbiting.empire() == empire)
+            {
                 attackers += empire.ai().fleetCommander().bcValue(orbiting, false, true, false, false);
+                if(sys.colony() != null && sys.colony().defense().bases() > 0)
+                    nonBioBombardDamage += empire.governorAI().expectedBombardDamageAsIfBasesWereThere(orbiting, sys);
+            }
             else if (orbiting.empire().aggressiveWith(empire.id) && empire.visibleShips().contains(orbiting))
                 expectedDefenders += empire.ai().fleetCommander().bcValue(orbiting, false, true, false, false);
         }
@@ -356,12 +371,18 @@ public class AIGeneral implements Base, General {
             if(!incoming.isArmed())
                 continue;
             if(incoming.empire() == empire)
+            {
                 attackers += empire.ai().fleetCommander().bcValue(incoming, false, true, false, false);
+                if(sys.colony() != null && sys.colony().defense().bases() > 0)
+                    nonBioBombardDamage += empire.governorAI().expectedBombardDamageAsIfBasesWereThere(incoming, sys);
+            }
             else if (incoming.empire().aggressiveWith(empire.id) && empire.visibleShips().contains(incoming))
                 expectedDefenders += empire.ai().fleetCommander().bcValue(incoming, false, true, false, false);
         }
+        if(sys.colony() != null && sys.colony().defense().bases() > 0 && nonBioBombardDamage < sys.colony().defense().bases() * sys.colony().defense().missileBase().maxHits())
+            return;
         //ail: old check would also be positive when our fleet is retreating
-        //System.out.println(galaxy().currentTurn()+" "+empire.name()+" invading "+sys.name()+" haveOrbitingFleet: "+haveOrbitingFleet+" bases: "+sys.colony().defense().bases());
+        //System.out.println(galaxy().currentTurn()+" "+empire.name()+" invading "+sys.name()+" nonBioBombardDamage: "+nonBioBombardDamage+" base-health: "+sys.colony().defense().bases() * sys.colony().defense().missileBase().maxHits());
         if (attackers > expectedDefenders && attackers > troopsNecessaryToTakePlanet(v, sys) * empire.tech().populationCost())
             launchGroundTroops(v, sys, 1);
     }
@@ -715,33 +736,26 @@ public class AIGeneral implements Base, General {
             bestVictim = archEnemy;
             return bestVictim;
         }
-        int opponentsInRange = 1;
         for(Empire emp : empire.contactedEmpires())
         {
-            if(empire.inShipRange(emp.id))
-                opponentsInRange++;
-        }
-        for(Empire emp : empire.contactedEmpires())
-        {
-            float enemyPower = empire.militaryPowerLevel();
-            for(Empire enemy : emp.warEnemies())
-            {
-                enemyPower += enemy.militaryPowerLevel();
-            }
-            if(emp.militaryPowerLevel() > enemyPower && empire.diplomatAI().facCapRank() > 1)
+            //we don't want to fight smaller empires that might vote for us when we're up for the vote
+            if(empire.allies().contains(emp))
                 continue;
             if(!empire.inShipRange(emp.id))
                 continue;
             float currentScore = totalEmpirePopulationCapacity(emp) / (fleetCenter(empire).distanceTo(colonyCenter(emp)) + colonyCenter(empire).distanceTo(colonyCenter(emp)));
-            currentScore *= empire.tech().avgTechLevel() / emp.tech().avgTechLevel();
-            currentScore *= enemyPower;
-            currentScore *= empire.tech().topSpeed() / empire.viewForEmpire(emp).spies().tech().topSpeed();
             float tradeMod = 1;
             if(empire.viewForEmpire(emp).trade() != null && empire.totalPlanetaryIncome() > 0)
                 tradeMod += empire.viewForEmpire(emp).trade().profit() / empire.totalPlanetaryIncome();
             else
                 tradeMod = 0.9f;
+            float enemyMultiplyer = 1.0f;
+            for(Empire theirFoe : emp.warEnemies()) {
+                enemyMultiplyer += theirFoe.powerLevel(theirFoe) / (emp.powerLevel(emp) + theirFoe.powerLevel(theirFoe));
+            }
+            currentScore *= enemyMultiplyer;
             currentScore /= tradeMod;
+            currentScore /= emp.powerLevel(emp);
             float spyAnnoyanceMod = 100f;
             for(DiplomaticIncident inc : empire.viewForEmpire(emp).embassy().allIncidents())
             {
@@ -796,6 +810,23 @@ public class AIGeneral implements Base, General {
         visibleEnemyFighterCost = cost;
         return visibleEnemyFighterCost;
     }
+    public float visibleEnemyTransportCost()
+    {
+        if(visibleEnemyTransportCost >= 0)
+            return visibleEnemyTransportCost;
+        float cost = 0;
+        for(Ship sh : empire.visibleShips())
+        {
+            if(empire.aggressiveWith(sh.empId()))
+                if(!sh.nullDest() && galaxy().system(sh.destSysId()).empire() == empire)
+                    if(sh.isTransport())
+                    {
+                        Transport tr = (Transport)sh;
+                        cost += tr.size() * tr.empire().tech().populationCost();
+                    }
+        }
+        return cost;
+    }
     public float myFighterCost()
     {
         if(myFighterCost >= 0)
@@ -823,27 +854,33 @@ public class AIGeneral implements Base, General {
         float highestPower = 0.0f;
         float enemyPop = 0.0f;
         float biggestPop = 0.0f;
-        float enemyPlanetaryShield = 0.0f;
         float totalKillingPower = 0.0f;
         StarSystem dummySys = null;
         float dummyScore = 0.0f;
         boolean empireInRange = false;
+        float enemyOneTurnProd = 0.0f;
         for(Empire enemy : empire.contactedEmpires())
         {
-            if(empire.enemies().contains(enemy))
-                enemyPop += enemy.totalPlanetaryPopulation();
-            if(enemy.totalPlanetaryPopulation() > biggestPop)
-                biggestPop = enemy.totalPlanetaryPopulation();
             if(!empireInRange && empire.inShipRange(enemy.id))
                 empireInRange = true;
             totalMissileBaseCost += enemy.missileBaseCostPerBC();
             totalShipCost += enemy.shipMaintCostPerBC();
             if(enemy.militaryPowerLevel() > highestPower)
                 highestPower = enemy.militaryPowerLevel();
+            float thisOnesPop = 0.0f;
+            if(empire.enemies().contains(enemy))
+                enemyOneTurnProd += enemy.totalPlanetaryProduction();
             for(StarSystem sys : enemy.allColonizedSystems())
             {
                 if(sys.colony() != null)
                 {
+                    if(empire.sv.inShipRange(sys.id))
+                    {
+                        if(empire.enemies().contains(enemy))
+                            enemyPop += enemy.totalPlanetaryPopulation();
+                        thisOnesPop += enemy.totalPlanetaryPopulation();
+                    }
+                        
                     float score = (1 + sys.colony().defense().shieldLevel()) * sys.population();
                     if(score > dummyScore)
                     {
@@ -852,6 +889,8 @@ public class AIGeneral implements Base, General {
                     }
                 }
             }
+            if(thisOnesPop > biggestPop)
+                biggestPop = thisOnesPop;
         }
         if(dummySys != null)
         {
@@ -864,8 +903,8 @@ public class AIGeneral implements Base, General {
         enemyPop = max(enemyPop, biggestPop);
         if(enemyPop > 0)
             overKill = totalKillingPower / enemyPop;
-        if(highestPower + empire.militaryPowerLevel() > 0)
-            dr = 0.25f + 0.75f * (highestPower / (highestPower + empire.militaryPowerLevel()));
+        if(highestPower + smartPowerLevel() > 0)
+            dr = 0.25f + 0.75f * (highestPower / (highestPower + smartPowerLevel()));
         //System.out.print("\n"+empire.name()+" enemyPop: "+enemyPop+" totalKillingPower: "+totalKillingPower+" overKill: "+overKill+" dr-pre adjust: "+dr);
         if(overKill > 1)
             dr = 1 - ((1 - dr) / overKill);
@@ -874,8 +913,9 @@ public class AIGeneral implements Base, General {
         {
             dr = min(dr, totalShipCost / (totalMissileBaseCost+totalShipCost));
         }
-        if(myFighterCost() < visibleEnemyFighterCost() || !empireInRange)
+        if(myFighterCost() < visibleEnemyFighterCost() + enemyOneTurnProd || !empireInRange)
             dr = 1.0f;
+        dr = max(0.5f, dr);
         //System.out.print("\n"+galaxy().currentTurn()+" "+empire.name()+" dr: "+dr+" myFighterCost: "+myFighterCost()+" visibleEnemyFighterCost: "+visibleEnemyFighterCost());
         defenseRatio = dr;
         return defenseRatio;
@@ -1146,11 +1186,11 @@ public class AIGeneral implements Base, General {
         return center;
     }
     @Override
-    public boolean needScoutRepellers()
+    public boolean needScoutRepellers(boolean potential)
     {
         if(empire.tech().topFuelRangeTech().unlimited == true || empire.scanPlanets() || !empire.shipLab().needScouts)
             return false;
-        if(empire.enemies().isEmpty() && !empire.enemyFleets().isEmpty())
+        if((empire.enemies().isEmpty() && !empire.enemyFleets().isEmpty()) || potential)
             return true;
         return false;
     }
@@ -1181,7 +1221,7 @@ public class AIGeneral implements Base, General {
                 }
             }
         }
-        if(empire.diplomatAI().techIsAdequateForWar() && !senseDanger)
+        if(!senseDanger)
         {
             for(Empire contact : empire.contactedEmpires())
             {
@@ -1206,7 +1246,7 @@ public class AIGeneral implements Base, General {
                         bestScoreForContactToAttack = score;
                     }
                 }
-                if(bestTargetOfContact == empire && contact.militaryPowerLevel() > empire.militaryPowerLevel())
+                if(bestTargetOfContact == empire && contact.militaryPowerLevel() > smartPowerLevel())
                 {
                     senseDanger = true;
                     break;
@@ -1224,8 +1264,6 @@ public class AIGeneral implements Base, General {
         float highestThreat = 0;
         for(Empire emp : empire.contactedEmpires())
         {
-            if(!empire.inShipRange(emp.id))
-                continue;
             if(!empire.enemies().isEmpty() && !empire.enemies().contains(emp))
                 continue;
             if(emp == empire)
@@ -1234,6 +1272,8 @@ public class AIGeneral implements Base, General {
                 continue;
             float threat = emp.powerLevel(emp) * 1 / (fleetCenter(emp).distanceTo(colonyCenter(empire)));
             //System.out.println(galaxy().currentTurn()+" "+empire.name()+" fear-level of: "+emp.name()+": "+threat);
+            if(!empire.inShipRange(emp.id))
+                threat /= 2;
             if(threat > highestThreat)
             {
                 highestThreat = threat;
@@ -1245,4 +1285,68 @@ public class AIGeneral implements Base, General {
     }
     @Override
     public float absolution() { return 1f; }
+    @Override
+    public float smartPowerLevel()
+    {
+        if(smartPower > -1)
+            return smartPower;
+        float power = 0;
+        int[] counts = galaxy().ships.shipDesignCounts(empire.id);
+        for (int i=0;i<ShipDesignLab.MAX_DESIGNS; i++) {
+            ShipDesign d = empire.shipLab().design(i);
+            if (d.active() && d.isArmed() && !d.isColonyShip()) 
+            {
+                float keepScore = (1 - d.availableSpace()/d.totalSpace()) * (float)d.engine().warp() / (float)empire.shipLab().fastestEngine().warp();
+                keepScore *= keepScore;
+                //System.out.print("\n"+galaxy().currentTurn()+" "+empire.name()+" "+d.name()+" keepScore: "+keepScore);
+                power += (counts[i] *d.hullPoints() * keepScore);
+            }
+        }
+        power *= empire.tech().avgTechLevel();
+        smartPower = power;
+        return smartPower;
+    }
+    @Override
+    public float highestProdScore()
+    {
+        if(highestProdScore > 0)
+            return highestProdScore;
+        float highest = 0;
+        for(StarSystem sys: empire.allColonizedSystems())
+        {
+            float curr = empire.governorAI().productionScore(sys);
+            if(curr > highest)
+                highest = curr;
+        }
+        highestProdScore = highest;
+        return highestProdScore;
+    }
+    @Override
+    public float gameProgress()
+    {
+        float fastestVictory = Float.MAX_VALUE;
+        float myOwnedPerc = 0;
+        float highestOwnedPerc = 0;
+        for(Empire emp: galaxy().activeEmpires())
+        {
+            if(emp == empire || empire.contacts().contains(empire.viewForEmpire(emp)))
+            {
+                float ownedPerc = (float)emp.numColonies() / (float)galaxy().systemCount;
+                ownedPerc *= 3.0f/2.0f;
+                if(emp == empire)
+                    myOwnedPerc = ownedPerc;
+                if(ownedPerc > highestOwnedPerc)
+                    highestOwnedPerc = ownedPerc;
+                float victoryTurn = galaxy().currentTurn() / ownedPerc;
+                //System.out.println(galaxy().currentTurn()+" "+empire.name()+" thinks "+emp.name()+" will win at turn "+victoryTurn);
+                if(victoryTurn < fastestVictory)
+                    fastestVictory = victoryTurn;
+            }
+        }
+        float defeatTurn = fastestVictory * myOwnedPerc / highestOwnedPerc;
+        float gameEndTurn = min(fastestVictory, defeatTurn);
+        float progress = galaxy().currentTurn() / gameEndTurn;
+        //System.out.println(galaxy().currentTurn()+" "+empire.name()+" thinks the game will end at turn "+gameEndTurn+" current Progress: "+progress);
+        return progress;
+    }
 }

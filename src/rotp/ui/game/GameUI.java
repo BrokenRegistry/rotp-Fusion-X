@@ -43,6 +43,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import javax.swing.border.Border;
 import rotp.Rotp;
+import rotp.mod.br.profiles.Profiles;
 import rotp.model.game.GameSession;
 import rotp.ui.BasePanel;
 import rotp.ui.BaseText;
@@ -682,7 +683,12 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
                 exitGame();     return;
             case KeyEvent.VK_ESCAPE:
                 if (canContinue())
-                    continueGame();
+                    continueGame(); return;
+            // BR: Load Profiles with option "Surprise" and start Game
+            case KeyEvent.VK_R:
+            	if (e.isShiftDown()) {
+            		RotPUI.instance().surpriseStart(); return;
+            	}
         }
     }
     private void shrinkFrame() {
@@ -759,6 +765,7 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
     public void exitGame() {
         if (canExit()) {
             buttonClick();
+            Profiles.saveGuiOptionsToFile(options()); // BR: save last config
             GameSession.instance().exit();
         }
     }

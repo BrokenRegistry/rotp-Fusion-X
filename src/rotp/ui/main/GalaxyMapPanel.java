@@ -88,14 +88,16 @@ public class GalaxyMapPanel extends BasePanel implements ActionListener, MouseLi
     public static final int SHOW_STARS = 2;
     public static final int SHOW_NO_STARS_AND_RANGES = 3;
 
-    public static final int MAX_FLAG_SCALE = 80;
-    public static final int MAX_STARGATE_SCALE = 40;
-    public static final int MAX_RALLY_SCALE = 100;
-    public static final int MAX_FLEET_UNARMED_SCALE = 40;
-    public static final int MAX_FLEET_TRANSPORT_SCALE = 60;
-    public static final int MAX_FLEET_SMALL_SCALE = 60;
-    public static final int MAX_FLEET_LARGE_SCALE = 80;
-    public static final int MAX_FLEET_HUGE_SCALE = 100;
+	 // BR:
+    public static final int MAX_FLAG_SCALE = (int) (80 * UserPreferences.getShowFlagFactor());
+    public static final int MAX_STARGATE_SCALE = (int) (40 * UserPreferences.getShowFleetFactor());
+    public static final int MAX_RALLY_SCALE = (int) (100 * UserPreferences.getShowPathFactor());
+    public static final int MAX_FLEET_UNARMED_SCALE = (int) (40 * UserPreferences.getShowFleetFactor());
+    public static final int MAX_FLEET_TRANSPORT_SCALE = (int) (60 * UserPreferences.getShowFleetFactor());
+    public static final int MAX_FLEET_SMALL_SCALE = (int) (60 * UserPreferences.getShowFleetFactor());
+    public static final int MAX_FLEET_LARGE_SCALE = (int) (80 * UserPreferences.getShowFleetFactor());
+    public static final int MAX_FLEET_HUGE_SCALE = (int) (100 * UserPreferences.getShowFleetFactor());
+	// \BR:
     
     private static final Color unreachableBackground = new Color(0,0,0);
 

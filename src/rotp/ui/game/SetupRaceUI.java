@@ -35,7 +35,7 @@ import java.awt.RenderingHints; // modnar: needed for adding RenderingHints
 import java.util.List;
 import javax.swing.JTextField;
 
-import rotp.mod.br.settings.Settings;
+import rotp.mod.br.profiles.Profiles;
 import rotp.model.empires.Race;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
@@ -300,46 +300,6 @@ public final class SetupRaceUI extends BasePanel implements MouseListener, Mouse
         backImg = null;
         raceImg = null;
     }
-    public void refreshAllMenu() {
-        buttonClick();
-        // Race
-//        newGameOptions().selectedPlayerRace(options().selectedPlayerRace());
-//        newGameOptions().selectedPlayerColor(options().selectedPlayerColor());
-        // Galaxy
-        newGameOptions().selectedPlayerRace(options().selectedPlayerRace());
-        newGameOptions().selectedGameDifficulty(options().selectedGameDifficulty());
-        newGameOptions().selectedOpponentAIOption(options().selectedOpponentAIOption());
-        newGameOptions().selectedOpponentAIOption(options().selectedOpponentAIOption());
-        newGameOptions().selectedGalaxySize(options().selectedGalaxySize());
-        newGameOptions().selectedGalaxyShape(options().selectedGalaxyShape());
-        newGameOptions().galaxyShape().quickGenerate();
-        newGameOptions().selectedNumberOpponents(
-            min(newGameOptions().maximumOpponentsOptions(), options().selectedNumberOpponents()));
-        // Advanced
-        newGameOptions().selectedGalaxyAge(options().selectedGalaxyAge());
-        newGameOptions().selectedStarDensityOption(options().selectedStarDensityOption());
-        newGameOptions().selectedAIHostilityOption(options().selectedAIHostilityOption());
-        newGameOptions().selectedNebulaeOption(options().selectedNebulaeOption());
-        newGameOptions().selectedRandomEventOption(options().selectedRandomEventOption());
-        newGameOptions().selectedPlanetQualityOption(options().selectedPlanetQualityOption());
-        newGameOptions().selectedTerraformingOption(options().selectedTerraformingOption());
-        newGameOptions().selectedColonizingOption(options().selectedColonizingOption());
-        newGameOptions().selectedCouncilWinOption(options().selectedCouncilWinOption());
-        newGameOptions().selectedRandomizeAIOption(options().selectedRandomizeAIOption());
-        newGameOptions().selectedAutoplayOption(options().selectedAutoplayOption());
-        newGameOptions().selectedResearchRate(options().selectedResearchRate());
-        newGameOptions().selectedWarpSpeedOption(options().selectedWarpSpeedOption());
-        newGameOptions().selectedFuelRangeOption(options().selectedFuelRangeOption());
-        newGameOptions().selectedTechTradeOption(options().selectedTechTradeOption());
-    }
-    private void refreshThisMenu() {
-        buttonClick();
-        newGameOptions().selectedPlayerRace(options().selectedPlayerRace());
-        raceChanged();
-        repaint();
-        newGameOptions().selectedPlayerColor(options().selectedPlayerColor());
-        repaint();
-    }
     public void selectRace(int i) {
         String selRace = newGameOptions().selectedPlayerRace();
         List<String> races = newGameOptions().startingRaceOptions();
@@ -539,23 +499,21 @@ public final class SetupRaceUI extends BasePanel implements MouseListener, Mouse
             case KeyEvent.VK_ENTER:
                 goToGalaxySetup();
                 return;
-            case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
-                Settings.resetFirstOptions(options());
-                refreshAllMenu();
-                refreshThisMenu();
-                return;
-            case KeyEvent.VK_G: // BR: "G" = Reload User Presets
-                Settings.loadGlobalGroupSettings(options());
-                refreshAllMenu();
-                refreshThisMenu();
-                return;
-            case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
-                Settings.loadLocalGroupSettings("Race", options());
-                refreshThisMenu();
-                return;
-            case KeyEvent.VK_U: // BR: "U" = Update User Presets
-                Settings.saveToUserConfig(options());
-                refreshThisMenu();
+            default: // BR:
+            	if (Profiles.processKey(k, e.isShiftDown(), "Race",
+            							options(), newGameOptions())) {
+	            	buttonClick();
+	       			raceChanged();
+	       			repaint();
+       			}
+            	// Needs to be done twice for the case both Galaxy size
+            	// and the number of opponents were changed !?
+            	if (Profiles.processKey(k, e.isShiftDown(), "Race",
+						options(), newGameOptions())) {
+            		buttonClick();
+					raceChanged();
+					repaint();
+				}
                 return;
         }
     }

@@ -33,6 +33,8 @@ import java.util.List; // modnar: change to cleaner icon set
 import java.util.ArrayList; // modnar: change to cleaner icon set
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
+import rotp.mod.br.profiles.BR_Main;
 import rotp.model.game.GameSession;
 import rotp.ui.BasePanel;
 import rotp.ui.RotPUI;
@@ -51,7 +53,7 @@ public class Rotp {
     public static boolean countWords = false;
     private static String startupDir = System.getProperty("startupdir");
     private static JFrame frame;
-    public static String releaseId = "1.03-Fusion22.03.29-BR0.90.2";
+    public static String releaseId = "1.04-Xilmi-BR 22.06.28";
     public static long startMs = System.currentTimeMillis();
     public static long maxHeapMemory = Runtime.getRuntime().maxMemory() / 1048576;
     public static long maxUsedMemory;
@@ -61,6 +63,28 @@ public class Rotp {
     public static boolean reloadRecentSave = false;
 
     static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    // BR:
+    /**
+     * Get the scaling factor of the screen this game is running on
+     * May be used to adjust the to early disappearance of fleets
+     * @return the scaling factor
+     */
+    public static double getScalingFactor() {
+    	// This search is needed for the case a screen has been added after starting this program.
+    	GraphicsDevice myDevice = frame.getGraphicsConfiguration().getDevice();
+    	for(GraphicsDevice gd : GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()){
+    	    if(frame.getLocation().getX() >= gd.getDefaultConfiguration().getBounds().getMinX() &&
+    	        frame.getLocation().getX() < gd.getDefaultConfiguration().getBounds().getMaxX() &&
+    	        frame.getLocation().getY() >= gd.getDefaultConfiguration().getBounds().getMinY() &&
+    	        frame.getLocation().getY() < gd.getDefaultConfiguration().getBounds().getMaxY())
+    	        myDevice=gd;
+    	}
+    	double physicalScreenWith = (double) myDevice.getDisplayMode().getWidth();
+    	double logicalScreenWith  = (double) myDevice.getDefaultConfiguration().getBounds().width;
+	    return physicalScreenWith / logicalScreenWith;
+    }
+    // \BR
+    
     public static void main(String[] args) {
         frame = new JFrame("Remnants of the Precursors");
         String loadSaveFile = "";
@@ -120,6 +144,7 @@ public class Rotp {
             device.setFullScreenWindow(null);
             setFrameSize();
         }
+
 
         // this will not catch 32-bit JREs on all platforms, but better than nothing
         String bits = System.getProperty("sun.arch.data.model").trim();

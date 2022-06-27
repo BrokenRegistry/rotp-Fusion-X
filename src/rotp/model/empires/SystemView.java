@@ -21,6 +21,9 @@ import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import rotp.mod.br.AddOns.MiscellaneousOptions;
+import rotp.mod.br.profiles.Profiles;
 import rotp.model.ai.FleetPlan;
 import rotp.model.colony.Colony;
 import rotp.model.events.SystemScoutedEvent;
@@ -84,6 +87,13 @@ public class SystemView implements IMappedObject, Base, Serializable {
     private transient PlanetType vPlanetType;
     private transient FleetPlan fleetPlan;
 
+    /**
+     * @return Ordered List of Flag Colors // BR:
+     */
+    public static List<String> getFlagList() {
+    	return List.of("NONE", "WHITE", "RED", "BLUE", "GREEN", "YELLOW"
+    				 , "AQUA", "ORANGE", "LIGHT BLUE", "PURPLE", "PINK");
+    }
     public List<ShipFleet> orbitingFleets()  { return vOrbitingFleets; }
     public List<ShipFleet> exitingFleets()   { return vExitingFleets; }
     public StarSystem system()               { return galaxy().system(sysId); }
@@ -346,6 +356,10 @@ public class SystemView implements IMappedObject, Base, Serializable {
 
     public void resetFlagColor()            { flagColor = FLAG_NONE; }
     public void toggleFlagColor(boolean reverse) {
+    	if (Profiles.isFlagColorOrderEnabled()) { // BR:
+    		flagColor = MiscellaneousOptions.getNextFlagColor(flagColor, reverse);
+    		return;
+    	}
         if (reverse) {
              switch(flagColor) {
                 case FLAG_NONE:   flagColor = FLAG_PINK; return;
@@ -409,6 +423,11 @@ public class SystemView implements IMappedObject, Base, Serializable {
         if (colony().inRebellion())
             return false;
         if (colony().isCapital())
+            return false;
+        // we cannot incite a rebellion in an enemy system that the enemy cannot
+        // currently colonize (to send transports to stop rebellion). This can
+        // occur if, for example, the system is degraded with a random event
+        if (!empire().canColonize(system()))
             return false;
         // special case: we cannot incite rebellion against a final war enemy 
         // if we are rebelling against the New Republic

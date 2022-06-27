@@ -30,7 +30,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.List;
 
-import rotp.mod.br.settings.Settings;
+import rotp.mod.br.profiles.Profiles;
 import rotp.ui.BasePanel;
 import rotp.ui.BaseText;
 import rotp.ui.UserPreferences;
@@ -58,6 +58,9 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
     BaseText randomTechStartText;
     BaseText customDifficultyText;
     BaseText dynamicDifficultyText;
+    BaseText missileSizeModifierText;
+    BaseText retreatRestrictionsText;
+    BaseText retreatRestrictionTurnsText;
     
     public StartModOptionsUI() {
         init0();
@@ -73,6 +76,9 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
         randomTechStartText = new BaseText(this, false, 20, 20,-78,  textC, textC, hoverC, depressedC, textC, 0, 0, 0);
         customDifficultyText = new BaseText(this, false, 20, 20,-78,  textC, textC, hoverC, depressedC, textC, 0, 0, 0);
         dynamicDifficultyText = new BaseText(this, false, 20, 20,-78,  textC, textC, hoverC, depressedC, textC, 0, 0, 0);
+        missileSizeModifierText = new BaseText(this, false, 20, 20,-78,  textC, textC, hoverC, depressedC, textC, 0, 0, 0);
+        retreatRestrictionsText = new BaseText(this, false, 20, 20,-78,  textC, textC, hoverC, depressedC, textC, 0, 0, 0);
+        retreatRestrictionTurnsText = new BaseText(this, false, 20, 20,-78,  textC, textC, hoverC, depressedC, textC, 0, 0, 0);
         addMouseListener(this);
         addMouseMotionListener(this);
         addMouseWheelListener(this);
@@ -86,6 +92,9 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
         randomTechStartText.displayText(randomTechStartStr());
         customDifficultyText.displayText(customDifficultyStr());
         dynamicDifficultyText.displayText(dynamicDifficultyStr());
+        missileSizeModifierText.displayText(missileSizeModifierStr());
+        retreatRestrictionsText.displayText(retreatRestrictionsStr());
+        retreatRestrictionTurnsText.displayText(retreatRestrictionTurnsStr());
     }
     public void open(BasePanel p) {
         parent = p;
@@ -124,7 +133,7 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
         int rightM = s100;
         int topM = s45;
         int w1 = w-leftM-rightM;
-        int h1 = h-topM-s45-s100-s100; // modnar: adjust panel vertical extent
+        int h1 = h-topM-s45-s100; // modnar: adjust panel vertical extent
         g.setPaint(GameUI.settingsSetupBackground(w));
         g.fillRect(leftM, topM, w1, h1);
         String title = text("SETTINGS_MOD_TITLE");
@@ -198,6 +207,23 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
             drawString(g,line, x2+s20, y3);
         }
         
+        y2 += (h2+s20);
+        g.setColor(SystemPanel.blackText);
+        g.drawRect(x2, y2, w2, h2);
+        g.setPaint(GameUI.settingsSetupBackground(w));
+        g.fillRect(x2+s10, y2-s10, retreatRestrictionsText.stringWidth(g)+s10,s30);
+        retreatRestrictionsText.setScaledXY(x2+s20, y2+s7);
+        retreatRestrictionsText.draw(g);
+        desc = text("SETTINGS_MOD_RETREAT_RESTRICTIONS_DESC");
+         g.setColor(SystemPanel.blackText);
+        g.setFont(descFont);
+        lines = this.wrappedLines(g,desc, w2-s30);
+        y3 = y2+s10;
+        for (String line: lines) {
+            y3 += lineH;
+            drawString(g,line, x2+s20, y3);
+        }
+        
         // middle column
         y2 = topM+scaled(110);
         x2 = x2+w2+s20;
@@ -253,6 +279,22 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
             drawString(g,line, x2+s20, y3);
         }
         
+        y2 += (h2+s20);
+        g.setColor(SystemPanel.blackText);
+        g.drawRect(x2, y2, w2, h2);
+        g.setPaint(GameUI.settingsSetupBackground(w));
+        g.fillRect(x2+s10, y2-s10, retreatRestrictionTurnsText.stringWidth(g)+s30,s30);
+        retreatRestrictionTurnsText.setScaledXY(x2+s20, y2+s7);
+        retreatRestrictionTurnsText.draw(g);
+        desc = text("SETTINGS_MOD_RETREAT_RESTRICTION_TURNS_DESC");
+        g.setColor(SystemPanel.blackText);
+        g.setFont(descFont);
+        lines = this.wrappedLines(g,desc, w2-s30);
+        y3 = y2+s10;
+        for (String line: lines) {
+            y3 += lineH;
+            drawString(g,line, x2+s20, y3);
+        }
         // right side
         y2 = topM+scaled(110);
         h2 = s90;
@@ -290,10 +332,26 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
             drawString(g,line, x2+s20, y3);
         }
 
+        y2 += (h2+s20);
+        g.setColor(SystemPanel.blackText);
+        g.drawRect(x2, y2, w2, h2);
+        g.setPaint(GameUI.settingsSetupBackground(w));
+        g.fillRect(x2+s10, y2-s10, missileSizeModifierText.stringWidth(g)+s10,s30);
+        missileSizeModifierText.setScaledXY(x2+s20, y2+s7);
+        missileSizeModifierText.draw(g);
+        desc = text("SETTINGS_MOD_MISSILE_SIZE_MODIFIER_DESC");
+        g.setColor(SystemPanel.blackText);
+        g.setFont(descFont);
+        lines = this.wrappedLines(g,desc, w2-s30);
+        y3 = y2+s10;
+        for (String line: lines) {
+            y3 += lineH;
+            drawString(g,line, x2+s20, y3);
+        }
         g.setStroke(prev);
 
         // draw settings button
-        int y4 = scaled(480); // modnar: adjust button y position, related to panel vertical extent
+        int y4 = scaled(480)+s100; // modnar: adjust button y position, related to panel vertical extent
         int cnr = s5;
         int smallButtonH = s30;
         int smallButtonW = scaled(180);
@@ -360,6 +418,46 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
         String opt = text(yesOrNo(UserPreferences.dynamicDifficulty()));
         return text("SETTINGS_MOD_DYNAMIC_DIFFICULTY", opt)+"   ";
     }
+    private String missileSizeModifierStr() {
+        String opt = String.format("%d",(int)(UserPreferences.missileSizeModifier() * 100));
+        return text("SETTINGS_MOD_MISSILE_SIZE_MODIFIER", opt)+"   ";
+    }
+    private String retreatRestrictionsStr() {
+        String opt = "";
+        switch(UserPreferences.retreatRestrictions())
+        {
+            case 0:
+                opt = text("SETTINGS_MOD_RETREAT_NONE");
+                break;
+            case 1:
+                opt = text("SETTINGS_MOD_RETREAT_AI");
+                break;
+            case 2:
+                opt = text("SETTINGS_MOD_RETREAT_PLAYER");
+                break;
+            case 3:
+                opt = text("SETTINGS_MOD_RETREAT_BOTH");
+                break;
+            default:
+                opt = text("SETTINGS_MOD_RETREAT_NONE");
+                break;
+        }
+        return text("SETTINGS_MOD_RETREAT_RESTRICTIONS", opt)+"   ";
+    }
+    /**
+     * @return Retreat Restriction Option List // BR:
+     */
+    public static List<String> getRetreatRestrictionOptions() {
+    	return List.of(
+    			"SETTINGS_MOD_RETREAT_NONE"
+    			, "SETTINGS_MOD_RETREAT_AI"
+    			, "SETTINGS_MOD_RETREAT_PLAYER"
+    			, "SETTINGS_MOD_RETREAT_NONE");
+    } // \BR:
+    private String retreatRestrictionTurnsStr() {
+        String opt = String.format("%d",UserPreferences.retreatRestrictionTurns());
+        return text("SETTINGS_MOD_RETREAT_RESTRICTION_TURNS", opt)+"   ";
+    }
 
     private void toggleAlwaysStarGates() {
         softClick();
@@ -405,46 +503,24 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
         UserPreferences.toggleDynamicDifficulty();
         dynamicDifficultyText.repaint(dynamicDifficultyStr());
     }
-
-    // BR:
-    public void refreshAllMenu() {
-        buttonClick();
-        // Race
-        newGameOptions().selectedPlayerRace(options().selectedPlayerRace());
-        newGameOptions().selectedPlayerColor(options().selectedPlayerColor());
-        // Galaxy
-        newGameOptions().selectedPlayerRace(options().selectedPlayerRace());
-        newGameOptions().selectedGameDifficulty(options().selectedGameDifficulty());
-        newGameOptions().selectedOpponentAIOption(options().selectedOpponentAIOption());
-        newGameOptions().selectedOpponentAIOption(options().selectedOpponentAIOption());
-        newGameOptions().selectedGalaxySize(options().selectedGalaxySize());
-        newGameOptions().selectedGalaxyShape(options().selectedGalaxyShape());
-        newGameOptions().galaxyShape().quickGenerate();
-        newGameOptions().selectedNumberOpponents(
-            min(newGameOptions().maximumOpponentsOptions(), options().selectedNumberOpponents()));
-        // Advanced
-        newGameOptions().selectedGalaxyAge(options().selectedGalaxyAge());
-        newGameOptions().selectedStarDensityOption(options().selectedStarDensityOption());
-        newGameOptions().selectedAIHostilityOption(options().selectedAIHostilityOption());
-        newGameOptions().selectedNebulaeOption(options().selectedNebulaeOption());
-        newGameOptions().selectedRandomEventOption(options().selectedRandomEventOption());
-        newGameOptions().selectedPlanetQualityOption(options().selectedPlanetQualityOption());
-        newGameOptions().selectedTerraformingOption(options().selectedTerraformingOption());
-        newGameOptions().selectedColonizingOption(options().selectedColonizingOption());
-        newGameOptions().selectedCouncilWinOption(options().selectedCouncilWinOption());
-        newGameOptions().selectedRandomizeAIOption(options().selectedRandomizeAIOption());
-        newGameOptions().selectedAutoplayOption(options().selectedAutoplayOption());
-        newGameOptions().selectedResearchRate(options().selectedResearchRate());
-        newGameOptions().selectedWarpSpeedOption(options().selectedWarpSpeedOption());
-        newGameOptions().selectedFuelRangeOption(options().selectedFuelRangeOption());
-        newGameOptions().selectedTechTradeOption(options().selectedTechTradeOption());
+    private void scrollMissileSizeModifier(float f) {
+        UserPreferences.toggleMissileSizeModifier(f);
+        missileSizeModifierText.repaint(missileSizeModifierStr());
     }
-    private void refreshThisMenu() {
-        buttonClick();
-    } // \ BR:
+    private void scrollRetreatRestrictions(int i) {
+        softClick();
+        UserPreferences.toggleRetreatRestrictions(i);
+        retreatRestrictionsText.repaint(retreatRestrictionsStr());
+    }
+    private void scrollRetreatRestrictionTurns(int i) {
+        UserPreferences.toggleRetreatRestrictionTurns(i);
+        retreatRestrictionTurnsText.repaint(retreatRestrictionTurnsStr());
+    }
+
     @Override
     public void keyPressed(KeyEvent e) {
-        switch(e.getKeyCode()) {
+        int k = e.getKeyCode();
+        switch(k) {
             case KeyEvent.VK_ESCAPE:
                 close();
                 break;
@@ -452,24 +528,37 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
             case KeyEvent.VK_ENTER:
                 parent.advanceHelp();
                 break;
-                case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
-                Settings.resetFirstOptions(options());
-                refreshAllMenu();
-                refreshThisMenu();
-                break;
-            case KeyEvent.VK_R: // BR: "G" = Reload User Presets
-                Settings.loadGlobalGroupSettings(options());
-                refreshAllMenu();
-                refreshThisMenu();
-                break;
-            case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
-                Settings.loadLocalGroupSettings("Modnar", options());
-                refreshThisMenu();
-                break;
-            case KeyEvent.VK_U: // BR: "U" = Update User Presets
-                Settings.saveToUserConfig(options());
-                refreshThisMenu();
-                break;
+            default: // BR:
+            	if(Profiles.processKey(k, e.isShiftDown(), "Modnar",
+            			options(), newGameOptions())) {
+            		alwaysStarGatesText.repaint(alwaysStarGatesStr());
+            		alwaysThoriumText.repaint(alwaysThoriumStr());
+            		challengeModeText.repaint(challengeModeStr());
+                    battleScoutText.repaint(battleScoutStr());
+                    companionWorldsText.repaint(companionWorldsStr());
+                    randomTechStartText.repaint(randomTechStartStr());
+                    customDifficultyText.repaint(customDifficultyStr());
+                    customDifficultyText.repaint(customDifficultyStr());
+                    dynamicDifficultyText.repaint(dynamicDifficultyStr());
+                    missileSizeModifierText.repaint(missileSizeModifierStr());
+            	};
+            	// Needs to be done twice for the case both Galaxy size
+            	// and the number of opponents were changed !?
+            	if(Profiles.processKey(k, e.isShiftDown(), "Modnar",
+            			options(), newGameOptions())) {
+            		alwaysStarGatesText.repaint(alwaysStarGatesStr());
+            		alwaysThoriumText.repaint(alwaysThoriumStr());
+            		challengeModeText.repaint(challengeModeStr());
+                    battleScoutText.repaint(battleScoutStr());
+                    companionWorldsText.repaint(companionWorldsStr());
+                    randomTechStartText.repaint(randomTechStartStr());
+                    customDifficultyText.repaint(customDifficultyStr());
+                    customDifficultyText.repaint(customDifficultyStr());
+                    dynamicDifficultyText.repaint(dynamicDifficultyStr());
+                    missileSizeModifierText.repaint(missileSizeModifierStr());
+            	};
+                buttonClick();
+                return;
         }
     }
     @Override
@@ -496,6 +585,12 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
             hoverBox = customDifficultyText.bounds();
         else if (dynamicDifficultyText.contains(x,y))
             hoverBox = dynamicDifficultyText.bounds();
+        else if (missileSizeModifierText.contains(x, y))
+            hoverBox = missileSizeModifierText.bounds();
+        else if (retreatRestrictionsText.contains(x, y))
+            hoverBox = retreatRestrictionsText.bounds();
+        else if (retreatRestrictionTurnsText.contains(x, y))
+            hoverBox = retreatRestrictionTurnsText.bounds();
         else if (okBox.contains(x,y))
             hoverBox = okBox;
         else if (defaultBox.contains(x,y))
@@ -518,6 +613,12 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
                 customDifficultyText.mouseExit();
             else if (prevHover == dynamicDifficultyText.bounds())
                 dynamicDifficultyText.mouseExit();
+            else if (prevHover == missileSizeModifierText.bounds())
+                missileSizeModifierText.mouseExit();
+            else if (prevHover == retreatRestrictionsText.bounds())
+                retreatRestrictionsText.mouseExit();
+            else if (prevHover == retreatRestrictionTurnsText.bounds())
+                retreatRestrictionTurnsText.mouseExit();
             if (hoverBox == alwaysStarGatesText.bounds())
                 alwaysStarGatesText.mouseEnter();
             else if (hoverBox == alwaysThoriumText.bounds())
@@ -534,6 +635,12 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
                 customDifficultyText.mouseEnter();
             else if (hoverBox == dynamicDifficultyText.bounds())
                 dynamicDifficultyText.mouseEnter();
+            else if (hoverBox == missileSizeModifierText.bounds())
+                missileSizeModifierText.mouseEnter();
+            else if (hoverBox == retreatRestrictionsText.bounds())
+                retreatRestrictionsText.mouseEnter();
+            else if (hoverBox == retreatRestrictionTurnsText.bounds())
+                retreatRestrictionTurnsText.mouseEnter();
             if (prevHover != null)
                 repaint(prevHover);
             if (hoverBox != null)
@@ -605,6 +712,56 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
                     scrollCustomDifficulty(-20);
                 else
                     scrollCustomDifficulty(-1); 
+                return;
+            }
+        }
+        if (hoverBox == missileSizeModifierText.bounds()) {
+            if (up) {
+                if (shiftPressed) 
+                    scrollMissileSizeModifier(0.05f);
+                else if (ctrlPressed)
+                    scrollMissileSizeModifier(0.2f);
+                else
+                    scrollMissileSizeModifier(0.01f); 
+                return;
+            }
+            else {
+                if (shiftPressed) 
+                    scrollMissileSizeModifier(-0.05f);
+                else if (ctrlPressed)
+                    scrollMissileSizeModifier(-0.2f);
+                else
+                    scrollMissileSizeModifier(-0.01f); 
+                return;
+            }
+        }
+        if (hoverBox == retreatRestrictionsText.bounds()) {
+            if (up) {
+                scrollRetreatRestrictions(1); 
+                return;
+            }
+            else {
+                scrollRetreatRestrictions(-1); 
+                return;
+            }
+        }
+        if (hoverBox == retreatRestrictionTurnsText.bounds()) {
+            if (up) {
+                if (shiftPressed) 
+                    scrollRetreatRestrictionTurns(5);
+                else if (ctrlPressed)
+                    scrollRetreatRestrictionTurns(20);
+                else
+                    scrollRetreatRestrictionTurns(1); 
+                return;
+            }
+            else {
+                if (shiftPressed) 
+                    scrollRetreatRestrictionTurns(-5);
+                else if (ctrlPressed)
+                    scrollRetreatRestrictionTurns(-20);
+                else
+                    scrollRetreatRestrictionTurns(-1); 
                 return;
             }
         }

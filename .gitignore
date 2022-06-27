@@ -1,6 +1,5 @@
 dist
 nbproject
-test
 build
 build.xml
 manifest.mf
@@ -10,5 +9,8 @@ target/
 bin/
 *.iml
 *.log
+*Test.java
 nbactions.xml
 .project
+**/*Test.java
+**/*.bak

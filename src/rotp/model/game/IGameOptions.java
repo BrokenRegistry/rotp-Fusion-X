@@ -17,6 +17,9 @@ package rotp.model.game;
 
 import java.awt.Color;
 import java.util.List;
+
+import rotp.mod.br.AddOns.RacesOptions;
+import rotp.mod.br.profiles.Profiles; // BR:
 import rotp.model.ai.AI;
 import rotp.model.empires.Empire;
 import rotp.model.empires.Race;
@@ -497,7 +500,14 @@ public interface IGameOptions {
     }
     default void nextOpponent(int i) {
         String player = selectedPlayerRace();
-        List<String> allOpps = startingRaceOptions();
+        // BR: Race filtration
+        // List<String> allOpps = startingRaceOptions();
+        List<String> allOpps;
+        if (Profiles.isGuiOpponentRaceListEnabled()) {
+        	allOpps = RacesOptions.getGuiFilteredRaceList();
+        } else {
+        	allOpps = startingRaceOptions();
+        } // \BR
         String[] selectedOpps = selectedOpponentRaces();
         String currOpp = this.selectedOpponentRace(i);
 
@@ -522,7 +532,14 @@ public interface IGameOptions {
     }
     default void prevOpponent(int i) {
         String player = selectedPlayerRace();
-        List<String> allOpps = startingRaceOptions();
+        // BR: Race filtration
+        // List<String> allOpps = startingRaceOptions();
+        List<String> allOpps;
+        if (Profiles.isGuiOpponentRaceListEnabled()) {
+        	allOpps = RacesOptions.getGuiFilteredRaceList();
+        } else {
+        	allOpps = startingRaceOptions();
+        } // \BR
         String[] selectedOpps = selectedOpponentRaces();
         String currOpp = selectedOpponentRace(i);
         int lastIndex = allOpps.size()-1;

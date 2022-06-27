@@ -72,7 +72,7 @@ public class AIShipDesigner implements Base, ShipDesigner {
             boolean wantHybrid = wantHybrid();
             MarkObsolete();
             updateFighterDesign();
-            if(!wantHybrid)
+            if(!wantHybrid || !BestDesignToBomb().active())
                 updateBomberDesign();
             updateColonyDesign();
             if(empire.shipLab().needScouts)
@@ -117,11 +117,11 @@ public class AIShipDesigner implements Base, ShipDesigner {
         return bestDesign;
     }
     private void countdownObsoleteDesigns() {
-        if(((empire.shipMaintCostPerBC() > (empire.fleetCommanderAI().maxShipMaintainance() * 1.5) && empire.enemies().isEmpty() && !empire.fleetCommanderAI().inExpansionMode()))
-                || (empire.netIncome() <= 0 && !empire.atWar()))
+        if(((empire.shipMaintCostPerBC() > (max(0.35f, empire.fleetCommanderAI().maxShipMaintainance()) * 1.5) && empire.enemies().isEmpty() && !empire.fleetCommanderAI().inExpansionMode()))
+                || (empire.netIncome() + empire.totalReserve() <= 0 && !empire.atWar()))
         {
-            //System.out.print("\n"+empire.name()+" scrapWorstDesign max-maint: "+empire.fleetCommanderAI().maxShipMaintainance());
-            scrapWorstDesign(empire.netIncome() <= 0);
+            //System.out.print("\n"+empire.name()+" scrapWorstDesign max-maint: "+empire.fleetCommanderAI().maxShipMaintainance()+" empire.netIncome(): "+empire.netIncome()+ " empire.totalReserve(): "+empire.totalReserve());
+            scrapWorstDesign(empire.netIncome() + empire.totalReserve() <= 0);
         }
     }
     private void scrapWorstDesign(boolean forceCosting) {
@@ -139,11 +139,11 @@ public class AIShipDesigner implements Base, ShipDesigner {
                 }
                 float keepScore = 1;
                 //ail: for colony-ship we don't care about available space but engine- and colony-base-discrepancy
-                if(d.isColonyShip())
+                if(d.hasColonySpecial())
                 {
                     keepScore = ((float)d.engine().warp() / (float)lab().fastestEngine().warp()) * ((float)(d.special(0).tech()).level / (float)bestColonySpecial().tech().level);
                 }
-                else if(d.isScout())
+                else if(BestDesignToScout() == d)
                 {
                     keepScore = (float)d.engine().warp() / (float)lab().fastestEngine().warp();
                 }
@@ -153,7 +153,7 @@ public class AIShipDesigner implements Base, ShipDesigner {
                 }
                 keepScore *= keepScore;
                 float keepBeforeCounts = keepScore;
-                keepScore *= shipCounts[d.id()] * d.cost();
+                keepScore *= (shipCounts[d.id()] + galaxy().ships.shipDesignConstructionCounts(empire.id)[d.id()]) * d.cost();
                 //we can scrap all that we don't need at all
                 //System.out.print("\n"+galaxy().currentTurn()+" "+empire.name()+" "+d.name()+" keepScore: "+keepScore+" before counts: "+keepBeforeCounts+" role: "+d.mission());
                 if(keepScore == 0 || forceCosting)
@@ -163,6 +163,8 @@ public class AIShipDesigner implements Base, ShipDesigner {
                     shouldScrap = false;
                     if(!forceCosting)
                         break;
+                    else
+                        forceCosting = false;
                 }
                 else if(keepScore < lowestKeepScore)
                 {
@@ -174,7 +176,7 @@ public class AIShipDesigner implements Base, ShipDesigner {
         }
         if(designToScrap != null && shouldScrap)
         {
-            //System.out.print("\n"+empire.name()+" "+designToScrap.name()+" is scrapped.");
+            //System.out.print("\n"+empire.name()+" "+shipCounts[designToScrap.id()]+" "+designToScrap.name()+" with keepscore: "+lowestKeepScore+" is scrapped.");
             ScrapDesign(designToScrap);
         }
     }
@@ -206,7 +208,7 @@ public class AIShipDesigner implements Base, ShipDesigner {
         // NEW DESIGN IS BETTER THAN CURRENT
         if (slot >= 0) {
             lab.setScoutDesign(newScout, slot);
-            currDesign.becomeObsolete(OBS_SCOUT_TURNS);
+            //currDesign.becomeObsolete(OBS_SCOUT_TURNS);
             //System.out.print("\n"+empire.name()+" "+newDesign.name()+" put in slot "+slot);
         }
         else
@@ -256,7 +258,7 @@ public class AIShipDesigner implements Base, ShipDesigner {
         // if there is a slot available, use it for the new design
         if (slot >= 0) {
             lab.setColonyDesign(newDesign, slot);
-            currDesign.becomeObsolete(OBS_COLONY_TURNS);
+            //currDesign.becomeObsolete(OBS_COLONY_TURNS);
             //System.out.print("\n"+empire.name()+" "+newDesign.name()+" put in slot "+slot);
             return;
         }
@@ -362,7 +364,7 @@ public class AIShipDesigner implements Base, ShipDesigner {
         if (slot >= 0) {
             log("Slot available: Bomber upgrade chance:"+upgradeChance);
             lab.setBomberDesign(newDesign, slot);
-            currDesign.becomeObsolete(OBS_BOMBER_TURNS);
+            //currDesign.becomeObsolete(OBS_BOMBER_TURNS);
         }
         else
         {
@@ -483,7 +485,7 @@ public class AIShipDesigner implements Base, ShipDesigner {
         if (slot >= 0) {
             log("Slot available: Fighter upgrade chance:"+upgradeChance);
             lab.setFighterDesign(newDesign, slot);
-            currDesign.becomeObsolete(OBS_FIGHTER_TURNS);
+            //currDesign.becomeObsolete(OBS_FIGHTER_TURNS);
         }
         else
         {
@@ -582,6 +584,9 @@ public class AIShipDesigner implements Base, ShipDesigner {
             if (bestWpn != null && design.availableSpace() >= bestWpn.space(design))
                 design.addWeapon(bestWpn, 1);
         }
+        ShipSpecial cloak = lab.specialCloak();
+        if(cloak != null && cloak.space(design) <= design.availableSpace())
+            design.special(2, cloak);
         lab.iconifyDesign(design);
         return design;
     }
@@ -727,25 +732,7 @@ public class AIShipDesigner implements Base, ShipDesigner {
     @Override
     public boolean wantHybrid()
     {
-        if(empire.generalAI().defenseRatio() == 1.0)
-            return false;
-        int freeSlots = 0;
-        for (int slot=0;slot<ShipDesignLab.MAX_DESIGNS;slot++) {
-            ShipDesign d = lab().design(slot);
-            
-            if(d.isColonyShip() || d.isScout())
-                continue;
-            if(empire.isAnyColonyConstructing(d))
-                continue;
-            if(shipCounts[d.id()] == 0 && !empire.isAnyColonyConstructing(d))
-                freeSlots++;
-        }
-        //System.out.print("\n"+empire.name()+" free slots: "+freeSlots);
-        if(freeSlots < 2)
-        {
-            return true;
-        }
-        return false;
+        return true;
     } 
     public void ScrapDesign(ShipDesign d)
     {
@@ -760,7 +747,7 @@ public class AIShipDesigner implements Base, ShipDesigner {
         if(empire.totalFleetCost() > 0)
         {
             float maintenancePercentage = galaxy().ships.shipDesignCount(empire.id, d.id()) * d.cost() / empire.totalFleetCost();
-            float percentageOfMaxMaintenance = min(1, empire.shipMaintCostPerBC() / empire.fleetCommanderAI().maxShipMaintainance());
+            float percentageOfMaxMaintenance = min(1, empire.shipMaintCostPerBC() / max(0.35f, empire.fleetCommanderAI().maxShipMaintainance()));
             float slotsForCombat = 4;
             if(empire.shipLab().needScouts)
                 slotsForCombat--;
@@ -881,6 +868,8 @@ public class AIShipDesigner implements Base, ShipDesigner {
                 }
             }
         }
+        if(bomber == null)
+            return BestDesignToFight();
         return bomber;
     }
     @Override
@@ -909,7 +898,9 @@ public class AIShipDesigner implements Base, ShipDesigner {
         ShipDesignLab lab = lab();
         for (int slot=0;slot<ShipDesignLab.MAX_DESIGNS;slot++) {
             ShipDesign d = lab.design(slot);
-            //System.out.print("\n"+empire.name()+" cheking "+d.name());
+            //System.out.print("\n"+empire.name()+" cheking "+d.name()+" already obsolete: "+d.obsolete());
+            if(!d.active())
+                continue;
             if(d.obsolete())
                 continue;
             if(d == BestDesignToColonize())
@@ -920,7 +911,7 @@ public class AIShipDesigner implements Base, ShipDesigner {
                 continue;
             if(d == BestDesignToScout() && empire.shipLab().needScouts)
                 continue;
-            if(d == BestDesignToRepell() && (empire.generalAI().needScoutRepellers() || !empire.hasAnyContact()))
+            if(d == BestDesignToRepell() && empire.generalAI().needScoutRepellers(true))
                 continue;
             //System.out.print("\n"+empire.name()+" "+d.name()+" is marked obsolete.");
             d.obsolete(true);

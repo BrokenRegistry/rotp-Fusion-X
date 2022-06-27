@@ -39,7 +39,8 @@ import java.awt.RenderingHints; // modnar: needed for adding RenderingHints
 import java.util.List;
 import javax.swing.SwingUtilities;
 
-import rotp.mod.br.settings.Settings;
+import rotp.mod.br.AddOns.RacesOptions;
+import rotp.mod.br.profiles.Profiles;
 import rotp.model.empires.Race;
 import rotp.model.galaxy.GalaxyShape;
 import rotp.model.game.GameSession;
@@ -555,58 +556,12 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
         RotPUI.instance().selectGamePanel();
         release();
     }
-    public void refreshAllMenu() {
-        buttonClick();
-        // Race
-        newGameOptions().selectedPlayerRace(options().selectedPlayerRace());
-        newGameOptions().selectedPlayerColor(options().selectedPlayerColor());
-        // Galaxy
-//        newGameOptions().selectedPlayerRace(options().selectedPlayerRace());
-//        newGameOptions().selectedGameDifficulty(options().selectedGameDifficulty());
-//        newGameOptions().selectedOpponentAIOption(options().selectedOpponentAIOption());
-//        newGameOptions().selectedOpponentAIOption(options().selectedOpponentAIOption());
-//        newGameOptions().selectedGalaxySize(options().selectedGalaxySize());
-//        newGameOptions().selectedGalaxyShape(options().selectedGalaxyShape());
-//        newGameOptions().galaxyShape().quickGenerate();
-//        newGameOptions().selectedNumberOpponents(
-//            min(newGameOptions().maximumOpponentsOptions(), options().selectedNumberOpponents()));
-        // Advanced
-        newGameOptions().selectedGalaxyAge(options().selectedGalaxyAge());
-        newGameOptions().selectedStarDensityOption(options().selectedStarDensityOption());
-        newGameOptions().selectedAIHostilityOption(options().selectedAIHostilityOption());
-        newGameOptions().selectedNebulaeOption(options().selectedNebulaeOption());
-        newGameOptions().selectedRandomEventOption(options().selectedRandomEventOption());
-        newGameOptions().selectedPlanetQualityOption(options().selectedPlanetQualityOption());
-        newGameOptions().selectedTerraformingOption(options().selectedTerraformingOption());
-        newGameOptions().selectedColonizingOption(options().selectedColonizingOption());
-        newGameOptions().selectedCouncilWinOption(options().selectedCouncilWinOption());
-        newGameOptions().selectedRandomizeAIOption(options().selectedRandomizeAIOption());
-        newGameOptions().selectedAutoplayOption(options().selectedAutoplayOption());
-        newGameOptions().selectedResearchRate(options().selectedResearchRate());
-        newGameOptions().selectedWarpSpeedOption(options().selectedWarpSpeedOption());
-        newGameOptions().selectedFuelRangeOption(options().selectedFuelRangeOption());
-        newGameOptions().selectedTechTradeOption(options().selectedTechTradeOption());
-    }
-    // BR: Needed for reloading
-    private void refreshThisMenu() {
-        buttonClick();
-        newGameOptions().selectedPlayerRace(options().selectedPlayerRace());
-        playerRaceImg = null;
-        playerRaceImg = playerRaceImg();
-        newGameOptions().selectedGameDifficulty(options().selectedGameDifficulty());
-        newGameOptions().selectedOpponentAIOption(options().selectedOpponentAIOption());
-        newGameOptions().selectedOpponentAIOption(options().selectedOpponentAIOption());
-        newGameOptions().selectedGalaxySize(options().selectedGalaxySize());
-        newGameOptions().selectedGalaxyShape(options().selectedGalaxyShape());
-        newGameOptions().galaxyShape().quickGenerate();
-        backImg = null;
-        repaint();
-        newGameOptions().selectedNumberOpponents(
-            min(newGameOptions().maximumOpponentsOptions(), options().selectedNumberOpponents()));
-        repaint();
-    }
     public void startGame() {
         starting = true;
+        // BR:
+        if (Profiles.isStartOpponentRaceListEnabled()) {
+        	RacesOptions.loadStartingOpponents(newGameOptions());
+        }
         Race r = Race.keyed(newGameOptions().selectedPlayerRace());
         GameUI.gameName = r.setupName()+ " - "+text(newGameOptions().selectedGalaxySize())+ " - "+text(newGameOptions().selectedGameDifficulty());
         // modnar: add custom difficulty level option, set in Remnants.cfg
@@ -915,34 +870,50 @@ public final class SetupGalaxyUI  extends BasePanel implements MouseListener, Mo
     public void keyPressed(KeyEvent e) {
         int k = e.getKeyCode();
         switch(k) {
-           case KeyEvent.VK_ESCAPE:
-                goToRaceSetup();
-                return;
-          case KeyEvent.VK_ENTER:
-                startGame();
-                return;
-            case KeyEvent.VK_D: // BR: "D" = Reload Default Presets
-                Settings.resetFirstOptions(options());
-                refreshAllMenu();
-                refreshThisMenu();
-                break;
-            case KeyEvent.VK_G: // BR: "G" = Reload Global User Presets
-            	Settings.loadGlobalGroupSettings(options());
-            	refreshAllMenu();
-                refreshThisMenu();
-                break;
-            case KeyEvent.VK_L: // BR: "L" = Reload UI Local User Presets
-            	Settings.loadLocalGroupSettings("Galaxy", options());
-                refreshThisMenu();
-                break;
-            case KeyEvent.VK_M: // BR: "M" = Go to Main Menu
-                goToMainMenu();
-                break;
-            case KeyEvent.VK_U: // BR: "U" = Update User Presets
-                Settings.saveToUserConfig(options());
-                refreshThisMenu();
-                break;
+        case KeyEvent.VK_ESCAPE:
+            goToRaceSetup();
+            return;
+        case KeyEvent.VK_ENTER:
+            startGame();
+            return;
+        case KeyEvent.VK_M: // BR: "M" = Go to Main Menu
+            goToMainMenu();
+            break;
+        default: // BR:
+        	if (Profiles.processKey(k, e.isShiftDown(), "Galaxy",
+        							options(), newGameOptions())) {
+            	buttonClick();
+                playerRaceImg = null;
+                playerRaceImg = playerRaceImg();
+                backImg = null;
+                repaint();
+        	}
+        	// Needs to be done twice for the case both Galaxy size
+        	// and the number of opponents were changed !?
+        	if (Profiles.processKey(k, e.isShiftDown(), "Galaxy",
+					options(), newGameOptions())) {
+				buttonClick();
+			    playerRaceImg = null;
+			    playerRaceImg = playerRaceImg();
+			    backImg = null;
+			    repaint();
+			}
+        	return;
         }
+    }
+    // BR:
+    /**
+     * Load Profiles with option "Surprise" and start Game
+     */
+    public void surpriseStart() {
+    	Profiles.processKey(KeyEvent.VK_R, true, "Galaxy",
+				options(), newGameOptions());
+		buttonClick();
+	    repaint();
+    	Profiles.processKey(KeyEvent.VK_R, true, "Galaxy",
+				options(), newGameOptions());
+	    repaint();
+	    startGame();
     }
     @Override
     public void mouseDragged(MouseEvent e) {  }

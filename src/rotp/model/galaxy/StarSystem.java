@@ -52,6 +52,11 @@ import rotp.util.Base;
 
 public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
     private static final long serialVersionUID = 1L;
+    private static final int  minFont  = UserPreferences.getShowNameMinFont(); // BR:
+    private static final int  fontPct  = 
+    		Math.round(UserPreferences.getMapFontFactor() * 100); // BR:
+    private static final int  minFont2 = 
+    		Math.round(minFont / UserPreferences.getShowInfoFontRatio()); // BR:
 	// modnar: change shield colors to color-coded loot rarity
 	// shield-5 --> shield-10 --> shield-15 --> shield-20
 	//    green -->      blue -->    purple --> orange
@@ -606,15 +611,18 @@ public class StarSystem implements Base, Sprite, IMappedObject, Serializable {
         if (map.hideSystemNames())
             return;
 
-        int fontSize = fontSize(map);
+ //       int fontSize = fontSize(map); // BR:
+        int fontSize = fontSize(map) * fontPct / 100;
         int realFontSize = unscaled(fontSize);
         if (map.parent().showSystemData(this))
             fontSize = fontSize * 7 / 10;
         
-        if (realFontSize < 8)
+ //       if (realFontSize < 8) // BR:
+            if (realFontSize < minFont) // BR:
             return;
         
-        if (map.parent().showSystemName(this) || !colonized || (realFontSize < 12)) {
+//        if (map.parent().showSystemName(this) || !colonized || (realFontSize < 12)) { // BR:
+        if (map.parent().showSystemName(this) || !colonized || (realFontSize < minFont2)) { // BR: was 12
             String s1 = map.parent().systemLabel(this);
             String s2 = map.parent().systemLabel2(this);
             if (s2.isEmpty())

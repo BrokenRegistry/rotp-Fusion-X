@@ -19,6 +19,7 @@ import java.io.Serializable;
 import rotp.model.empires.Empire;
 import rotp.model.ships.ShipWeaponMissileType;
 import rotp.util.Base;
+import rotp.ui.UserPreferences;
 
 public class MissileBase implements Base, Serializable {
     private static final long serialVersionUID = 1L;
@@ -71,6 +72,7 @@ public class MissileBase implements Base, Serializable {
             cost += computer.cost(emp);
         if (ecm != null)
             cost += ecm.cost(emp);
+        cost *= UserPreferences.missileSizeModifier();
         return cost;
     }
 }

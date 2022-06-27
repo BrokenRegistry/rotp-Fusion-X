@@ -44,9 +44,12 @@ public interface General {
     default float timeToKill(Empire attacker, Empire defender) { return Float.MIN_VALUE; }
     default float warROI() { return Float.MAX_VALUE; }
     default int minTransportSize() { return 5; }
-    default boolean needScoutRepellers() { return false; }
+    default boolean needScoutRepellers(boolean potential) { return false; }
     default boolean sensePotentialAttack() { return false; }
     default Location colonyCenter(Empire emp) { return new Location(0, 0); }
     default Location fleetCenter(Empire emp) { return new Location(0, 0); }
     default float absolution() { return 0f; }
+    default float smartPowerLevel() { return 0f; }
+    default float highestProdScore() { return 1f; }
+    default float gameProgress() { return 0f; }
 }

@@ -26,6 +26,7 @@ import rotp.model.ships.*;
 import rotp.model.tech.TechCloaking;
 import rotp.model.tech.TechStasisField;
 import rotp.ui.BasePanel;
+import rotp.ui.UserPreferences;
 import rotp.ui.combat.ShipBattleUI;
 
 public class CombatStackShip extends CombatStack {
@@ -112,7 +113,19 @@ public class CombatStackShip extends CombatStack {
     @Override
     public boolean canScan()        { return design.allowsScanning(); }
     @Override
-    public boolean canRetreat()     { return !atLastColony && (maneuverability > 0); }
+    public boolean canRetreat()     {
+        boolean checkRetreatTurn = false;
+        if(empire.isAIControlled()) {
+            if(UserPreferences.retreatRestrictions() == 1 || UserPreferences.retreatRestrictions() == 3)
+                checkRetreatTurn = true;
+        } else {
+            if(UserPreferences.retreatRestrictions() >= 2)
+                checkRetreatTurn = true;
+        }
+        if(checkRetreatTurn && mgr.turnCounter() < UserPreferences.retreatRestrictionTurns())
+            return false;
+        return !atLastColony && (maneuverability > 0); 
+    }
     @Override
     public float autoMissPct()      { return displacementPct; }
     @Override
@@ -198,10 +211,21 @@ public class CombatStackShip extends CombatStack {
             {
                 if(roundsRemaining[i] > 0)
                 {
-                    float mslRange = 1;
-                    float requiredRange = 2 * tgt.maxMove * sqrt(2) - 0.7f;
-                    mslRange = max(weaponRange(wpn) - requiredRange, mslRange);
-                    missileRange = (int) max(tgt.repulsorRange() + 1, repulsorRange() + 1, missileRange, mslRange);
+                    float targetBackOffRange = 2 * tgt.maxMove();
+                    if(distanceTo(0, 0) > tgt.distanceTo(0, 0))
+                        targetBackOffRange = min(targetBackOffRange, tgt.distanceTo(0, 0));
+                    if(distanceTo(0, mgr.maxY) > tgt.distanceTo(0, mgr.maxY))
+                        targetBackOffRange = min(targetBackOffRange, tgt.distanceTo(0, mgr.maxY));
+                    if(distanceTo(mgr.maxX, 0) > tgt.distanceTo(mgr.maxX, 0))
+                        targetBackOffRange = min(targetBackOffRange, tgt.distanceTo(mgr.maxX, 0));
+                    if(distanceTo(mgr.maxX, mgr.maxY) > tgt.distanceTo(mgr.maxX, mgr.maxY))
+                        targetBackOffRange = min(targetBackOffRange, tgt.distanceTo(mgr.maxX, mgr.maxY));
+                    int curr = (int)(max(1, (weaponRange(wpn) - targetBackOffRange) / sqrt(2) + 0.7f));
+                    if(missileRange > 0)
+                        missileRange = min(missileRange, curr);
+                    else
+                        missileRange = curr;
+                    //System.out.print("\n"+fullName()+" targetBackOffRange: "+targetBackOffRange+" missileRange: "+missileRange);
                 }
             }
             else if(!wpn.groundAttacksOnly())

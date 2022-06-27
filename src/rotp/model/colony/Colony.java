@@ -199,6 +199,16 @@ public final class Colony implements Base, IMappedObject, Serializable {
         defense().updateMissileBase();
         defense().maxBases(empire().defaultMaxBases());
         cleanupAllocation = -1;
+
+        // empires of orbiting fleets should see ownership change
+        StarSystem sys = starSystem();
+        List<ShipFleet> fleets = sys.orbitingFleets();
+        for (ShipFleet fl: fleets) {
+            Empire flEmp = fl.empire();
+            if (flEmp != empire)
+                flEmp.sv.refreshFullScan(sys.id);
+        }
+
     }
     public boolean isBuildingShip() { return shipyard().design() instanceof ShipDesign; }
     private void buildFortress()    { fortressNum = empire.race().randomFortress(); }
@@ -1131,11 +1141,6 @@ public final class Colony implements Base, IMappedObject, Serializable {
         log(str(rebels), " ", empire().raceName(), " rebels at ", starSystem().name(), " resisting ",
                     str(tr.size()), " ", tr.empire().raceName(), " transports");
 
-        if (!tr.empire().canColonize(starSystem())) {
-            // no appropriate alert message for this transport loss. Even more of an edge case.
-            tr.size(0);
-            return;
-        }
         // Xilmi: when landing on our own planet we also can be shot down by orbiting enemies
         float defenderDmg = 0;
         List<ShipFleet> fleets = starSystem().orbitingFleets();
@@ -1377,8 +1382,16 @@ public final class Colony implements Base, IMappedObject, Serializable {
         rebellion = false;
         clearReserveIncome();
         clearTransport();
-        loser.sv.refreshFullScan(starSystem().id);
-        empire.sv.refreshFullScan(starSystem().id);
+        loser.sv.refreshFullScan(sys.id);
+        empire.sv.refreshFullScan(sys.id);
+        
+        // empires of orbiting fleets should see ownership change
+        List<ShipFleet> fleets = sys.orbitingFleets();
+        for (ShipFleet fl: fleets) {
+            Empire flEmp = fl.empire();
+            if ((flEmp != loser) && (flEmp != empire))
+                flEmp.sv.refreshFullScan(sys.id);
+        }
 
         // if system was captured, clear shipbuilding, we don't want systems just captured building ships
         // Do that if governor is on by default, otherwise stick to default behaviour
@@ -1580,15 +1593,16 @@ public final class Colony implements Base, IMappedObject, Serializable {
         for (int i = 0; i <= 4; i++) {
             locked(i, false);
         }
-        // remember if this planet was building ships. Stargate doesn't count
-        // if we just finished building a stargate, we're not building ships
-        boolean buildingShips = allocation[SHIP] > 0 &&
-                !shipyard().design().equals(empire.shipLab().stargateDesign()) &&
-                !shipyard().stargateCompleted();
         // remember if the planet was building a stargate (might have been manually started by the player)
         boolean buildingStargate = allocation[SHIP] > 0 &&
                 shipyard().design().equals(empire.shipLab().stargateDesign()) &&
                 !shipyard().stargateCompleted();
+        // remember if this planet was building ships. Stargate doesn't count
+        // if we just finished building a stargate, we're not building ships
+        boolean buildingShips = allocation[SHIP] > 0 &&
+                !shipyard().design().equals(empire.shipLab().stargateDesign()) &&
+                !shipyard().stargateCompleted() &&
+                !buildingStargate;
         
         // start from scratch
         clearSpending();
@@ -1603,9 +1617,9 @@ public final class Colony implements Base, IMappedObject, Serializable {
 //        balanceEcoAndInd(1);
         // Leave some room for normal population growth if we're auto transporting
         if (session().getGovernorOptions().isAutotransport())
-            balanceEcoAndInd(1 - Math.max(normalPopGrowth(), 3) / maxSize());
+            balanceEcoAndInd(1 - Math.max(normalPopGrowth(), 3) / maxSize(), buildingShips);
         else
-            balanceEcoAndInd(1);
+            balanceEcoAndInd(1, buildingShips);
         // unlock all sliders except for ECO. Thanks DM666a
         for (int i = 0; i <= 4; i++) {
             locked(i, false);
@@ -1644,7 +1658,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
             increment(SHIP, 1);
         }
         // if we finished building stargate, don't build any ships.
-        if (!shipyard().stargateCompleted() && buildingShips
+        if (!shipyard().stargateCompleted() && (buildingStargate || buildingShips)
                 && session().getGovernorOptions().isShipbuilding() && allocation[RESEARCH] > 0) {
             // if we were building ships, push all research into shipbuilding.
             locked(Colony.SHIP, false);
@@ -1675,7 +1689,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
      * - finally make sure that we aren't over MAX_TICKS for both ECO and IND (can happen due to rounding).
      *   If we are, prioritize IND making sure to keep ECO at least at minimum spend to prevent waste
      */
-    public void balanceEcoAndInd(float targetPopPercent) {
+    public void balanceEcoAndInd(float targetPopPercent, boolean buildingShip) {
         targetPopPercent = Math.min(Math.max(targetPopPercent, 0), 1);
         // new pop next turn before spending
         float baseNewPop = Math.min(planet.currentSize(), workingPopulation() + normalPopGrowth() + incomingTransportsNextTurn());
@@ -1783,7 +1797,7 @@ public final class Colony implements Base, IMappedObject, Serializable {
             if(normalPopGrowth() > 0)
                 popGrowthROI = empire.tech().populationCost() / normalPopGrowth();
             maxGrowth = min(0, maxGrowth, industry().factories() / empire.maxRobotControls() - workingPopulation() - normalPopGrowth());
-            if(popGrowthROI > workerROI || session().getGovernorOptions().legacyGrowthMode())
+            if(popGrowthROI > workerROI || session().getGovernorOptions().legacyGrowthMode() || (!buildingShip && empire.tech().researchCompleted()))
                 maxGrowth = maxSize() - workingPopulation();
             
             maxGrowth -= additionalTransports;
@@ -1905,7 +1919,15 @@ public final class Colony implements Base, IMappedObject, Serializable {
         }
         if (this.empire.shipLab().stargateDesign().equals(current)) {
             locked(Colony.SHIP, false);
-            moveSlider(Colony.SHIP, null, text(ColonySpendingCategory.reserveText));
+            allocation(SHIP, allocationRemaining() + allocation(RESEARCH));
         }
     }
+
+    // BR:
+    /**
+	 * @return the Challenge Mod State
+	 */
+	public boolean isChallengeMode() {
+        return challengeMode;
+	} // \BR
 }

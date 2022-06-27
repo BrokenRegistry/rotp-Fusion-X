@@ -47,6 +47,9 @@ import rotp.model.tech.TechEngineWarp;
 import rotp.ui.game.SetupGalaxyUI;
 import rotp.ui.UserPreferences;
 import rotp.util.Base;
+import rotp.mod.br.AddOns.GalaxyOptions;
+import rotp.mod.br.AddOns.RacesOptions;
+import rotp.mod.br.profiles.Profiles; // BR:
 
 public class MOO1GameOptions implements Base, IGameOptions, Serializable {
     private static final long serialVersionUID = 1L;
@@ -566,6 +569,11 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
             case GALAXY_AGE_OLD:    pcts = oldPcts; break;
             default:                pcts = normalPcts; break;
         }
+        // BR: distribution modifier
+        if (Profiles.isStarProbabilityEnabled()) {
+        	pcts = GalaxyOptions.modifyStarProbability(pcts);
+        } // \BR:
+        
         float r = random();
         for (int i=0;i<pcts.length;i++) {
             if (r <= pcts[i]) {
@@ -584,12 +592,51 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
             default: return StarType.RED;
         }
     }
+    // BR: Made this String List public
+    /**
+     * List of all stars Type Color key
+     * in the sequence used by the cumulative probability arrays
+     * @return the list
+     */
+    public static List<String> starTypeColors() {
+    	return List.of("RED", "ORANGE", "YELLOW"
+    				 , "BLUE", "WHITE", "PURPLE"); 
+    }
+
+    // BR: Made this String Array public
+    /**
+     * @return List of all planetTypes Key 
+     * in the sequence used by randomPlanet()
+     */
+    public static String[] planetTypes() {
+    	return new String[] {
+    			PlanetType.NONE,
+    			PlanetType.RADIATED,
+    			PlanetType.TOXIC,
+    			PlanetType.INFERNO,
+    			PlanetType.DEAD,
+    			PlanetType.TUNDRA,
+    			PlanetType.BARREN,
+    			PlanetType.MINIMAL,
+    			PlanetType.DESERT,
+    			PlanetType.STEPPE,
+    			PlanetType.ARID,
+    			PlanetType.OCEAN,
+    			PlanetType.JUNGLE,
+    			PlanetType.TERRAN
+    			};
+    } // \BR
+    
     @Override
     public Planet randomPlanet(StarSystem s) {
         Planet p = new Planet(s);
-        String[] planetTypes = { "PLANET_NONE", "PLANET_RADIATED", "PLANET_TOXIC", "PLANET_INFERNO",
-                        "PLANET_DEAD", "PLANET_TUNDRA", "PLANET_BARREN", "PLANET_MINIMAL", "PLANET_DESERT",
-                        "PLANET_STEPPE", "PLANET_ARID", "PLANET_OCEAN", "PLANET_JUNGLE", "PLANET_TERRAN" };
+        
+        // BR: Made this String Array public
+        String[] planetTypes = planetTypes();
+        // String[] planetTypes = { "PLANET_NONE", "PLANET_RADIATED", "PLANET_TOXIC", "PLANET_INFERNO",
+        //         "PLANET_DEAD", "PLANET_TUNDRA", "PLANET_BARREN", "PLANET_MINIMAL", "PLANET_DESERT",
+        //         "PLANET_STEPPE", "PLANET_ARID", "PLANET_OCEAN", "PLANET_JUNGLE", "PLANET_TERRAN" };
+        // \BR
 
         float[] pcts;
 
@@ -603,15 +650,25 @@ public class MOO1GameOptions implements Base, IGameOptions, Serializable {
         int typeIndex = 0;
         switch (s.starType().key()) {
             case StarType.RED:    pcts = redPcts;    break;
-            case StarType.ORANGE:  pcts = greenPcts;  break;
+            case StarType.ORANGE: pcts = greenPcts;  break;
             case StarType.YELLOW: pcts = yellowPcts; break;
             case StarType.BLUE:   pcts = bluePcts;   break;
-            case StarType.WHITE:  pcts = whitePcts; break;
+            case StarType.WHITE:  pcts = whitePcts;  break;
             case StarType.PURPLE: pcts = purplePcts; break;
             default:
                 pcts = redPcts; break;
         }
 
+        // BR: Modify the "PLANET TYPE PROBABILITY GLOBAL" probability
+        if(Profiles.isPlanetProbabilityEnabled("GLOBAL")) {
+        	pcts = GalaxyOptions.modifyPlanetProbability(pcts, "GLOBAL");
+        }
+        // Modify the "PLANET TYPE PROBABILITY COLOR TYPE" probability
+        if(Profiles.isPlanetProbabilityEnabled(s.starType().key())) {
+        	pcts = GalaxyOptions.modifyPlanetProbability(pcts, s.starType().key());
+        }
+        // \BR
+ 
         float r = random();
         
         // modnar: change PLANET_QUALITY settings, comment out poor to great settings

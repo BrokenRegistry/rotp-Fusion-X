@@ -51,6 +51,16 @@ public class Leader implements Base, Serializable {
     private Empire empire;
 
     public String name()      { return name; }
+    
+    // BR:
+    /**
+     * Change the leader Name
+     * @param newName the new Name
+     */
+    public void setName(String newName) {
+    	name = newName;
+    } // \BR
+    
     public Leader(Empire c) {
         this(c, c.race().randomLeaderName());
     }
