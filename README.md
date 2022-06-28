@@ -2,7 +2,7 @@
 
 Remnants of the Precursors is a Java-based modernization of the original Master of Orion game from 1993. <br/>
 
-## Fork of Xilmi Fusion MOD
+### Fork of Xilmi Fusion MOD
 ### With BrokenRegistry Profiles Manager. <br/>
 
 The decription of the additions/changes by Xilmi can be found there: <br/>
