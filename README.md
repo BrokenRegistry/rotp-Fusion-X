@@ -10,7 +10,7 @@ The decription of the additions/changes by Xilmi can be found there: <br/>
 
 The description of the additions/changes by BrokenRegistry can be found there: <br/>
 	[https://brokenregistry.github.io](https://brokenregistry.github.io) <br/>
-	[Also available as pdf file](https://brokenregistry.github.io/pdf/Profiles.pdf) <br/>
+	[Also available as pdf file (User Manual)](https://brokenregistry.github.io/pdf/Profiles.pdf) <br/>
 
 # Other Links
 Official website: https://www.remnantsoftheprecursors.com/<br/>
