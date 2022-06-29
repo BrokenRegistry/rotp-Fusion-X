@@ -519,7 +519,7 @@ public class StartModOptionsUI extends BasePanel implements MouseListener, Mouse
 
     @Override
     public void keyPressed(KeyEvent e) {
-        int k = e.getKeyCode();
+        int k = e.getKeyCode();  // BR:
         switch(k) {
             case KeyEvent.VK_ESCAPE:
                 close();
